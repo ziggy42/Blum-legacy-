@@ -1,0 +1,66 @@
+package com.andreapivetta.blu.adapters;
+
+import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.andreapivetta.blu.R;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+
+import twitter4j.Status;
+
+
+public class TweetListAdapter extends RecyclerView.Adapter<TweetListAdapter.ViewHolder> {
+
+    private ArrayList<Status> mDataSet;
+    private Context context;
+
+    public TweetListAdapter(ArrayList<Status> mDataSet, Context context) {
+        this.mDataSet = mDataSet;
+        this.context = context;
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView userNameTextView, statusTextView;
+        public ImageView userProfilePicImageView;
+
+        public ViewHolder(View container) {
+            super(container);
+
+            this.userNameTextView = (TextView) container.findViewById(R.id.userNameTextView);
+            this.statusTextView = (TextView) container.findViewById(R.id.statusTextView);
+            this.userProfilePicImageView = (ImageView) container.findViewById(R.id.userProfilePicImageView);
+        }
+    }
+
+    @Override
+    public TweetListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                           int viewType) {
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.tweet, parent, false);
+
+        return new ViewHolder(v);
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+        holder.userNameTextView.setText(mDataSet.get(position).getUser().getName());
+        holder.statusTextView.setText(mDataSet.get(position).getText());
+
+        Picasso.with(context)
+                .load(mDataSet.get(position).getUser().getMiniProfileImageURL())
+                .into(holder.userProfilePicImageView);
+    }
+
+    @Override
+    public int getItemCount() {
+        return mDataSet.size();
+    }
+}
