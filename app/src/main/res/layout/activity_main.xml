@@ -20,7 +20,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_marginTop="10dp"
-                android:padding="2dp"
                 android:scrollbars="vertical" />
 
         </android.support.v4.widget.SwipeRefreshLayout>

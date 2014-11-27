@@ -1,11 +1,11 @@
 package com.andreapivetta.blu;
 
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 import com.andreapivetta.blu.adapters.TweetListAdapter;
 import com.andreapivetta.blu.twitter.TwitterKs;
@@ -29,19 +30,22 @@ import twitter4j.conf.ConfigurationBuilder;
 
 public class MainActivity extends ActionBarActivity {
 
+    private Toolbar toolbar;
+    private RecyclerView mRecyclerView;
     private ImageButton newTweetImageButton;
     private SharedPreferences mSharedPreferences;
     private TweetListAdapter mTweetsAdapter;
     private ArrayList<Status> tweetList = new ArrayList<Status>();
     private LinearLayoutManager mLinearLayoutManager;
     Twitter twitter;
+    private boolean isUp = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
         }
@@ -52,30 +56,18 @@ public class MainActivity extends ActionBarActivity {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
 
-        try {
-            ConfigurationBuilder builder = new ConfigurationBuilder();
-            builder.setOAuthConsumerKey(TwitterKs.TWITTER_CONSUMER_KEY)
-                    .setOAuthConsumerSecret(TwitterKs.TWITTER_CONSUMER_SECRET);
 
-            // Access Token
-            String access_token = mSharedPreferences.getString(
-                    TwitterKs.PREF_KEY_OAUTH_TOKEN, "");
-            // Access Token Secret
-            String access_token_secret = mSharedPreferences.getString(
-                    TwitterKs.PREF_KEY_OAUTH_SECRET, "");
+        ConfigurationBuilder builder = new ConfigurationBuilder();
+        builder.setOAuthConsumerKey(TwitterKs.TWITTER_CONSUMER_KEY)
+                .setOAuthConsumerSecret(TwitterKs.TWITTER_CONSUMER_SECRET);
 
-            AccessToken accessToken = new AccessToken(access_token,
-                    access_token_secret);
-            twitter = new TwitterFactory(builder.build())
-                    .getInstance(accessToken);
+        AccessToken accessToken = new AccessToken(mSharedPreferences.getString(TwitterKs.PREF_KEY_OAUTH_TOKEN, ""),
+                mSharedPreferences.getString(TwitterKs.PREF_KEY_OAUTH_SECRET, ""));
+        twitter = new TwitterFactory(builder.build()).getInstance(accessToken);
 
-            new GetTimeLine().execute(null, null, null);
+        new GetTimeLine().execute(null, null, null);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
+        mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
         mTweetsAdapter = new TweetListAdapter(tweetList, this);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
@@ -86,13 +78,53 @@ public class MainActivity extends ActionBarActivity {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                // TODO
+                if(dy > 0) {
+                    if(isUp) {
+                        newTweetDown();
+                    }
+                } else {
+                    if(!isUp) {
+                        newTweetUp();
+                    }
+                }
             }
         });
 
         newTweetImageButton = (ImageButton) findViewById(R.id.newTweetImageButton);
         setOnClickListener();
 
+    }
+
+    void newTweetDown() {
+        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newTweetImageButton.getLayoutParams();
+        ValueAnimator downAnimator = ValueAnimator.ofInt(params.bottomMargin, -120);
+        downAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                params.bottomMargin = (Integer) valueAnimator.getAnimatedValue();
+                newTweetImageButton.requestLayout();
+            }
+        });
+        downAnimator.setDuration(200);
+        downAnimator.start();
+
+        isUp = false;
+    }
+
+    void newTweetUp() {
+        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newTweetImageButton.getLayoutParams();
+        ValueAnimator upAnimator = ValueAnimator.ofInt(params.bottomMargin, 20);
+        upAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                params.bottomMargin = (Integer) valueAnimator.getAnimatedValue();
+                newTweetImageButton.requestLayout();
+            }
+        });
+        upAnimator.setDuration(200);
+        upAnimator.start();
+
+        isUp = true;
     }
 
     private boolean isTwitterLoggedInAlready() {
@@ -104,6 +136,14 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
+            }
+        });
+
+        this.toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mRecyclerView.scrollToPosition(0);
+                newTweetUp();
             }
         });
     }
