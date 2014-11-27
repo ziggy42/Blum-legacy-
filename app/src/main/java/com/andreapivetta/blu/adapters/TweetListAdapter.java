@@ -28,7 +28,7 @@ public class TweetListAdapter extends RecyclerView.Adapter<TweetListAdapter.View
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView userNameTextView, statusTextView;
+        public TextView userNameTextView, statusTextView, timeTextView;
         public ImageView userProfilePicImageView;
 
         public ViewHolder(View container) {
@@ -37,6 +37,7 @@ public class TweetListAdapter extends RecyclerView.Adapter<TweetListAdapter.View
             this.userNameTextView = (TextView) container.findViewById(R.id.userNameTextView);
             this.statusTextView = (TextView) container.findViewById(R.id.statusTextView);
             this.userProfilePicImageView = (ImageView) container.findViewById(R.id.userProfilePicImageView);
+            this.timeTextView = (TextView) container.findViewById(R.id.timeTextView);
         }
     }
 
@@ -53,10 +54,21 @@ public class TweetListAdapter extends RecyclerView.Adapter<TweetListAdapter.View
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.userNameTextView.setText(mDataSet.get(position).getUser().getName());
         holder.statusTextView.setText(mDataSet.get(position).getText());
+        holder.timeTextView.setText(mDataSet.get(position).getCreatedAt().toString());
 
-        Picasso.with(context)
-                .load(mDataSet.get(position).getUser().getMiniProfileImageURL())
-                .into(holder.userProfilePicImageView);
+        if (mDataSet.get(position).isRetweet()) {
+            // TODO se è un retweet cambia tutto
+
+            Picasso.with(context)
+                    .load(mDataSet.get(position).getRetweetedStatus().getUser().getMiniProfileImageURL())
+                    .into(holder.userProfilePicImageView);
+        } else {
+            Picasso.with(context)
+                    .load(mDataSet.get(position).getUser().getMiniProfileImageURL())
+                    .into(holder.userProfilePicImageView);
+        }
+
+
     }
 
     @Override
