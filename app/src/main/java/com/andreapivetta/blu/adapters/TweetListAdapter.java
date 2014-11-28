@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.andreapivetta.blu.R;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import twitter4j.Status;
@@ -43,7 +44,7 @@ public class TweetListAdapter extends RecyclerView.Adapter<TweetListAdapter.View
 
     @Override
     public TweetListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                           int viewType) {
+                                                          int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.tweet, parent, false);
 
@@ -52,22 +53,19 @@ public class TweetListAdapter extends RecyclerView.Adapter<TweetListAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.userNameTextView.setText(mDataSet.get(position).getUser().getName());
-        holder.statusTextView.setText(mDataSet.get(position).getText());
-        holder.timeTextView.setText(mDataSet.get(position).getCreatedAt().toString());
-
-        if (mDataSet.get(position).isRetweet()) {
-            // TODO se è un retweet cambia tutto
-
-            Picasso.with(context)
-                    .load(mDataSet.get(position).getRetweetedStatus().getUser().getMiniProfileImageURL())
-                    .into(holder.userProfilePicImageView);
-        } else {
-            Picasso.with(context)
-                    .load(mDataSet.get(position).getUser().getMiniProfileImageURL())
-                    .into(holder.userProfilePicImageView);
+        Status currentStatus = mDataSet.get(position);
+        if (currentStatus.isRetweet()) {
+            // TODO show that this is a retweet
+            currentStatus = currentStatus.getRetweetedStatus();
         }
 
+        holder.userNameTextView.setText(currentStatus.getUser().getName());
+        holder.statusTextView.setText(currentStatus.getText());
+        holder.timeTextView.setText(new SimpleDateFormat("hh:mm").format(currentStatus.getCreatedAt()));
+
+        Picasso.with(context)
+                .load(mDataSet.get(position).getUser().getBiggerProfileImageURL())
+                .into(holder.userProfilePicImageView);
 
     }
 
