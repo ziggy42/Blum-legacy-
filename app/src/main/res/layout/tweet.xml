@@ -11,7 +11,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingBottom="3dp">
 
         <ImageView
             android:id="@+id/userProfilePicImageView"
@@ -21,6 +22,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_margin="5dp"
+            android:contentDescription="@string/profile_pic_contentdescriptor"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_twitter_blue" />
 
@@ -41,21 +43,48 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/userProfilePicImageView"
-            android:fontFamily="sans-serif-thin"
             android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp" />
+            android:layout_marginRight="5dp"
+            android:fontFamily="sans-serif-thin" />
 
         <TextView
             android:id="@+id/statusTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/userNameTextView"
+            android:layout_marginBottom="2dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
             android:layout_toEndOf="@+id/userProfilePicImageView"
             android:layout_toRightOf="@+id/userProfilePicImageView"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginEnd="5dp"
             android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/statusTextView"
+            android:layout_alignStart="@+id/statusTextView"
+            android:layout_below="@+id/statusTextView"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/tweetPhotoImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/tweet_photo_contentdescriptor"
+                android:scaleType="fitStart" />
+
+            <TextView
+                android:id="@+id/retweetTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-thin" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>
