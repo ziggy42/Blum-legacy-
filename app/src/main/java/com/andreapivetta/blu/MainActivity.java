@@ -5,26 +5,44 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.andreapivetta.blu.adapters.TweetListAdapter;
 import com.andreapivetta.blu.twitter.TwitterKs;
 import com.andreapivetta.blu.twitter.UpdateTwitterStatus;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -39,9 +57,13 @@ import twitter4j.conf.ConfigurationBuilder;
 
 public class MainActivity extends ActionBarActivity {
 
+    private static final int REQUEST_GRAB_IMAGE = 3;
+    private static final int REQUEST_TAKE_PHOTO = 1;
+
     Twitter twitter;
     Paging paging = new Paging(1, 200);
     int currentPage = 1;
+
     private Toolbar toolbar;
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -50,8 +72,13 @@ public class MainActivity extends ActionBarActivity {
     private TweetListAdapter mTweetsAdapter;
     private ArrayList<Status> tweetList = new ArrayList<>();
     private LinearLayoutManager mLinearLayoutManager;
+    private ImageView uploadedImageView;
+
     private boolean isUp = true, loading = true;
     private int pastVisibleItems, visibleItemCount, totalItemCount;
+
+    private String mCurrentPhotoPath;
+    private File imageFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,13 +128,11 @@ public class MainActivity extends ActionBarActivity {
                 }
 
                 if (dy > 0) {
-                    if (isUp) {
+                    if (isUp)
                         newTweetDown();
-                    }
                 } else {
-                    if (!isUp) {
+                    if (!isUp)
                         newTweetUp();
-                    }
                 }
             }
         });
@@ -174,6 +199,62 @@ public class MainActivity extends ActionBarActivity {
                 View dialogView = View.inflate(MainActivity.this, R.layout.dialog_new_tweet, null);
 
                 final EditText newTweetEditText = (EditText) dialogView.findViewById(R.id.newTweetEditText);
+                final TextView charsLeftTextView = (TextView) dialogView.findViewById(R.id.charsLeftTextView);
+                uploadedImageView = (ImageView) dialogView.findViewById(R.id.uploadedImageView);
+                final ImageButton takePhotoImageButton = (ImageButton) dialogView.findViewById(R.id.takePhotoImageButton);
+                final ImageButton grabimageImageButton = (ImageButton) dialogView.findViewById(R.id.grabimageImageButton);
+
+                newTweetEditText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        int i = (140 - s.length());
+                        charsLeftTextView.setText(i + "");
+                        if (i < 0)
+                            charsLeftTextView.setTextColor(getResources().getColor(R.color.red));
+                        else
+                            charsLeftTextView.setTextColor(getResources().getColor(R.color.grey));
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+
+                takePhotoImageButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                            File photoFile = null;
+                            try {
+                                photoFile = createImageFile();
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
+
+                            if (photoFile != null) {
+                                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                                        Uri.fromFile(photoFile));
+                                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                            }
+                        }
+                    }
+                });
+
+                grabimageImageButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                        photoPickerIntent.setType("image/*");
+                        startActivityForResult(photoPickerIntent, REQUEST_GRAB_IMAGE);
+                    }
+                });
 
                 builder
                         .setView(dialogView)
@@ -181,7 +262,10 @@ public class MainActivity extends ActionBarActivity {
                         .setPositiveButton(getString(R.string.tweet), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                new UpdateTwitterStatus(MainActivity.this).execute(newTweetEditText.getText().toString());
+                                if (uploadedImageView.getVisibility() == View.VISIBLE)
+                                    new UpdateTwitterStatus(MainActivity.this, twitter, imageFile).execute(newTweetEditText.getText().toString());
+                                else
+                                    new UpdateTwitterStatus(MainActivity.this, twitter).execute(newTweetEditText.getText().toString());
                             }
                         })
                         .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -201,21 +285,68 @@ public class MainActivity extends ActionBarActivity {
         });
     }
 
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        imageFile = File.createTempFile(imageFileName, ".jpg", storageDir);
+
+        mCurrentPhotoPath = "file:" + imageFile.getAbsolutePath();
+        return imageFile;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+
+        switch(requestCode) {
+            case REQUEST_GRAB_IMAGE:
+                if(resultCode == RESULT_OK){
+                    try {
+                        Uri selectedImage = imageReturnedIntent.getData();
+                        imageFile = new File(getRealPathFromURI(selectedImage));
+                        InputStream imageStream = getContentResolver().openInputStream(selectedImage);
+                        uploadedImageView.setVisibility(View.VISIBLE);
+                        uploadedImageView.setImageBitmap(BitmapFactory.decodeStream(imageStream));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case REQUEST_TAKE_PHOTO:
+                if (resultCode == RESULT_OK) {
+                    uploadedImageView.setVisibility(View.VISIBLE);
+
+                    Picasso.with(this)
+                            .load(Uri.parse(mCurrentPhotoPath))
+                            .into(uploadedImageView);
+                }
+        }
+    }
+
+
+    public String getRealPathFromURI(Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+
+        CursorLoader cursorLoader = new CursorLoader(
+                this, contentUri, proj, null, null, null);
+        Cursor cursor = cursorLoader.loadInBackground();
+
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -272,7 +403,6 @@ public class MainActivity extends ActionBarActivity {
             }
 
             swipeRefreshLayout.setRefreshing(false);
-
         }
     }
 }

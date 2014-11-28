@@ -14,5 +14,11 @@
     <string name="tweet">Tweet</string>
     <string name="cancel">Cancel</string>
     <string name="new_tweet_hint">Tweet your life in 140 characters</string>
+    <string name="tweet_length">140</string>
+    <string name="grab_image_contentdescriptor">Upload a Picture Image Button</string>
+    <string name="take_photo_contentdescriptor">Take and Add a Photo Image Button</string>
+    <string name="uploaded_image_contentdescriptor">Uploaded ImageView</string>
+    <string name="sending_tweet_title">Sending Tweet</string>
+    <string name="sending_tweet_content">Sendin in Progress</string>
 
 </resources>
