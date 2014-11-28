@@ -1,6 +1,8 @@
 package com.andreapivetta.blu;
 
 import android.animation.ValueAnimator;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -11,16 +13,16 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.andreapivetta.blu.adapters.TweetListAdapter;
 import com.andreapivetta.blu.twitter.TwitterKs;
+import com.andreapivetta.blu.twitter.UpdateTwitterStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +39,9 @@ import twitter4j.conf.ConfigurationBuilder;
 
 public class MainActivity extends ActionBarActivity {
 
+    Twitter twitter;
+    Paging paging = new Paging(1, 200);
+    int currentPage = 1;
     private Toolbar toolbar;
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -44,13 +49,9 @@ public class MainActivity extends ActionBarActivity {
     private SharedPreferences mSharedPreferences;
     private TweetListAdapter mTweetsAdapter;
     private ArrayList<Status> tweetList = new ArrayList<>();
-    Twitter twitter;
     private LinearLayoutManager mLinearLayoutManager;
     private boolean isUp = true, loading = true;
     private int pastVisibleItems, visibleItemCount, totalItemCount;
-
-    Paging paging = new Paging(1, 200);
-    int currentPage = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,12 +100,12 @@ public class MainActivity extends ActionBarActivity {
                     }
                 }
 
-                if(dy > 0) {
-                    if(isUp) {
+                if (dy > 0) {
+                    if (isUp) {
                         newTweetDown();
                     }
                 } else {
-                    if(!isUp) {
+                    if (!isUp) {
                         newTweetUp();
                     }
                 }
@@ -117,7 +118,8 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onRefresh() {
                 new Handler().postDelayed(new Runnable() {
-                    @Override public void run() {
+                    @Override
+                    public void run() {
                         new RefreshTimeLine().execute(null, null, null);
                     }
                 }, 5000);
@@ -168,7 +170,26 @@ public class MainActivity extends ActionBarActivity {
         this.newTweetImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                View dialogView = View.inflate(MainActivity.this, R.layout.dialog_new_tweet, null);
 
+                final EditText newTweetEditText = (EditText) dialogView.findViewById(R.id.newTweetEditText);
+
+                builder
+                        .setView(dialogView)
+                        .setTitle(getString(R.string.new_tweet_dialog_title))
+                        .setPositiveButton(getString(R.string.tweet), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                new UpdateTwitterStatus(MainActivity.this).execute(newTweetEditText.getText().toString());
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        }).create().show();
             }
         });
 
@@ -236,7 +257,7 @@ public class MainActivity extends ActionBarActivity {
                 List<twitter4j.Status> newTweets = twitter.getHomeTimeline(currentPaging);
                 ListIterator<twitter4j.Status> it = newTweets.listIterator(newTweets.size());
 
-                while(it.hasPrevious())
+                while (it.hasPrevious())
                     tweetList.add(0, it.previous());
 
             } catch (TwitterException e) {

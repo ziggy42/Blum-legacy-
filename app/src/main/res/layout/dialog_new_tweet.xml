@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:textColor="@color/grey"
+        android:textColorHint="@color/lightGrey"
+        android:textCursorDrawable="@null"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:hint="@string/new_tweet_hint"
+        android:layout_height="wrap_content"
+        android:id="@+id/newTweetEditText"
+        android:layout_alignParentTop="true" />
+</RelativeLayout>

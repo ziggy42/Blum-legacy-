@@ -10,5 +10,9 @@
     <string name="retweeted_by">Retweeted by</string>
     <string name="profile_pic_contentdescriptor">User Profile Picture</string>
     <string name="tweet_photo_contentdescriptor">Tweet Photo</string>
+    <string name="new_tweet_dialog_title">Say Something</string>
+    <string name="tweet">Tweet</string>
+    <string name="cancel">Cancel</string>
+    <string name="new_tweet_hint">Tweet your life in 140 characters</string>
 
 </resources>
