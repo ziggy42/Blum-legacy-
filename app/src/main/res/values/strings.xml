@@ -20,5 +20,13 @@
     <string name="uploaded_image_contentdescriptor">Uploaded ImageView</string>
     <string name="sending_tweet_title">Sending Tweet</string>
     <string name="sending_tweet_content">Sendin in Progress</string>
+    <string name="title_activity_user">UserActivity</string>
+    <string name="retweet_imageButton_contentdescriptor">Retweet Image Button</string>
+    <string name="favourite_imageButton_contentdescriptor">Favourite Image Button</string>
+    <string name="respond_imageButton_contentdescriptor">Respond Image Button</string>
+    <string name="share_imageButton_contentdescriptor">Share Image Button</string>
+    <string name="share_tweet">Share this Tweet!</string>
+    <string name="retweet_title">Retweet?</string>
+    <string name="retweet">Retweet</string>
 
 </resources>

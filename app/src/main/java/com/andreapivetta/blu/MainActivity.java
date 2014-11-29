@@ -24,8 +24,10 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -106,7 +108,7 @@ public class MainActivity extends ActionBarActivity {
         new GetTimeLine().execute(null, null, null);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
-        mTweetsAdapter = new TweetListAdapter(tweetList, this);
+        mTweetsAdapter = new TweetListAdapter(tweetList, this, twitter);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
@@ -323,7 +325,6 @@ public class MainActivity extends ActionBarActivity {
                 }
         }
     }
-
 
     public String getRealPathFromURI(Uri contentUri) {
         String[] proj = { MediaStore.Images.Media.DATA };

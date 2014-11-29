@@ -1,37 +1,43 @@
 package com.andreapivetta.blu.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.twitter.FavoriteTweet;
+import com.andreapivetta.blu.twitter.RetweetTweet;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import twitter4j.MediaEntity;
 import twitter4j.Status;
+import twitter4j.Twitter;
 
 
 public class TweetListAdapter extends RecyclerView.Adapter<TweetListAdapter.ViewHolder> {
 
     private ArrayList<Status> mDataSet;
     private Context context;
+    private Twitter twitter;
 
-    public TweetListAdapter(ArrayList<Status> mDataSet, Context context) {
+    public TweetListAdapter(ArrayList<Status> mDataSet, Context context, Twitter twitter) {
         this.mDataSet = mDataSet;
         this.context = context;
+        this.twitter = twitter;
     }
 
     @Override
@@ -44,18 +50,20 @@ public class TweetListAdapter extends RecyclerView.Adapter<TweetListAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
-        Status currentStatus = mDataSet.get(position);
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        final Status currentStatus;
         MediaEntity mediaEntityArray[];
+        holder.interactionLinearLayout.setVisibility(View.GONE);
 
-        if (currentStatus.isRetweet()) {
+        if (mDataSet.get(position).isRetweet()) {
+            currentStatus = mDataSet.get(position).getRetweetedStatus();
             holder.retweetTextView.setVisibility(View.VISIBLE);
             holder.retweetTextView.setText(context.getString(R.string.retweeted_by) + " @" + currentStatus.getUser().getScreenName());
-            currentStatus = currentStatus.getRetweetedStatus();
 
             mediaEntityArray = currentStatus.getMediaEntities();
 
         } else {
+            currentStatus = mDataSet.get(position);
             holder.retweetTextView.setVisibility(View.GONE);
             mediaEntityArray = currentStatus.getMediaEntities();
         }
@@ -84,8 +92,86 @@ public class TweetListAdapter extends RecyclerView.Adapter<TweetListAdapter.View
             holder.tweetPhotoImageView.setVisibility(View.GONE);
         }
 
+        holder.userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO username Activity
+            }
+        });
 
+        holder.statusTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.interactionLinearLayout.getVisibility() == View.VISIBLE)
+                    holder.interactionLinearLayout.setVisibility(View.GONE);
+                else
+                    holder.interactionLinearLayout.setVisibility(View.VISIBLE);
+            }
+        });
 
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (holder.interactionLinearLayout.getVisibility() == View.VISIBLE)
+                    holder.interactionLinearLayout.setVisibility(View.GONE);
+                else
+                    holder.interactionLinearLayout.setVisibility(View.VISIBLE);
+            }
+        });
+
+        holder.favouriteImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                long type;
+                if (currentStatus.isFavorited()) {
+                    type = -1;
+                    new FavoriteTweet(context, twitter).execute(currentStatus.getId(), type);
+                } else {
+                    type = 1;
+                    new FavoriteTweet(context, twitter).execute(currentStatus.getId(), type);
+                }
+            }
+        });
+
+        holder.retweetImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle(context.getString(R.string.retweet_title))
+                        .setPositiveButton(R.string.retweet, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                new RetweetTweet(context, twitter).execute(currentStatus.getId());
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        }).create().show();
+            }
+        });
+
+        holder.respondImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        holder.shareImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "https://twitter.com/" + currentStatus.getUser().getScreenName()
+                        + "/status/" + currentStatus.getId();
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND)
+                        .putExtra(Intent.EXTRA_TEXT, url)
+                        .setType("text/plain");
+                context.startActivity(Intent.createChooser(sendIntent, context.getString(R.string.share_tweet)));
+            }
+        });
     }
 
     @Override
@@ -97,6 +183,9 @@ public class TweetListAdapter extends RecyclerView.Adapter<TweetListAdapter.View
 
         public TextView userNameTextView, statusTextView, timeTextView, retweetTextView;
         public ImageView userProfilePicImageView, tweetPhotoImageView;
+        public LinearLayout interactionLinearLayout;
+        public FrameLayout cardView;
+        public ImageButton favouriteImageButton, retweetImageButton, respondImageButton, shareImageButton;
 
         public ViewHolder(View container) {
             super(container);
@@ -107,6 +196,14 @@ public class TweetListAdapter extends RecyclerView.Adapter<TweetListAdapter.View
             this.timeTextView = (TextView) container.findViewById(R.id.timeTextView);
             this.retweetTextView = (TextView) container.findViewById(R.id.retweetTextView);
             this.tweetPhotoImageView = (ImageView) container.findViewById(R.id.tweetPhotoImageView);
+
+            this.interactionLinearLayout = (LinearLayout) container.findViewById(R.id.interactionLinearLayout);
+            this.cardView = (FrameLayout) container.findViewById(R.id.card_view);
+
+            this.favouriteImageButton = (ImageButton) container.findViewById(R.id.favouriteImageButton);
+            this.retweetImageButton = (ImageButton) container.findViewById(R.id.retweetImageButton);
+            this.respondImageButton = (ImageButton) container.findViewById(R.id.respondImageButton);
+            this.shareImageButton = (ImageButton) container.findViewById(R.id.shareImageButton);
         }
     }
 }

@@ -23,8 +23,7 @@
             android:layout_alignParentTop="true"
             android:layout_margin="5dp"
             android:contentDescription="@string/profile_pic_contentdescriptor"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_twitter_blue" />
+            android:scaleType="fitCenter" />
 
         <TextView
             android:id="@+id/userNameTextView"
@@ -53,13 +52,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/userNameTextView"
             android:layout_marginBottom="2dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_toEndOf="@+id/userProfilePicImageView"
+            android:layout_marginEnd="3dp"
+            android:layout_marginRight="3dp"
             android:layout_toRightOf="@+id/userProfilePicImageView"
             android:textSize="15sp" />
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/statusTextView"
@@ -76,6 +75,7 @@
                 android:layout_marginRight="5dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/tweet_photo_contentdescriptor"
+                android:maxHeight="300dp"
                 android:scaleType="fitStart" />
 
             <TextView
@@ -84,6 +84,63 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-thin" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/interactionLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linearLayout"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/favouriteImageButton"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="?android:selectableItemBackground"
+                android:contentDescription="@string/favourite_imageButton_contentdescriptor"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_star_grey600_36dp" />
+
+            <ImageButton
+                android:id="@+id/retweetImageButton"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="?android:selectableItemBackground"
+                android:contentDescription="@string/retweet_imageButton_contentdescriptor"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_repeat_grey600_36dp" />
+
+            <ImageButton
+                android:id="@+id/respondImageButton"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="?android:selectableItemBackground"
+                android:contentDescription="@string/respond_imageButton_contentdescriptor"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_reply_grey600_36dp" />
+
+            <ImageButton
+                android:id="@+id/shareImageButton"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="?android:selectableItemBackground"
+                android:contentDescription="@string/share_imageButton_contentdescriptor"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_share_grey600_36dp" />
         </LinearLayout>
 
     </RelativeLayout>
