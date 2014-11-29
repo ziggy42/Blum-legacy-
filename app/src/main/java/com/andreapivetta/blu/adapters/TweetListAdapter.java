@@ -76,6 +76,7 @@ public class TweetListAdapter extends RecyclerView.Adapter<TweetListAdapter.View
 
         Picasso.with(context)
                 .load(currentStatus.getUser().getBiggerProfileImageURL())
+                .placeholder(context.getResources().getDrawable(R.drawable.placeholder))
                 .into(holder.userProfilePicImageView);
 
         if (mediaEntityArray.length > 0) {
@@ -84,6 +85,7 @@ public class TweetListAdapter extends RecyclerView.Adapter<TweetListAdapter.View
                     holder.tweetPhotoImageView.setVisibility(View.VISIBLE);
                     Picasso.with(context)
                             .load(mediaEntity.getMediaURL())
+                            .placeholder(context.getResources().getDrawable(R.drawable.placeholder))
                             .into(holder.tweetPhotoImageView);
                     break;
                 }
