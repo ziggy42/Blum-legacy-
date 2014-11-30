@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:layout_marginTop="5dp"
-            android:contentDescription="@string/uploaded_image_contentdescriptor"
+            android:contentDescription="@string/uploaded_image_contentDescriptor"
             android:maxHeight="200dp"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
@@ -56,7 +56,7 @@
         android:layout_below="@+id/contentLinearLayout"
         android:layout_marginTop="20dp"
         android:background="?android:selectableItemBackground"
-        android:contentDescription="@string/take_photo_contentdescriptor"
+        android:contentDescription="@string/take_photo_contentDescriptor"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_camera_alt_grey600_36dp" />
 
@@ -71,7 +71,7 @@
         android:layout_toEndOf="@+id/takePhotoImageButton"
         android:layout_toRightOf="@+id/takePhotoImageButton"
         android:background="?android:selectableItemBackground"
-        android:contentDescription="@string/grab_image_contentdescriptor"
+        android:contentDescription="@string/grab_image_contentDescriptor"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_image_grey600_36dp" />
 

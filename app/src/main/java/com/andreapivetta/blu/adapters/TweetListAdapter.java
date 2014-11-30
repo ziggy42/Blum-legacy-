@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.UserActivity;
 import com.andreapivetta.blu.twitter.FavoriteTweet;
 import com.andreapivetta.blu.twitter.RetweetTweet;
 import com.squareup.picasso.Picasso;
@@ -97,7 +98,10 @@ public class TweetListAdapter extends RecyclerView.Adapter<TweetListAdapter.View
         holder.userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO username Activity
+                Intent i = new Intent(context, UserActivity.class);
+                i.putExtra("ID", currentStatus.getUser().getId());
+                i.putExtra("Twitter", twitter);
+                context.startActivity(i);
             }
         });
 

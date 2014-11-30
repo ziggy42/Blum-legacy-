@@ -14,8 +14,8 @@ import twitter4j.User;
 import twitter4j.auth.AccessToken;
 import twitter4j.conf.ConfigurationBuilder;
 
-import static com.andreapivetta.blu.twitter.TwitterKs.TWITTER_CONSUMER_KEY;
-import static com.andreapivetta.blu.twitter.TwitterKs.TWITTER_CONSUMER_SECRET;
+import static com.andreapivetta.blu.twitter.TwitterUtils.TWITTER_CONSUMER_KEY;
+import static com.andreapivetta.blu.twitter.TwitterUtils.TWITTER_CONSUMER_SECRET;
 
 public class TwitterOAuthActivity extends Activity implements TwitterOAuthView.Listener {
 
@@ -49,7 +49,7 @@ public class TwitterOAuthActivity extends Activity implements TwitterOAuthView.L
 
         // Start Twitter OAuth process. Its result will be notified via
         // TwitterOAuthView.Listener interface.
-        view.start(TwitterKs.TWITTER_CONSUMER_KEY, TwitterKs.TWITTER_CONSUMER_SECRET, TwitterKs.CALLBACK_URL, TwitterKs.DUMMY_CALLBACK_URL, this);
+        view.start(TwitterUtils.TWITTER_CONSUMER_KEY, TwitterUtils.TWITTER_CONSUMER_SECRET, TwitterUtils.CALLBACK_URL, TwitterUtils.DUMMY_CALLBACK_URL, this);
     }
 
 
@@ -59,9 +59,9 @@ public class TwitterOAuthActivity extends Activity implements TwitterOAuthView.L
         // for later use.
 
         getSharedPreferences("MyPref", 0).edit().
-                putString(TwitterKs.PREF_KEY_OAUTH_TOKEN, accessToken.getToken()).
-                putString(TwitterKs.PREF_KEY_OAUTH_SECRET, accessToken.getTokenSecret()).
-                putBoolean(TwitterKs.PREF_KEY_TWITTER_LOGIN, true).
+                putString(TwitterUtils.PREF_KEY_OAUTH_TOKEN, accessToken.getToken()).
+                putString(TwitterUtils.PREF_KEY_OAUTH_SECRET, accessToken.getTokenSecret()).
+                putBoolean(TwitterUtils.PREF_KEY_TWITTER_LOGIN, true).
                 apply();
 
         new GetProfilePictureURL().execute(accessToken.getToken(), accessToken.getTokenSecret());
@@ -101,7 +101,7 @@ public class TwitterOAuthActivity extends Activity implements TwitterOAuthView.L
                 User user = twitter.showUser(accessToken.getUserId());
                 String urldisplay = user.getOriginalProfileImageURL();
 
-                getSharedPreferences("MyPref", 0).edit().putString(TwitterKs.PREF_KEY_PICTURE_URL, urldisplay).apply();
+                getSharedPreferences("MyPref", 0).edit().putString(TwitterUtils.PREF_KEY_PICTURE_URL, urldisplay).apply();
 
             } catch (TwitterException e) {
                 // Error in updating status

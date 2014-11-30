@@ -31,7 +31,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.adapters.TweetListAdapter;
-import com.andreapivetta.blu.twitter.TwitterKs;
+import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.twitter.UpdateTwitterStatus;
 import com.squareup.picasso.Picasso;
 
@@ -94,13 +94,7 @@ public class MainActivity extends ActionBarActivity {
         if (!isTwitterLoggedInAlready())
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
 
-        ConfigurationBuilder builder = new ConfigurationBuilder();
-        builder.setOAuthConsumerKey(TwitterKs.TWITTER_CONSUMER_KEY)
-                .setOAuthConsumerSecret(TwitterKs.TWITTER_CONSUMER_SECRET);
-
-        AccessToken accessToken = new AccessToken(mSharedPreferences.getString(TwitterKs.PREF_KEY_OAUTH_TOKEN, ""),
-                mSharedPreferences.getString(TwitterKs.PREF_KEY_OAUTH_SECRET, ""));
-        twitter = new TwitterFactory(builder.build()).getInstance(accessToken);
+        twitter = TwitterUtils.getTwitter(MainActivity.this);
 
         new GetTimeLine().execute(null, null, null);
 
@@ -187,7 +181,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private boolean isTwitterLoggedInAlready() {
-        return mSharedPreferences.getBoolean(TwitterKs.PREF_KEY_TWITTER_LOGIN, false);
+        return mSharedPreferences.getBoolean(TwitterUtils.PREF_KEY_TWITTER_LOGIN, false);
     }
 
     private void setOnClickListener() {
