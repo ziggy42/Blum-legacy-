@@ -59,12 +59,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/userNameTextView"
-        android:layout_marginBottom="1dp"
         android:layout_toEndOf="@+id/profilePictureImageView"
         android:layout_toRightOf="@+id/profilePictureImageView"
         android:fontFamily="sans-serif-thin"
         android:text="\@Pivix00"
-        android:textSize="16sp" />
+        android:textSize="15sp" />
 
     <TextView
         android:id="@+id/descriptionTextView"
@@ -167,5 +166,18 @@
         android:layout_height="1dp"
         android:layout_below="@+id/amountLinearLayout"
         android:background="@android:color/darker_gray" />
+
+    <ImageButton
+        android:background="@drawable/circle_button_white"
+        android:src="@drawable/ic_person_add_grey600_24dp"
+        android:id="@+id/followImageButton"
+        android:elevation="6dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/profileBackgroundImageView"
+        android:layout_marginTop="-25dp"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
