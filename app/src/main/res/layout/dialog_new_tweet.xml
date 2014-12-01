@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:hint="@string/new_tweet_hint"
+            android:inputType="text"
             android:textColor="@color/grey"
             android:textColorHint="@color/lightGrey" />
 
@@ -26,11 +27,11 @@
             android:id="@+id/uploadedImageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
+            android:layout_gravity="center"
             android:layout_marginTop="5dp"
+            android:adjustViewBounds="true"
             android:contentDescription="@string/uploaded_image_contentDescriptor"
             android:maxHeight="200dp"
-            android:layout_gravity="center"
             android:scaleType="fitCenter"
             android:visibility="gone" />
 

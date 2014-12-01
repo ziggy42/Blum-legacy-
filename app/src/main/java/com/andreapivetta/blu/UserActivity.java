@@ -9,6 +9,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -22,10 +24,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.andreapivetta.blu.adapters.UserListAdapter;
 import com.andreapivetta.blu.twitter.FollowTwitterUser;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import twitter4j.Relationship;
 import twitter4j.Twitter;
@@ -35,6 +40,8 @@ import twitter4j.User;
 
 public class UserActivity extends ActionBarActivity {
 
+    private final static String FOLLOWERS = "NJFHWI";
+    private final static String FOLLOWING = "HIJHOJOJO";
     private final static int I_FOLLOW_HIM = 0;
     private final static int WE_FOLLOW_EACH_OTHER = 2;
     private final static int I_DONT_KNOW_WHO_YOU_ARE = -1;
@@ -42,9 +49,13 @@ public class UserActivity extends ActionBarActivity {
 
     private Twitter twitter;
     private User user;
-    private Toolbar toolbar;
+
+    private ArrayList<User> followers = new ArrayList<>(), following = new ArrayList<>();
+    private UserListAdapter mUsersAdapter;
+
     private ImageView profileBackgroundImageView, profilePictureImageView;
-    private TextView userNickTextView, userNameTextView, descriptionTextView, userLocationTextView, userWebsiteTextView, tweetAmountTextView, followingAmountTextView, followersAmountTextView;
+    private TextView userNickTextView, userNameTextView, descriptionTextView, userLocationTextView,
+            userWebsiteTextView, tweetAmountTextView, followingAmountTextView, followersAmountTextView;
     private ImageButton followImageButton;
 
     @Override
@@ -52,10 +63,9 @@ public class UserActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-
             toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -203,16 +213,36 @@ public class UserActivity extends ActionBarActivity {
         followingAmountTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                createUsersDialog(FOLLOWING);
+                new LoadFollowersOrFollowing().execute(FOLLOWING, null, null);
             }
         });
 
         followersAmountTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                createUsersDialog(FOLLOWERS);
+                new LoadFollowersOrFollowing().execute(FOLLOWERS, null, null);
             }
         });
+    }
+
+    void createUsersDialog(String mode) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(UserActivity.this);
+        View dialogView = View.inflate(UserActivity.this, R.layout.dialog_users, null);
+        RecyclerView mRecyclerView = (RecyclerView) dialogView.findViewById(R.id.usersRecyclerView);
+
+        if (mode.equals(FOLLOWERS)) mUsersAdapter = new UserListAdapter(followers, UserActivity.this, twitter);
+        else mUsersAdapter = new UserListAdapter(following, UserActivity.this, twitter);
+
+        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.setAdapter(mUsersAdapter);
+
+        builder.setView(dialogView)
+                .setPositiveButton(R.string.ok, null)
+                .create().show();
     }
 
     @Override
@@ -262,6 +292,40 @@ public class UserActivity extends ActionBarActivity {
             } else {
                 Toast.makeText(UserActivity.this, "Can't find this user", Toast.LENGTH_SHORT).show();
                 finish();
+            }
+        }
+    }
+
+    private class LoadFollowersOrFollowing extends AsyncTask<String, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            try {
+                long cursor = -1;
+                if (params[0].equals(FOLLOWERS)) {
+                    for (User currentUser : twitter.getFollowersList(user.getScreenName(), cursor)) {
+                        followers.add(currentUser);
+                        Log.i("USER", currentUser.toString());
+                    }
+                } else {
+                    for (User currentUser : twitter.getFriendsList(user.getScreenName(), cursor)) {
+                        following.add(currentUser);
+                        Log.i("USER", currentUser.toString());
+                    }
+                }
+            } catch (TwitterException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            return true;
+        }
+
+        protected void onPostExecute(Boolean status) {
+            if (status) {
+                mUsersAdapter.notifyDataSetChanged();
+            } else {
+                Toast.makeText(UserActivity.this, "Can't load users", Toast.LENGTH_SHORT).show();
             }
         }
     }

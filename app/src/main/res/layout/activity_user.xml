@@ -103,6 +103,7 @@
             android:autoLink="web"
             android:gravity="center_horizontal"
             android:text="andreapivetta.com" />
+
     </LinearLayout>
 
     <View
@@ -158,6 +159,7 @@
             android:singleLine="false"
             android:text="1024\nTweets"
             android:textSize="16sp" />
+
     </LinearLayout>
 
     <View
@@ -168,16 +170,17 @@
         android:background="@android:color/darker_gray" />
 
     <ImageButton
-        android:background="@drawable/circle_button_white"
-        android:src="@drawable/ic_person_add_grey600_24dp"
         android:id="@+id/followImageButton"
-        android:elevation="6dp"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_below="@+id/profileBackgroundImageView"
-        android:layout_marginTop="-25dp"
-        android:layout_marginRight="10dp"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_below="@+id/profileBackgroundImageView"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="-25dp"
+        android:background="@drawable/circle_button_white"
+        android:contentDescription="@string/follow_user_contentDescription"
+        android:elevation="6dp"
+        android:src="@drawable/ic_person_add_grey600_24dp" />
 
 </RelativeLayout>

@@ -49,9 +49,6 @@ import twitter4j.Paging;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.auth.AccessToken;
-import twitter4j.conf.ConfigurationBuilder;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -59,9 +56,9 @@ public class MainActivity extends ActionBarActivity {
     private static final int REQUEST_GRAB_IMAGE = 3;
     private static final int REQUEST_TAKE_PHOTO = 1;
 
-    Twitter twitter;
-    Paging paging = new Paging(1, 200);
-    int currentPage = 1;
+    private Twitter twitter;
+    private Paging paging = new Paging(1, 200);
+    private int currentPage = 1;
 
     private Toolbar toolbar;
     private RecyclerView mRecyclerView;
@@ -317,7 +314,7 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public String getRealPathFromURI(Uri contentUri) {
+    String getRealPathFromURI(Uri contentUri) {
         String[] proj = { MediaStore.Images.Media.DATA };
 
         CursorLoader cursorLoader = new CursorLoader(
@@ -346,7 +343,7 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class GetTimeLine extends AsyncTask<Void, Void, Boolean> {
+    private class GetTimeLine extends AsyncTask<Void, Void, Boolean> {
 
         @Override
         protected Boolean doInBackground(Void... uris) {
@@ -370,7 +367,7 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public class RefreshTimeLine extends AsyncTask<Void, Void, Boolean> {
+    private class RefreshTimeLine extends AsyncTask<Void, Void, Boolean> {
 
         @Override
         protected Boolean doInBackground(Void... uris) {

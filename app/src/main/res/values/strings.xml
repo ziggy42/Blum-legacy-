@@ -20,6 +20,12 @@
     <string name="tweets">Tweets</string>
     <string name="following">Following</string>
     <string name="followers">Followers</string>
+    <string name="you_are_following">You\'re following this user</string>
+    <string name="stop_following">Stop following</string>
+    <string name="ok">OK</string>
+    <string name="you_and">You and</string>
+    <string name="are_following_ea">are following each other</string>
+    <string name="follow">Follow</string>
 
     <!-- Content Descriptors -->
     <string name="profile_background_contentDescriptor">User Background Image View</string>
@@ -33,11 +39,6 @@
     <string name="take_photo_contentDescriptor">Take and Add a Photo Image Button</string>
     <string name="uploaded_image_contentDescriptor">Uploaded ImageView</string>
     <string name="send_tweet_button_contentDescriptor">Send Tweet image Button</string>
-    <string name="you_are_following">You\'re following this user</string>
-    <string name="stop_following">Stop following</string>
-    <string name="ok">OK</string>
-    <string name="you_and">You and</string>
-    <string name="are_following_ea">are following each other</string>
-    <string name="follow">Follow</string>
+    <string name="follow_user_contentDescription">Follow User ImageButton</string>
 
 </resources>
