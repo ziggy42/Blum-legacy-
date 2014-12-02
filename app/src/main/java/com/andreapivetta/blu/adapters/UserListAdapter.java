@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -74,7 +73,6 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
 
         public ImageView userProfilePicImageView;
         public TextView userNameTextView, screenNameTextView, descriptionTextView;
-        public ImageButton followImageButton;
 
         public ViewHolder(View container) {
             super(container);
@@ -83,7 +81,6 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             this.userNameTextView = (TextView) container.findViewById(R.id.userNameTextView);
             this.descriptionTextView = (TextView) container.findViewById(R.id.descriptionTextView);
             this.screenNameTextView = (TextView) container.findViewById(R.id.screenNameTextView);
-            this.followImageButton = (ImageButton) container.findViewById(R.id.followImageButton);
         }
     }
 }

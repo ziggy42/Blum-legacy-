@@ -52,19 +52,6 @@
         android:text="Bla bla bla bla bla bla blablabla bla blabla bla. Bla bla bla bla bla bla blablabla bla blabla bla"
         android:textSize="16sp" />
 
-    <ImageButton
-        android:id="@+id/followImageButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="3dp"
-        android:background="@drawable/circle_button_white"
-        android:contentDescription="@string/follow_user_contentDescription"
-        android:src="@drawable/ic_person_add_grey600_24dp" />
-
     <View
         android:id="@+id/line2"
         android:layout_width="fill_parent"

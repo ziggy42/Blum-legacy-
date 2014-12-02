@@ -32,6 +32,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import twitter4j.PagableResponseList;
 import twitter4j.Relationship;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -52,6 +53,10 @@ public class UserActivity extends ActionBarActivity {
 
     private ArrayList<User> followers = new ArrayList<>(), following = new ArrayList<>();
     private UserListAdapter mUsersAdapter;
+    private LinearLayoutManager mLinearLayoutManager;
+    private boolean loading = true;
+    private int pastVisibleItems, visibleItemCount, totalItemCount;
+    private long cursor = -1;
 
     private ImageView profileBackgroundImageView, profilePictureImageView;
     private TextView userNickTextView, userNameTextView, descriptionTextView, userLocationTextView,
@@ -227,7 +232,7 @@ public class UserActivity extends ActionBarActivity {
         });
     }
 
-    void createUsersDialog(String mode) {
+    void createUsersDialog(final String mode) {
         AlertDialog.Builder builder = new AlertDialog.Builder(UserActivity.this);
         View dialogView = View.inflate(UserActivity.this, R.layout.dialog_users, null);
         RecyclerView mRecyclerView = (RecyclerView) dialogView.findViewById(R.id.usersRecyclerView);
@@ -235,10 +240,27 @@ public class UserActivity extends ActionBarActivity {
         if (mode.equals(FOLLOWERS)) mUsersAdapter = new UserListAdapter(followers, UserActivity.this, twitter);
         else mUsersAdapter = new UserListAdapter(following, UserActivity.this, twitter);
 
-        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
+        mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setAdapter(mUsersAdapter);
+        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                visibleItemCount = mLinearLayoutManager.getChildCount();
+                totalItemCount = mLinearLayoutManager.getItemCount();
+                pastVisibleItems = mLinearLayoutManager.findFirstVisibleItemPosition() + 1;
+
+                if (loading) {
+                    if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                        loading = false;
+                        new LoadFollowersOrFollowing().execute(mode, null, null);
+                    }
+                }
+            }
+        });
 
         builder.setView(dialogView)
                 .setPositiveButton(R.string.ok, null)
@@ -301,18 +323,17 @@ public class UserActivity extends ActionBarActivity {
         @Override
         protected Boolean doInBackground(String... params) {
             try {
-                long cursor = -1;
+                PagableResponseList<User> usersResponse;
+
                 if (params[0].equals(FOLLOWERS)) {
-                    for (User currentUser : twitter.getFollowersList(user.getScreenName(), cursor)) {
-                        followers.add(currentUser);
-                        Log.i("USER", currentUser.toString());
-                    }
+                    usersResponse = twitter.getFollowersList(user.getScreenName(), cursor);
+                    followers.addAll(usersResponse);
                 } else {
-                    for (User currentUser : twitter.getFriendsList(user.getScreenName(), cursor)) {
-                        following.add(currentUser);
-                        Log.i("USER", currentUser.toString());
-                    }
+                    usersResponse = twitter.getFriendsList(user.getScreenName(), cursor);
+                    following.addAll(usersResponse);
                 }
+
+                cursor = usersResponse.getNextCursor();
             } catch (TwitterException e) {
                 e.printStackTrace();
                 return false;
@@ -324,6 +345,7 @@ public class UserActivity extends ActionBarActivity {
         protected void onPostExecute(Boolean status) {
             if (status) {
                 mUsersAdapter.notifyDataSetChanged();
+                loading = true;
             } else {
                 Toast.makeText(UserActivity.this, "Can't load users", Toast.LENGTH_SHORT).show();
             }
