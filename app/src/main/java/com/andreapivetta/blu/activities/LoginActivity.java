@@ -1,4 +1,4 @@
-package com.andreapivetta.blu;
+package com.andreapivetta.blu.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.internet.ConnectionDetector;
 import com.andreapivetta.blu.twitter.TwitterOAuthActivity;
 

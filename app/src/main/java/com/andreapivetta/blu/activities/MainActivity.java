@@ -1,4 +1,4 @@
-package com.andreapivetta.blu;
+package com.andreapivetta.blu.activities;
 
 import android.animation.ValueAnimator;
 import android.app.AlertDialog;
@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.TweetListAdapter;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.twitter.UpdateTwitterStatus;

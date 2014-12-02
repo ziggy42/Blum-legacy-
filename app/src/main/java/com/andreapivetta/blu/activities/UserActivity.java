@@ -1,29 +1,31 @@
-package com.andreapivetta.blu;
+package com.andreapivetta.blu.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.UserListAdapter;
 import com.andreapivetta.blu.twitter.FollowTwitterUser;
 import com.andreapivetta.blu.twitter.TwitterUtils;
@@ -270,18 +272,22 @@ public class UserActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_user, menu);
+
+        if (user != null) {
+            ShareActionProvider mShareActionProvider = (ShareActionProvider)
+                    MenuItemCompat.getActionProvider(menu.findItem(R.id.action_share));
+            mShareActionProvider.setShareIntent(getDefaultIntent());
+        }
+
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    private Intent getDefaultIntent() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT,
+                getString(R.string.check_out) + " " + user.getName() + " " + getString(R.string.on_twitter) + " http://twitter.com/" + user.getScreenName());
+        intent.setType("text/plain");
+        return intent;
     }
 
     private class LoadUser extends AsyncTask<Long, Void, Boolean> {
@@ -311,6 +317,7 @@ public class UserActivity extends ActionBarActivity {
         protected void onPostExecute(Boolean status) {
             if (status) {
                 setUpUI();
+                invalidateOptionsMenu();
             } else {
                 Toast.makeText(UserActivity.this, "Can't find this user", Toast.LENGTH_SHORT).show();
                 finish();

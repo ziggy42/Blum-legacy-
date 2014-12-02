@@ -18,7 +18,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.andreapivetta.blu.MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,15 +26,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.andreapivetta.blu.LoginActivity" />
+        <activity android:name=".activities.LoginActivity" />
         <activity android:name="com.andreapivetta.blu.twitter.TwitterOAuthActivity" />
         <activity
-            android:name="com.andreapivetta.blu.UserActivity"
+            android:name=".activities.UserActivity"
             android:label="@string/title_activity_user"
-            android:parentActivityName="com.andreapivetta.blu.MainActivity" >
+            android:parentActivityName=".activities.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.andreapivetta.blu.MainActivity" />
+                android:value=".activities.MainActivity" />
         </activity>
     </application>
 

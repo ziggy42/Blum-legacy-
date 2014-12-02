@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.UserActivity;
+import com.andreapivetta.blu.activities.UserActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
