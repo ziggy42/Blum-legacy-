@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.andreapivetta.changemywall.FullWallpaperActivity">
+    tools:context="com.andreapivetta.blu.activities.UserActivity">
 
     <ImageView
         android:id="@+id/profileBackgroundImageView"
@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:contentDescription="@string/profile_background_contentDescriptor"
-        android:maxHeight="350dp"
+        android:maxHeight="200dp"
         android:src="@drawable/placeholder_banner" />
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
@@ -64,6 +64,20 @@
         android:fontFamily="sans-serif-thin"
         android:text="\@Pivix00"
         android:textSize="15sp" />
+
+    <ImageButton
+        android:id="@+id/followImageButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/profileBackgroundImageView"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="-25dp"
+        android:background="@drawable/circle_button_white"
+        android:contentDescription="@string/follow_user_contentDescription"
+        android:elevation="6dp"
+        android:src="@drawable/ic_person_add_grey600_24dp" />
 
     <TextView
         android:id="@+id/descriptionTextView"
@@ -169,18 +183,12 @@
         android:layout_below="@+id/amountLinearLayout"
         android:background="@android:color/darker_gray" />
 
-    <ImageButton
-        android:id="@+id/followImageButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/profileBackgroundImageView"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="-25dp"
-        android:background="@drawable/circle_button_white"
-        android:contentDescription="@string/follow_user_contentDescription"
-        android:elevation="6dp"
-        android:src="@drawable/ic_person_add_grey600_24dp" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/userTweetsRecyclerView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/line2"
+        android:background="@color/background"
+        android:scrollbars="vertical" />
 
 </RelativeLayout>

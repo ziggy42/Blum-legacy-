@@ -9,7 +9,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.adapters.TweetListAdapter;
 import com.andreapivetta.blu.adapters.UserListAdapter;
 import com.andreapivetta.blu.twitter.FollowTwitterUser;
 import com.andreapivetta.blu.twitter.TwitterUtils;
@@ -33,9 +36,13 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 
 import twitter4j.PagableResponseList;
+import twitter4j.Paging;
 import twitter4j.Relationship;
+import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.User;
@@ -55,15 +62,24 @@ public class UserActivity extends ActionBarActivity {
 
     private ArrayList<User> followers = new ArrayList<>(), following = new ArrayList<>();
     private UserListAdapter mUsersAdapter;
-    private LinearLayoutManager mLinearLayoutManager;
-    private boolean loading = true;
-    private int pastVisibleItems, visibleItemCount, totalItemCount;
+    private LinearLayoutManager mDialogLinearLayoutManager;
+    private boolean dialogLoading = true;
+    private int dialogPastVisibleItems, dialogVisibleItemCount, dialogTotalItemCount;
     private long cursor = -1;
 
     private ImageView profileBackgroundImageView, profilePictureImageView;
     private TextView userNickTextView, userNameTextView, descriptionTextView, userLocationTextView,
             userWebsiteTextView, tweetAmountTextView, followingAmountTextView, followersAmountTextView;
     private ImageButton followImageButton;
+    private RecyclerView mRecyclerView;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private TweetListAdapter mTweetsAdapter;
+    private ArrayList<Status> userTweetList = new ArrayList<>();
+    private int pastVisibleItems, visibleItemCount, totalItemCount;
+    private boolean loading = true;
+    private LinearLayoutManager mLinearLayoutManager;
+    private Paging paging = new Paging(1, 200);
+    private int currentPage = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +99,6 @@ public class UserActivity extends ActionBarActivity {
         }
 
         twitter = TwitterUtils.getTwitter(UserActivity.this);
-
-        new LoadUser().execute(getIntent().getLongExtra("ID", 0));
-
         profileBackgroundImageView = (ImageView) findViewById(R.id.profileBackgroundImageView);
         profilePictureImageView = (ImageView) findViewById(R.id.profilePictureImageView);
         userNameTextView = (TextView) findViewById(R.id.userNameTextView);
@@ -97,6 +110,32 @@ public class UserActivity extends ActionBarActivity {
         followingAmountTextView = (TextView) findViewById(R.id.followingAmountTextView);
         followersAmountTextView = (TextView) findViewById(R.id.followersAmountTextView);
         followImageButton = (ImageButton) findViewById(R.id.followImageButton);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.userTweetsRecyclerView);
+        mTweetsAdapter = new TweetListAdapter(userTweetList, this, twitter);
+        mLinearLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.setAdapter(mTweetsAdapter);
+        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                visibleItemCount = mLinearLayoutManager.getChildCount();
+                totalItemCount = mLinearLayoutManager.getItemCount();
+                pastVisibleItems = mLinearLayoutManager.findFirstVisibleItemPosition() + 1;
+
+                if (loading) {
+                    if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                        loading = false;
+                        new GetTimeLine().execute(null, null, null);
+                    }
+                }
+            }
+        });
+
+        new LoadUser().execute(getIntent().getLongExtra("ID", 0));
     }
 
     void setUpUI() {
@@ -242,22 +281,22 @@ public class UserActivity extends ActionBarActivity {
         if (mode.equals(FOLLOWERS)) mUsersAdapter = new UserListAdapter(followers, UserActivity.this, twitter);
         else mUsersAdapter = new UserListAdapter(following, UserActivity.this, twitter);
 
-        mLinearLayoutManager = new LinearLayoutManager(this);
+        mDialogLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.setLayoutManager(mDialogLinearLayoutManager);
         mRecyclerView.setAdapter(mUsersAdapter);
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                visibleItemCount = mLinearLayoutManager.getChildCount();
-                totalItemCount = mLinearLayoutManager.getItemCount();
-                pastVisibleItems = mLinearLayoutManager.findFirstVisibleItemPosition() + 1;
+                dialogVisibleItemCount = mDialogLinearLayoutManager.getChildCount();
+                dialogTotalItemCount = mDialogLinearLayoutManager.getItemCount();
+                dialogPastVisibleItems = mDialogLinearLayoutManager.findFirstVisibleItemPosition() + 1;
 
-                if (loading) {
-                    if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
-                        loading = false;
+                if (dialogLoading) {
+                    if ((dialogVisibleItemCount + dialogPastVisibleItems) >= dialogTotalItemCount) {
+                        dialogLoading = false;
                         new LoadFollowersOrFollowing().execute(mode, null, null);
                     }
                 }
@@ -318,6 +357,7 @@ public class UserActivity extends ActionBarActivity {
             if (status) {
                 setUpUI();
                 invalidateOptionsMenu();
+                new GetTimeLine().execute(null, null, null);
             } else {
                 Toast.makeText(UserActivity.this, "Can't find this user", Toast.LENGTH_SHORT).show();
                 finish();
@@ -352,10 +392,34 @@ public class UserActivity extends ActionBarActivity {
         protected void onPostExecute(Boolean status) {
             if (status) {
                 mUsersAdapter.notifyDataSetChanged();
-                loading = true;
+                dialogLoading = true;
             } else {
                 Toast.makeText(UserActivity.this, "Can't load users", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    private class GetTimeLine extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Void... uris) {
+            try {
+                paging.setPage(currentPage);
+                for (twitter4j.Status status : twitter.getUserTimeline(user.getScreenName(), paging))
+                    userTweetList.add(status);
+            } catch (TwitterException e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
+
+        protected void onPostExecute(Boolean result) {
+            if (result) {
+                mTweetsAdapter.notifyDataSetChanged();
+                currentPage += 1;
+            }
+
+            loading = true;
         }
     }
 }
