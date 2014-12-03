@@ -27,6 +27,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -56,6 +57,7 @@ public class MainActivity extends ActionBarActivity {
 
     private static final int REQUEST_GRAB_IMAGE = 3;
     private static final int REQUEST_TAKE_PHOTO = 1;
+    private static final int REQUEST_LOGIN = 0;
 
     private Twitter twitter;
     private Paging paging = new Paging(1, 200);
@@ -65,6 +67,7 @@ public class MainActivity extends ActionBarActivity {
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ImageButton newTweetImageButton;
+    private ProgressBar loadingProgressBar;
     private SharedPreferences mSharedPreferences;
     private TweetListAdapter mTweetsAdapter;
     private ArrayList<Status> tweetList = new ArrayList<>();
@@ -89,12 +92,12 @@ public class MainActivity extends ActionBarActivity {
 
         mSharedPreferences = getSharedPreferences("MyPref", 0);
 
-        if (!isTwitterLoggedInAlready())
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-
-        twitter = TwitterUtils.getTwitter(MainActivity.this);
-
-        new GetTimeLine().execute(null, null, null);
+        if (!isTwitterLoggedInAlready()) {
+            startActivityForResult(new Intent(MainActivity.this, LoginActivity.class), REQUEST_LOGIN);
+        } else {
+            twitter = TwitterUtils.getTwitter(MainActivity.this);
+            new GetTimeLine().execute(null, null, null);
+        }
 
         mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
         mTweetsAdapter = new TweetListAdapter(tweetList, this, twitter);
@@ -143,6 +146,7 @@ public class MainActivity extends ActionBarActivity {
         });
 
         newTweetImageButton = (ImageButton) findViewById(R.id.newTweetImageButton);
+        loadingProgressBar = (ProgressBar) findViewById(R.id.loadingProgressBar);
         setOnClickListener();
     }
 
@@ -291,6 +295,10 @@ public class MainActivity extends ActionBarActivity {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
 
         switch (requestCode) {
+            case REQUEST_LOGIN:
+                twitter = TwitterUtils.getTwitter(MainActivity.this);
+                new GetTimeLine().execute(null, null, null);
+                break;
             case REQUEST_GRAB_IMAGE:
                 if (resultCode == RESULT_OK) {
                     try {
@@ -312,6 +320,7 @@ public class MainActivity extends ActionBarActivity {
                             .load(Uri.parse(mCurrentPhotoPath))
                             .into(uploadedImageView);
                 }
+                break;
         }
     }
 
@@ -381,6 +390,7 @@ public class MainActivity extends ActionBarActivity {
             if (result) {
                 mTweetsAdapter.notifyDataSetChanged();
                 currentPage += 1;
+                loadingProgressBar.setVisibility(View.GONE);
             }
 
             loading = true;
