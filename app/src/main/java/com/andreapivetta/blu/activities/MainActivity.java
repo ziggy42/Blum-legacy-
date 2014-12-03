@@ -290,9 +290,9 @@ public class MainActivity extends ActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
 
-        switch(requestCode) {
+        switch (requestCode) {
             case REQUEST_GRAB_IMAGE:
-                if(resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     try {
                         Uri selectedImage = imageReturnedIntent.getData();
                         imageFile = new File(getRealPathFromURI(selectedImage));
@@ -316,7 +316,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     String getRealPathFromURI(Uri contentUri) {
-        String[] proj = { MediaStore.Images.Media.DATA };
+        String[] proj = {MediaStore.Images.Media.DATA};
 
         CursorLoader cursorLoader = new CursorLoader(
                 this, contentUri, proj, null, null, null);
@@ -338,10 +338,29 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent.hasExtra("exit")) {
+            setIntent(intent);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (getIntent() != null) {
+            if (("exit").equalsIgnoreCase(getIntent().getStringExtra(("exit")))) {
+                onBackPressed();
+            }
+        }
     }
 
     private class GetTimeLine extends AsyncTask<Void, Void, Boolean> {

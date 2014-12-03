@@ -43,5 +43,11 @@
     <string name="check_out">Check out</string>
     <string name="on_twitter">on Twitter</string>
     <string name="share">Share</string>
+    <string name="pref_account_title">Account</string>
+    <string name="logout_pref_title">Logout</string>
+    <string name="logout_pref_summary">Logout and Exit</string>
+    <string name="logout_title_dialog">Logout?</string>
+    <string name="yes">Yes</string>
+    <string name="title_activity_settings">Settings</string>
 
 </resources>
