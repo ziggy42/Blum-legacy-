@@ -26,18 +26,16 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
                 if( connectionDetector.isConnectingToInternet() )
                     startActivityForResult(new Intent(LoginActivity.this, TwitterOAuthActivity.class), 0);
-                else {
-                    Toast.makeText(getApplicationContext(), "internet connection required",
+                else
+                    Toast.makeText(getApplicationContext(), getString(R.string.internet_connection_required),
                             Toast.LENGTH_LONG).show();
-                }
             }
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK)
             finish();
-        }
     }
 }

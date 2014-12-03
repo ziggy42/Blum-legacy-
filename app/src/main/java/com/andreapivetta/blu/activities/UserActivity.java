@@ -9,9 +9,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,8 +34,6 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
 
 import twitter4j.PagableResponseList;
 import twitter4j.Paging;
@@ -71,8 +67,6 @@ public class UserActivity extends ActionBarActivity {
     private TextView userNickTextView, userNameTextView, descriptionTextView, userLocationTextView,
             userWebsiteTextView, tweetAmountTextView, followingAmountTextView, followersAmountTextView;
     private ImageButton followImageButton;
-    private RecyclerView mRecyclerView;
-    private SwipeRefreshLayout swipeRefreshLayout;
     private TweetListAdapter mTweetsAdapter;
     private ArrayList<Status> userTweetList = new ArrayList<>();
     private int pastVisibleItems, visibleItemCount, totalItemCount;
@@ -111,7 +105,7 @@ public class UserActivity extends ActionBarActivity {
         followersAmountTextView = (TextView) findViewById(R.id.followersAmountTextView);
         followImageButton = (ImageButton) findViewById(R.id.followImageButton);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.userTweetsRecyclerView);
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.userTweetsRecyclerView);
         mTweetsAdapter = new TweetListAdapter(userTweetList, this, twitter);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
@@ -145,11 +139,11 @@ public class UserActivity extends ActionBarActivity {
                 .into(profileBackgroundImageView, new Callback() {
                     @Override
                     public void onSuccess() {
-                        Bitmap onePixelBitmap = Bitmap.createScaledBitmap(((BitmapDrawable) profileBackgroundImageView.getDrawable()).getBitmap(), 1, 1, true);
-                        int pixel = onePixelBitmap.getPixel(0, 0);
-
-                        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            Bitmap onePixelBitmap = Bitmap.createScaledBitmap(((BitmapDrawable) profileBackgroundImageView.getDrawable()).getBitmap(), 1, 1, true);
+                            int pixel = onePixelBitmap.getPixel(0, 0);
                             getWindow().setStatusBarColor(Color.rgb(Color.red(pixel), Color.green(pixel), Color.blue(pixel)));
+                        }
                     }
 
                     @Override
@@ -159,7 +153,7 @@ public class UserActivity extends ActionBarActivity {
                 });
 
         Picasso.with(UserActivity.this)
-                .load(user.getOriginalProfileImageURL())
+                .load(user.getOriginalProfileImageURL()).placeholder(R.drawable.placeholder)
                 .into(profilePictureImageView);
 
         userNameTextView.setText(user.getName());

@@ -60,14 +60,12 @@ public class TweetListAdapter extends RecyclerView.Adapter<TweetListAdapter.View
             currentStatus = mDataSet.get(position).getRetweetedStatus();
             holder.retweetTextView.setVisibility(View.VISIBLE);
             holder.retweetTextView.setText(context.getString(R.string.retweeted_by) + " @" + currentStatus.getUser().getScreenName());
-
-            mediaEntityArray = currentStatus.getMediaEntities();
-
         } else {
             currentStatus = mDataSet.get(position);
             holder.retweetTextView.setVisibility(View.GONE);
-            mediaEntityArray = currentStatus.getMediaEntities();
         }
+
+        mediaEntityArray = currentStatus.getMediaEntities();
 
         holder.userNameTextView.setText(currentStatus.getUser().getName());
         holder.statusTextView.setText(currentStatus.getText());
@@ -99,8 +97,8 @@ public class TweetListAdapter extends RecyclerView.Adapter<TweetListAdapter.View
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, UserActivity.class);
-                i.putExtra("ID", currentStatus.getUser().getId());
-                i.putExtra("Twitter", twitter);
+                i.putExtra("ID", currentStatus.getUser().getId())
+                        .putExtra("Twitter", twitter);
                 context.startActivity(i);
             }
         });
@@ -150,12 +148,7 @@ public class TweetListAdapter extends RecyclerView.Adapter<TweetListAdapter.View
                                 new RetweetTweet(context, twitter).execute(currentStatus.getId());
                             }
                         })
-                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        }).create().show();
+                        .setNegativeButton(R.string.cancel, null).create().show();
             }
         });
 

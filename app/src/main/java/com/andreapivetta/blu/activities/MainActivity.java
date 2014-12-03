@@ -197,7 +197,7 @@ public class MainActivity extends ActionBarActivity {
                 final TextView charsLeftTextView = (TextView) dialogView.findViewById(R.id.charsLeftTextView);
                 uploadedImageView = (ImageView) dialogView.findViewById(R.id.uploadedImageView);
                 final ImageButton takePhotoImageButton = (ImageButton) dialogView.findViewById(R.id.takePhotoImageButton);
-                final ImageButton grabimageImageButton = (ImageButton) dialogView.findViewById(R.id.grabimageImageButton);
+                final ImageButton grabImageImageButton = (ImageButton) dialogView.findViewById(R.id.grabimageImageButton);
 
                 newTweetEditText.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -242,7 +242,7 @@ public class MainActivity extends ActionBarActivity {
                     }
                 });
 
-                grabimageImageButton.setOnClickListener(new View.OnClickListener() {
+                grabImageImageButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
@@ -382,6 +382,7 @@ public class MainActivity extends ActionBarActivity {
                     tweetList.add(status);
             } catch (TwitterException e) {
                 e.printStackTrace();
+                return false;
             }
             return true;
         }
@@ -412,7 +413,9 @@ public class MainActivity extends ActionBarActivity {
 
             } catch (TwitterException e) {
                 e.printStackTrace();
+                return false;
             }
+
             return true;
         }
 
@@ -423,5 +426,6 @@ public class MainActivity extends ActionBarActivity {
 
             swipeRefreshLayout.setRefreshing(false);
         }
+
     }
 }

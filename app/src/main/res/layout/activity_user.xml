@@ -49,6 +49,7 @@
         android:layout_alignBottom="@+id/profilePictureImageView"
         android:layout_toEndOf="@+id/profilePictureImageView"
         android:layout_toRightOf="@+id/profilePictureImageView"
+        android:singleLine="true"
         android:text="Andrea Pivetta"
         android:textColor="@color/grey"
         android:textIsSelectable="false"
@@ -59,8 +60,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/userNameTextView"
-        android:layout_toEndOf="@+id/profilePictureImageView"
+        android:layout_toLeftOf="@+id/followImageButton"
         android:layout_toRightOf="@+id/profilePictureImageView"
+        android:layout_toStartOf="@+id/followImageButton"
         android:fontFamily="sans-serif-thin"
         android:text="\@Pivix00"
         android:textSize="15sp" />

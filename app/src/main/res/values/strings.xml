@@ -49,5 +49,6 @@
     <string name="logout_title_dialog">Logout?</string>
     <string name="yes">Yes</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="internet_connection_required">This operation requires an internet connection</string>
 
 </resources>
