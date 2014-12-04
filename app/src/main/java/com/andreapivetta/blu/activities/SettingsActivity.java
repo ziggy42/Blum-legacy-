@@ -79,7 +79,7 @@ public class SettingsActivity extends ActionBarActivity {
 
                                             Toast.makeText(getActivity(), "Log Out Done.", Toast.LENGTH_SHORT).show();
 
-                                            Intent intent = new Intent(getActivity(), MainActivity.class);
+                                            Intent intent = new Intent(getActivity(), HomeActivity.class);
                                             intent.putExtra("exit", "exit");
                                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP| Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                             startActivity(intent);

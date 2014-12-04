@@ -1,14 +1,14 @@
 package com.andreapivetta.blu.activities;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.graphics.Palette;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -72,7 +72,7 @@ public class UserActivity extends ActionBarActivity {
     private int pastVisibleItems, visibleItemCount, totalItemCount;
     private boolean loading = true;
     private LinearLayoutManager mLinearLayoutManager;
-    private Paging paging = new Paging(1, 200);
+    private Paging paging = new Paging(1, 100);
     private int currentPage = 1;
 
     @Override
@@ -80,7 +80,7 @@ public class UserActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
@@ -138,11 +138,21 @@ public class UserActivity extends ActionBarActivity {
                 .placeholder(getResources().getDrawable(R.drawable.placeholder_banner))
                 .into(profileBackgroundImageView, new Callback() {
                     @Override
+                    @TargetApi(21)
                     public void onSuccess() {
                         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            Bitmap onePixelBitmap = Bitmap.createScaledBitmap(((BitmapDrawable) profileBackgroundImageView.getDrawable()).getBitmap(), 1, 1, true);
-                            int pixel = onePixelBitmap.getPixel(0, 0);
-                            getWindow().setStatusBarColor(Color.rgb(Color.red(pixel), Color.green(pixel), Color.blue(pixel)));
+                            //Bitmap onePixelBitmap = Bitmap.createScaledBitmap(((BitmapDrawable) profileBackgroundImageView.getDrawable()).getBitmap(), 1, 1, true);
+                            //int pixel = onePixelBitmap.getPixel(0, 0);
+                            //getWindow().setStatusBarColor(Color.rgb(Color.red(pixel), Color.green(pixel), Color.blue(pixel)));
+
+                            Palette.generateAsync(((BitmapDrawable) profileBackgroundImageView.getDrawable()).getBitmap(),
+                                    new Palette.PaletteAsyncListener() {
+                                        public void onGenerated(Palette palette) {
+                                            int defaultColor = getResources().getColor(R.color.colorAccent);
+                                            getWindow().setStatusBarColor(palette.getLightVibrantColor(defaultColor));
+                                        }
+                                    });
+
                         }
                     }
 
@@ -172,18 +182,21 @@ public class UserActivity extends ActionBarActivity {
         else
             userWebsiteTextView.setVisibility(View.GONE);
 
-        switch (STATUS) {
-            case I_FOLLOW_HIM:
-                followImageButton.setBackground(getResources().getDrawable(R.drawable.circle_button_blue));
-                followImageButton.setImageResource(R.drawable.ic_person_add_white_24dp);
-                break;
-            case WE_FOLLOW_EACH_OTHER:
-                followImageButton.setBackground(getResources().getDrawable(R.drawable.circle_button_green));
-                followImageButton.setImageResource(R.drawable.ic_person_add_white_24dp);
-                break;
-            default:
-                break;
+        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH) { // TODO REMOVE AND CHANGE API MIN
+            switch (STATUS) {
+                case I_FOLLOW_HIM:
+                    followImageButton.setBackground(getResources().getDrawable(R.drawable.circle_button_blue));
+                    followImageButton.setImageResource(R.drawable.ic_person_add_white_24dp);
+                    break;
+                case WE_FOLLOW_EACH_OTHER:
+                    followImageButton.setBackground(getResources().getDrawable(R.drawable.circle_button_green));
+                    followImageButton.setImageResource(R.drawable.ic_person_add_white_24dp);
+                    break;
+                default:
+                    break;
+            }
         }
+
 
         followImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -246,7 +259,10 @@ public class UserActivity extends ActionBarActivity {
         tweetAmountTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i = new Intent(UserActivity.this, UserTimeLineActivity.class);
+                i.putExtra("ID", user.getId())
+                        .putExtra("Twitter", twitter);
+                startActivity(i);
             }
         });
 

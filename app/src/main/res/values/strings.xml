@@ -40,6 +40,7 @@
     <string name="uploaded_image_contentDescriptor">Uploaded ImageView</string>
     <string name="send_tweet_button_contentDescriptor">Send Tweet image Button</string>
     <string name="follow_user_contentDescription">Follow User ImageButton</string>
+
     <string name="check_out">Check out</string>
     <string name="on_twitter">on Twitter</string>
     <string name="share">Share</string>

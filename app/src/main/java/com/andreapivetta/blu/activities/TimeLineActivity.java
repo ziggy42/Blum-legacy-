@@ -4,7 +4,6 @@ import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -33,7 +32,6 @@ import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.TweetListAdapter;
-import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.twitter.UpdateTwitterStatus;
 import com.squareup.picasso.Picasso;
 
@@ -52,33 +50,30 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
+public abstract class TimeLineActivity extends ActionBarActivity {
 
-public class MainActivity extends ActionBarActivity {
+    protected static final int REQUEST_GRAB_IMAGE = 3;
+    protected static final int REQUEST_TAKE_PHOTO = 1;
 
-    private static final int REQUEST_GRAB_IMAGE = 3;
-    private static final int REQUEST_TAKE_PHOTO = 1;
-    private static final int REQUEST_LOGIN = 0;
+    protected Twitter twitter;
+    protected Paging paging = new Paging(1, 200);
+    protected int currentPage = 1;
 
-    private Twitter twitter;
-    private Paging paging = new Paging(1, 200);
-    private int currentPage = 1;
+    protected Toolbar toolbar;
+    protected RecyclerView mRecyclerView;
+    protected SwipeRefreshLayout swipeRefreshLayout;
+    protected ImageButton newTweetImageButton;
+    protected ProgressBar loadingProgressBar;
+    protected TweetListAdapter mTweetsAdapter;
+    protected ArrayList<Status> tweetList = new ArrayList<>();
+    protected LinearLayoutManager mLinearLayoutManager;
+    protected ImageView uploadedImageView;
 
-    private Toolbar toolbar;
-    private RecyclerView mRecyclerView;
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private ImageButton newTweetImageButton;
-    private ProgressBar loadingProgressBar;
-    private SharedPreferences mSharedPreferences;
-    private TweetListAdapter mTweetsAdapter;
-    private ArrayList<Status> tweetList = new ArrayList<>();
-    private LinearLayoutManager mLinearLayoutManager;
-    private ImageView uploadedImageView;
+    protected boolean isUp = true, loading = true;
+    protected int pastVisibleItems, visibleItemCount, totalItemCount;
 
-    private boolean isUp = true, loading = true;
-    private int pastVisibleItems, visibleItemCount, totalItemCount;
-
-    private String mCurrentPhotoPath;
-    private File imageFile;
+    protected String mCurrentPhotoPath;
+    protected File imageFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,15 +83,6 @@ public class MainActivity extends ActionBarActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-        }
-
-        mSharedPreferences = getSharedPreferences("MyPref", 0);
-
-        if (!isTwitterLoggedInAlready()) {
-            startActivityForResult(new Intent(MainActivity.this, LoginActivity.class), REQUEST_LOGIN);
-        } else {
-            twitter = TwitterUtils.getTwitter(MainActivity.this);
-            new GetTimeLine().execute(null, null, null);
         }
 
         mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
@@ -150,48 +136,12 @@ public class MainActivity extends ActionBarActivity {
         setOnClickListener();
     }
 
-    void newTweetDown() {
-        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newTweetImageButton.getLayoutParams();
-        ValueAnimator downAnimator = ValueAnimator.ofInt(params.bottomMargin, -120);
-        downAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                params.bottomMargin = (Integer) valueAnimator.getAnimatedValue();
-                newTweetImageButton.requestLayout();
-            }
-        });
-        downAnimator.setDuration(200);
-        downAnimator.start();
-
-        isUp = false;
-    }
-
-    void newTweetUp() {
-        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newTweetImageButton.getLayoutParams();
-        ValueAnimator upAnimator = ValueAnimator.ofInt(params.bottomMargin, 20);
-        upAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                params.bottomMargin = (Integer) valueAnimator.getAnimatedValue();
-                newTweetImageButton.requestLayout();
-            }
-        });
-        upAnimator.setDuration(200);
-        upAnimator.start();
-
-        isUp = true;
-    }
-
-    private boolean isTwitterLoggedInAlready() {
-        return mSharedPreferences.getBoolean(TwitterUtils.PREF_KEY_TWITTER_LOGIN, false);
-    }
-
-    private void setOnClickListener() {
+    void setOnClickListener() {
         this.newTweetImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                View dialogView = View.inflate(MainActivity.this, R.layout.dialog_new_tweet, null);
+                AlertDialog.Builder builder = new AlertDialog.Builder(TimeLineActivity.this);
+                View dialogView = View.inflate(TimeLineActivity.this, R.layout.dialog_new_tweet, null);
 
                 final EditText newTweetEditText = (EditText) dialogView.findViewById(R.id.newTweetEditText);
                 final TextView charsLeftTextView = (TextView) dialogView.findViewById(R.id.charsLeftTextView);
@@ -220,6 +170,8 @@ public class MainActivity extends ActionBarActivity {
 
                     }
                 });
+
+                newTweetEditText.setText(getInitialText());
 
                 takePhotoImageButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -258,9 +210,9 @@ public class MainActivity extends ActionBarActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if (uploadedImageView.getVisibility() == View.VISIBLE)
-                                    new UpdateTwitterStatus(MainActivity.this, twitter, imageFile).execute(newTweetEditText.getText().toString());
+                                    new UpdateTwitterStatus(TimeLineActivity.this, twitter, imageFile).execute(newTweetEditText.getText().toString());
                                 else
-                                    new UpdateTwitterStatus(MainActivity.this, twitter).execute(newTweetEditText.getText().toString());
+                                    new UpdateTwitterStatus(TimeLineActivity.this, twitter).execute(newTweetEditText.getText().toString());
                             }
                         })
                         .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -280,7 +232,59 @@ public class MainActivity extends ActionBarActivity {
         });
     }
 
-    private File createImageFile() throws IOException {
+    abstract String getInitialText();
+
+    abstract List<Status> getCurrentTimeLine() throws TwitterException;
+
+    abstract List<Status> getRefreshedTimeLine(Paging paging) throws TwitterException;
+
+    void newTweetDown() {
+        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newTweetImageButton.getLayoutParams();
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+
+        ValueAnimator downAnimator = ValueAnimator.ofInt(params.bottomMargin, -120);
+        downAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                params.bottomMargin = (Integer) valueAnimator.getAnimatedValue();
+                newTweetImageButton.requestLayout();
+            }
+        });
+        downAnimator.setDuration(200);
+        downAnimator.start();
+
+        isUp = false;
+    }
+
+    void newTweetUp() {
+        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newTweetImageButton.getLayoutParams();
+        ValueAnimator upAnimator = ValueAnimator.ofInt(params.bottomMargin, 20);
+        upAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                params.bottomMargin = (Integer) valueAnimator.getAnimatedValue();
+                newTweetImageButton.requestLayout();
+            }
+        });
+        upAnimator.setDuration(200);
+        upAnimator.start();
+
+        isUp = true;
+    }
+
+    String getRealPathFromURI(Uri contentUri) {
+        String[] proj = {MediaStore.Images.Media.DATA};
+
+        CursorLoader cursorLoader = new CursorLoader(
+                this, contentUri, proj, null, null, null);
+        Cursor cursor = cursorLoader.loadInBackground();
+
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
+    File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
@@ -295,10 +299,6 @@ public class MainActivity extends ActionBarActivity {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
 
         switch (requestCode) {
-            case REQUEST_LOGIN:
-                twitter = TwitterUtils.getTwitter(MainActivity.this);
-                new GetTimeLine().execute(null, null, null);
-                break;
             case REQUEST_GRAB_IMAGE:
                 if (resultCode == RESULT_OK) {
                     try {
@@ -324,18 +324,6 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    String getRealPathFromURI(Uri contentUri) {
-        String[] proj = {MediaStore.Images.Media.DATA};
-
-        CursorLoader cursorLoader = new CursorLoader(
-                this, contentUri, proj, null, null, null);
-        Cursor cursor = cursorLoader.loadInBackground();
-
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -347,38 +335,19 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+            startActivity(new Intent(TimeLineActivity.this, SettingsActivity.class));
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        if (intent.hasExtra("exit")) {
-            setIntent(intent);
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (getIntent() != null) {
-            if (("exit").equalsIgnoreCase(getIntent().getStringExtra(("exit")))) {
-                onBackPressed();
-            }
-        }
-    }
-
-    private class GetTimeLine extends AsyncTask<Void, Void, Boolean> {
-
+    protected class GetTimeLine extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Void... uris) {
             try {
                 paging.setPage(currentPage);
-                for (twitter4j.Status status : twitter.getHomeTimeline(paging))
+                for (twitter4j.Status status : getCurrentTimeLine())
                     tweetList.add(status);
             } catch (TwitterException e) {
                 e.printStackTrace();
@@ -398,14 +367,13 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    private class RefreshTimeLine extends AsyncTask<Void, Void, Boolean> {
-
+    protected class RefreshTimeLine extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Void... uris) {
             try {
                 Paging currentPaging = new Paging();
                 currentPaging.setSinceId(tweetList.get(0).getId());
-                List<twitter4j.Status> newTweets = twitter.getHomeTimeline(currentPaging);
+                List<twitter4j.Status> newTweets = getRefreshedTimeLine(currentPaging);
                 ListIterator<twitter4j.Status> it = newTweets.listIterator(newTweets.size());
 
                 while (it.hasPrevious())
@@ -426,6 +394,5 @@ public class MainActivity extends ActionBarActivity {
 
             swipeRefreshLayout.setRefreshing(false);
         }
-
     }
 }
