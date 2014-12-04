@@ -1,11 +1,13 @@
 package com.andreapivetta.blu.activities;
 
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,6 +22,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -238,11 +243,14 @@ public abstract class TimeLineActivity extends ActionBarActivity {
 
     abstract List<Status> getRefreshedTimeLine(Paging paging) throws TwitterException;
 
+    int dpToPx(int dp) {
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+    }
+
     void newTweetDown() {
         final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newTweetImageButton.getLayoutParams();
-        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-
-        ValueAnimator downAnimator = ValueAnimator.ofInt(params.bottomMargin, -120);
+        ValueAnimator downAnimator = ValueAnimator.ofInt(params.bottomMargin, - newTweetImageButton.getHeight());
         downAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -258,7 +266,7 @@ public abstract class TimeLineActivity extends ActionBarActivity {
 
     void newTweetUp() {
         final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newTweetImageButton.getLayoutParams();
-        ValueAnimator upAnimator = ValueAnimator.ofInt(params.bottomMargin, 20);
+        ValueAnimator upAnimator = ValueAnimator.ofInt(params.bottomMargin, dpToPx(20));
         upAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
