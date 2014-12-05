@@ -182,7 +182,7 @@ public class UserActivity extends ActionBarActivity {
         else
             userWebsiteTextView.setVisibility(View.GONE);
 
-        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH) { // TODO REMOVE AND CHANGE API MIN
+        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) { // TODO REMOVE AND CHANGE API MIN
             switch (STATUS) {
                 case I_FOLLOW_HIM:
                     followImageButton.setBackground(getResources().getDrawable(R.drawable.circle_button_blue));

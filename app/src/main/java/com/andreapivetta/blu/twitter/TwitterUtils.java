@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
+import twitter4j.TwitterStream;
+import twitter4j.TwitterStreamFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.conf.ConfigurationBuilder;
 
@@ -29,6 +31,19 @@ public final class TwitterUtils {
         AccessToken accessToken = new AccessToken(mSharedPreferences.getString(TwitterUtils.PREF_KEY_OAUTH_TOKEN, ""),
                 mSharedPreferences.getString(TwitterUtils.PREF_KEY_OAUTH_SECRET, ""));
         return new TwitterFactory(builder.build()).getInstance(accessToken);
+    }
+
+
+    public static TwitterStream getTwitterStream(Context context) {
+        SharedPreferences mSharedPreferences = context.getSharedPreferences("MyPref", 0);
+
+        ConfigurationBuilder builder = new ConfigurationBuilder();
+        builder.setOAuthConsumerKey(TwitterUtils.TWITTER_CONSUMER_KEY)
+                .setOAuthConsumerSecret(TwitterUtils.TWITTER_CONSUMER_SECRET);
+
+        AccessToken accessToken = new AccessToken(mSharedPreferences.getString(TwitterUtils.PREF_KEY_OAUTH_TOKEN, ""),
+                mSharedPreferences.getString(TwitterUtils.PREF_KEY_OAUTH_SECRET, ""));
+        return new TwitterStreamFactory(builder.build()).getInstance(accessToken);
     }
 
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.andreapivetta.blu.services.NotificationService;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 
 import java.util.List;
@@ -18,10 +19,9 @@ public class HomeActivity extends TimeLineActivity {
     private static final int REQUEST_LOGIN = 0;
     private SharedPreferences mSharedPreferences;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         mSharedPreferences = getSharedPreferences("MyPref", 0);
 
         if (!isTwitterLoggedInAlready()) {
@@ -32,6 +32,8 @@ public class HomeActivity extends TimeLineActivity {
         }
 
         super.onCreate(savedInstanceState);
+
+        startService(new Intent(HomeActivity.this, NotificationService.class));
     }
 
     @Override
