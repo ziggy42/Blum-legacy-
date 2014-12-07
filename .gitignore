@@ -41,5 +41,4 @@ build
 *.swp
 
 # IDS
-app/src/main/java/com/andreapivetta/blu/twitter/TwitterKs.java
-
+app/src/main/java/com/andreapivetta/blu/twitter/TwitterUtils.java

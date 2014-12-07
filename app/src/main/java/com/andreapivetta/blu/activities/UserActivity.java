@@ -320,7 +320,7 @@ public class UserActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_user, menu);
+        getMenuInflater().inflate(R.menu.menu_share, menu);
 
         if (user != null) {
             ShareActionProvider mShareActionProvider = (ShareActionProvider)

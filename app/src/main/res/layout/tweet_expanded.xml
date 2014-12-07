@@ -4,8 +4,8 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
     android:layout_marginBottom="10dp"
+    android:layout_marginTop="10dp"
     card_view:cardCornerRadius="3dp">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -34,10 +34,10 @@
             android:id="@+id/userNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="5dp"
+            android:layout_alignTop="@+id/userProfilePicImageView"
             android:layout_toEndOf="@+id/userProfilePicImageView"
             android:layout_toRightOf="@+id/userProfilePicImageView"
+            android:includeFontPadding="false"
             android:text="Andrea Pivetta"
             android:textSize="30sp"
             android:textStyle="bold" />
@@ -49,8 +49,9 @@
             android:layout_below="@+id/userNameTextView"
             android:layout_toEndOf="@+id/userProfilePicImageView"
             android:layout_toRightOf="@+id/userProfilePicImageView"
+            android:includeFontPadding="false"
             android:text="\@Pivix0"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/timeTextView"
@@ -70,6 +71,7 @@
             android:layout_alignStart="@+id/interactionLinearLayout"
             android:layout_below="@+id/userProfilePicImageView"
             android:layout_margin="10dp"
+            android:gravity="center"
             android:text="Just got the Nexus 9 HTC Folio keyboard case thingy. It's decent, though quite cramped, which is expected for a keyboard of this size."
             android:textSize="19sp" />
 

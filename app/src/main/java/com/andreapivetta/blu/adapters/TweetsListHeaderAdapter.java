@@ -25,6 +25,7 @@ import com.andreapivetta.blu.twitter.FavoriteTweet;
 import com.andreapivetta.blu.twitter.RetweetTweet;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -154,13 +155,7 @@ public class TweetsListHeaderAdapter extends RecyclerView.Adapter<RecyclerView.V
             ((VHItem) holder).shareImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String url = "https://twitter.com/" + currentStatus.getUser().getScreenName()
-                            + "/status/" + currentStatus.getId();
-                    Intent sendIntent = new Intent();
-                    sendIntent.setAction(Intent.ACTION_SEND)
-                            .putExtra(Intent.EXTRA_TEXT, url)
-                            .setType("text/plain");
-                    context.startActivity(Intent.createChooser(sendIntent, context.getString(R.string.share_tweet)));
+                    share(currentStatus);
                 }
             });
 
@@ -188,7 +183,14 @@ public class TweetsListHeaderAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             ((VHHeader) holder).userNameTextView.setText(currentStatus.getUser().getName());
             ((VHHeader) holder).screenNameTextView.setText("@" + currentStatus.getUser().getScreenName());
-            ((VHHeader) holder).timeTextView.setText(new SimpleDateFormat("hh:mm").format(currentStatus.getCreatedAt()));
+
+            DateFormat dateFormat = DateFormat.getDateTimeInstance();
+            ((VHHeader) holder).timeTextView.setText(dateFormat.format(currentStatus.getCreatedAt()));
+
+
+            //((VHHeader) holder).timeTextView.setText(new SimpleDateFormat("hh:mm yyyy MM dd").format(currentStatus.getCreatedAt()));
+
+
             ((VHHeader) holder).statusTextView.setText(currentStatus.getText());
 
             String amount = currentStatus.getFavoriteCount() + "";
@@ -232,6 +234,13 @@ public class TweetsListHeaderAdapter extends RecyclerView.Adapter<RecyclerView.V
                     retweet(currentStatus);
                 }
             });
+
+            ((VHHeader) holder).shareImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    share(currentStatus);
+                }
+            });
         }
     }
 
@@ -256,6 +265,17 @@ public class TweetsListHeaderAdapter extends RecyclerView.Adapter<RecyclerView.V
             type = 1;
             new FavoriteTweet(context, twitter).execute(status.getId(), type);
         }
+    }
+
+    void share(Status status) {
+        String url = "https://twitter.com/" + status.getUser().getScreenName()
+                + "/status/" + status.getId();
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND)
+                .putExtra(Intent.EXTRA_TEXT, url)
+                .setType("text/plain");
+        context.startActivity(Intent.createChooser(sendIntent, context.getString(R.string.share_tweet)));
+
     }
 
     @Override
