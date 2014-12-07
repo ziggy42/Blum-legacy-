@@ -13,7 +13,7 @@
     <string name="tweet_length">140</string>
     <string name="sending_tweet_title">Sending Tweet</string>
     <string name="sending_tweet_content">Sending in Progress</string>
-    <string name="title_activity_user"></string>
+    <string name="title_activity_user" />
     <string name="share_tweet">Share this Tweet!</string>
     <string name="retweet_title">Retweet?</string>
     <string name="retweet">Retweet</string>
@@ -26,21 +26,6 @@
     <string name="you_and">You and</string>
     <string name="are_following_ea">are following each other</string>
     <string name="follow">Follow</string>
-
-    <!-- Content Descriptors -->
-    <string name="profile_background_contentDescriptor">User Background Image View</string>
-    <string name="retweet_imageButton_contentDescriptor">Retweet Image Button</string>
-    <string name="favourite_imageButton_contentDescriptor">Favourite Image Button</string>
-    <string name="respond_imageButton_contentDescriptor">Respond Image Button</string>
-    <string name="share_imageButton_contentDescriptor">Share Image Button</string>
-    <string name="profile_pic_contentDescriptor">User Profile Picture</string>
-    <string name="tweet_photo_contentDescriptor">Tweet Photo</string>
-    <string name="grab_image_contentDescriptor">Upload a Picture Image Button</string>
-    <string name="take_photo_contentDescriptor">Take and Add a Photo Image Button</string>
-    <string name="uploaded_image_contentDescriptor">Uploaded ImageView</string>
-    <string name="send_tweet_button_contentDescriptor">Send Tweet image Button</string>
-    <string name="follow_user_contentDescription">Follow User ImageButton</string>
-
     <string name="check_out">Check out</string>
     <string name="on_twitter">on Twitter</string>
     <string name="share">Share</string>
@@ -55,5 +40,19 @@
     <string name="openTweet_imageButton_contentDescriptor">Open Tweet Image Button</string>
     <string name="favourites">FAVOURITES</string>
     <string name="retweets">RETWEETS</string>
+
+    <!-- Content Descriptors -->
+    <string name="profile_background_contentDescriptor">User Background Image View</string>
+    <string name="retweet_imageButton_contentDescriptor">Retweet Image Button</string>
+    <string name="favourite_imageButton_contentDescriptor">Favourite Image Button</string>
+    <string name="respond_imageButton_contentDescriptor">Respond Image Button</string>
+    <string name="share_imageButton_contentDescriptor">Share Image Button</string>
+    <string name="profile_pic_contentDescriptor">User Profile Picture</string>
+    <string name="tweet_photo_contentDescriptor">Tweet Photo</string>
+    <string name="grab_image_contentDescriptor">Upload a Picture Image Button</string>
+    <string name="take_photo_contentDescriptor">Take and Add a Photo Image Button</string>
+    <string name="uploaded_image_contentDescriptor">Uploaded ImageView</string>
+    <string name="send_tweet_button_contentDescriptor">Send Tweet image Button</string>
+    <string name="follow_user_contentDescription">Follow User ImageButton</string>
 
 </resources>

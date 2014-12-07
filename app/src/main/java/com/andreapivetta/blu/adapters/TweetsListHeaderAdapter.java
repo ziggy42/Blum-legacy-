@@ -49,11 +49,10 @@ public class TweetsListHeaderAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == TYPE_ITEM) {
+        if (viewType == TYPE_ITEM)
             return new VHItem(LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet, parent, false));
-        } else {
+        else
             return new VHHeader(LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_expanded, parent, false));
-        }
     }
 
     @Override
@@ -134,29 +133,14 @@ public class TweetsListHeaderAdapter extends RecyclerView.Adapter<RecyclerView.V
             ((VHItem) holder).favouriteImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    long type;
-                    if (currentStatus.isFavorited()) {
-                        type = -1;
-                        new FavoriteTweet(context, twitter).execute(currentStatus.getId(), type);
-                    } else {
-                        type = 1;
-                        new FavoriteTweet(context, twitter).execute(currentStatus.getId(), type);
-                    }
+                    favourite(currentStatus);
                 }
             });
 
             ((VHItem) holder).retweetImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle(context.getString(R.string.retweet_title))
-                            .setPositiveButton(R.string.retweet, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    new RetweetTweet(context, twitter).execute(currentStatus.getId());
-                                }
-                            })
-                            .setNegativeButton(R.string.cancel, null).create().show();
+                    retweet(currentStatus);
                 }
             });
 
@@ -234,6 +218,43 @@ public class TweetsListHeaderAdapter extends RecyclerView.Adapter<RecyclerView.V
                     }
                 }
             }
+
+            ((VHHeader) holder).favouriteImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    favourite(currentStatus);
+                }
+            });
+
+            ((VHHeader) holder).retweetImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    retweet(currentStatus);
+                }
+            });
+        }
+    }
+
+    void retweet(final Status status) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(context.getString(R.string.retweet_title))
+                .setPositiveButton(R.string.retweet, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new RetweetTweet(context, twitter).execute(status.getId());
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null).create().show();
+    }
+
+    void favourite(Status status) {
+        long type;
+        if (status.isFavorited()) {
+            type = -1;
+            new FavoriteTweet(context, twitter).execute(status.getId(), type);
+        } else {
+            type = 1;
+            new FavoriteTweet(context, twitter).execute(status.getId(), type);
         }
     }
 
