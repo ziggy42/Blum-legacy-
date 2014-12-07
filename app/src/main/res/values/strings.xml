@@ -13,7 +13,7 @@
     <string name="tweet_length">140</string>
     <string name="sending_tweet_title">Sending Tweet</string>
     <string name="sending_tweet_content">Sending in Progress</string>
-    <string name="title_activity_user"/>
+    <string name="title_activity_user"></string>
     <string name="share_tweet">Share this Tweet!</string>
     <string name="retweet_title">Retweet?</string>
     <string name="retweet">Retweet</string>
@@ -51,5 +51,9 @@
     <string name="yes">Yes</string>
     <string name="title_activity_settings">Settings</string>
     <string name="internet_connection_required">This operation requires an internet connection</string>
+    <string name="title_activity_tweet">Tweet</string>
+    <string name="openTweet_imageButton_contentDescriptor">Open Tweet Image Button</string>
+    <string name="favourites">FAVOURITES</string>
+    <string name="retweets">RETWEETS</string>
 
 </resources>

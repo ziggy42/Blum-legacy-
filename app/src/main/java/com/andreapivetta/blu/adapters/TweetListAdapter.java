@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.util.Linkify;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.activities.TweetActivity;
 import com.andreapivetta.blu.activities.UserActivity;
 import com.andreapivetta.blu.twitter.FavoriteTweet;
 import com.andreapivetta.blu.twitter.RetweetTweet;
@@ -59,7 +61,7 @@ public class TweetListAdapter extends RecyclerView.Adapter<TweetListAdapter.View
         if (mDataSet.get(position).isRetweet()) {
             currentStatus = mDataSet.get(position).getRetweetedStatus();
             holder.retweetTextView.setVisibility(View.VISIBLE);
-            holder.retweetTextView.setText(context.getString(R.string.retweeted_by) + " @" + currentStatus.getUser().getScreenName());
+            holder.retweetTextView.setText(context.getString(R.string.retweeted_by) + " @" + mDataSet.get(position).getUser().getScreenName());
         } else {
             currentStatus = mDataSet.get(position);
             holder.retweetTextView.setVisibility(View.GONE);
@@ -171,6 +173,15 @@ public class TweetListAdapter extends RecyclerView.Adapter<TweetListAdapter.View
                 context.startActivity(Intent.createChooser(sendIntent, context.getString(R.string.share_tweet)));
             }
         });
+
+        holder.openTweetImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, TweetActivity.class);
+                i.putExtra("STATUS", currentStatus.getId());
+                context.startActivity(i);
+            }
+        });
     }
 
     @Override
@@ -184,7 +195,7 @@ public class TweetListAdapter extends RecyclerView.Adapter<TweetListAdapter.View
         public ImageView userProfilePicImageView, tweetPhotoImageView;
         public LinearLayout interactionLinearLayout;
         public FrameLayout cardView;
-        public ImageButton favouriteImageButton, retweetImageButton, respondImageButton, shareImageButton;
+        public ImageButton favouriteImageButton, retweetImageButton, respondImageButton, shareImageButton, openTweetImageButton;
 
         public ViewHolder(View container) {
             super(container);
@@ -203,6 +214,7 @@ public class TweetListAdapter extends RecyclerView.Adapter<TweetListAdapter.View
             this.retweetImageButton = (ImageButton) container.findViewById(R.id.retweetImageButton);
             this.respondImageButton = (ImageButton) container.findViewById(R.id.respondImageButton);
             this.shareImageButton = (ImageButton) container.findViewById(R.id.shareImageButton);
+            this.openTweetImageButton = (ImageButton) container.findViewById(R.id.openTweetImageButton);
         }
     }
 }

@@ -4,66 +4,79 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
     android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
     card_view:cardCornerRadius="3dp">
 
-    <RelativeLayout
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:paddingBottom="3dp">
 
-        <ImageView
+        <com.makeramen.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/userProfilePicImageView"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_margin="5dp"
             android:contentDescription="@string/profile_pic_contentDescriptor"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"
+            android:src="@drawable/placeholder"
+            app:riv_border_color="@color/grey"
+            app:riv_border_width="2dip"
+            app:riv_corner_radius="30dip"
+            app:riv_mutate_background="true"
+            app:riv_oval="true" />
 
         <TextView
             android:id="@+id/userNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
             android:layout_toEndOf="@+id/userProfilePicImageView"
             android:layout_toRightOf="@+id/userProfilePicImageView"
-            android:textSize="17sp"
+            android:text="Andrea Pivetta"
+            android:textSize="30sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/screenNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/userNameTextView"
+            android:layout_toEndOf="@+id/userProfilePicImageView"
+            android:layout_toRightOf="@+id/userProfilePicImageView"
+            android:text="\@Pivix0"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/timeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/userProfilePicImageView"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
-            android:fontFamily="sans-serif-thin" />
+            android:layout_alignBottom="@+id/userProfilePicImageView"
+            android:layout_toEndOf="@+id/userProfilePicImageView"
+            android:layout_toRightOf="@+id/userProfilePicImageView"
+            android:fontFamily="sans-serif-thin"
+            android:text="25:87 Decembar 2012" />
 
         <TextView
             android:id="@+id/statusTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/userNameTextView"
-            android:layout_marginBottom="2dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_toRightOf="@+id/userProfilePicImageView"
-            android:minHeight="40dp"
-            android:textSize="15sp" />
+            android:layout_alignLeft="@+id/interactionLinearLayout"
+            android:layout_alignStart="@+id/interactionLinearLayout"
+            android:layout_below="@+id/userProfilePicImageView"
+            android:layout_margin="10dp"
+            android:text="Just got the Nexus 9 HTC Folio keyboard case thingy. It's decent, though quite cramped, which is expected for a keyboard of this size."
+            android:textSize="19sp" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/statusTextView"
-            android:layout_alignStart="@+id/statusTextView"
             android:layout_below="@+id/statusTextView"
             android:layout_marginTop="2dp"
             android:orientation="vertical">
@@ -74,23 +87,32 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginStart="10dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/tweet_photo_contentDescriptor"
                 android:maxHeight="300dp"
-                android:scaleType="fitCenter" />
+                android:scaleType="fitCenter"
+                android:src="@drawable/placeholder"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/retweetTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-thin" />
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:fontFamily="sans-serif-thin"
+                android:text="Retweeted by \@tuamadre"
+                android:textSize="18sp"
+                android:visibility="gone" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/interactionLinearLayout"
+            android:id="@+id/statsLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linearLayout"
@@ -98,8 +120,36 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="2dp"
-            android:orientation="horizontal"
-            android:visibility="gone">
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/retweetsStatsTextView"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="3RETWEETS" />
+
+            <TextView
+                android:id="@+id/favouritesStatsTextView"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="182 FAVORITIES" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/interactionLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/statsLinearLayout"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/favouriteImageButton"
@@ -145,19 +195,7 @@
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_share_grey600_36dp" />
 
-            <ImageButton
-                android:id="@+id/openTweetImageButton"
-                android:layout_width="0dp"
-                android:layout_height="25dp"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:background="?android:selectableItemBackground"
-                android:contentDescription="@string/openTweet_imageButton_contentDescriptor"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_fullscreen_grey600_36dp" />
-
         </LinearLayout>
 
     </RelativeLayout>
-
 </android.support.v7.widget.CardView>
