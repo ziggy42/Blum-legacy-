@@ -104,10 +104,7 @@ public class TweetsListHeaderAdapter extends RecyclerView.Adapter<RecyclerView.V
             ((VHItem) holder).userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(context, UserActivity.class);
-                    i.putExtra("ID", currentStatus.getUser().getId())
-                            .putExtra("Twitter", twitter);
-                    context.startActivity(i);
+                    openProfile(currentStatus);
                 }
             });
 
@@ -183,14 +180,7 @@ public class TweetsListHeaderAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             ((VHHeader) holder).userNameTextView.setText(currentStatus.getUser().getName());
             ((VHHeader) holder).screenNameTextView.setText("@" + currentStatus.getUser().getScreenName());
-
-            DateFormat dateFormat = DateFormat.getDateTimeInstance();
-            ((VHHeader) holder).timeTextView.setText(dateFormat.format(currentStatus.getCreatedAt()));
-
-
-            //((VHHeader) holder).timeTextView.setText(new SimpleDateFormat("hh:mm yyyy MM dd").format(currentStatus.getCreatedAt()));
-
-
+            ((VHHeader) holder).timeTextView.setText(DateFormat.getDateTimeInstance().format(currentStatus.getCreatedAt()));
             ((VHHeader) holder).statusTextView.setText(currentStatus.getText());
 
             String amount = currentStatus.getFavoriteCount() + "";
@@ -241,7 +231,21 @@ public class TweetsListHeaderAdapter extends RecyclerView.Adapter<RecyclerView.V
                     share(currentStatus);
                 }
             });
+
+            ((VHHeader) holder).userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openProfile(currentStatus);
+                }
+            });
         }
+    }
+
+    void openProfile(Status status) {
+        Intent i = new Intent(context, UserActivity.class);
+        i.putExtra("ID", status.getUser().getId())
+                .putExtra("Twitter", twitter);
+        context.startActivity(i);
     }
 
     void retweet(final Status status) {
@@ -275,7 +279,6 @@ public class TweetsListHeaderAdapter extends RecyclerView.Adapter<RecyclerView.V
                 .putExtra(Intent.EXTRA_TEXT, url)
                 .setType("text/plain");
         context.startActivity(Intent.createChooser(sendIntent, context.getString(R.string.share_tweet)));
-
     }
 
     @Override

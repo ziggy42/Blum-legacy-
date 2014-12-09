@@ -3,6 +3,7 @@ package com.andreapivetta.blu.services;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.andreapivetta.blu.twitter.TwitterUtils;
 
@@ -17,7 +18,10 @@ import twitter4j.UserStreamListener;
 
 public class NotificationService extends Service {
 
-    private static final UserStreamListener listener = new UserStreamListener() {
+    public final static String NEW_TWEETS_INTENT = "com.andreapivetta.blu.NEW_TWEETS_INTENT";
+    public final static String NEW_NOTIFICATION_INTENT = "com.andreapivetta.blu.NEW_NOTIFICATION_INTENT";
+
+    private final UserStreamListener listener = new UserStreamListener() {
         @Override
         public void onDeletionNotice(long l, long l2) {
 
@@ -30,7 +34,7 @@ public class NotificationService extends Service {
 
         @Override
         public void onFavorite(User user, User user2, Status status) {
-
+            pushNotification();
         }
 
         @Override
@@ -50,7 +54,7 @@ public class NotificationService extends Service {
 
         @Override
         public void onDirectMessage(DirectMessage directMessage) {
-
+            pushNotification();
         }
 
         @Override
@@ -105,7 +109,11 @@ public class NotificationService extends Service {
 
         @Override
         public void onStatus(Status status) {
-
+            Log.i("NotificationService", status.getText());
+            Intent i = new Intent();
+            i.setAction(NEW_TWEETS_INTENT);
+            i.putExtra("STATUS", status.getText());
+            sendBroadcast(i);
         }
 
         @Override
@@ -146,5 +154,11 @@ public class NotificationService extends Service {
         TwitterStream twitterStream = TwitterUtils.getTwitterStream(getApplicationContext());
         twitterStream.addListener(listener);
         twitterStream.user();
+    }
+
+    void pushNotification() {
+        Intent i = new Intent();
+        i.setAction(NEW_NOTIFICATION_INTENT);
+        sendBroadcast(i);
     }
 }

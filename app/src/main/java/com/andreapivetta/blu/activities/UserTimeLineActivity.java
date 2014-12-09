@@ -3,6 +3,7 @@ package com.andreapivetta.blu.activities;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
@@ -48,6 +49,12 @@ public class UserTimeLineActivity extends TimeLineActivity {
     @Override
     List<Status> getRefreshedTimeLine(Paging paging) throws TwitterException {
         return twitter.getUserTimeline(user.getScreenName(), paging);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_timeline, menu);
+        return true;
     }
 
     private class LoadUser extends AsyncTask<Long, Void, Boolean> {

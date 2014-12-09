@@ -211,9 +211,11 @@ public abstract class TimeLineActivity extends ActionBarActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if (uploadedImageView.getVisibility() == View.VISIBLE)
-                                    new UpdateTwitterStatus(TimeLineActivity.this, twitter, imageFile).execute(newTweetEditText.getText().toString());
+                                    new UpdateTwitterStatus(TimeLineActivity.this, twitter, imageFile)
+                                            .execute(newTweetEditText.getText().toString());
                                 else
-                                    new UpdateTwitterStatus(TimeLineActivity.this, twitter).execute(newTweetEditText.getText().toString());
+                                    new UpdateTwitterStatus(TimeLineActivity.this, twitter)
+                                            .execute(newTweetEditText.getText().toString());
                             }
                         })
                         .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -279,8 +281,7 @@ public abstract class TimeLineActivity extends ActionBarActivity {
     String getRealPathFromURI(Uri contentUri) {
         String[] proj = {MediaStore.Images.Media.DATA};
 
-        CursorLoader cursorLoader = new CursorLoader(
-                this, contentUri, proj, null, null, null);
+        CursorLoader cursorLoader = new CursorLoader(this, contentUri, proj, null, null, null);
         Cursor cursor = cursorLoader.loadInBackground();
 
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -326,12 +327,6 @@ public abstract class TimeLineActivity extends ActionBarActivity {
                 }
                 break;
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
     }
 
     @Override

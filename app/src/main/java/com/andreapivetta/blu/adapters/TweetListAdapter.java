@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import twitter4j.MediaEntity;
 import twitter4j.Status;
 import twitter4j.Twitter;
+import twitter4j.TwitterException;
 
 
 public class TweetListAdapter extends RecyclerView.Adapter<TweetListAdapter.ViewHolder> {
