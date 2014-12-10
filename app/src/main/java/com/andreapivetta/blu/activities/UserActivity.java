@@ -26,7 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.adapters.TweetListAdapter;
+import com.andreapivetta.blu.adapters.TweetsListAdapter;
 import com.andreapivetta.blu.adapters.UserListAdapter;
 import com.andreapivetta.blu.twitter.FollowTwitterUser;
 import com.andreapivetta.blu.twitter.TwitterUtils;
@@ -67,7 +67,7 @@ public class UserActivity extends ActionBarActivity {
     private TextView userNickTextView, userNameTextView, descriptionTextView, userLocationTextView,
             userWebsiteTextView, tweetAmountTextView, followingAmountTextView, followersAmountTextView;
     private ImageButton followImageButton;
-    private TweetListAdapter mTweetsAdapter;
+    private TweetsListAdapter mTweetsAdapter;
     private ArrayList<Status> userTweetList = new ArrayList<>();
     private int pastVisibleItems, visibleItemCount, totalItemCount;
     private boolean loading = true;
@@ -106,7 +106,7 @@ public class UserActivity extends ActionBarActivity {
         followImageButton = (ImageButton) findViewById(R.id.followImageButton);
 
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.userTweetsRecyclerView);
-        mTweetsAdapter = new TweetListAdapter(userTweetList, this, twitter);
+        mTweetsAdapter = new TweetsListAdapter(userTweetList, this, twitter, -1);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);

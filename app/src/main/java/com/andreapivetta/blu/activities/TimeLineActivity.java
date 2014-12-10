@@ -21,7 +21,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -32,7 +31,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.adapters.TweetListAdapter;
+import com.andreapivetta.blu.adapters.TweetsListAdapter;
 import com.andreapivetta.blu.twitter.UpdateTwitterStatus;
 import com.squareup.picasso.Picasso;
 
@@ -65,7 +64,7 @@ public abstract class TimeLineActivity extends ActionBarActivity {
     protected SwipeRefreshLayout swipeRefreshLayout;
     protected ImageButton newTweetImageButton;
     protected ProgressBar loadingProgressBar;
-    protected TweetListAdapter mTweetsAdapter;
+    protected TweetsListAdapter mTweetsAdapter;
     protected ArrayList<Status> tweetList = new ArrayList<>();
     protected LinearLayoutManager mLinearLayoutManager;
     protected ImageView uploadedImageView;
@@ -87,7 +86,7 @@ public abstract class TimeLineActivity extends ActionBarActivity {
         }
 
         mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
-        mTweetsAdapter = new TweetListAdapter(tweetList, this, twitter);
+        mTweetsAdapter = new TweetsListAdapter(tweetList, this, twitter, -1);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);

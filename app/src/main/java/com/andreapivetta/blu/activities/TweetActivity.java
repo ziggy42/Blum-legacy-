@@ -29,7 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.adapters.TweetsListHeaderAdapter;
+import com.andreapivetta.blu.adapters.TweetsListAdapter;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.twitter.UpdateTwitterStatus;
 import com.squareup.picasso.Picasso;
@@ -56,7 +56,7 @@ public class TweetActivity extends ActionBarActivity {
     private Twitter twitter;
     private Status status;
     private ArrayList<Status> mDataSet = new ArrayList<>();
-    private TweetsListHeaderAdapter mTweetsAdapter;
+    private TweetsListAdapter mTweetsAdapter;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private ImageButton replyImageButton;
@@ -87,7 +87,7 @@ public class TweetActivity extends ActionBarActivity {
         this.twitter = TwitterUtils.getTwitter(TweetActivity.this);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
-        mTweetsAdapter = new TweetsListHeaderAdapter(mDataSet, this, twitter);
+        mTweetsAdapter = new TweetsListAdapter(mDataSet, this, twitter);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);

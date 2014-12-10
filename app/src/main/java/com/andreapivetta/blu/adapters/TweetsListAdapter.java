@@ -33,7 +33,7 @@ import twitter4j.MediaEntity;
 import twitter4j.Status;
 import twitter4j.Twitter;
 
-public class TweetsListHeaderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
@@ -42,10 +42,22 @@ public class TweetsListHeaderAdapter extends RecyclerView.Adapter<RecyclerView.V
     private Context context;
     private Twitter twitter;
 
-    public TweetsListHeaderAdapter(ArrayList<Status> mDataSet, Context context, Twitter twitter) {
+    private int headerPosition;
+
+    public TweetsListAdapter(ArrayList<Status> mDataSet, Context context, Twitter twitter) {
         this.mDataSet = mDataSet;
         this.context = context;
         this.twitter = twitter;
+
+        this.headerPosition = 0;
+    }
+
+    public TweetsListAdapter(ArrayList<Status> mDataSet, Context context, Twitter twitter, int headerPosition) {
+        this.mDataSet = mDataSet;
+        this.context = context;
+        this.twitter = twitter;
+
+        this.headerPosition = headerPosition;
     }
 
     @Override
@@ -295,7 +307,7 @@ public class TweetsListHeaderAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     private boolean isPositionHeader(int position) {
-        return position == 0;
+        return position == headerPosition;
     }
 
     class VHItem extends RecyclerView.ViewHolder {
