@@ -62,8 +62,8 @@ public class NotificationsDatabaseManager {
         contentValues.put(SetsMetaData.PICURL, notification.profilePicURL);
         contentValues.put(SetsMetaData.USERID, notification.userID);
 
-        if (notification.tweet > 0) {
-            contentValues.put(SetsMetaData.TARGET_TWEET, notification.tweet);
+        if (notification.tweetID > 0) {
+            contentValues.put(SetsMetaData.TARGET_TWEET, notification.tweetID);
             contentValues.put(SetsMetaData.STATUS, notification.status);
         }
 

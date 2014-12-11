@@ -1,23 +1,26 @@
 package com.andreapivetta.blu.data;
 
 
+import android.support.annotation.NonNull;
+
 import java.util.Calendar;
 
-public class Notification {
+public class Notification implements Comparable<Notification> {
 
     public final static String TYPE_FAVOURITE = "stellina";
     public final static String TYPE_RETWEET = "retweet";
     public final static String TYPE_MENTION = "mention";
     public final static String TYPE_FOLLOW = "newfollower";
+    public final static String TYPE_RETWEET_MENTIONED = "newfollower";
 
     public boolean read;
-    public long tweet, userID;
+    public long tweetID, userID;
     public String user, type, status, profilePicURL;
     public int hh, mm, YY, MM, DD, notificationID;
 
     public Notification(boolean read, long tweet, String user, String type, String status, String profilePicURL, long userID) {
         this.read = read;
-        this.tweet = tweet;
+        this.tweetID = tweet;
         this.user = user;
         this.type = type;
         this.status = status;
@@ -35,7 +38,7 @@ public class Notification {
     public Notification(boolean read, long tweet, String user, String type, String status, String profilePicURL,
                         int hh, int mm, int YY, int MM, int DD, long userID, int notificationID) {
         this.read = read;
-        this.tweet = tweet;
+        this.tweetID = tweet;
         this.user = user;
         this.type = type;
         this.YY = YY;
@@ -47,5 +50,36 @@ public class Notification {
         this.profilePicURL = profilePicURL;
         this.userID = userID;
         this.notificationID = notificationID;
+    }
+
+    @Override
+    public int compareTo(@NonNull Notification another) {
+
+        if (YY < another.YY) {
+            return -1;
+        } else {
+            if (YY > another.YY) return 1;
+            if (MM < another.MM) {
+                return -1;
+            } else {
+                if (MM > another.MM) return 1;
+                if (DD < another.DD) {
+                    return -1;
+                } else {
+                    if (DD > another.DD) return 1;
+                    if (hh < another.hh) {
+                        return -1;
+                    } else {
+                        if (hh > another.hh) return 1;
+                        if (mm < another.mm) {
+                            return -1;
+                        } else {
+                            if (mm > another.mm) return 1;
+                            return 0;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

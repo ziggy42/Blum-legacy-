@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.NotificationAdapter;
@@ -16,6 +17,8 @@ import com.andreapivetta.blu.data.NotificationsDatabaseManager;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import twitter4j.Twitter;
 
@@ -25,6 +28,7 @@ public class NotificationFragment extends Fragment {
     private ArrayList<Notification> notificationList = new ArrayList<>();
     private NotificationsDatabaseManager databaseManager;
 
+    private TextView nothingToShowTextView;
     private RecyclerView mRecyclerView;
     private NotificationAdapter mNotificationAdapter;
     private LinearLayoutManager mLinearLayoutManager;
@@ -52,6 +56,8 @@ public class NotificationFragment extends Fragment {
             notificationList = databaseManager.getAllReadNotifications();
         }
         databaseManager.close();
+
+        Collections.sort(notificationList, Collections.reverseOrder());
     }
 
     @Override
@@ -59,12 +65,15 @@ public class NotificationFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_notifications, container, false);
 
-        twitter = TwitterUtils.getTwitter(getActivity());
+        this.twitter = TwitterUtils.getTwitter(getActivity());
         this.mRecyclerView = (RecyclerView) rootView.findViewById(R.id.notificationsRecyclerView);
         this.mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mNotificationAdapter = new NotificationAdapter(notificationList, getActivity(), twitter);
         mRecyclerView.setAdapter(mNotificationAdapter);
+
+        if (notificationList.size() == 0)
+            rootView.findViewById(R.id.nothingToShowTextView).setVisibility(View.VISIBLE);
 
         return rootView;
     }

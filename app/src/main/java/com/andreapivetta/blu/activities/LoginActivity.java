@@ -24,7 +24,7 @@ public class LoginActivity extends Activity {
         loginImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if( connectionDetector.isConnectingToInternet() )
+                if (connectionDetector.isConnectingToInternet())
                     startActivityForResult(new Intent(LoginActivity.this, TwitterOAuthActivity.class), 0);
                 else
                     Toast.makeText(getApplicationContext(), getString(R.string.internet_connection_required),

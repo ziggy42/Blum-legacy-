@@ -9,19 +9,25 @@ import com.andreapivetta.blu.data.Notification;
 import com.andreapivetta.blu.data.NotificationsDatabaseManager;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 
+import java.util.ArrayList;
+
 import twitter4j.DirectMessage;
 import twitter4j.StallWarning;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
 import twitter4j.TwitterStream;
 import twitter4j.User;
 import twitter4j.UserList;
+import twitter4j.UserMentionEntity;
 import twitter4j.UserStreamListener;
 
 public class NotificationService extends Service {
 
     public final static String NEW_TWEETS_INTENT = "com.andreapivetta.blu.NEW_TWEETS_INTENT";
     public final static String NEW_NOTIFICATION_INTENT = "com.andreapivetta.blu.NEW_NOTIFICATION_INTENT";
+    private Twitter twitter;
 
     private final UserStreamListener listener = new UserStreamListener() {
         @Override
@@ -36,7 +42,13 @@ public class NotificationService extends Service {
 
         @Override
         public void onFavorite(User user, User user2, Status status) {
-            pushNotification(status.getId(), user.getName(), Notification.TYPE_FAVOURITE, status.getText(), user.getProfileImageURL(), user.getId());
+            try {
+                if (user2.getScreenName().equals(twitter.getScreenName()))
+                    pushNotification(status.getId(), user.getName(), Notification.TYPE_FAVOURITE,
+                            status.getText(), user.getBiggerProfileImageURL(), user.getId());
+            } catch (TwitterException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -47,6 +59,14 @@ public class NotificationService extends Service {
         @Override
         public void onFollow(User user, User user2) {
 
+            try {
+                if (user2.getScreenName().equals(twitter.getScreenName())) {
+                    pushNotification((long) -1, user.getName(), Notification.TYPE_FOLLOW,
+                            "", user.getBiggerProfileImageURL(), user.getId());
+                }
+            } catch (TwitterException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -111,6 +131,30 @@ public class NotificationService extends Service {
 
         @Override
         public void onStatus(Status status) {
+            UserMentionEntity[] entities = status.getUserMentionEntities();
+            ArrayList<String> names = new ArrayList<>();
+            for (UserMentionEntity e : entities)
+                names.add(e.getScreenName());
+
+            try {
+                if (names.contains(twitter.getScreenName())) {
+                    if (status.isRetweet()) {
+                        if (status.getRetweetedStatus().getUser().getScreenName().equals(twitter.getScreenName()))
+                            pushNotification(status.getId(), status.getUser().getName(), Notification.TYPE_RETWEET,
+                                    status.getRetweetedStatus().getText(), status.getUser().getBiggerProfileImageURL(), status.getUser().getId());
+                        else
+                            pushNotification(status.getId(), status.getUser().getName(), Notification.TYPE_RETWEET_MENTIONED,
+                                    status.getRetweetedStatus().getText(), status.getUser().getBiggerProfileImageURL(), status.getUser().getId());
+                    } else {
+                        pushNotification(status.getId(), status.getUser().getName(), Notification.TYPE_MENTION,
+                                status.getText(), status.getUser().getBiggerProfileImageURL(), status.getUser().getId());
+                    }
+                }
+            } catch (TwitterException e) {
+                e.printStackTrace();
+            }
+
+
             Log.i("NotificationService", status.getText());
             Intent i = new Intent();
             i.setAction(NEW_TWEETS_INTENT);
@@ -152,6 +196,8 @@ public class NotificationService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        twitter = TwitterUtils.getTwitter(getApplicationContext());
 
         TwitterStream twitterStream = TwitterUtils.getTwitterStream(getApplicationContext());
         twitterStream.addListener(listener);

@@ -247,7 +247,7 @@ public abstract class TimeLineActivity extends ActionBarActivity {
 
     void newTweetDown() {
         final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newTweetImageButton.getLayoutParams();
-        ValueAnimator downAnimator = ValueAnimator.ofInt(params.bottomMargin, - newTweetImageButton.getHeight());
+        ValueAnimator downAnimator = ValueAnimator.ofInt(params.bottomMargin, -newTweetImageButton.getHeight());
         downAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {

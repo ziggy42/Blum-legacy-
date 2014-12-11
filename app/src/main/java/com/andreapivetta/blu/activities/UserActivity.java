@@ -8,9 +8,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.graphics.Palette;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ShareActionProvider;
@@ -225,7 +225,7 @@ public class UserActivity extends ActionBarActivity {
                                 });
                         break;
                     default:
-                        builder.setTitle(getString(R.string.follow) + " " +  user.getName() + "?")
+                        builder.setTitle(getString(R.string.follow) + " " + user.getName() + "?")
                                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -288,7 +288,8 @@ public class UserActivity extends ActionBarActivity {
         View dialogView = View.inflate(UserActivity.this, R.layout.dialog_users, null);
         RecyclerView mRecyclerView = (RecyclerView) dialogView.findViewById(R.id.usersRecyclerView);
 
-        if (mode.equals(FOLLOWERS)) mUsersAdapter = new UserListAdapter(followers, UserActivity.this, twitter);
+        if (mode.equals(FOLLOWERS))
+            mUsersAdapter = new UserListAdapter(followers, UserActivity.this, twitter);
         else mUsersAdapter = new UserListAdapter(following, UserActivity.this, twitter);
 
         mDialogLinearLayoutManager = new LinearLayoutManager(this);
@@ -347,7 +348,7 @@ public class UserActivity extends ActionBarActivity {
                 user = twitter.showUser(params[0]);
 
                 Relationship rel = twitter.showFriendship(twitter.getId(), user.getId());
-                if(rel.isSourceFollowingTarget() && rel.isTargetFollowingSource()) {
+                if (rel.isSourceFollowingTarget() && rel.isTargetFollowingSource()) {
                     STATUS = WE_FOLLOW_EACH_OTHER;
                 } else if (rel.isSourceFollowingTarget()) {
                     STATUS = I_FOLLOW_HIM;

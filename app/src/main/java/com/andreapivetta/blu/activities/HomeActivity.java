@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +43,7 @@ public class HomeActivity extends TimeLineActivity {
         } else {
             twitter = TwitterUtils.getTwitter(HomeActivity.this);
             new GetTimeLine().execute(null, null, null);
+            startService(new Intent(HomeActivity.this, NotificationService.class));
         }
 
         NotificationsDatabaseManager databaseManager = new NotificationsDatabaseManager(HomeActivity.this);
@@ -53,8 +53,6 @@ public class HomeActivity extends TimeLineActivity {
         databaseManager.close();
 
         super.onCreate(savedInstanceState);
-
-        startService(new Intent(HomeActivity.this, NotificationService.class));
     }
 
     @Override
@@ -137,7 +135,7 @@ public class HomeActivity extends TimeLineActivity {
         });
 
         if (mNotificationsCount > 0) {
-            TextView notificationsCountTextView = (TextView) view.findViewById(R.id.notif_count);
+            TextView notificationsCountTextView = (TextView) view.findViewById(R.id.notificationCountTextView);
             notificationsCountTextView.setVisibility(View.VISIBLE);
             notificationsCountTextView.setText(String.valueOf(mNotificationsCount));
         }

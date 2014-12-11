@@ -52,7 +52,7 @@ public class TweetActivity extends ActionBarActivity {
 
     protected static final int REQUEST_GRAB_IMAGE = 3;
     protected static final int REQUEST_TAKE_PHOTO = 1;
-
+    protected boolean isUp = true;
     private Twitter twitter;
     private Status status;
     private ArrayList<Status> mDataSet = new ArrayList<>();
@@ -60,12 +60,9 @@ public class TweetActivity extends ActionBarActivity {
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private ImageButton replyImageButton;
-
     private String mCurrentPhotoPath;
     private File imageFile;
     private ImageView uploadedImageView;
-
-    protected boolean isUp = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,7 +206,7 @@ public class TweetActivity extends ActionBarActivity {
 
     void newTweetDown() {
         final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) replyImageButton.getLayoutParams();
-        ValueAnimator downAnimator = ValueAnimator.ofInt(params.bottomMargin, - replyImageButton.getHeight());
+        ValueAnimator downAnimator = ValueAnimator.ofInt(params.bottomMargin, -replyImageButton.getHeight());
         downAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {

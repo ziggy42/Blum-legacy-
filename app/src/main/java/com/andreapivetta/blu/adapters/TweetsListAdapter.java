@@ -186,7 +186,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             }
 
             Picasso.with(context)
-                    .load(currentStatus.getUser().getProfileImageURL())
+                    .load(currentStatus.getUser().getBiggerProfileImageURL())
                     .placeholder(context.getResources().getDrawable(R.drawable.placeholder))
                     .into(((VHHeader) holder).userProfilePicImageView);
 
