@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.andreapivetta.blu.data.Notification;
+import com.andreapivetta.blu.data.NotificationsDatabaseManager;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 
 import twitter4j.DirectMessage;
@@ -34,7 +36,7 @@ public class NotificationService extends Service {
 
         @Override
         public void onFavorite(User user, User user2, Status status) {
-            pushNotification();
+            pushNotification(status.getId(), user.getName(), Notification.TYPE_FAVOURITE, status.getText(), user.getProfileImageURL(), user.getId());
         }
 
         @Override
@@ -54,7 +56,7 @@ public class NotificationService extends Service {
 
         @Override
         public void onDirectMessage(DirectMessage directMessage) {
-            pushNotification();
+
         }
 
         @Override
@@ -156,7 +158,12 @@ public class NotificationService extends Service {
         twitterStream.user();
     }
 
-    void pushNotification() {
+    void pushNotification(long tweetID, String user, String type, String status, String profilePicURL, long id) {
+        NotificationsDatabaseManager databaseManager = new NotificationsDatabaseManager(getApplicationContext());
+        databaseManager.open();
+        databaseManager.insertNotification(new Notification(false, tweetID, user, type, status, profilePicURL, id));
+        databaseManager.close();
+
         Intent i = new Intent();
         i.setAction(NEW_NOTIFICATION_INTENT);
         sendBroadcast(i);

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.data.NotificationsDatabaseManager;
 import com.andreapivetta.blu.services.NotificationService;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 
@@ -37,7 +38,6 @@ public class HomeActivity extends TimeLineActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPreferences = getSharedPreferences("MyPref", 0);
-        mNotificationsCount = mSharedPreferences.getInt("NOTIFICATIONS", 0);
 
         if (!isTwitterLoggedInAlready()) {
             startActivityForResult(new Intent(HomeActivity.this, LoginActivity.class), REQUEST_LOGIN);
@@ -45,6 +45,12 @@ public class HomeActivity extends TimeLineActivity {
             twitter = TwitterUtils.getTwitter(HomeActivity.this);
             new GetTimeLine().execute(null, null, null);
         }
+
+        NotificationsDatabaseManager databaseManager = new NotificationsDatabaseManager(HomeActivity.this);
+        databaseManager.open();
+        //databaseManager.clearDatabase();
+        mNotificationsCount = databaseManager.getCountUnreadNotifications();
+        databaseManager.close();
 
         super.onCreate(savedInstanceState);
 
@@ -124,7 +130,9 @@ public class HomeActivity extends TimeLineActivity {
         notificationImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("NOTIFICATION", "CLICK");
+                mNotificationsCount = 0;
+                invalidateOptionsMenu();
+                startActivity(new Intent(HomeActivity.this, NotificationsActivity.class));
             }
         });
 
@@ -146,7 +154,6 @@ public class HomeActivity extends TimeLineActivity {
             } else if (intent.getAction().equals(NotificationService.NEW_NOTIFICATION_INTENT)) {
                 mNotificationsCount++;
                 invalidateOptionsMenu();
-                mSharedPreferences.edit().putInt("NOTIFICATIONS", mNotificationsCount).apply();
             }
         }
     }

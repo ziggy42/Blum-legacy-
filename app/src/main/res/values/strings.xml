@@ -13,7 +13,7 @@
     <string name="tweet_length">140</string>
     <string name="sending_tweet_title">Sending Tweet</string>
     <string name="sending_tweet_content">Sending in Progress</string>
-    <string name="title_activity_user" />
+    <string name="title_activity_user"></string>
     <string name="share_tweet">Share this Tweet!</string>
     <string name="retweet_title">Retweet?</string>
     <string name="retweet">Retweet</string>
@@ -54,7 +54,14 @@
     <string name="uploaded_image_contentDescriptor">Uploaded ImageView</string>
     <string name="send_tweet_button_contentDescriptor">Send Tweet image Button</string>
     <string name="follow_user_contentDescription">Follow User ImageButton</string>
+
     <string name="notifications">Notifications</string>
     <string name="notifications_contentDescription">Notifications</string>
+    <string name="title_activity_notifications">Notifications</string>
+    <string name="favourite_not">favorite your Tweet</string>
 
+    <array name="tabs_names">
+        <item>New</item>
+        <item>Old</item>
+    </array>
 </resources>

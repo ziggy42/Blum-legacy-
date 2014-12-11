@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="10dp"
+    card_view:cardCornerRadius="3dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="3dp">
+
+        <ImageView
+            android:id="@+id/userProfilePicImageView"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_twitter_blue"
+            android:contentDescription="@string/profile_pic_contentDescriptor"
+            android:scaleType="fitCenter" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tua Madre ha appena aggiunto ai preferiti un tuo tweet"
+            android:id="@+id/notificationExplanationTextView"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/userProfilePicImageView"
+            android:layout_toLeftOf="@+id/timeTextView"
+            android:layout_toStartOf="@+id/timeTextView" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bla bla bla bla bla tette tette tette"
+            android:id="@+id/statusTextView"
+            android:layout_below="@+id/notificationExplanationTextView"
+            android:layout_toRightOf="@+id/userProfilePicImageView"
+            android:layout_toEndOf="@+id/userProfilePicImageView" />
+
+        <TextView
+            android:id="@+id/timeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/userProfilePicImageView"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:text="17:89"
+            android:fontFamily="sans-serif-thin" />
+
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
