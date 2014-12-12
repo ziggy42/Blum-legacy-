@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.NotificationAdapter;
@@ -17,22 +16,14 @@ import com.andreapivetta.blu.data.NotificationsDatabaseManager;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 import twitter4j.Twitter;
 
 public class NotificationFragment extends Fragment {
 
-    private Twitter twitter;
     private ArrayList<Notification> notificationList = new ArrayList<>();
     private NotificationsDatabaseManager databaseManager;
-
-    private TextView nothingToShowTextView;
-    private RecyclerView mRecyclerView;
-    private NotificationAdapter mNotificationAdapter;
-    private LinearLayoutManager mLinearLayoutManager;
-    private int kind;
 
     public static NotificationFragment newInstance(int mode) {
         NotificationFragment f = new NotificationFragment();
@@ -47,10 +38,9 @@ public class NotificationFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        kind = getArguments().getInt("KIND");
         databaseManager = new NotificationsDatabaseManager(getActivity());
         databaseManager.open();
-        if (kind == 0) {
+        if (getArguments().getInt("KIND") == 0) {
             notificationList = databaseManager.getAllUnreadNotifications();
         } else {
             notificationList = databaseManager.getAllReadNotifications();
@@ -65,11 +55,11 @@ public class NotificationFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_notifications, container, false);
 
-        this.twitter = TwitterUtils.getTwitter(getActivity());
-        this.mRecyclerView = (RecyclerView) rootView.findViewById(R.id.notificationsRecyclerView);
-        this.mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        Twitter twitter = TwitterUtils.getTwitter(getActivity());
+        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.notificationsRecyclerView);
+        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mNotificationAdapter = new NotificationAdapter(notificationList, getActivity(), twitter);
+        NotificationAdapter mNotificationAdapter = new NotificationAdapter(notificationList, getActivity(), twitter);
         mRecyclerView.setAdapter(mNotificationAdapter);
 
         if (notificationList.size() == 0)

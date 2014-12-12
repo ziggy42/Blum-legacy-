@@ -15,8 +15,7 @@
         android:layout_marginRight="3dp"
         android:layout_marginTop="5dp"
         android:contentDescription="@string/profile_pic_contentDescriptor"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_twitter_blue" />
+        android:scaleType="fitCenter" />
 
     <TextView
         android:id="@+id/userNameTextView"
@@ -25,7 +24,6 @@
         android:layout_alignTop="@+id/userProfilePicImageView"
         android:layout_toEndOf="@+id/userProfilePicImageView"
         android:layout_toRightOf="@+id/userProfilePicImageView"
-        android:text="Andrea Pivetta"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -37,7 +35,6 @@
         android:layout_alignStart="@+id/userNameTextView"
         android:layout_below="@+id/userNameTextView"
         android:fontFamily="sans-serif-thin"
-        android:text="\@Pivix00"
         android:textSize="14sp" />
 
     <TextView
@@ -49,7 +46,6 @@
         android:layout_below="@+id/screenNameTextView"
         android:layout_marginRight="5dp"
         android:layout_marginTop="2dp"
-        android:text="Bla bla bla bla bla bla blablabla bla blabla bla. Bla bla bla bla bla bla blablabla bla blabla bla"
         android:textSize="16sp" />
 
     <View

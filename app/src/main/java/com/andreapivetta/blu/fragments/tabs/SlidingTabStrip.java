@@ -158,7 +158,7 @@ class SlidingTabStrip extends LinearLayout {
 
         @Override
         public final int getIndicatorColor(int position) {
-            return com.andreapivetta.blu.R.color.colorAccent;//mIndicatorColors[position % mIndicatorColors.length];
+            return 0xFFFFFFFF;
         }
 
         void setIndicatorColors(int... colors) {

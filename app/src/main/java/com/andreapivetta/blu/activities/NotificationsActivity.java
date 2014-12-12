@@ -20,8 +20,6 @@ import com.andreapivetta.blu.fragments.tabs.SlidingTabLayout;
 
 public class NotificationsActivity extends ActionBarActivity {
 
-    private MyFragmentPagerAdapter myFragmentPagerAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +38,7 @@ public class NotificationsActivity extends ActionBarActivity {
         }
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-        myFragmentPagerAdapter = new MyFragmentPagerAdapter();
+        MyFragmentPagerAdapter myFragmentPagerAdapter = new MyFragmentPagerAdapter();
         viewPager.setAdapter(myFragmentPagerAdapter);
         SlidingTabLayout slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
         slidingTabLayout.setViewPager(viewPager);

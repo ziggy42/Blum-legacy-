@@ -38,7 +38,6 @@
             android:layout_toEndOf="@+id/userProfilePicImageView"
             android:layout_toRightOf="@+id/userProfilePicImageView"
             android:includeFontPadding="false"
-            android:text="Andrea Pivetta"
             android:textSize="30sp"
             android:textStyle="bold" />
 
@@ -50,7 +49,6 @@
             android:layout_toEndOf="@+id/userProfilePicImageView"
             android:layout_toRightOf="@+id/userProfilePicImageView"
             android:includeFontPadding="false"
-            android:text="\@Pivix0"
             android:textSize="18sp" />
 
         <TextView
@@ -60,8 +58,7 @@
             android:layout_alignBottom="@+id/userProfilePicImageView"
             android:layout_toEndOf="@+id/userProfilePicImageView"
             android:layout_toRightOf="@+id/userProfilePicImageView"
-            android:fontFamily="sans-serif-thin"
-            android:text="25:87 Decembar 2012" />
+            android:fontFamily="sans-serif-thin" />
 
         <TextView
             android:id="@+id/statusTextView"
@@ -72,7 +69,6 @@
             android:layout_below="@+id/userProfilePicImageView"
             android:layout_margin="10dp"
             android:gravity="center"
-            android:text="Just got the Nexus 9 HTC Folio keyboard case thingy. It's decent, though quite cramped, which is expected for a keyboard of this size."
             android:textSize="19sp" />
 
         <LinearLayout
@@ -107,7 +103,6 @@
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
                 android:fontFamily="sans-serif-thin"
-                android:text="Retweeted by \@tuamadre"
                 android:textSize="18sp"
                 android:visibility="gone" />
 
@@ -129,16 +124,14 @@
                 android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:text="3RETWEETS" />
+                android:gravity="center" />
 
             <TextView
                 android:id="@+id/favouritesStatsTextView"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:text="182 FAVORITIES" />
+                android:gravity="center" />
 
         </LinearLayout>
 

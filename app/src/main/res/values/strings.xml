@@ -13,7 +13,7 @@
     <string name="tweet_length">140</string>
     <string name="sending_tweet_title">Sending Tweet</string>
     <string name="sending_tweet_content">Sending in Progress</string>
-    <string name="title_activity_user"></string>
+    <string name="title_activity_user"/>
     <string name="share_tweet">Share this Tweet!</string>
     <string name="retweet_title">Retweet?</string>
     <string name="retweet">Retweet</string>
@@ -40,6 +40,21 @@
     <string name="openTweet_imageButton_contentDescriptor">Open Tweet Image Button</string>
     <string name="favourites">FAVOURITES</string>
     <string name="retweets">RETWEETS</string>
+    <string name="notifications">Notifications</string>
+    <string name="title_activity_notifications">Notifications</string>
+    <string name="favourite_not">favorite your Tweet:</string>
+    <string name="nothig_to_show">Nothing to show here :(</string>
+    <string name="retweet_not">retweeted you:</string>
+    <string name="is_following_not">followed you</string>
+    <string name="mentioned_not">mentioned you:</string>
+    <string name="retweet_mentioned_not">retweeted a Tweet you were mentioned in:</string>
+    <string name="action_clear_db">Delete All Notifications</string>
+    <string name="clear_database">Delete all notifications?</string>
+
+    <array name="tabs_names">
+        <item>New</item>
+        <item>Old</item>
+    </array>
 
     <!-- Content Descriptors -->
     <string name="profile_background_contentDescriptor">User Background Image View</string>
@@ -56,20 +71,4 @@
     <string name="follow_user_contentDescription">Follow User ImageButton</string>
     <string name="notifications_contentDescription">Notifications</string>
 
-
-    <string name="notifications">Notifications</string>
-    <string name="title_activity_notifications">Notifications</string>
-    <string name="favourite_not">favorite your Tweet:</string>
-    <string name="nothig_to_show">Nothing to show here :(</string>
-    <string name="retweet_not">retweeted you:</string>
-    <string name="is_following_not">followed you</string>
-    <string name="mentioned_not">mentioned you:</string>
-    <string name="retweet_mentioned_not">retweeted a Tweet you were mentioned in:</string>
-    <string name="action_clear_db">Delete All Notifications</string>
-    <string name="clear_database">Delete all notifications?</string>
-
-    <array name="tabs_names">
-        <item>New</item>
-        <item>Old</item>
-    </array>
 </resources>

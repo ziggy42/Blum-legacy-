@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.data.NotificationsDatabaseManager;
@@ -148,7 +147,7 @@ public class HomeActivity extends TimeLineActivity {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(NotificationService.NEW_TWEETS_INTENT)) {
                 String status = intent.getStringExtra("STATUS");
-                Toast.makeText(HomeActivity.this, status, Toast.LENGTH_LONG).show();
+                // Toast.makeText(HomeActivity.this, status, Toast.LENGTH_LONG).show();
             } else if (intent.getAction().equals(NotificationService.NEW_NOTIFICATION_INTENT)) {
                 mNotificationsCount++;
                 invalidateOptionsMenu();

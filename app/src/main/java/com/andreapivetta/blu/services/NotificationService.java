@@ -3,7 +3,6 @@ package com.andreapivetta.blu.services;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.andreapivetta.blu.data.Notification;
 import com.andreapivetta.blu.data.NotificationsDatabaseManager;
@@ -155,7 +154,7 @@ public class NotificationService extends Service {
             }
 
 
-            Log.i("NotificationService", status.getText());
+            //Log.i("NotificationService", status.getText());
             Intent i = new Intent();
             i.setAction(NEW_TWEETS_INTENT);
             i.putExtra("STATUS", status.getText());

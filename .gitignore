@@ -27,7 +27,6 @@ local.properties
   
 # Android Studio
 .idea/
-.gradle
 gradle
 /*/local.properties
 /*/out
@@ -39,6 +38,7 @@ build
 *.ipr
 *~
 *.swp
+app/manifest-merger-release-report.txt
 
 # IDS
 app/src/main/java/com/andreapivetta/blu/twitter/TwitterUtils.java
