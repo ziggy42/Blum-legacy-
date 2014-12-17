@@ -13,7 +13,7 @@
     <string name="tweet_length">140</string>
     <string name="sending_tweet_title">Sending Tweet</string>
     <string name="sending_tweet_content">Sending in Progress</string>
-    <string name="title_activity_user"/>
+    <string name="title_activity_user"></string>
     <string name="share_tweet">Share this Tweet!</string>
     <string name="retweet_title">Retweet?</string>
     <string name="retweet">Retweet</string>
@@ -51,9 +51,13 @@
     <string name="action_clear_db">Delete All Notifications</string>
     <string name="clear_database">Delete all notifications?</string>
 
-    <array name="tabs_names">
+    <array name="notifications_tabs_names">
         <item>New</item>
         <item>Old</item>
+    </array>
+    <array name="search_tabs_names">
+        <item>Tweets</item>
+        <item>Users</item>
     </array>
 
     <!-- Content Descriptors -->
@@ -70,5 +74,8 @@
     <string name="send_tweet_button_contentDescriptor">Send Tweet image Button</string>
     <string name="follow_user_contentDescription">Follow User ImageButton</string>
     <string name="notifications_contentDescription">Notifications</string>
+    <string name="action_search">Search</string>
+    <string name="search_hint">Search Tweet or User</string>
+    <string name="title_activity_search" />
 
 </resources>

@@ -254,6 +254,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     void openProfile(Status status) {
+
         Intent i = new Intent(context, UserActivity.class);
         i.putExtra("ID", status.getUser().getId())
                 .putExtra("Twitter", twitter);

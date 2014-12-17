@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,7 +32,6 @@ public class HomeActivity extends TimeLineActivity {
     private SharedPreferences mSharedPreferences;
     private DataUpdateReceiver dataUpdateReceiver;
     private int mNotificationsCount = 0;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +139,33 @@ public class HomeActivity extends TimeLineActivity {
             notificationsCountTextView.setText(String.valueOf(mNotificationsCount));
         }
 
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                Intent i = new Intent(HomeActivity.this, SearchActivity.class);
+                i.putExtra("QUERY", searchView.getQuery().toString());
+                startActivity(i);
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_search) {
+            onSearchRequested();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private class DataUpdateReceiver extends BroadcastReceiver {

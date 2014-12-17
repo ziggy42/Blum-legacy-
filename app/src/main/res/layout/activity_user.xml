@@ -26,7 +26,7 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <com.makeramen.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/profilePictureImageView"
+        android:id="@+id/userProfilePicImageView"
         android:layout_width="130dp"
         android:layout_height="130dp"
         android:layout_alignBottom="@+id/profileBackgroundImageView"
@@ -47,9 +47,9 @@
         android:id="@+id/userNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/profilePictureImageView"
-        android:layout_toEndOf="@+id/profilePictureImageView"
-        android:layout_toRightOf="@+id/profilePictureImageView"
+        android:layout_alignBottom="@+id/userProfilePicImageView"
+        android:layout_toEndOf="@+id/userProfilePicImageView"
+        android:layout_toRightOf="@+id/userProfilePicImageView"
         android:singleLine="true"
         android:textColor="@color/grey"
         android:textIsSelectable="false"
@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/userNameTextView"
         android:layout_toLeftOf="@+id/followImageButton"
-        android:layout_toRightOf="@+id/profilePictureImageView"
+        android:layout_toRightOf="@+id/userProfilePicImageView"
         android:layout_toStartOf="@+id/followImageButton"
         android:fontFamily="sans-serif-thin"
         android:textSize="15sp" />

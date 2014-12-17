@@ -23,7 +23,7 @@ public class NotificationsActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notifications);
+        setContentView(R.layout.activity_tabbed);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -107,7 +107,7 @@ public class NotificationsActivity extends ActionBarActivity {
         }
 
         public CharSequence getPageTitle(int position) {
-            return getResources().getStringArray(R.array.tabs_names)[position];
+            return getResources().getStringArray(R.array.notifications_tabs_names)[position];
         }
 
     }

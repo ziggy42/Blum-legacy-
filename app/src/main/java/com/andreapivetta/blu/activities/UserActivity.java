@@ -94,7 +94,7 @@ public class UserActivity extends ActionBarActivity {
 
         twitter = TwitterUtils.getTwitter(UserActivity.this);
         profileBackgroundImageView = (ImageView) findViewById(R.id.profileBackgroundImageView);
-        profilePictureImageView = (ImageView) findViewById(R.id.profilePictureImageView);
+        profilePictureImageView = (ImageView) findViewById(R.id.userProfilePicImageView);
         userNameTextView = (TextView) findViewById(R.id.userNameTextView);
         userNickTextView = (TextView) findViewById(R.id.userNickTextView);
         descriptionTextView = (TextView) findViewById(R.id.descriptionTextView);
