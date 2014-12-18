@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.TweetsListAdapter;
@@ -30,6 +31,7 @@ public class SearchTweetsFragment extends Fragment {
     private TweetsListAdapter mAdapter;
     private String query;
     private ProgressBar loadingProgressBar;
+    private TextView nothingToShowTextView;
 
     public static SearchTweetsFragment newInstance(String query) {
         SearchTweetsFragment f = new SearchTweetsFragment();
@@ -60,6 +62,7 @@ public class SearchTweetsFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
 
         loadingProgressBar = (ProgressBar) rootView.findViewById(R.id.loadingProgressBar);
+        nothingToShowTextView = (TextView) rootView.findViewById(R.id.nothingToShowTextView);
 
         new LoadTweets().execute(null,null,null);
 
@@ -86,6 +89,9 @@ public class SearchTweetsFragment extends Fragment {
             if (result) {
                 mAdapter.notifyDataSetChanged();
                 loadingProgressBar.setVisibility(View.GONE);
+
+                if (mDataSet.size() == 0)
+                    nothingToShowTextView.setVisibility(View.VISIBLE);
             }
         }
     }

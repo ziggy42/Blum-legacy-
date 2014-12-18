@@ -1,13 +1,25 @@
 package com.andreapivetta.blu.services;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 
+import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.activities.TweetActivity;
+import com.andreapivetta.blu.activities.UserActivity;
 import com.andreapivetta.blu.data.Notification;
 import com.andreapivetta.blu.data.NotificationsDatabaseManager;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 import twitter4j.DirectMessage;
@@ -26,7 +38,9 @@ public class NotificationService extends Service {
 
     public final static String NEW_TWEETS_INTENT = "com.andreapivetta.blu.NEW_TWEETS_INTENT";
     public final static String NEW_NOTIFICATION_INTENT = "com.andreapivetta.blu.NEW_NOTIFICATION_INTENT";
+
     private Twitter twitter;
+    private NotificationManager mNotifyMgr;
 
     private final UserStreamListener listener = new UserStreamListener() {
         @Override
@@ -153,8 +167,6 @@ public class NotificationService extends Service {
                 e.printStackTrace();
             }
 
-
-            //Log.i("NotificationService", status.getText());
             Intent i = new Intent();
             i.setAction(NEW_TWEETS_INTENT);
             i.putExtra("STATUS", status.getText());
@@ -197,6 +209,7 @@ public class NotificationService extends Service {
         super.onCreate();
 
         twitter = TwitterUtils.getTwitter(getApplicationContext());
+        mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         TwitterStream twitterStream = TwitterUtils.getTwitterStream(getApplicationContext());
         twitterStream.addListener(listener);
@@ -212,5 +225,102 @@ public class NotificationService extends Service {
         Intent i = new Intent();
         i.setAction(NEW_NOTIFICATION_INTENT);
         sendBroadcast(i);
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext());
+        Intent resultIntent;
+        PendingIntent resultPendingIntent;
+
+        switch (type) {
+            case Notification.TYPE_FAVOURITE:
+                resultIntent = new Intent(getApplicationContext(), TweetActivity.class);
+                resultIntent.putExtra("STATUS", tweetID);
+                resultPendingIntent = PendingIntent.getActivity(
+                        getApplicationContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                mBuilder.setContentTitle(getString(R.string.fav_not_title, user))
+                        .setContentText(status)
+                        .setSmallIcon(R.drawable.ic_star_white_24dp)
+                        .setContentIntent(resultPendingIntent)
+                        .setAutoCancel(true);
+
+                mNotifyMgr.notify((int) tweetID, mBuilder.build());
+
+                break;
+            case Notification.TYPE_RETWEET:
+                resultIntent = new Intent(getApplicationContext(), TweetActivity.class);
+                resultIntent.putExtra("STATUS", tweetID);
+                resultPendingIntent = PendingIntent.getActivity(
+                        getApplicationContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                mBuilder.setContentTitle(getString(R.string.retw_not_title, user))
+                        .setContentText(status)
+                        .setSmallIcon(R.drawable.ic_repeat_white_24dp)
+                        .setContentIntent(resultPendingIntent)
+                        .setAutoCancel(true);
+
+                mNotifyMgr.notify((int) tweetID, mBuilder.build());
+
+                break;
+            case Notification.TYPE_FOLLOW:
+                resultIntent = new Intent(getApplicationContext(), UserActivity.class);
+                resultIntent.putExtra("ID", id);
+                resultPendingIntent = PendingIntent.getActivity(
+                        getApplicationContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                mBuilder.setContentTitle(getString(R.string.follow_not_title, user))
+                        .setContentText(status)
+                        .setSmallIcon(R.drawable.ic_person_add_white_24dp)
+                        .setContentIntent(resultPendingIntent)
+                        .setLargeIcon(getBitmapFromURL(profilePicURL))
+                        .setAutoCancel(true);
+
+                mNotifyMgr.notify((int) id, mBuilder.build());
+
+                break;
+            case Notification.TYPE_MENTION:
+                resultIntent = new Intent(getApplicationContext(), TweetActivity.class);
+                resultIntent.putExtra("STATUS", tweetID);
+                resultPendingIntent = PendingIntent.getActivity(
+                        getApplicationContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                mBuilder.setContentTitle(getString(R.string.reply_not_title, user))
+                        .setContentText(status)
+                        .setSmallIcon(R.drawable.ic_reply_white_24dp)
+                        .setContentIntent(resultPendingIntent)
+                        .setLargeIcon(getBitmapFromURL(profilePicURL))
+                        .setAutoCancel(true);
+
+                mNotifyMgr.notify((int) id, mBuilder.build());
+
+                break;
+            case Notification.TYPE_RETWEET_MENTIONED:
+                resultIntent = new Intent(getApplicationContext(), TweetActivity.class);
+                resultIntent.putExtra("STATUS", tweetID);
+                resultPendingIntent = PendingIntent.getActivity(
+                        getApplicationContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                mBuilder.setContentTitle(getString(R.string.retw_ment_not_title, user))
+                        .setContentText(status)
+                        .setSmallIcon(R.drawable.ic_repeat_white_24dp)
+                        .setContentIntent(resultPendingIntent)
+                        .setAutoCancel(true);
+
+                mNotifyMgr.notify((int) tweetID, mBuilder.build());
+                break;
+        }
+    }
+
+    public Bitmap getBitmapFromURL(String strURL) {
+        try {
+            URL url = new URL(strURL);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            return BitmapFactory.decodeStream(input);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

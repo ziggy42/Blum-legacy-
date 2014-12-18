@@ -11,7 +11,7 @@ public class Notification implements Comparable<Notification> {
     public final static String TYPE_RETWEET = "retweet";
     public final static String TYPE_MENTION = "mention";
     public final static String TYPE_FOLLOW = "newfollower";
-    public final static String TYPE_RETWEET_MENTIONED = "newfollower";
+    public final static String TYPE_RETWEET_MENTIONED = "retweetmentioned";
 
     public boolean read;
     public long tweetID, userID;

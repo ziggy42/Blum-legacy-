@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.UserListAdapter;
@@ -28,6 +29,7 @@ public class SearchUserFragment extends Fragment{
     private UserListAdapter mAdapter;
     private String query;
     private ProgressBar loadingProgressBar;
+    private TextView nothingToShowTextView;
 
     public static SearchUserFragment newInstance(String query) {
         SearchUserFragment f = new SearchUserFragment();
@@ -58,6 +60,7 @@ public class SearchUserFragment extends Fragment{
         mRecyclerView.setAdapter(mAdapter);
 
         loadingProgressBar = (ProgressBar) rootView.findViewById(R.id.loadingProgressBar);
+        nothingToShowTextView = (TextView) rootView.findViewById(R.id.nothingToShowTextView);
 
         new LoadUsers().execute(null, null, null);
 
@@ -84,6 +87,9 @@ public class SearchUserFragment extends Fragment{
             if (result) {
                 mAdapter.notifyDataSetChanged();
                 loadingProgressBar.setVisibility(View.GONE);
+
+                if (mDataSet.size() == 0)
+                    nothingToShowTextView.setVisibility(View.VISIBLE);
             }
         }
     }
