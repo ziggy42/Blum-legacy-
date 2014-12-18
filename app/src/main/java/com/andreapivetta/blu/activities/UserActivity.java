@@ -206,30 +206,33 @@ public class UserActivity extends ActionBarActivity {
                 switch (STATUS) {
                     case I_FOLLOW_HIM:
                         builder.setTitle(getString(R.string.you_are_following))
-                                .setMessage(getString(R.string.stop_following) + " " + user.getName() + "?")
+                                .setMessage(getString(R.string.stop_following, user.getName()))
                                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        new FollowTwitterUser(UserActivity.this, twitter, false).execute(user.getId());
+                                        new FollowTwitterUser(UserActivity.this, twitter, false)
+                                                .execute(user.getId());
                                     }
                                 });
                         break;
                     case WE_FOLLOW_EACH_OTHER:
-                        builder.setTitle(getString(R.string.you_and) + " " + user.getName() + " " + getString(R.string.are_following_ea))
-                                .setMessage(getString(R.string.stop_following) + " " + user.getName() + "?")
+                        builder.setTitle(getString(R.string.are_following_ea, user.getName()))
+                                .setMessage(getString(R.string.stop_following, user.getName()))
                                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        new FollowTwitterUser(UserActivity.this, twitter, false).execute(user.getId());
+                                        new FollowTwitterUser(UserActivity.this, twitter, false)
+                                                .execute(user.getId());
                                     }
                                 });
                         break;
                     default:
-                        builder.setTitle(getString(R.string.follow) + " " + user.getName() + "?")
+                        builder.setTitle(getString(R.string.follow, user.getName()))
                                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        new FollowTwitterUser(UserActivity.this, twitter, true).execute(user.getId());
+                                        new FollowTwitterUser(UserActivity.this, twitter, true)
+                                                .execute(user.getId());
                                     }
                                 });
                         break;
@@ -242,17 +245,17 @@ public class UserActivity extends ActionBarActivity {
         String amount = user.getStatusesCount() + "";
         StyleSpan b = new StyleSpan(android.graphics.Typeface.BOLD);
 
-        SpannableStringBuilder sb = new SpannableStringBuilder(amount + "\n" + getString(R.string.tweets));
+        SpannableStringBuilder sb = new SpannableStringBuilder(getString(R.string.amount_tweets, amount));
         sb.setSpan(b, 0, amount.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         tweetAmountTextView.setText(sb);
 
         amount = user.getFriendsCount() + "";
-        sb = new SpannableStringBuilder(amount + "\n" + getString(R.string.following));
+        sb = new SpannableStringBuilder(getString(R.string.amount_following, amount));
         sb.setSpan(b, 0, amount.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         followingAmountTextView.setText(sb);
 
         amount = user.getFollowersCount() + "";
-        sb = new SpannableStringBuilder(amount + "\n" + getString(R.string.followers));
+        sb = new SpannableStringBuilder(getString(R.string.amount_followers, amount));
         sb.setSpan(b, 0, amount.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         followersAmountTextView.setText(sb);
 
@@ -260,8 +263,7 @@ public class UserActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(UserActivity.this, UserTimeLineActivity.class);
-                i.putExtra("ID", user.getId())
-                        .putExtra("Twitter", twitter);
+                i.putExtra("ID", user.getId());
                 startActivity(i);
             }
         });
@@ -335,7 +337,7 @@ public class UserActivity extends ActionBarActivity {
     private Intent getDefaultIntent() {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_TEXT,
-                getString(R.string.check_out) + " " + user.getName() + " " + getString(R.string.on_twitter) + " http://twitter.com/" + user.getScreenName());
+                getString(R.string.check_out, user.getName(), user.getScreenName()));
         intent.setType("text/plain");
         return intent;
     }
@@ -370,7 +372,7 @@ public class UserActivity extends ActionBarActivity {
                 invalidateOptionsMenu();
                 new GetTimeLine().execute(null, null, null);
             } else {
-                Toast.makeText(UserActivity.this, "Can't find this user", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserActivity.this, getString(R.string.cant_find_user), Toast.LENGTH_SHORT).show();
                 finish();
             }
         }
@@ -405,7 +407,7 @@ public class UserActivity extends ActionBarActivity {
                 mUsersAdapter.notifyDataSetChanged();
                 dialogLoading = true;
             } else {
-                Toast.makeText(UserActivity.this, "Can't load users", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserActivity.this, getString(R.string.cant_load_user), Toast.LENGTH_SHORT).show();
             }
         }
     }

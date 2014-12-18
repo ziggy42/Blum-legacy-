@@ -5,7 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="login_button_text">Sign in with Twitter</string>
     <string name="welcome">Welcome</string>
-    <string name="retweeted_by">Retweeted by</string>
+    <string name="retweeted_by">Retweeted by @%1$s</string>
     <string name="new_tweet_dialog_title">Say Something</string>
     <string name="tweet">Tweet</string>
     <string name="cancel">Cancel</string>
@@ -13,21 +13,16 @@
     <string name="tweet_length">140</string>
     <string name="sending_tweet_title">Sending Tweet</string>
     <string name="sending_tweet_content">Sending in Progress</string>
-    <string name="title_activity_user"></string>
+    <string name="title_activity_user"/>
     <string name="share_tweet">Share this Tweet!</string>
     <string name="retweet_title">Retweet?</string>
     <string name="retweet">Retweet</string>
-    <string name="tweets">Tweets</string>
-    <string name="following">Following</string>
-    <string name="followers">Followers</string>
     <string name="you_are_following">You\'re following this user</string>
-    <string name="stop_following">Stop following</string>
+    <string name="stop_following">Stop following %1$s?</string>
     <string name="ok">OK</string>
-    <string name="you_and">You and</string>
-    <string name="are_following_ea">are following each other</string>
-    <string name="follow">Follow</string>
-    <string name="check_out">Check out</string>
-    <string name="on_twitter">on Twitter</string>
+    <string name="are_following_ea">You and %1$s are following each other</string>
+    <string name="follow">Follow %1$s?</string>
+    <string name="check_out">Check out %1$s on Twitter http://twitter.com/%2$s</string>
     <string name="share">Share</string>
     <string name="pref_account_title">Account</string>
     <string name="logout_pref_title">Logout</string>
@@ -38,23 +33,34 @@
     <string name="internet_connection_required">This operation requires an internet connection</string>
     <string name="title_activity_tweet">Tweet</string>
     <string name="openTweet_imageButton_contentDescriptor">Open Tweet Image Button</string>
-    <string name="favourites">FAVOURITES</string>
-    <string name="retweets">RETWEETS</string>
+    <string name="favourites">%1$s FAVOURITES</string>
+    <string name="retweets">%1$s RETWEETS</string>
     <string name="notifications">Notifications</string>
-    <string name="title_activity_notifications">Notifications</string>
-    <string name="favourite_not">favorite your Tweet:</string>
-    <string name="nothig_to_show">Nothing to show here :(</string>
-    <string name="retweet_not">retweeted you:</string>
+    <string name="nothing_to_show">Nothing to show here :(</string>
     <string name="is_following_not">followed you</string>
-    <string name="mentioned_not">mentioned you:</string>
-    <string name="retweet_mentioned_not">retweeted a Tweet you were mentioned in:</string>
+    <string name="mentioned_not">%1$s mentioned you:</string>
     <string name="action_clear_db">Delete All Notifications</string>
     <string name="clear_database">Delete all notifications?</string>
+    <string name="action_search">Search</string>
+    <string name="search_hint">Search Tweet or User</string>
+    <string name="title_activity_search" />
+    <string name="logout_done">Log Out Done.</string>
+    <string name="fav_not_title">%1$s favorited your Tweet</string>
+    <string name="retw_not_title">%1$s retweeted you</string>
+    <string name="follow_not_title">%1$s followed you</string>
+    <string name="reply_not_title">%1$s tweeted</string>
+    <string name="retw_ment_not_title">%1$s retweeted a Tweet you were mentioned in</string>
+    <string name="amount_tweets">%1$s\nTweets</string>
+    <string name="amount_followers">%1$s\n Followers</string>
+    <string name="amount_following">%1$s\nFollowing</string>
+    <string name="cant_find_user">Can\'t find this user</string>
+    <string name="cant_load_user">Can\'t load users</string>
 
     <array name="notifications_tabs_names">
         <item>New</item>
         <item>Old</item>
     </array>
+
     <array name="search_tabs_names">
         <item>Tweets</item>
         <item>Users</item>
@@ -74,13 +80,5 @@
     <string name="send_tweet_button_contentDescriptor">Send Tweet image Button</string>
     <string name="follow_user_contentDescription">Follow User ImageButton</string>
     <string name="notifications_contentDescription">Notifications</string>
-    <string name="action_search">Search</string>
-    <string name="search_hint">Search Tweet or User</string>
-    <string name="title_activity_search" />
-    <string name="fav_not_title">%1$s favorited your Tweet</string>
-    <string name="retw_not_title">%1$s retweeted you</string>
-    <string name="follow_not_title">%1$s followed you</string>
-    <string name="reply_not_title">%1$s tweeted</string>
-    <string name="retw_ment_not_title">%1$s retweeted a Tweet you were mentioned in</string>
 
 </resources>

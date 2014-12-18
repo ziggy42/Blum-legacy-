@@ -92,16 +92,16 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             SpannableStringBuilder sb;
             switch (notification.type) {
                 case Notification.TYPE_FAVOURITE:
-                    sb = new SpannableStringBuilder(screenName + " " + context.getString(R.string.favourite_not));
+                    sb = new SpannableStringBuilder(context.getString(R.string.fav_not_title, screenName));
                     break;
                 case Notification.TYPE_RETWEET:
-                    sb = new SpannableStringBuilder(screenName + " " + context.getString(R.string.retweet_not));
+                    sb = new SpannableStringBuilder(context.getString(R.string.retw_not_title, screenName));
                     break;
                 case Notification.TYPE_MENTION:
-                    sb = new SpannableStringBuilder(screenName + " " + context.getString(R.string.mentioned_not));
+                    sb = new SpannableStringBuilder(context.getString(R.string.mentioned_not, screenName));
                     break;
                 default:
-                    sb = new SpannableStringBuilder(screenName + " " + context.getString(R.string.retweet_mentioned_not));
+                    sb = new SpannableStringBuilder(context.getString(R.string.retw_ment_not_title, screenName));
                     break;
             }
 

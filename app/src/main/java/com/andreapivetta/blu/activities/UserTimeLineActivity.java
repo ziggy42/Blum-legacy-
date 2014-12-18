@@ -77,7 +77,7 @@ public class UserTimeLineActivity extends TimeLineActivity {
                 invalidateOptionsMenu();
                 new GetTimeLine().execute(null, null, null);
             } else {
-                Toast.makeText(UserTimeLineActivity.this, "Can't find this user", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserTimeLineActivity.this, getString(R.string.cant_find_user), Toast.LENGTH_SHORT).show();
                 finish();
             }
         }

@@ -79,7 +79,8 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             if (mDataSet.get(position).isRetweet()) {
                 currentStatus = mDataSet.get(position).getRetweetedStatus();
                 ((VHItem) holder).retweetTextView.setVisibility(View.VISIBLE);
-                ((VHItem) holder).retweetTextView.setText(context.getString(R.string.retweeted_by) + " @" + mDataSet.get(position).getUser().getScreenName());
+                ((VHItem) holder).retweetTextView.setText(
+                        context.getString(R.string.retweeted_by, mDataSet.get(position).getUser().getScreenName()));
             } else {
                 currentStatus = mDataSet.get(position);
                 ((VHItem) holder).retweetTextView.setVisibility(View.GONE);
@@ -180,7 +181,8 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             if (mDataSet.get(position).isRetweet()) {
                 currentStatus = mDataSet.get(position).getRetweetedStatus();
                 ((VHHeader) holder).retweetTextView.setVisibility(View.VISIBLE);
-                ((VHHeader) holder).retweetTextView.setText(context.getString(R.string.retweeted_by) + " @" + currentStatus.getUser().getScreenName());
+                ((VHHeader) holder).retweetTextView.setText(
+                        context.getString(R.string.retweeted_by, currentStatus.getUser().getScreenName()));
             } else {
                 currentStatus = mDataSet.get(position);
             }
@@ -198,14 +200,14 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             String amount = currentStatus.getFavoriteCount() + "";
             StyleSpan b = new StyleSpan(android.graphics.Typeface.BOLD);
 
-            SpannableStringBuilder sb = new SpannableStringBuilder(amount + " " + context.getString(R.string.favourites));
+            SpannableStringBuilder sb = new SpannableStringBuilder(context.getString(R.string.favourites, amount));
             sb.setSpan(b, 0, amount.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             ((VHHeader) holder).favouritesStatsTextView.setText(sb);
 
             amount = currentStatus.getRetweetCount() + "";
             b = new StyleSpan(android.graphics.Typeface.BOLD);
 
-            sb = new SpannableStringBuilder(amount + " " + context.getString(R.string.retweets));
+            sb = new SpannableStringBuilder(context.getString(R.string.retweets, amount));
             sb.setSpan(b, 0, amount.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             ((VHHeader) holder).retweetsStatsTextView.setText(sb);
 
@@ -284,11 +286,10 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     void share(Status status) {
-        String url = "https://twitter.com/" + status.getUser().getScreenName()
-                + "/status/" + status.getId();
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND)
-                .putExtra(Intent.EXTRA_TEXT, url)
+                .putExtra(Intent.EXTRA_TEXT, "https://twitter.com/" +
+                        status.getUser().getScreenName() + "/status/" + status.getId())
                 .setType("text/plain");
         context.startActivity(Intent.createChooser(sendIntent, context.getString(R.string.share_tweet)));
     }
@@ -315,7 +316,8 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public ImageView userProfilePicImageView, tweetPhotoImageView;
         public LinearLayout interactionLinearLayout;
         public FrameLayout cardView;
-        public ImageButton favouriteImageButton, retweetImageButton, respondImageButton, shareImageButton, openTweetImageButton;
+        public ImageButton favouriteImageButton, retweetImageButton, respondImageButton,
+                shareImageButton, openTweetImageButton;
 
         public VHItem(View container) {
             super(container);

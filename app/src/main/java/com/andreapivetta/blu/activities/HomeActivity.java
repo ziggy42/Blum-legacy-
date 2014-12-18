@@ -47,7 +47,6 @@ public class HomeActivity extends TimeLineActivity {
 
         NotificationsDatabaseManager databaseManager = new NotificationsDatabaseManager(HomeActivity.this);
         databaseManager.open();
-        //databaseManager.clearDatabase();
         mNotificationsCount = databaseManager.getCountUnreadNotifications();
         databaseManager.close();
 

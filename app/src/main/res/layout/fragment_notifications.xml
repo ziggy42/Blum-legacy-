@@ -18,7 +18,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:gravity="center"
-        android:text="@string/nothig_to_show"
+        android:text="@string/nothing_to_show"
         android:textColor="@color/lightGrey"
         android:textSize="24sp"
         android:visibility="gone" />

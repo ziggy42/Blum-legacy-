@@ -73,7 +73,7 @@
 
         <activity
             android:name=".activities.NotificationsActivity"
-            android:label="@string/title_activity_notifications" />
+            android:label="@string/notifications" />
 
         <activity
             android:name=".activities.SearchActivity"
