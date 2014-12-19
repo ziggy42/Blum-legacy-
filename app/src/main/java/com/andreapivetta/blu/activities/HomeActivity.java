@@ -162,6 +162,8 @@ public class HomeActivity extends TimeLineActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_search) {
             onSearchRequested();
+        } else if (item.getItemId() == R.id.action_profile) {
+            startActivity(new Intent(HomeActivity.this, UserActivity.class));
         }
 
         return super.onOptionsItemSelected(item);

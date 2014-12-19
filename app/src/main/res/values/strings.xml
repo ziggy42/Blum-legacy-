@@ -80,5 +80,6 @@
     <string name="send_tweet_button_contentDescriptor">Send Tweet image Button</string>
     <string name="follow_user_contentDescription">Follow User ImageButton</string>
     <string name="notifications_contentDescription">Notifications</string>
+    <string name="action_profile">My Profile</string>
 
 </resources>

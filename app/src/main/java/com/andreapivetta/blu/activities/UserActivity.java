@@ -347,7 +347,10 @@ public class UserActivity extends ActionBarActivity {
         @Override
         protected Boolean doInBackground(Long... params) {
             try {
-                user = twitter.showUser(params[0]);
+                if (params[0] != 0)
+                    user = twitter.showUser(params[0]);
+                else
+                    user = twitter.showUser(twitter.getId());
 
                 Relationship rel = twitter.showFriendship(twitter.getId(), user.getId());
                 if (rel.isSourceFollowingTarget() && rel.isTargetFollowingSource()) {
