@@ -22,6 +22,8 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +53,7 @@ public class UserActivity extends ActionBarActivity {
     private final static int I_FOLLOW_HIM = 0;
     private final static int WE_FOLLOW_EACH_OTHER = 2;
     private final static int I_DONT_KNOW_WHO_YOU_ARE = -1;
+    private final static int THIS_IS_ME = 42;
     private int STATUS;
 
     private Twitter twitter;
@@ -63,6 +66,8 @@ public class UserActivity extends ActionBarActivity {
     private int dialogPastVisibleItems, dialogVisibleItemCount, dialogTotalItemCount;
     private long cursor = -1;
 
+    private RelativeLayout containerRelativeLayout;
+    private ProgressBar loadingProgressBar;
     private ImageView profileBackgroundImageView, profilePictureImageView;
     private TextView userNickTextView, userNameTextView, descriptionTextView, userLocationTextView,
             userWebsiteTextView, tweetAmountTextView, followingAmountTextView, followersAmountTextView;
@@ -80,6 +85,8 @@ public class UserActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
+        twitter = TwitterUtils.getTwitter(UserActivity.this);
+
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -93,6 +100,8 @@ public class UserActivity extends ActionBarActivity {
         }
 
         twitter = TwitterUtils.getTwitter(UserActivity.this);
+        containerRelativeLayout = (RelativeLayout) findViewById(R.id.containerRelativeLayout);
+        loadingProgressBar = (ProgressBar) findViewById(R.id.loadingProgressBar);
         profileBackgroundImageView = (ImageView) findViewById(R.id.profileBackgroundImageView);
         profilePictureImageView = (ImageView) findViewById(R.id.userProfilePicImageView);
         userNameTextView = (TextView) findViewById(R.id.userNameTextView);
@@ -141,7 +150,8 @@ public class UserActivity extends ActionBarActivity {
                     @TargetApi(21)
                     public void onSuccess() {
                         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            //Bitmap onePixelBitmap = Bitmap.createScaledBitmap(((BitmapDrawable) profileBackgroundImageView.getDrawable()).getBitmap(), 1, 1, true);
+                            //Bitmap onePixelBitmap = Bitmap.createScaledBitmap(
+                            // ((BitmapDrawable) profileBackgroundImageView.getDrawable()).getBitmap(), 1, 1, true);
                             //int pixel = onePixelBitmap.getPixel(0, 0);
                             //getWindow().setStatusBarColor(Color.rgb(Color.red(pixel), Color.green(pixel), Color.blue(pixel)));
 
@@ -182,7 +192,10 @@ public class UserActivity extends ActionBarActivity {
         else
             userWebsiteTextView.setVisibility(View.GONE);
 
-        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) { // TODO REMOVE AND CHANGE API MIN
+        if (STATUS == THIS_IS_ME) {
+            followImageButton.setVisibility(View.GONE);
+        } else {
+
             switch (STATUS) {
                 case I_FOLLOW_HIM:
                     followImageButton.setBackground(getResources().getDrawable(R.drawable.circle_button_blue));
@@ -195,52 +208,51 @@ public class UserActivity extends ActionBarActivity {
                 default:
                     break;
             }
-        }
 
+            followImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(UserActivity.this);
 
-        followImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(UserActivity.this);
+                    switch (STATUS) {
+                        case I_FOLLOW_HIM:
+                            builder.setTitle(getString(R.string.you_are_following))
+                                    .setMessage(getString(R.string.stop_following, user.getName()))
+                                    .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            new FollowTwitterUser(UserActivity.this, twitter, false)
+                                                    .execute(user.getId());
+                                        }
+                                    });
+                            break;
+                        case WE_FOLLOW_EACH_OTHER:
+                            builder.setTitle(getString(R.string.are_following_ea, user.getName()))
+                                    .setMessage(getString(R.string.stop_following, user.getName()))
+                                    .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            new FollowTwitterUser(UserActivity.this, twitter, false)
+                                                    .execute(user.getId());
+                                        }
+                                    });
+                            break;
+                        default:
+                            builder.setTitle(getString(R.string.follow, user.getName()))
+                                    .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            new FollowTwitterUser(UserActivity.this, twitter, true)
+                                                    .execute(user.getId());
+                                        }
+                                    });
+                            break;
+                    }
 
-                switch (STATUS) {
-                    case I_FOLLOW_HIM:
-                        builder.setTitle(getString(R.string.you_are_following))
-                                .setMessage(getString(R.string.stop_following, user.getName()))
-                                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        new FollowTwitterUser(UserActivity.this, twitter, false)
-                                                .execute(user.getId());
-                                    }
-                                });
-                        break;
-                    case WE_FOLLOW_EACH_OTHER:
-                        builder.setTitle(getString(R.string.are_following_ea, user.getName()))
-                                .setMessage(getString(R.string.stop_following, user.getName()))
-                                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        new FollowTwitterUser(UserActivity.this, twitter, false)
-                                                .execute(user.getId());
-                                    }
-                                });
-                        break;
-                    default:
-                        builder.setTitle(getString(R.string.follow, user.getName()))
-                                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        new FollowTwitterUser(UserActivity.this, twitter, true)
-                                                .execute(user.getId());
-                                    }
-                                });
-                        break;
+                    builder.setNegativeButton(getString(R.string.cancel), null).create().show();
                 }
-
-                builder.setNegativeButton(getString(R.string.cancel), null).create().show();
-            }
-        });
+            });
+        }
 
         String amount = user.getStatusesCount() + "";
         StyleSpan b = new StyleSpan(android.graphics.Typeface.BOLD);
@@ -347,18 +359,21 @@ public class UserActivity extends ActionBarActivity {
         @Override
         protected Boolean doInBackground(Long... params) {
             try {
-                if (params[0] != 0)
+                if (params[0] != 0) {
                     user = twitter.showUser(params[0]);
-                else
+
+                    Relationship rel = twitter.showFriendship(twitter.getId(), user.getId());
+                    if (rel.isSourceFollowingTarget() && rel.isTargetFollowingSource()) {
+                        STATUS = WE_FOLLOW_EACH_OTHER;
+                    } else if (rel.isSourceFollowingTarget()) {
+                        STATUS = I_FOLLOW_HIM;
+                    } else {
+                        STATUS = I_DONT_KNOW_WHO_YOU_ARE;
+                    }
+                } else {
                     user = twitter.showUser(twitter.getId());
 
-                Relationship rel = twitter.showFriendship(twitter.getId(), user.getId());
-                if (rel.isSourceFollowingTarget() && rel.isTargetFollowingSource()) {
-                    STATUS = WE_FOLLOW_EACH_OTHER;
-                } else if (rel.isSourceFollowingTarget()) {
-                    STATUS = I_FOLLOW_HIM;
-                } else {
-                    STATUS = I_DONT_KNOW_WHO_YOU_ARE;
+                    STATUS = THIS_IS_ME;
                 }
 
             } catch (TwitterException e) {
@@ -371,6 +386,8 @@ public class UserActivity extends ActionBarActivity {
 
         protected void onPostExecute(Boolean status) {
             if (status) {
+                containerRelativeLayout.setVisibility(View.VISIBLE);
+                loadingProgressBar.setVisibility(View.GONE);
                 setUpUI();
                 invalidateOptionsMenu();
                 new GetTimeLine().execute(null, null, null);
