@@ -30,8 +30,16 @@ public class SearchTweetsFragment extends Fragment {
     private Twitter twitter;
     private TweetsListAdapter mAdapter;
     private String query;
+    private LinearLayoutManager mLinearLayoutManager;
+
     private ProgressBar loadingProgressBar;
     private TextView nothingToShowTextView;
+
+    private boolean loading = true;
+    private int pastVisibleItems, visibleItemCount, totalItemCount;
+
+    private Query mQuery;
+    private QueryResult result;
 
     public static SearchTweetsFragment newInstance(String query) {
         SearchTweetsFragment f = new SearchTweetsFragment();
@@ -47,6 +55,7 @@ public class SearchTweetsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         query = getArguments().getString("QUERY");
+        mQuery = new Query(query);
     }
 
     @Override
@@ -56,10 +65,27 @@ public class SearchTweetsFragment extends Fragment {
 
         twitter = TwitterUtils.getTwitter(getActivity());
         RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.notificationsRecyclerView);
-        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mAdapter = new TweetsListAdapter(mDataSet, getActivity(), twitter, -1);
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                visibleItemCount = mLinearLayoutManager.getChildCount();
+                totalItemCount = mLinearLayoutManager.getItemCount();
+                pastVisibleItems = mLinearLayoutManager.findFirstVisibleItemPosition() + 1;
+
+                if (loading) {
+                    if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                        loading = false;
+                        new LoadTweets().execute(null, null, null);
+                    }
+                }
+            }
+        });
 
         loadingProgressBar = (ProgressBar) rootView.findViewById(R.id.loadingProgressBar);
         nothingToShowTextView = (TextView) rootView.findViewById(R.id.nothingToShowTextView);
@@ -73,9 +99,16 @@ public class SearchTweetsFragment extends Fragment {
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                QueryResult result = twitter.search(new Query(query));
+                result = twitter.search(mQuery);
                 for (twitter4j.Status tmpStatus : result.getTweets()) {
-                        mDataSet.add(tmpStatus);
+                    mDataSet.add(tmpStatus);
+                }
+
+                if (!result.hasNext()) {
+                    loading = false;
+                } else {
+                    loading = true;
+                    mQuery = result.nextQuery();
                 }
             } catch (TwitterException e) {
                 e.printStackTrace();

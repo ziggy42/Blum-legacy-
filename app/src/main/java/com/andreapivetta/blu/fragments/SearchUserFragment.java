@@ -17,19 +17,27 @@ import com.andreapivetta.blu.twitter.TwitterUtils;
 
 import java.util.ArrayList;
 
+import twitter4j.Paging;
 import twitter4j.ResponseList;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.User;
 
 
-public class SearchUserFragment extends Fragment{
+public class SearchUserFragment extends Fragment {
+
     private ArrayList<User> mDataSet = new ArrayList<>();
     private Twitter twitter;
     private UserListAdapter mAdapter;
+    private LinearLayoutManager mLinearLayoutManager;
     private String query;
+    private Paging paging = new Paging(1, 200);
+
     private ProgressBar loadingProgressBar;
     private TextView nothingToShowTextView;
+
+    private boolean loading = true;
+    private int pastVisibleItems, visibleItemCount, totalItemCount;
 
     public static SearchUserFragment newInstance(String query) {
         SearchUserFragment f = new SearchUserFragment();
@@ -54,10 +62,27 @@ public class SearchUserFragment extends Fragment{
 
         twitter = TwitterUtils.getTwitter(getActivity());
         RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.notificationsRecyclerView);
-        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mAdapter = new UserListAdapter(mDataSet, getActivity(), twitter);
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                visibleItemCount = mLinearLayoutManager.getChildCount();
+                totalItemCount = mLinearLayoutManager.getItemCount();
+                pastVisibleItems = mLinearLayoutManager.findFirstVisibleItemPosition() + 1;
+
+                if (loading) {
+                    if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                        loading = false;
+                        new LoadUsers().execute(null, null, null);
+                    }
+                }
+            }
+        });
 
         loadingProgressBar = (ProgressBar) rootView.findViewById(R.id.loadingProgressBar);
         nothingToShowTextView = (TextView) rootView.findViewById(R.id.nothingToShowTextView);
@@ -71,9 +96,14 @@ public class SearchUserFragment extends Fragment{
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                ResponseList<User> users = twitter.searchUsers(query, 1);
+                ResponseList<User> users = twitter.searchUsers(query, paging.getPage());
                 for (twitter4j.User user : users)
-                    mDataSet.add(user);
+                    if (mDataSet.contains(user))
+                        return true;
+                    else
+                        mDataSet.add(user);
+
+                paging.setPage(paging.getPage() + 1);
 
             } catch (TwitterException e) {
                 e.printStackTrace();
@@ -90,6 +120,8 @@ public class SearchUserFragment extends Fragment{
 
                 if (mDataSet.size() == 0)
                     nothingToShowTextView.setVisibility(View.VISIBLE);
+
+                loading = true;
             }
         }
     }

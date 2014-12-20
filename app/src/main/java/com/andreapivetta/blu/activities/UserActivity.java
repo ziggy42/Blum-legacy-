@@ -85,8 +85,6 @@ public class UserActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        twitter = TwitterUtils.getTwitter(UserActivity.this);
-
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
