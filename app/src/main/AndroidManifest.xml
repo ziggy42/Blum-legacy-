@@ -16,26 +16,22 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".activities.HomeActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value=".activities.SearchActivity" />
-
         </activity>
-
         <activity android:name=".activities.LoginActivity" />
-
         <activity android:name=".twitter.TwitterOAuthActivity" />
-
         <activity
             android:name=".activities.UserActivity"
             android:label="@string/title_activity_user"
@@ -44,7 +40,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.HomeActivity" />
         </activity>
-
         <activity
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -53,7 +48,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.HomeActivity" />
         </activity>
-
         <activity
             android:name=".activities.UserTimeLineActivity"
             android:parentActivityName=".activities.UserActivity">
@@ -61,7 +55,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.UserActivity" />
         </activity>
-
         <activity
             android:name=".activities.TweetActivity"
             android:label="@string/title_activity_tweet"
@@ -70,15 +63,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.HomeActivity" />
         </activity>
-
         <activity
             android:name=".activities.NotificationsActivity"
             android:label="@string/notifications" />
-
         <activity
             android:name=".activities.SearchActivity"
             android:label="@string/title_activity_search">
-
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -86,8 +76,11 @@
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
-
         </activity>
+        <activity
+            android:name=".activities.NewTweetActivity"
+            android:label="@string/title_activity_new_tweet"
+            android:windowSoftInputMode="stateVisible" />
 
         <service
             android:name=".services.NotificationService"

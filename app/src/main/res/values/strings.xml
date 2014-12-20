@@ -13,7 +13,7 @@
     <string name="tweet_length">140</string>
     <string name="sending_tweet_title">Sending Tweet</string>
     <string name="sending_tweet_content">Sending in Progress</string>
-    <string name="title_activity_user"/>
+    <string name="title_activity_user" />
     <string name="share_tweet">Share this Tweet!</string>
     <string name="retweet_title">Retweet?</string>
     <string name="retweet">Retweet</string>
@@ -55,6 +55,8 @@
     <string name="amount_following">%1$s\nFollowing</string>
     <string name="cant_find_user">Can\'t find this user</string>
     <string name="cant_load_user">Can\'t load users</string>
+    <string name="action_profile">My Profile</string>
+    <string name="title_activity_new_tweet">New Tweet</string>
 
     <array name="notifications_tabs_names">
         <item>New</item>
@@ -80,6 +82,7 @@
     <string name="send_tweet_button_contentDescriptor">Send Tweet image Button</string>
     <string name="follow_user_contentDescription">Follow User ImageButton</string>
     <string name="notifications_contentDescription">Notifications</string>
-    <string name="action_profile">My Profile</string>
+    <string name="send_tweet">Send Tweet</string>
+    <string name="too_many_characters">Too many characters</string>
 
 </resources>

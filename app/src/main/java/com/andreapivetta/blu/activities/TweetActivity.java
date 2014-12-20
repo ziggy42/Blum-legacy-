@@ -115,89 +115,9 @@ public class TweetActivity extends ActionBarActivity {
         replyImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(TweetActivity.this);
-                View dialogView = View.inflate(TweetActivity.this, R.layout.dialog_new_tweet, null);
-
-                final EditText newTweetEditText = (EditText) dialogView.findViewById(R.id.newTweetEditText);
-                final TextView charsLeftTextView = (TextView) dialogView.findViewById(R.id.charsLeftTextView);
-                uploadedImageView = (ImageView) dialogView.findViewById(R.id.uploadedImageView);
-                final ImageButton takePhotoImageButton = (ImageButton) dialogView.findViewById(R.id.takePhotoImageButton);
-                final ImageButton grabImageImageButton = (ImageButton) dialogView.findViewById(R.id.grabimageImageButton);
-
-                newTweetEditText.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        int i = (140 - s.length());
-                        charsLeftTextView.setText(i + "");
-                        if (i < 0)
-                            charsLeftTextView.setTextColor(getResources().getColor(R.color.red));
-                        else
-                            charsLeftTextView.setTextColor(getResources().getColor(R.color.grey));
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-
-                    }
-                });
-
-                newTweetEditText.setText("@" + status.getUser().getScreenName());
-
-                takePhotoImageButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                            File photoFile = null;
-                            try {
-                                photoFile = createImageFile();
-                            } catch (IOException ex) {
-                                ex.printStackTrace();
-                            }
-
-                            if (photoFile != null) {
-                                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                                        Uri.fromFile(photoFile));
-                                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-                            }
-                        }
-                    }
-                });
-
-                grabImageImageButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                        photoPickerIntent.setType("image/*");
-                        startActivityForResult(photoPickerIntent, REQUEST_GRAB_IMAGE);
-                    }
-                });
-
-                builder
-                        .setView(dialogView)
-                        .setTitle(getString(R.string.new_tweet_dialog_title))
-                        .setPositiveButton(getString(R.string.tweet), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (uploadedImageView.getVisibility() == View.VISIBLE)
-                                    new UpdateTwitterStatus(TweetActivity.this, twitter, imageFile)
-                                            .execute(newTweetEditText.getText().toString());
-                                else
-                                    new UpdateTwitterStatus(TweetActivity.this, twitter)
-                                            .execute(newTweetEditText.getText().toString());
-                            }
-                        })
-                        .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        }).create().show();
+                Intent i = new Intent(TweetActivity.this, NewTweetActivity.class);
+                i.putExtra("USER_PREFIX", "@" + status.getUser().getScreenName());
+                startActivity(i);
             }
         });
 
