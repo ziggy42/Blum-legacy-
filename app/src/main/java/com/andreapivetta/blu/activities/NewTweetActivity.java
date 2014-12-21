@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -36,13 +37,14 @@ public class NewTweetActivity extends ActionBarActivity {
     protected static final int REQUEST_GRAB_IMAGE = 3;
     protected static final int REQUEST_TAKE_PHOTO = 1;
 
-    private TextView charsLeftTextView;
     private ImageView uploadedImageView;
     private EditText newTweetEditText;
 
-    private String mCurrentPhotoPath, userPrefix;
+    private String mCurrentPhotoPath;
     private File imageFile;
     private Twitter twitter;
+
+    private int charsLeft = 140;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,15 +64,12 @@ public class NewTweetActivity extends ActionBarActivity {
         }
 
         twitter = TwitterUtils.getTwitter(NewTweetActivity.this);
-        userPrefix = getIntent().getStringExtra("USER_PREFIX");
-
         newTweetEditText = (EditText) findViewById(R.id.newTweetEditText);
-        charsLeftTextView = (TextView) findViewById(R.id.charsLeftTextView);
         uploadedImageView = (ImageView) findViewById(R.id.uploadedImageView);
         ImageButton takePhotoImageButton = (ImageButton) findViewById(R.id.takePhotoImageButton);
-        ImageButton grabImageImageButton = (ImageButton) findViewById(R.id.grabimageImageButton);
+        ImageButton grabImageImageButton = (ImageButton) findViewById(R.id.grabImageImageButton);
 
-        newTweetEditText.setText(userPrefix);
+        newTweetEditText.setText(getIntent().getStringExtra("USER_PREFIX"));
 
         newTweetEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -80,13 +79,8 @@ public class NewTweetActivity extends ActionBarActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int i = (140 - s.length());
-                charsLeftTextView.setText(i + "");
-                if (i < 0)
-                    charsLeftTextView.setTextColor(getResources().getColor(R.color.red));
-                else
-                    charsLeftTextView.setTextColor(getResources().getColor(R.color.grey));
-
+                charsLeft = (140 - s.length());
+                invalidateOptionsMenu();
             }
 
             @Override
@@ -171,14 +165,25 @@ public class NewTweetActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        menu.clear();
         getMenuInflater().inflate(R.menu.menu_new_tweet, menu);
+
+        MenuItem item = menu.findItem(R.id.action_chars_left);
+        MenuItemCompat.setActionView(item, R.layout.menu_chars_left);
+        View view = MenuItemCompat.getActionView(item);
+        TextView charsLeftTextView = (TextView) view.findViewById(R.id.charsLeftTextView);
+        charsLeftTextView.setText(String.valueOf(charsLeft));
+
+        if (charsLeft < 0)
+            charsLeftTextView.setTextColor(getResources().getColor(R.color.red));
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_send) {
-            if (Integer.parseInt(charsLeftTextView.getText().toString()) < 0) {
+            if (charsLeft < 0) {
                 (new AlertDialog.Builder(NewTweetActivity.this)).setTitle(R.string.too_many_characters)
                         .setPositiveButton(R.string.ok, null)
                         .create()

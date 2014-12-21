@@ -84,5 +84,7 @@
     <string name="notifications_contentDescription">Notifications</string>
     <string name="send_tweet">Send Tweet</string>
     <string name="too_many_characters">Too many characters</string>
+    <string name="chars_left">Chars Left</string>
+    <string name="insert_image">Insert Image</string>
 
 </resources>

@@ -4,8 +4,15 @@
     tools:context="com.andreapivetta.blu.activities.NewTweetActivity">
 
     <item
+        android:orderInCategory="100"
         android:id="@+id/action_send"
         android:icon="@drawable/ic_stat_navigation_check"
         android:title="@string/send_tweet"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_chars_left"
+        android:title="@string/chars_left"
+        app:showAsAction="ifRoom" />
+
 </menu>

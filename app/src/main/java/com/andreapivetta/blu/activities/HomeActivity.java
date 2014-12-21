@@ -120,7 +120,7 @@ public class HomeActivity extends TimeLineActivity {
         getMenuInflater().inflate(R.menu.menu_home, menu);
 
         MenuItem item = menu.findItem(R.id.action_notifications);
-        MenuItemCompat.setActionView(item, R.layout.notification_button);
+        MenuItemCompat.setActionView(item, R.layout.menu_notification_button);
         View view = MenuItemCompat.getActionView(item);
         ImageButton notificationImageButton = (ImageButton) view.findViewById(R.id.notificationImageButton);
         notificationImageButton.setOnClickListener(new View.OnClickListener() {

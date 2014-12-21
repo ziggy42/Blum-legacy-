@@ -22,8 +22,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
+                android:layout_toLeftOf="@+id/imagesLinearLayout"
+                android:layout_toStartOf="@+id/imagesLinearLayout"
                 android:orientation="vertical">
 
                 <EditText
@@ -49,44 +51,36 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/charsLeftTextView"
+            <LinearLayout
+                android:id="@+id/imagesLinearLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/contentLinearLayout"
-                android:layout_alignRight="@+id/contentLinearLayout"
-                android:layout_alignTop="@+id/grabimageImageButton"
-                android:fontFamily="sans-serif-thin"
-                android:text="@string/tweet_length"
-                android:textColor="@color/grey" />
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/takePhotoImageButton"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignLeft="@+id/contentLinearLayout"
-                android:layout_alignStart="@+id/contentLinearLayout"
-                android:layout_below="@+id/contentLinearLayout"
-                android:layout_marginTop="20dp"
-                android:background="?android:selectableItemBackground"
-                android:contentDescription="@string/take_photo_contentDescriptor"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_camera_alt_grey600_36dp" />
+                <ImageButton
+                    android:id="@+id/takePhotoImageButton"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="?android:selectableItemBackground"
+                    android:contentDescription="@string/take_photo_contentDescriptor"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_camera_alt_grey600_36dp" />
 
-            <ImageButton
-                android:id="@+id/grabimageImageButton"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_below="@+id/contentLinearLayout"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_toEndOf="@+id/takePhotoImageButton"
-                android:layout_toRightOf="@+id/takePhotoImageButton"
-                android:background="?android:selectableItemBackground"
-                android:contentDescription="@string/grab_image_contentDescriptor"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_image_grey600_36dp" />
+                <ImageButton
+                    android:id="@+id/grabImageImageButton"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:background="?android:selectableItemBackground"
+                    android:contentDescription="@string/grab_image_contentDescriptor"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_image_grey600_36dp" />
+
+            </LinearLayout>
 
         </RelativeLayout>
     </ScrollView>
