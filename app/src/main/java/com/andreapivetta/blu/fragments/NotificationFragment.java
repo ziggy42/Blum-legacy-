@@ -13,12 +13,9 @@ import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.NotificationAdapter;
 import com.andreapivetta.blu.data.Notification;
 import com.andreapivetta.blu.data.NotificationsDatabaseManager;
-import com.andreapivetta.blu.twitter.TwitterUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
-import twitter4j.Twitter;
 
 public class NotificationFragment extends Fragment {
 
@@ -55,11 +52,10 @@ public class NotificationFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_notifications, container, false);
 
-        Twitter twitter = TwitterUtils.getTwitter(getActivity());
         RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.notificationsRecyclerView);
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        NotificationAdapter mNotificationAdapter = new NotificationAdapter(notificationList, getActivity(), twitter);
+        NotificationAdapter mNotificationAdapter = new NotificationAdapter(notificationList, getActivity());
         mRecyclerView.setAdapter(mNotificationAdapter);
 
         if (notificationList.size() == 0)
@@ -73,7 +69,7 @@ public class NotificationFragment extends Fragment {
         super.onDestroy();
 
         databaseManager.open();
-        for(Notification n : notificationList)
+        for (Notification n : notificationList)
             databaseManager.setRead(n);
         databaseManager.close();
     }

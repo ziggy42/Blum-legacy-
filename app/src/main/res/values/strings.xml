@@ -6,11 +6,8 @@
     <string name="login_button_text">Sign in with Twitter</string>
     <string name="welcome">Welcome</string>
     <string name="retweeted_by">Retweeted by @%1$s</string>
-    <string name="new_tweet_dialog_title">Say Something</string>
-    <string name="tweet">Tweet</string>
     <string name="cancel">Cancel</string>
     <string name="new_tweet_hint">Tweet your life in 140 characters</string>
-    <string name="tweet_length">140</string>
     <string name="sending_tweet_title">Sending Tweet</string>
     <string name="sending_tweet_content">Sending in Progress</string>
     <string name="title_activity_user" />
@@ -85,6 +82,5 @@
     <string name="send_tweet">Send Tweet</string>
     <string name="too_many_characters">Too many characters</string>
     <string name="chars_left">Chars Left</string>
-    <string name="insert_image">Insert Image</string>
 
 </resources>

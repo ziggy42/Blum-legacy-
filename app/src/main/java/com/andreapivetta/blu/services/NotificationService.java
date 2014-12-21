@@ -310,7 +310,7 @@ public class NotificationService extends Service {
         }
     }
 
-    public Bitmap getBitmapFromURL(String strURL) {
+    Bitmap getBitmapFromURL(String strURL) {
         try {
             URL url = new URL(strURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();

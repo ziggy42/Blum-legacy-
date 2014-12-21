@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.activities.NewTweetActivity;
 import com.andreapivetta.blu.activities.TweetActivity;
 import com.andreapivetta.blu.activities.UserActivity;
 import com.andreapivetta.blu.twitter.FavoriteTweet;
@@ -158,7 +159,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             ((VHItem) holder).respondImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    reply(currentStatus);
                 }
             });
 
@@ -225,6 +226,13 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 }
             }
 
+            ((VHHeader) holder).respondImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    reply(currentStatus);
+                }
+            });
+
             ((VHHeader) holder).favouriteImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -256,9 +264,15 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
     void openProfile(Status status) {
-
         Intent i = new Intent(context, UserActivity.class);
         i.putExtra("ID", status.getUser().getId());
+        context.startActivity(i);
+    }
+
+    void reply(Status status) {
+        Intent i = new Intent(context, NewTweetActivity.class);
+        i.putExtra("USER_PREFIX", "@" + status.getUser().getScreenName())
+                .putExtra("REPLY_ID", status.getId());
         context.startActivity(i);
     }
 

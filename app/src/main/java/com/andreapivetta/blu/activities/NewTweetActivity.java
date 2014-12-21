@@ -34,8 +34,8 @@ import twitter4j.Twitter;
 
 public class NewTweetActivity extends ActionBarActivity {
 
-    protected static final int REQUEST_GRAB_IMAGE = 3;
-    protected static final int REQUEST_TAKE_PHOTO = 1;
+    private static final int REQUEST_GRAB_IMAGE = 3;
+    private static final int REQUEST_TAKE_PHOTO = 1;
 
     private ImageView uploadedImageView;
     private EditText newTweetEditText;
@@ -44,7 +44,7 @@ public class NewTweetActivity extends ActionBarActivity {
     private File imageFile;
     private Twitter twitter;
 
-    private int charsLeft = 140;
+    private int charsLeft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +69,8 @@ public class NewTweetActivity extends ActionBarActivity {
         ImageButton takePhotoImageButton = (ImageButton) findViewById(R.id.takePhotoImageButton);
         ImageButton grabImageImageButton = (ImageButton) findViewById(R.id.grabImageImageButton);
 
-        newTweetEditText.setText(getIntent().getStringExtra("USER_PREFIX"));
+        if (getIntent().getStringExtra("USER_PREFIX").length() > 0)
+            newTweetEditText.setText(getIntent().getStringExtra("USER_PREFIX") + " ");
 
         newTweetEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -88,6 +89,10 @@ public class NewTweetActivity extends ActionBarActivity {
 
             }
         });
+        newTweetEditText.setSelection(newTweetEditText.getText().length());
+
+        charsLeft = 140 - newTweetEditText.getText().length();
+        invalidateOptionsMenu();
 
         takePhotoImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,8 +131,7 @@ public class NewTweetActivity extends ActionBarActivity {
     }
 
     File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
+        String imageFileName = "JPEG_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_";
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         imageFile = File.createTempFile(imageFileName, ".jpg", storageDir);
 
@@ -190,10 +194,12 @@ public class NewTweetActivity extends ActionBarActivity {
                         .show();
             } else {
                 if (uploadedImageView.getVisibility() == View.VISIBLE)
-                    new UpdateTwitterStatus(NewTweetActivity.this, twitter, imageFile)
+                    new UpdateTwitterStatus(NewTweetActivity.this, twitter, imageFile,
+                            getIntent().getLongExtra("REPLY_ID", (long) -1))
                             .execute(newTweetEditText.getText().toString());
                 else
-                    new UpdateTwitterStatus(NewTweetActivity.this, twitter)
+                    new UpdateTwitterStatus(NewTweetActivity.this, twitter,
+                            getIntent().getLongExtra("REPLY_ID", (long) -1))
                             .execute(newTweetEditText.getText().toString());
 
                 finish();

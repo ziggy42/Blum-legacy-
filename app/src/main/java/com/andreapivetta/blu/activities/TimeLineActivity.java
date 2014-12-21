@@ -2,15 +2,9 @@ package com.andreapivetta.blu.activities;
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.provider.MediaStore;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,21 +14,13 @@ import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.TweetsListAdapter;
-import com.squareup.picasso.Picasso;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -44,9 +30,6 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
 public abstract class TimeLineActivity extends ActionBarActivity {
-
-    protected static final int REQUEST_GRAB_IMAGE = 3;
-    protected static final int REQUEST_TAKE_PHOTO = 1;
 
     protected Twitter twitter;
     protected Paging paging = new Paging(1, 200);
@@ -60,13 +43,9 @@ public abstract class TimeLineActivity extends ActionBarActivity {
     protected TweetsListAdapter mTweetsAdapter;
     protected ArrayList<Status> tweetList = new ArrayList<>();
     protected LinearLayoutManager mLinearLayoutManager;
-    protected ImageView uploadedImageView;
 
     protected boolean isUp = true, loading = true;
     protected int pastVisibleItems, visibleItemCount, totalItemCount;
-
-    protected String mCurrentPhotoPath;
-    protected File imageFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,56 +167,6 @@ public abstract class TimeLineActivity extends ActionBarActivity {
         upAnimator.start();
 
         isUp = true;
-    }
-
-    String getRealPathFromURI(Uri contentUri) {
-        String[] proj = {MediaStore.Images.Media.DATA};
-
-        CursorLoader cursorLoader = new CursorLoader(this, contentUri, proj, null, null, null);
-        Cursor cursor = cursorLoader.loadInBackground();
-
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
-    }
-
-    File createImageFile() throws IOException {
-        String imageFileName = "JPEG_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_";
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        imageFile = File.createTempFile(imageFileName, ".jpg", storageDir);
-
-        mCurrentPhotoPath = "file:" + imageFile.getAbsolutePath();
-        return imageFile;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
-        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-
-        switch (requestCode) {
-            case REQUEST_GRAB_IMAGE:
-                if (resultCode == RESULT_OK) {
-                    try {
-                        Uri selectedImage = imageReturnedIntent.getData();
-                        imageFile = new File(getRealPathFromURI(selectedImage));
-                        InputStream imageStream = getContentResolver().openInputStream(selectedImage);
-                        uploadedImageView.setVisibility(View.VISIBLE);
-                        uploadedImageView.setImageBitmap(BitmapFactory.decodeStream(imageStream));
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-            case REQUEST_TAKE_PHOTO:
-                if (resultCode == RESULT_OK) {
-                    uploadedImageView.setVisibility(View.VISIBLE);
-
-                    Picasso.with(this)
-                            .load(Uri.parse(mCurrentPhotoPath))
-                            .into(uploadedImageView);
-                }
-                break;
-        }
     }
 
     @Override

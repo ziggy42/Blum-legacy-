@@ -21,21 +21,24 @@ public class UpdateTwitterStatus extends AsyncTask<String, String, Boolean> {
     private static SharedPreferences mSharedPreferences;
     private Twitter twitter;
     private File file;
+    private long inReplyTo;
     private Context context;
 
     private NotificationCompat.Builder mBuilder;
     private NotificationManager mNotifyManager;
 
-    public UpdateTwitterStatus(Context context, Twitter twitter) {
+    public UpdateTwitterStatus(Context context, Twitter twitter, long inReplyTo) {
         this.twitter = twitter;
         this.context = context;
+        this.inReplyTo = inReplyTo;
         mSharedPreferences = context.getSharedPreferences("MyPref", 0);
     }
 
-    public UpdateTwitterStatus(Context context, Twitter twitter, File file) {
+    public UpdateTwitterStatus(Context context, Twitter twitter, File file, long inReplyTo) {
         this.twitter = twitter;
         this.context = context;
         this.file = file;
+        this.inReplyTo = inReplyTo;
         mSharedPreferences = context.getSharedPreferences("MyPref", 0);
     }
 
@@ -45,6 +48,9 @@ public class UpdateTwitterStatus extends AsyncTask<String, String, Boolean> {
 
             if (file != null)
                 status.setMedia(file);
+
+            if (inReplyTo > 0)
+                status.setInReplyToStatusId(inReplyTo);
 
             pushNotification();
             twitter.updateStatus(status);

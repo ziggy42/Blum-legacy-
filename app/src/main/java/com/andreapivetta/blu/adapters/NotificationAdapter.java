@@ -23,18 +23,14 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import twitter4j.Twitter;
-
 public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.ViewHolder> {
 
     private ArrayList<Notification> mDataSet;
     private Context context;
-    private Twitter twitter;
 
-    public NotificationAdapter(ArrayList<Notification> mDataSet, Context context, Twitter twitter) {
+    public NotificationAdapter(ArrayList<Notification> mDataSet, Context context) {
         this.mDataSet = mDataSet;
         this.context = context;
-        this.twitter = twitter;
     }
 
     @Override
