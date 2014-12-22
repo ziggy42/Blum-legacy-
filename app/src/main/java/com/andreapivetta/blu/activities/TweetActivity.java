@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.andreapivetta.blu.R;
@@ -37,6 +38,7 @@ public class TweetActivity extends ActionBarActivity {
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private ImageButton replyImageButton;
+    private ProgressBar loadingProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +93,7 @@ public class TweetActivity extends ActionBarActivity {
                 reply(status);
             }
         });
+        loadingProgressBar = (ProgressBar) findViewById(R.id.loadingProgressBar);
 
         new LoadStatus().execute(null, null, null);
     }
@@ -174,6 +177,7 @@ public class TweetActivity extends ActionBarActivity {
         protected void onPostExecute(Boolean result) {
             if (result) {
                 mDataSet.add(status);
+                loadingProgressBar.setVisibility(View.GONE);
                 new LoadResponses().execute(null, null, null);
             }
         }

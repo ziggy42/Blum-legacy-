@@ -168,8 +168,8 @@ public class NotificationService extends Service {
             }
 
             Intent i = new Intent();
-            i.setAction(NEW_TWEETS_INTENT);
-            i.putExtra("STATUS", status.getText());
+            i.setAction(NEW_TWEETS_INTENT)
+                    .putExtra("STATUS", status.getText());
             sendBroadcast(i);
         }
 

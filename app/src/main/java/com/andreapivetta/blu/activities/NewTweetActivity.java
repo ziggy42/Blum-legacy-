@@ -40,9 +40,9 @@ public class NewTweetActivity extends ActionBarActivity {
     private ImageView uploadedImageView;
     private EditText newTweetEditText;
 
-    private String mCurrentPhotoPath;
     private File imageFile;
     private Twitter twitter;
+    private Intent intent;
 
     private int charsLeft;
 
@@ -69,8 +69,31 @@ public class NewTweetActivity extends ActionBarActivity {
         ImageButton takePhotoImageButton = (ImageButton) findViewById(R.id.takePhotoImageButton);
         ImageButton grabImageImageButton = (ImageButton) findViewById(R.id.grabImageImageButton);
 
-        if (getIntent().getStringExtra("USER_PREFIX").length() > 0)
-            newTweetEditText.setText(getIntent().getStringExtra("USER_PREFIX") + " ");
+        intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type)) {
+                newTweetEditText.setText(intent.getStringExtra(Intent.EXTRA_TEXT));
+            } else if (type.startsWith("image/")) {
+                Uri selectedImageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+                imageFile = new File(FileUtils.getPath(NewTweetActivity.this, selectedImageUri));
+
+                uploadedImageView.setVisibility(View.VISIBLE);
+                Picasso.with(NewTweetActivity.this)
+                        .load(selectedImageUri)
+                        .into(uploadedImageView);
+            }
+        } /*else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
+            if (type.startsWith("image/")) {
+
+            }
+        }*/
+
+        if (intent.getStringExtra("USER_PREFIX") != null &&
+                intent.getStringExtra("USER_PREFIX").length() > 0)
+            newTweetEditText.setText(intent.getStringExtra("USER_PREFIX") + " ");
 
         newTweetEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -135,7 +158,6 @@ public class NewTweetActivity extends ActionBarActivity {
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         imageFile = File.createTempFile(imageFileName, ".jpg", storageDir);
 
-        mCurrentPhotoPath = "file:" + imageFile.getAbsolutePath();
         return imageFile;
     }
 
@@ -160,7 +182,7 @@ public class NewTweetActivity extends ActionBarActivity {
 
                     uploadedImageView.setVisibility(View.VISIBLE);
                     Picasso.with(this)
-                            .load(Uri.parse(mCurrentPhotoPath))
+                            .load(Uri.parse("file:" + imageFile.getAbsolutePath()))
                             .into(uploadedImageView);
                 }
                 break;
@@ -195,11 +217,11 @@ public class NewTweetActivity extends ActionBarActivity {
             } else {
                 if (uploadedImageView.getVisibility() == View.VISIBLE)
                     new UpdateTwitterStatus(NewTweetActivity.this, twitter, imageFile,
-                            getIntent().getLongExtra("REPLY_ID", (long) -1))
+                            intent.getLongExtra("REPLY_ID", (long) -1))
                             .execute(newTweetEditText.getText().toString());
                 else
                     new UpdateTwitterStatus(NewTweetActivity.this, twitter,
-                            getIntent().getLongExtra("REPLY_ID", (long) -1))
+                            intent.getLongExtra("REPLY_ID", (long) -1))
                             .execute(newTweetEditText.getText().toString());
 
                 finish();
