@@ -54,6 +54,10 @@
     <string name="cant_load_user">Can\'t load users</string>
     <string name="action_profile">My Profile</string>
     <string name="title_activity_new_tweet">New Tweet</string>
+    <string name="send_tweet">Send Tweet</string>
+    <string name="too_many_characters">Too many characters</string>
+    <string name="chars_left">Chars Left</string>
+    <string name="new_tweets">%1$d new Tweets</string>
 
     <array name="notifications_tabs_names">
         <item>New</item>
@@ -79,8 +83,5 @@
     <string name="send_tweet_button_contentDescriptor">Send Tweet image Button</string>
     <string name="follow_user_contentDescription">Follow User ImageButton</string>
     <string name="notifications_contentDescription">Notifications</string>
-    <string name="send_tweet">Send Tweet</string>
-    <string name="too_many_characters">Too many characters</string>
-    <string name="chars_left">Chars Left</string>
 
 </resources>

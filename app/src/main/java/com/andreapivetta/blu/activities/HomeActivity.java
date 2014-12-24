@@ -19,6 +19,7 @@ import com.andreapivetta.blu.data.NotificationsDatabaseManager;
 import com.andreapivetta.blu.services.NotificationService;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import twitter4j.Paging;
@@ -31,7 +32,8 @@ public class HomeActivity extends TimeLineActivity {
     private static final int REQUEST_LOGIN = 0;
     private SharedPreferences mSharedPreferences;
     private DataUpdateReceiver dataUpdateReceiver;
-    private int mNotificationsCount = 0;
+    private int mNotificationsCount = 0, newTweets = 0;
+    private ArrayList<Status> upComingTweets = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,19 @@ public class HomeActivity extends TimeLineActivity {
         databaseManager.close();
 
         super.onCreate(savedInstanceState);
+
+        this.toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (Status status : upComingTweets)
+                    tweetList.add(0, status);
+
+                mTweetsAdapter.notifyDataSetChanged();
+                mLinearLayoutManager.smoothScrollToPosition(mRecyclerView, null, 0);
+                getSupportActionBar().setTitle(getString(R.string.app_name));
+                newTweets = 0;
+            }
+        });
     }
 
     @Override
@@ -173,8 +188,11 @@ public class HomeActivity extends TimeLineActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(NotificationService.NEW_TWEETS_INTENT)) {
-                String status = intent.getStringExtra("STATUS");
-                // Toast.makeText(HomeActivity.this, status, Toast.LENGTH_LONG).show();
+                Status newStatus = (Status) intent.getSerializableExtra("PARCEL_STATUS");
+                upComingTweets.add(newStatus);
+
+                newTweets++;
+                getSupportActionBar().setTitle(getString(R.string.new_tweets, newTweets));
             } else if (intent.getAction().equals(NotificationService.NEW_NOTIFICATION_INTENT)) {
                 mNotificationsCount++;
                 invalidateOptionsMenu();

@@ -169,7 +169,7 @@ public class NotificationService extends Service {
 
             Intent i = new Intent();
             i.setAction(NEW_TWEETS_INTENT)
-                    .putExtra("STATUS", status.getText());
+                    .putExtra("PARCEL_STATUS", status);
             sendBroadcast(i);
         }
 
