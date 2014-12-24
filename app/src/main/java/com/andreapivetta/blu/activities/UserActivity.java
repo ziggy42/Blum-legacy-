@@ -136,7 +136,17 @@ public class UserActivity extends ActionBarActivity {
             }
         });
 
-        new LoadUser().execute(getIntent().getLongExtra("ID", 0));
+        if (savedInstanceState != null) {
+            user = (User) savedInstanceState.getSerializable("USER");
+            STATUS = savedInstanceState.getInt("STATUS");
+            containerRelativeLayout.setVisibility(View.VISIBLE);
+            loadingProgressBar.setVisibility(View.GONE);
+            setUpUI();
+            invalidateOptionsMenu();
+            new GetTimeLine().execute(null, null, null);
+        } else {
+            new LoadUser().execute(getIntent().getLongExtra("ID", 0));
+        }
     }
 
     void setUpUI() {
@@ -350,6 +360,13 @@ public class UserActivity extends ActionBarActivity {
                 getString(R.string.check_out, user.getName(), user.getScreenName()));
         intent.setType("text/plain");
         return intent;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable("USER", user);
+        outState.putInt("STATUS", STATUS);
+        super.onSaveInstanceState(outState);
     }
 
     private class LoadUser extends AsyncTask<Long, Void, Boolean> {

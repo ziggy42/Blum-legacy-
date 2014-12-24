@@ -29,17 +29,12 @@ public class SearchTweetsFragment extends Fragment {
     private ArrayList<Status> mDataSet = new ArrayList<>();
     private Twitter twitter;
     private TweetsListAdapter mAdapter;
-    private String query;
     private LinearLayoutManager mLinearLayoutManager;
-
     private ProgressBar loadingProgressBar;
     private TextView nothingToShowTextView;
-
     private boolean loading = true;
     private int pastVisibleItems, visibleItemCount, totalItemCount;
-
     private Query mQuery;
-    private QueryResult result;
 
     public static SearchTweetsFragment newInstance(String query) {
         SearchTweetsFragment f = new SearchTweetsFragment();
@@ -54,8 +49,7 @@ public class SearchTweetsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        query = getArguments().getString("QUERY");
-        mQuery = new Query(query);
+        mQuery = new Query(getArguments().getString("QUERY"));
     }
 
     @Override
@@ -99,7 +93,7 @@ public class SearchTweetsFragment extends Fragment {
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                result = twitter.search(mQuery);
+                QueryResult result = twitter.search(mQuery);
                 for (twitter4j.Status tmpStatus : result.getTweets()) {
                     mDataSet.add(tmpStatus);
                 }
