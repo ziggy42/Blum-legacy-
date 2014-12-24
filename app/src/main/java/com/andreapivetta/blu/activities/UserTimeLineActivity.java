@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import twitter4j.Paging;
@@ -22,8 +23,17 @@ public class UserTimeLineActivity extends TimeLineActivity {
     private User user;
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
         twitter = TwitterUtils.getTwitter(UserTimeLineActivity.this);
+
+        if (savedInstanceState != null) {
+            user = (User) savedInstanceState.getSerializable("USER");
+            tweetList = (ArrayList<Status>) savedInstanceState.getSerializable("TWEET_LIST");
+        } else {
+            new LoadUser().execute(getIntent().getLongExtra("ID", 0));
+        }
+
         super.onCreate(savedInstanceState);
 
         toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
@@ -33,7 +43,9 @@ public class UserTimeLineActivity extends TimeLineActivity {
                 finish();
             }
         });
-        new LoadUser().execute(getIntent().getLongExtra("ID", 0));
+
+        if (user != null)
+            getSupportActionBar().setTitle(user.getName());
     }
 
     @Override
@@ -55,6 +67,12 @@ public class UserTimeLineActivity extends TimeLineActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_timeline, menu);
         return true;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable("USER", user);
+        super.onSaveInstanceState(outState);
     }
 
     private class LoadUser extends AsyncTask<Long, Void, Boolean> {

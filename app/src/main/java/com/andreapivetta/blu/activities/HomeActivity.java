@@ -36,6 +36,7 @@ public class HomeActivity extends TimeLineActivity {
     private ArrayList<Status> upComingTweets = new ArrayList<>();
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPreferences = getSharedPreferences("MyPref", 0);
 
@@ -43,7 +44,12 @@ public class HomeActivity extends TimeLineActivity {
             startActivityForResult(new Intent(HomeActivity.this, LoginActivity.class), REQUEST_LOGIN);
         } else {
             twitter = TwitterUtils.getTwitter(HomeActivity.this);
-            new GetTimeLine().execute(null, null, null);
+
+            if (savedInstanceState != null) {
+                tweetList = (ArrayList<Status>) savedInstanceState.getSerializable("TWEET_LIST");
+            } else {
+                new GetTimeLine().execute(null, null, null);
+            }
             startService(new Intent(HomeActivity.this, NotificationService.class));
         }
 
@@ -190,7 +196,6 @@ public class HomeActivity extends TimeLineActivity {
             if (intent.getAction().equals(NotificationService.NEW_TWEETS_INTENT)) {
                 Status newStatus = (Status) intent.getSerializableExtra("PARCEL_STATUS");
                 upComingTweets.add(newStatus);
-
                 newTweets++;
                 getSupportActionBar().setTitle(getString(R.string.new_tweets, newTweets));
             } else if (intent.getAction().equals(NotificationService.NEW_NOTIFICATION_INTENT)) {

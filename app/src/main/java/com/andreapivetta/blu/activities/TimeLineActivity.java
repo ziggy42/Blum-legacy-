@@ -105,6 +105,9 @@ public abstract class TimeLineActivity extends ActionBarActivity {
 
         newTweetImageButton = (ImageButton) findViewById(R.id.newTweetImageButton);
         loadingProgressBar = (ProgressBar) findViewById(R.id.loadingProgressBar);
+        if (tweetList.size() > 0)
+            loadingProgressBar.setVisibility(View.GONE);
+
         setOnClickListener();
     }
 
@@ -167,6 +170,12 @@ public abstract class TimeLineActivity extends ActionBarActivity {
         upAnimator.start();
 
         isUp = true;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable("TWEET_LIST", tweetList);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
