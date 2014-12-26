@@ -78,7 +78,7 @@
                 android:layout_marginRight="5dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/tweet_photo_contentDescriptor"
-                android:maxHeight="300dp"
+                android:maxHeight="@dimen/imageMaxHeight"
                 android:scaleType="fitCenter" />
 
             <TextView

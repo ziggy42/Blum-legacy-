@@ -39,6 +39,11 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.HomeActivity" />
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="com.andreapivetta.blu.user" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activities.SettingsActivity"
@@ -96,6 +101,16 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="image/*" />
             </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".activities.HashtagActivity"
+            android:label="@string/title_activity_hashtag">
+
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="com.andreapivetta.blu.hashtag" />
+            </intent-filter>
         </activity>
 
         <service

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageButton;
@@ -145,7 +147,11 @@ public class UserActivity extends ActionBarActivity {
             invalidateOptionsMenu();
             new GetTimeLine().execute(null, null, null);
         } else {
-            new LoadUser().execute(getIntent().getLongExtra("ID", 0));
+            Uri uri = getIntent().getData();
+            if (uri != null)
+                new LoadUserByName().execute(uri.toString().substring(29));
+            else
+                new LoadUser().execute(getIntent().getLongExtra("ID", 0));
         }
     }
 
@@ -375,6 +381,51 @@ public class UserActivity extends ActionBarActivity {
         protected Boolean doInBackground(Long... params) {
             try {
                 if (params[0] != 0) {
+                    user = twitter.showUser(params[0]);
+
+                    Relationship rel = twitter.showFriendship(twitter.getId(), user.getId());
+                    if (rel.isSourceFollowingTarget() && rel.isTargetFollowingSource()) {
+                        STATUS = WE_FOLLOW_EACH_OTHER;
+                    } else if (rel.isSourceFollowingTarget()) {
+                        STATUS = I_FOLLOW_HIM;
+                    } else {
+                        STATUS = I_DONT_KNOW_WHO_YOU_ARE;
+                    }
+                } else {
+                    user = twitter.showUser(twitter.getId());
+
+                    STATUS = THIS_IS_ME;
+                }
+
+            } catch (TwitterException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            return true;
+        }
+
+        protected void onPostExecute(Boolean status) {
+            if (status) {
+                containerRelativeLayout.setVisibility(View.VISIBLE);
+                loadingProgressBar.setVisibility(View.GONE);
+                setUpUI();
+                invalidateOptionsMenu();
+                new GetTimeLine().execute(null, null, null);
+            } else {
+                Toast.makeText(UserActivity.this, getString(R.string.cant_find_user), Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
+    }
+
+    private class LoadUserByName extends AsyncTask<String, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            try {
+                if (!params[0].equals(twitter.getScreenName())) {
+                    Log.i("USER:::", params[0]);
                     user = twitter.showUser(params[0]);
 
                     Relationship rel = twitter.showFriendship(twitter.getId(), user.getId());

@@ -70,6 +70,7 @@ public class HomeActivity extends TimeLineActivity {
                 mLinearLayoutManager.smoothScrollToPosition(mRecyclerView, null, 0);
                 getSupportActionBar().setTitle(getString(R.string.app_name));
                 newTweets = 0;
+                upComingTweets.clear();
             }
         });
     }
