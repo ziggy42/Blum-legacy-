@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.activities.ImageActivity;
 import com.andreapivetta.blu.activities.NewTweetActivity;
 import com.andreapivetta.blu.activities.TweetActivity;
 import com.andreapivetta.blu.activities.UserActivity;
@@ -77,7 +78,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         final Status currentStatus;
-        MediaEntity mediaEntityArray[];
+        final MediaEntity mediaEntityArray[];
 
         if (holder instanceof VHItem) {
             ((VHItem) holder).interactionLinearLayout.setVisibility(View.GONE);
@@ -106,13 +107,24 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     .into(((VHItem) holder).userProfilePicImageView);
 
             if (mediaEntityArray.length > 0) {
-                for (MediaEntity mediaEntity : mediaEntityArray) {
+                for (final MediaEntity mediaEntity : mediaEntityArray) {
                     if (mediaEntity.getType().equals("photo")) {
                         ((VHItem) holder).tweetPhotoImageView.setVisibility(View.VISIBLE);
+
                         Picasso.with(context)
                                 .load(mediaEntity.getMediaURL())
                                 .placeholder(context.getResources().getDrawable(R.drawable.placeholder))
                                 .into(((VHItem) holder).tweetPhotoImageView);
+
+                        ((VHItem) holder).tweetPhotoImageView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent i = new Intent(context, ImageActivity.class);
+                                i.putExtra("IMAGE", mediaEntity.getMediaURL());
+                                context.startActivity(i);
+                            }
+                        });
+
                         break;
                     }
                 }
@@ -271,13 +283,23 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             mediaEntityArray = currentStatus.getMediaEntities();
             if (mediaEntityArray.length > 0) {
-                for (MediaEntity mediaEntity : mediaEntityArray) {
+                for (final MediaEntity mediaEntity : mediaEntityArray) {
                     if (mediaEntity.getType().equals("photo")) {
                         ((VHHeader) holder).tweetPhotoImageView.setVisibility(View.VISIBLE);
                         Picasso.with(context)
                                 .load(mediaEntity.getMediaURL())
                                 .placeholder(context.getResources().getDrawable(R.drawable.placeholder))
                                 .into(((VHHeader) holder).tweetPhotoImageView);
+
+                        ((VHHeader) holder).tweetPhotoImageView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent i = new Intent(context, ImageActivity.class);
+                                i.putExtra("IMAGE", mediaEntity.getMediaURL());
+                                context.startActivity(i);
+                            }
+                        });
+
                         break;
                     }
                 }

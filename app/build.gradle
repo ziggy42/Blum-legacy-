@@ -31,4 +31,5 @@ dependencies {
     compile 'com.android.support:cardview-v7:+'
     compile 'com.squareup.picasso:picasso:2.4.0'
     compile 'com.makeramen:roundedimageview:1.5.0'
+    compile 'com.github.chrisbanes.photoview:library:1.2.3'
 }
