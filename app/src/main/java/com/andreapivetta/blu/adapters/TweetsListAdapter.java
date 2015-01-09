@@ -205,6 +205,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             StringBuilder iHateHtml = new StringBuilder();
             Pattern p = Pattern.compile(URL_REGEX);
             Matcher m;
+            String endString = "";
             for (String word : currentStatus.getText().split(" |\n")) {
                 m = p.matcher(word);
                 if(m.find()) {
@@ -213,19 +214,39 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                             .append("\">")
                             .append(word)
                             .append("</a>");
-                } else if (word.substring(0,1).equals("@")) {
-                    iHateHtml.append("<a href=\"com.andreapivetta.blu.user://")
-                            .append(word.substring(1))
-                            .append("\">")
-                            .append(word)
-                            .append("</a>");
-                } else if (word.substring(0,1).equals("#")) {
-                    iHateHtml.append("<a href=\"com.andreapivetta.blu.hashtag://")
-                            .append(word.substring(1))
-                            .append("\">")
-                            .append(word)
-                            .append("</a>");
-                } else {
+                } else if (word.length() > 1) {
+                    if (word.substring(0, 1).equals("@")) {
+                        for (int i = 1; i < word.length(); i++)
+                            if ("|/()=?'^[],;.:-\"\\".indexOf(word.charAt(i)) >= 0) {
+                                endString = word.substring(i);
+                                word = word.substring(0, i);
+                                break;
+                            }
+
+                        iHateHtml.append("<a href=\"com.andreapivetta.blu.user://")
+                                .append(word.substring(1))
+                                .append("\">")
+                                .append(word)
+                                .append("</a>")
+                                .append(endString);
+                    } else if (word.substring(0, 1).equals("#")) {
+                        for (int i = 1; i < word.length(); i++)
+                            if ("|/()=?'^[],;.:-\"\\".indexOf(word.charAt(i)) >= 0) {
+                                endString = word.substring(i);
+                                word = word.substring(0, i);
+                                break;
+                            }
+
+                        iHateHtml.append("<a href=\"com.andreapivetta.blu.hashtag://")
+                                .append(word.substring(1))
+                                .append("\">")
+                                .append(word)
+                                .append("</a>")
+                                .append(endString);
+                    } else {
+                        iHateHtml.append(word);
+                    }
+                }else {
                     iHateHtml.append(word);
                 }
                 iHateHtml.append(" ");
