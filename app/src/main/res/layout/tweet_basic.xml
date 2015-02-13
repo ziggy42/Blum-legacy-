@@ -58,7 +58,6 @@
             android:minHeight="40dp"
             android:textSize="15sp" />
 
-
         <TextView
             android:id="@+id/retweetTextView"
             android:layout_width="wrap_content"

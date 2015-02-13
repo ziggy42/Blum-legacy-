@@ -59,7 +59,7 @@ public abstract class TimeLineActivity extends ActionBarActivity {
             setSupportActionBar(toolbar);
         }
 
-        if (tweetList == null) tweetList = new ArrayList<>();
+        // if (tweetList == null) tweetList = new ArrayList<>();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
         mTweetsAdapter = new TweetsListAdapter(tweetList, this, twitter, -1);
@@ -179,7 +179,7 @@ public abstract class TimeLineActivity extends ActionBarActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        //outState.putSerializable("TWEET_LIST", tweetList);
+        outState.putSerializable("TWEET_LIST", tweetList);
         super.onSaveInstanceState(outState);
     }
 
