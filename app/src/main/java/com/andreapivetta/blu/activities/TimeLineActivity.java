@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -20,6 +21,7 @@ import android.widget.RelativeLayout;
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.TweetsListAdapter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -56,6 +58,8 @@ public abstract class TimeLineActivity extends ActionBarActivity {
         if (toolbar != null) {
             setSupportActionBar(toolbar);
         }
+
+        if (tweetList == null) tweetList = new ArrayList<>();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
         mTweetsAdapter = new TweetsListAdapter(tweetList, this, twitter, -1);
@@ -105,6 +109,7 @@ public abstract class TimeLineActivity extends ActionBarActivity {
 
         newTweetImageButton = (ImageButton) findViewById(R.id.newTweetImageButton);
         loadingProgressBar = (ProgressBar) findViewById(R.id.loadingProgressBar);
+
         if (tweetList.size() > 0)
             loadingProgressBar.setVisibility(View.GONE);
 
@@ -174,7 +179,7 @@ public abstract class TimeLineActivity extends ActionBarActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable("TWEET_LIST", tweetList);
+        //outState.putSerializable("TWEET_LIST", tweetList);
         super.onSaveInstanceState(outState);
     }
 

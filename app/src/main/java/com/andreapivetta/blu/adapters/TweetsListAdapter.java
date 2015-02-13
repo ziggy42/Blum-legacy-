@@ -114,6 +114,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         Picasso.with(context)
                                 .load(mediaEntity.getMediaURL())
                                 .placeholder(context.getResources().getDrawable(R.drawable.placeholder))
+                                .fit().centerCrop() // TESTING
                                 .into(((VHItem) holder).tweetPhotoImageView);
 
                         ((VHItem) holder).tweetPhotoImageView.setOnClickListener(new View.OnClickListener() {
