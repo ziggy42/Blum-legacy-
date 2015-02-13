@@ -29,7 +29,6 @@ import com.andreapivetta.blu.twitter.FavoriteTweet;
 import com.andreapivetta.blu.twitter.RetweetTweet;
 import com.squareup.picasso.Picasso;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -39,23 +38,22 @@ import twitter4j.MediaEntity;
 import twitter4j.Status;
 import twitter4j.Twitter;
 
-public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.ViewHolder> {
 
-    public static final String URL_REGEX = "^((https?|ftp)://|(www|ftp)\\.)?[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$";
+    private static final String URL_REGEX = "^((https?|ftp)://|(www|ftp)\\.)?[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$";
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
+    private static final int TYPE_ITEM_PHOTO = 2;
 
     private ArrayList<Status> mDataSet;
     private Context context;
     private Twitter twitter;
-
     private int headerPosition;
 
     public TweetsListAdapter(ArrayList<Status> mDataSet, Context context, Twitter twitter) {
         this.mDataSet = mDataSet;
         this.context = context;
         this.twitter = twitter;
-
         this.headerPosition = 0;
     }
 
@@ -63,158 +61,81 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.mDataSet = mDataSet;
         this.context = context;
         this.twitter = twitter;
-
         this.headerPosition = headerPosition;
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_ITEM)
-            return new VHItem(LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet, parent, false));
+            return new VHItem(
+                    LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_basic, parent, false));
+        else if(viewType == TYPE_ITEM_PHOTO)
+            return new VHItemPhoto(
+                    LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_photo, parent, false));
         else
-            return new VHHeader(LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_expanded, parent, false));
+            return new VHHeader(
+                    LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_expanded, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final Status currentStatus;
-        final MediaEntity mediaEntityArray[];
+        final int TYPE = getItemViewType(position);
 
-        if (holder instanceof VHItem) {
-            ((VHItem) holder).interactionLinearLayout.setVisibility(View.GONE);
+        if (mDataSet.get(position).isRetweet()) {
+            currentStatus = mDataSet.get(position).getRetweetedStatus();
+            holder.retweetTextView.setVisibility(View.VISIBLE);
+            holder.retweetTextView.setText(
+                    context.getString(R.string.retweeted_by, mDataSet.get(position).getUser().getScreenName()));
+        } else {
+            currentStatus = mDataSet.get(position);
+            holder.retweetTextView.setVisibility(View.GONE);
+        }
 
-            if (mDataSet.get(position).isRetweet()) {
-                currentStatus = mDataSet.get(position).getRetweetedStatus();
-                ((VHItem) holder).retweetTextView.setVisibility(View.VISIBLE);
-                ((VHItem) holder).retweetTextView.setText(
-                        context.getString(R.string.retweeted_by, mDataSet.get(position).getUser().getScreenName()));
-            } else {
-                currentStatus = mDataSet.get(position);
-                ((VHItem) holder).retweetTextView.setVisibility(View.GONE);
+        holder.userNameTextView.setText(currentStatus.getUser().getName());
+        holder.timeTextView.setText(new SimpleDateFormat("hh:mm").format(currentStatus.getCreatedAt()));
+
+        Picasso.with(context)
+                .load(currentStatus.getUser().getBiggerProfileImageURL())
+                .placeholder(context.getResources().getDrawable(R.drawable.placeholder))
+                .into(holder.userProfilePicImageView);
+
+        holder.userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openProfile(currentStatus);
             }
+        });
 
-            mediaEntityArray = currentStatus.getMediaEntities();
-
-            ((VHItem) holder).userNameTextView.setText(currentStatus.getUser().getName());
-            ((VHItem) holder).statusTextView.setText(currentStatus.getText());
-            Linkify.addLinks(((VHItem) holder).statusTextView, Linkify.ALL);
-
-            ((VHItem) holder).timeTextView.setText(new SimpleDateFormat("hh:mm").format(currentStatus.getCreatedAt()));
-
-            Picasso.with(context)
-                    .load(currentStatus.getUser().getBiggerProfileImageURL())
-                    .placeholder(context.getResources().getDrawable(R.drawable.placeholder))
-                    .into(((VHItem) holder).userProfilePicImageView);
-
-            if (mediaEntityArray.length > 0) {
-                for (final MediaEntity mediaEntity : mediaEntityArray) {
-                    if (mediaEntity.getType().equals("photo")) {
-                        ((VHItem) holder).tweetPhotoImageView.setVisibility(View.VISIBLE);
-
-                        Picasso.with(context)
-                                .load(mediaEntity.getMediaURL())
-                                .placeholder(context.getResources().getDrawable(R.drawable.placeholder))
-                                .fit().centerCrop() // TESTING
-                                .into(((VHItem) holder).tweetPhotoImageView);
-
-                        ((VHItem) holder).tweetPhotoImageView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent i = new Intent(context, ImageActivity.class);
-                                i.putExtra("IMAGE", mediaEntity.getMediaURL());
-                                context.startActivity(i);
-                            }
-                        });
-
-                        break;
-                    }
-                }
-            } else {
-                ((VHItem) holder).tweetPhotoImageView.setVisibility(View.GONE);
+        holder.favouriteImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                favourite(currentStatus);
             }
+        });
 
-            ((VHItem) holder).userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openProfile(currentStatus);
-                }
-            });
-
-            ((VHItem) holder).statusTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (((VHItem) holder).interactionLinearLayout.getVisibility() == View.VISIBLE)
-                        ((VHItem) holder).interactionLinearLayout.setVisibility(View.GONE);
-                    else
-                        ((VHItem) holder).interactionLinearLayout.setVisibility(View.VISIBLE);
-                }
-            });
-
-            ((VHItem) holder).cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (((VHItem) holder).interactionLinearLayout.getVisibility() == View.VISIBLE)
-                        ((VHItem) holder).interactionLinearLayout.setVisibility(View.GONE);
-                    else
-                        ((VHItem) holder).interactionLinearLayout.setVisibility(View.VISIBLE);
-                }
-            });
-
-            ((VHItem) holder).favouriteImageButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    favourite(currentStatus);
-                }
-            });
-
-            ((VHItem) holder).retweetImageButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    retweet(currentStatus);
-                }
-            });
-
-            ((VHItem) holder).respondImageButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    reply(currentStatus);
-                }
-            });
-
-            ((VHItem) holder).shareImageButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    share(currentStatus);
-                }
-            });
-
-            ((VHItem) holder).openTweetImageButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(context, TweetActivity.class);
-                    i.putExtra("STATUS", currentStatus.getId());
-                    context.startActivity(i);
-                }
-            });
-        } else if (holder instanceof VHHeader) {
-            if (mDataSet.get(position).isRetweet()) {
-                currentStatus = mDataSet.get(position).getRetweetedStatus();
-                ((VHHeader) holder).retweetTextView.setVisibility(View.VISIBLE);
-                ((VHHeader) holder).retweetTextView.setText(
-                        context.getString(R.string.retweeted_by, currentStatus.getUser().getScreenName()));
-            } else {
-                currentStatus = mDataSet.get(position);
+        holder.retweetImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                retweet(currentStatus);
             }
+        });
 
-            Picasso.with(context)
-                    .load(currentStatus.getUser().getBiggerProfileImageURL())
-                    .placeholder(context.getResources().getDrawable(R.drawable.placeholder))
-                    .into(((VHHeader) holder).userProfilePicImageView);
+        holder.respondImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reply(currentStatus);
+            }
+        });
 
-            ((VHHeader) holder).userNameTextView.setText(currentStatus.getUser().getName());
-            ((VHHeader) holder).screenNameTextView.setText("@" + currentStatus.getUser().getScreenName());
-            ((VHHeader) holder).timeTextView.setText(DateFormat.getDateTimeInstance().format(currentStatus.getCreatedAt()));
+        holder.shareImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                share(currentStatus);
+            }
+        });
 
+        if (TYPE == TYPE_HEADER) {
             StringBuilder iHateHtml = new StringBuilder();
             Pattern p = Pattern.compile(URL_REGEX);
             Matcher m;
@@ -265,8 +186,8 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 iHateHtml.append(" ");
             }
 
-            ((VHHeader) holder).statusTextView.setText(Html.fromHtml(iHateHtml.toString()));
-            ((VHHeader) holder).statusTextView.setMovementMethod(LinkMovementMethod.getInstance());
+            holder.statusTextView.setText(Html.fromHtml(iHateHtml.toString()));
+            holder.statusTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
             String amount = currentStatus.getFavoriteCount() + "";
             StyleSpan b = new StyleSpan(android.graphics.Typeface.BOLD);
@@ -282,7 +203,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             sb.setSpan(b, 0, amount.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             ((VHHeader) holder).retweetsStatsTextView.setText(sb);
 
-            mediaEntityArray = currentStatus.getMediaEntities();
+            MediaEntity mediaEntityArray[] = currentStatus.getMediaEntities();
             if (mediaEntityArray.length > 0) {
                 for (final MediaEntity mediaEntity : mediaEntityArray) {
                     if (mediaEntity.getType().equals("photo")) {
@@ -305,39 +226,62 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     }
                 }
             }
+        } else {
+            holder.statusTextView.setText(currentStatus.getText());
+            holder.interactionLinearLayout.setVisibility(View.GONE);
+            Linkify.addLinks(holder.statusTextView, Linkify.ALL);
 
-            ((VHHeader) holder).respondImageButton.setOnClickListener(new View.OnClickListener() {
+            holder.statusTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    reply(currentStatus);
+                    if (holder.interactionLinearLayout.getVisibility() == View.VISIBLE)
+                        holder.interactionLinearLayout.setVisibility(View.GONE);
+                    else
+                        holder.interactionLinearLayout.setVisibility(View.VISIBLE);
                 }
             });
 
-            ((VHHeader) holder).favouriteImageButton.setOnClickListener(new View.OnClickListener() {
+            if (TYPE == TYPE_ITEM_PHOTO) {
+                MediaEntity mediaEntityArray[] = currentStatus.getMediaEntities();
+                for (final MediaEntity mediaEntity : mediaEntityArray) {
+                    if (mediaEntity.getType().equals("photo")) {
+                        Picasso.with(context)
+                                .load(mediaEntity.getMediaURL())
+                                .placeholder(context.getResources().getDrawable(R.drawable.placeholder))
+                                .fit()
+                                .centerCrop()
+                                .into(((VHItemPhoto) holder).tweetPhotoImageView);
+
+                        ((VHItemPhoto) holder).tweetPhotoImageView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent i = new Intent(context, ImageActivity.class);
+                                i.putExtra("IMAGE", mediaEntity.getMediaURL());
+                                context.startActivity(i);
+                            }
+                        });
+
+                        break;
+                    }
+                }
+            }
+
+            ((VHItem) holder).cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    favourite(currentStatus);
+                    if (holder.interactionLinearLayout.getVisibility() == View.VISIBLE)
+                        holder.interactionLinearLayout.setVisibility(View.GONE);
+                    else
+                        holder.interactionLinearLayout.setVisibility(View.VISIBLE);
                 }
             });
 
-            ((VHHeader) holder).retweetImageButton.setOnClickListener(new View.OnClickListener() {
+            ((VHItem) holder).openTweetImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    retweet(currentStatus);
-                }
-            });
-
-            ((VHHeader) holder).shareImageButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    share(currentStatus);
-                }
-            });
-
-            ((VHHeader) holder).userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    openProfile(currentStatus);
+                    Intent i = new Intent(context, TweetActivity.class);
+                    i.putExtra("STATUS", currentStatus.getId());
+                    context.startActivity(i);
                 }
             });
         }
@@ -395,8 +339,12 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public int getItemViewType(int position) {
+
         if (isPositionHeader(position))
             return TYPE_HEADER;
+
+        if (mDataSet.get(position).getMediaEntities().length > 0)
+            return TYPE_ITEM_PHOTO;
 
         return TYPE_ITEM;
     }
@@ -405,40 +353,54 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return position == headerPosition;
     }
 
-    class VHItem extends RecyclerView.ViewHolder {
-        public TextView userNameTextView, statusTextView, timeTextView, retweetTextView;
-        public ImageView userProfilePicImageView, tweetPhotoImageView;
+    class ViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout interactionLinearLayout;
-        public FrameLayout cardView;
+        public TextView userNameTextView, statusTextView, timeTextView, retweetTextView;
+        public ImageView userProfilePicImageView;
         public ImageButton favouriteImageButton, retweetImageButton, respondImageButton,
-                shareImageButton, openTweetImageButton;
+                shareImageButton;
 
-        public VHItem(View container) {
+        public ViewHolder(View container) {
             super(container);
 
+            this.interactionLinearLayout = (LinearLayout) container.findViewById(R.id.interactionLinearLayout);
             this.userNameTextView = (TextView) container.findViewById(R.id.userNameTextView);
             this.statusTextView = (TextView) container.findViewById(R.id.statusTextView);
             this.userProfilePicImageView = (ImageView) container.findViewById(R.id.userProfilePicImageView);
             this.timeTextView = (TextView) container.findViewById(R.id.timeTextView);
             this.retweetTextView = (TextView) container.findViewById(R.id.retweetTextView);
-            this.tweetPhotoImageView = (ImageView) container.findViewById(R.id.tweetPhotoImageView);
-
-            this.interactionLinearLayout = (LinearLayout) container.findViewById(R.id.interactionLinearLayout);
-            this.cardView = (FrameLayout) container.findViewById(R.id.card_view);
-
             this.favouriteImageButton = (ImageButton) container.findViewById(R.id.favouriteImageButton);
             this.retweetImageButton = (ImageButton) container.findViewById(R.id.retweetImageButton);
             this.respondImageButton = (ImageButton) container.findViewById(R.id.respondImageButton);
             this.shareImageButton = (ImageButton) container.findViewById(R.id.shareImageButton);
+        }
+    }
+
+    class VHItem extends ViewHolder {
+        public FrameLayout cardView;
+        public ImageButton openTweetImageButton;
+
+        public VHItem(View container) {
+            super(container);
+
+            this.cardView = (FrameLayout) container.findViewById(R.id.card_view);
             this.openTweetImageButton = (ImageButton) container.findViewById(R.id.openTweetImageButton);
         }
     }
 
-    class VHHeader extends RecyclerView.ViewHolder {
-        public ImageView userProfilePicImageView, tweetPhotoImageView;
-        public TextView userNameTextView, screenNameTextView, timeTextView, statusTextView,
-                retweetTextView, retweetsStatsTextView, favouritesStatsTextView;
-        public ImageButton favouriteImageButton, retweetImageButton, respondImageButton, shareImageButton;
+    class VHItemPhoto extends VHItem {
+        public ImageView tweetPhotoImageView; // TODO e se ho più foto?
+
+        public VHItemPhoto(View container) {
+            super(container);
+
+            this.tweetPhotoImageView = (ImageView) container.findViewById(R.id.tweetPhotoImageView);
+        }
+    }
+
+    class VHHeader extends ViewHolder {
+        public TextView screenNameTextView, retweetsStatsTextView, favouritesStatsTextView;
+        public ImageView tweetPhotoImageView; // TODO anche qui diversi header
 
         public VHHeader(View container) {
             super(container);
