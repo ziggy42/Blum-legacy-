@@ -1,12 +1,9 @@
 package com.andreapivetta.blu.adapters;
 
 import android.app.AlertDialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spannable;
@@ -14,11 +11,9 @@ import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.text.style.StyleSpan;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -77,7 +72,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
         if (viewType == TYPE_ITEM)
             return new VHItem(
                     LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_basic, parent, false));
-        else if(viewType == TYPE_ITEM_PHOTO)
+        else if (viewType == TYPE_ITEM_PHOTO)
             return new VHItemPhoto(
                     LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_photo, parent, false));
         else
@@ -121,20 +116,26 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
         holder.userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openProfile(currentStatus);
+                Intent i = new Intent(context, UserActivity.class);
+                i.putExtra("ID", currentStatus.getUser().getId());
+                context.startActivity(i);
             }
         });
 
         holder.favouriteImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (favourite(currentStatus)) {
-                    favorites.add(currentStatus.getId());
-                    holder.favouriteImageButton.setImageResource(R.drawable.ic_star_outline_black_36dp);
-                }
-                else if (favorites.contains(currentStatus.getId())) {
+                long type;
+                if (currentStatus.isFavorited() || favorites.contains(currentStatus.getId())) {
+                    type = -1;
+                    new FavoriteTweet(context, twitter).execute(currentStatus.getId(), type);
                     favorites.remove(currentStatus.getId());
                     holder.favouriteImageButton.setImageResource(R.drawable.ic_star_grey600_36dp);
+                } else {
+                    type = 1;
+                    new FavoriteTweet(context, twitter).execute(currentStatus.getId(), type);
+                    favorites.add(currentStatus.getId());
+                    holder.favouriteImageButton.setImageResource(R.drawable.ic_star_outline_black_36dp);
                 }
             }
         });
@@ -159,14 +160,23 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
         holder.respondImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reply(currentStatus);
+                Intent i = new Intent(context, NewTweetActivity.class);
+                i.putExtra("USER_PREFIX", "@" + currentStatus.getUser().getScreenName())
+                        .putExtra("REPLY_ID", currentStatus.getId());
+                context.startActivity(i);
             }
         });
 
         holder.shareImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                share(currentStatus);
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND)
+                        .putExtra(Intent.EXTRA_TEXT, "https://twitter.com/" +
+                                currentStatus.getUser().getScreenName() + "/status/" + currentStatus.getId())
+                        .setType("text/plain");
+                context.startActivity(Intent.createChooser(sendIntent, context.getString(R.string.share_tweet)));
+
             }
         });
 
@@ -320,53 +330,6 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                 }
             });
         }
-    }
-
-    void openProfile(Status status) {
-        Intent i = new Intent(context, UserActivity.class);
-        i.putExtra("ID", status.getUser().getId());
-        context.startActivity(i);
-    }
-
-    void reply(Status status) {
-        Intent i = new Intent(context, NewTweetActivity.class);
-        i.putExtra("USER_PREFIX", "@" + status.getUser().getScreenName())
-                .putExtra("REPLY_ID", status.getId());
-        context.startActivity(i);
-    }
-
-    void retweet(final Status status) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(context.getString(R.string.retweet_title))
-                .setPositiveButton(R.string.retweet, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        new RetweetTweet(context, twitter).execute(status.getId());
-                    }
-                })
-                .setNegativeButton(R.string.cancel, null).create().show();
-    }
-
-    boolean favourite(Status status) {
-        long type;
-        if (status.isFavorited()) {
-            type = -1;
-            new FavoriteTweet(context, twitter).execute(status.getId(), type);
-            return false;
-        } else {
-            type = 1;
-            new FavoriteTweet(context, twitter).execute(status.getId(), type);
-            return true;
-        }
-    }
-
-    void share(Status status) {
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND)
-                .putExtra(Intent.EXTRA_TEXT, "https://twitter.com/" +
-                        status.getUser().getScreenName() + "/status/" + status.getId())
-                .setType("text/plain");
-        context.startActivity(Intent.createChooser(sendIntent, context.getString(R.string.share_tweet)));
     }
 
     @Override

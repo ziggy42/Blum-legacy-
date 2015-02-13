@@ -61,7 +61,7 @@
         <ImageView
             android:id="@+id/tweetPhotoImageView"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="@dimen/picHeight"
             android:layout_alignLeft="@+id/statusTextView"
             android:layout_alignStart="@+id/statusTextView"
             android:layout_below="@+id/statusTextView"
