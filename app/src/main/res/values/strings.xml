@@ -10,7 +10,7 @@
     <string name="new_tweet_hint">Tweet your life in 140 characters</string>
     <string name="sending_tweet_title">Sending Tweet</string>
     <string name="sending_tweet_content">Sending in Progress</string>
-    <string name="title_activity_user"></string>
+    <string name="title_activity_user" />
     <string name="share_tweet">Share this Tweet!</string>
     <string name="retweet_title">Retweet?</string>
     <string name="retweet">Retweet</string>
@@ -40,7 +40,7 @@
     <string name="clear_database">Delete all notifications?</string>
     <string name="action_search">Search</string>
     <string name="search_hint">Search Tweet or User</string>
-    <string name="title_activity_search"></string>
+    <string name="title_activity_search" />
     <string name="logout_done">Log Out Done.</string>
     <string name="fav_not_title">%1$s favorited your Tweet</string>
     <string name="retw_not_title">%1$s retweeted you</string>
@@ -58,11 +58,19 @@
     <string name="too_many_characters">Too many characters</string>
     <string name="chars_left">Chars Left</string>
     <string name="new_tweets">%1$d new Tweets</string>
+    <string name="title_activity_hashtag" />
+    <string name="title_activity_image" />
+
+    <plurals name="new_tweets">
+        <item quantity="one">%1$d new Tweet</item>
+        <item quantity="other">%1$d new Tweets</item>
+    </plurals>
 
     <array name="notifications_tabs_names">
         <item>New</item>
         <item>Old</item>
     </array>
+
     <array name="search_tabs_names">
         <item>Tweets</item>
         <item>Users</item>
@@ -82,7 +90,5 @@
     <string name="send_tweet_button_contentDescriptor">Send Tweet image Button</string>
     <string name="follow_user_contentDescription">Follow User ImageButton</string>
     <string name="notifications_contentDescription">Notifications</string>
-    <string name="title_activity_hashtag" />
-    <string name="title_activity_image" />
 
 </resources>

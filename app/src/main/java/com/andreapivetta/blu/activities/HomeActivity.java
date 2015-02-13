@@ -198,7 +198,8 @@ public class HomeActivity extends TimeLineActivity {
                 Status newStatus = (Status) intent.getSerializableExtra("PARCEL_STATUS");
                 upComingTweets.add(newStatus);
                 newTweets++;
-                getSupportActionBar().setTitle(getString(R.string.new_tweets, newTweets));
+                getSupportActionBar().setTitle(
+                        getResources().getQuantityString(R.plurals.new_tweets, newTweets, newTweets));
             } else if (intent.getAction().equals(NotificationService.NEW_NOTIFICATION_INTENT)) {
                 mNotificationsCount++;
                 invalidateOptionsMenu();

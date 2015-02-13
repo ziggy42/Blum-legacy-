@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <dimen name="homeMargins">120dp</dimen>
-    <dimen name="imageMaxHeight">600dp</dimen>
-
-</resources>

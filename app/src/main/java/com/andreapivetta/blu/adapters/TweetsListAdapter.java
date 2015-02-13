@@ -1,9 +1,12 @@
 package com.andreapivetta.blu.adapters;
 
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spannable;
@@ -11,9 +14,11 @@ import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.text.style.StyleSpan;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -49,6 +54,9 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
     private Context context;
     private Twitter twitter;
     private int headerPosition;
+
+    private ArrayList<Long> favorites = new ArrayList<>();
+    private ArrayList<Long> retweets = new ArrayList<>();
 
     public TweetsListAdapter(ArrayList<Status> mDataSet, Context context, Twitter twitter) {
         this.mDataSet = mDataSet;
@@ -100,6 +108,16 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                 .placeholder(context.getResources().getDrawable(R.drawable.placeholder))
                 .into(holder.userProfilePicImageView);
 
+        if (currentStatus.isFavorited() || favorites.contains(currentStatus.getId()))
+            holder.favouriteImageButton.setImageResource(R.drawable.ic_star_outline_black_36dp);
+        else
+            holder.favouriteImageButton.setImageResource(R.drawable.ic_star_grey600_36dp);
+
+        if (currentStatus.isRetweeted() || retweets.contains(currentStatus.getId()))
+            holder.retweetImageButton.setImageResource(R.drawable.ic_repeat_black_36dp);
+        else
+            holder.retweetImageButton.setImageResource(R.drawable.ic_repeat_grey600_36dp);
+
         holder.userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,14 +128,31 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
         holder.favouriteImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                favourite(currentStatus);
+                if (favourite(currentStatus)) {
+                    favorites.add(currentStatus.getId());
+                    holder.favouriteImageButton.setImageResource(R.drawable.ic_star_outline_black_36dp);
+                }
+                else if (favorites.contains(currentStatus.getId())) {
+                    favorites.remove(currentStatus.getId());
+                    holder.favouriteImageButton.setImageResource(R.drawable.ic_star_grey600_36dp);
+                }
             }
         });
 
         holder.retweetImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                retweet(currentStatus);
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle(context.getString(R.string.retweet_title))
+                        .setPositiveButton(R.string.retweet, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                new RetweetTweet(context, twitter).execute(currentStatus.getId());
+                                retweets.add(currentStatus.getId());
+                                holder.retweetImageButton.setImageResource(R.drawable.ic_repeat_black_36dp);
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, null).create().show();
             }
         });
 
@@ -312,14 +347,16 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                 .setNegativeButton(R.string.cancel, null).create().show();
     }
 
-    void favourite(Status status) {
+    boolean favourite(Status status) {
         long type;
         if (status.isFavorited()) {
             type = -1;
             new FavoriteTweet(context, twitter).execute(status.getId(), type);
+            return false;
         } else {
             type = 1;
             new FavoriteTweet(context, twitter).execute(status.getId(), type);
+            return true;
         }
     }
 

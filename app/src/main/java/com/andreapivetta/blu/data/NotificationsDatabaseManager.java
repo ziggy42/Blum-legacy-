@@ -109,9 +109,11 @@ public class NotificationsDatabaseManager {
     }
 
     public int getCountUnreadNotifications() {
-        String sqlQuery = "SELECT * FROM " + SetsMetaData.TABLE_NAME + " WHERE NOT " + SetsMetaData.FLAG_READ;
-        Cursor c = myDB.rawQuery(sqlQuery, null);
-        return c.getCount();
+        Cursor c = myDB.rawQuery(
+                "SELECT * FROM " + SetsMetaData.TABLE_NAME + " WHERE NOT " + SetsMetaData.FLAG_READ, null);
+        int count = c.getCount();
+        c.close();
+        return count;
     }
 
     static final class SetsMetaData {
