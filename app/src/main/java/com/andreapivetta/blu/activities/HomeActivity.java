@@ -30,9 +30,12 @@ import twitter4j.TwitterException;
 public class HomeActivity extends TimeLineActivity {
 
     private static final int REQUEST_LOGIN = 0;
+    private static final String UPCOMING_TWEET_COUNT_TAG = "UPCOMING_TWEET_COUNT";
+    private static final String UPCOMING_TWEETS_LIST_TAG = "UPCOMING_TWEET_LIST";
+
     private SharedPreferences mSharedPreferences;
     private DataUpdateReceiver dataUpdateReceiver;
-    private int mNotificationsCount = 0, newTweets = 0;
+    private int mNotificationsCount = 0, newTweetsCount = 0;
     private ArrayList<Status> upComingTweets = new ArrayList<>();
 
     @Override
@@ -46,7 +49,9 @@ public class HomeActivity extends TimeLineActivity {
             twitter = TwitterUtils.getTwitter(HomeActivity.this);
 
             if (savedInstanceState != null) {
-                tweetList = (ArrayList<Status>) savedInstanceState.getSerializable("TWEET_LIST");
+                tweetList = (ArrayList<Status>) savedInstanceState.getSerializable(TWEETS_LIST_TAG);
+                upComingTweets = (ArrayList<Status>) savedInstanceState.getSerializable(UPCOMING_TWEETS_LIST_TAG);
+                newTweetsCount = savedInstanceState.getInt(UPCOMING_TWEET_COUNT_TAG);
             } else {
                 new GetTimeLine().execute(null, null, null);
             }
@@ -69,10 +74,14 @@ public class HomeActivity extends TimeLineActivity {
                 mTweetsAdapter.notifyDataSetChanged();
                 mLinearLayoutManager.smoothScrollToPosition(mRecyclerView, null, 0);
                 getSupportActionBar().setTitle(getString(R.string.app_name));
-                newTweets = 0;
+                newTweetsCount = 0;
                 upComingTweets.clear();
             }
         });
+
+        if (newTweetsCount > 0)
+            getSupportActionBar().setTitle(
+                    getResources().getQuantityString(R.plurals.new_tweets, newTweetsCount, newTweetsCount));
     }
 
     @Override
@@ -133,6 +142,13 @@ public class HomeActivity extends TimeLineActivity {
             twitter = TwitterUtils.getTwitter(HomeActivity.this);
             new GetTimeLine().execute(null, null, null);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(UPCOMING_TWEETS_LIST_TAG, upComingTweets);
+        outState.putInt(UPCOMING_TWEET_COUNT_TAG, newTweetsCount);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -197,9 +213,9 @@ public class HomeActivity extends TimeLineActivity {
             if (intent.getAction().equals(NotificationService.NEW_TWEETS_INTENT)) {
                 Status newStatus = (Status) intent.getSerializableExtra("PARCEL_STATUS");
                 upComingTweets.add(newStatus);
-                newTweets++;
+                newTweetsCount++;
                 getSupportActionBar().setTitle(
-                        getResources().getQuantityString(R.plurals.new_tweets, newTweets, newTweets));
+                        getResources().getQuantityString(R.plurals.new_tweets, newTweetsCount, newTweetsCount));
             } else if (intent.getAction().equals(NotificationService.NEW_NOTIFICATION_INTENT)) {
                 mNotificationsCount++;
                 invalidateOptionsMenu();

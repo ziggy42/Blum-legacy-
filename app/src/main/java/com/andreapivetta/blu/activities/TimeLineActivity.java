@@ -31,6 +31,8 @@ import twitter4j.TwitterException;
 
 public abstract class TimeLineActivity extends ActionBarActivity {
 
+    protected String TWEETS_LIST_TAG = "TWEET_LIST";
+
     protected Twitter twitter;
     protected Paging paging = new Paging(1, 200);
     protected int currentPage = 1;
@@ -56,8 +58,6 @@ public abstract class TimeLineActivity extends ActionBarActivity {
         if (toolbar != null) {
             setSupportActionBar(toolbar);
         }
-
-        // if (tweetList == null) tweetList = new ArrayList<>();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
         mTweetsAdapter = new TweetsListAdapter(tweetList, this, twitter, -1);
@@ -177,7 +177,7 @@ public abstract class TimeLineActivity extends ActionBarActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable("TWEET_LIST", tweetList);
+        outState.putSerializable(TWEETS_LIST_TAG, tweetList);
         super.onSaveInstanceState(outState);
     }
 
