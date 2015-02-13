@@ -82,8 +82,7 @@
     <string name="send_tweet_button_contentDescriptor">Send Tweet image Button</string>
     <string name="follow_user_contentDescription">Follow User ImageButton</string>
     <string name="notifications_contentDescription">Notifications</string>
-    <string name="title_activity_hashtag"></string>
-    <string name="title_activity_image">ImageActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_hashtag" />
+    <string name="title_activity_image" />
 
 </resources>

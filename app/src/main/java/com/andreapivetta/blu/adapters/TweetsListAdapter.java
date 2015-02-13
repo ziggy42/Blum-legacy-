@@ -220,7 +220,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             String endString = "";
             for (String word : currentStatus.getText().split(" |\n")) {
                 m = p.matcher(word);
-                if(m.find()) {
+                if (m.find()) {
                     iHateHtml.append("<a href=\"")
                             .append(word)
                             .append("\">")
@@ -258,7 +258,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     } else {
                         iHateHtml.append(word);
                     }
-                }else {
+                } else {
                     iHateHtml.append(word);
                 }
                 iHateHtml.append(" ");
