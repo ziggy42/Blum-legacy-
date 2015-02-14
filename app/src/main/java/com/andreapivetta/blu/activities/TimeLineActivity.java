@@ -2,6 +2,7 @@ package com.andreapivetta.blu.activities;
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -60,6 +61,7 @@ public abstract class TimeLineActivity extends ActionBarActivity {
         }
 
         mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(dpToPx(10)));
         mTweetsAdapter = new TweetsListAdapter(tweetList, this, twitter, -1);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
@@ -111,10 +113,10 @@ public abstract class TimeLineActivity extends ActionBarActivity {
         if (tweetList.size() > 0)
             loadingProgressBar.setVisibility(View.GONE);
 
-        setOnClickListener();
+        setOnClickListeners();
     }
 
-    void setOnClickListener() {
+    void setOnClickListeners() {
         this.newTweetImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -246,4 +248,5 @@ public abstract class TimeLineActivity extends ActionBarActivity {
             swipeRefreshLayout.setRefreshing(false);
         }
     }
+
 }

@@ -59,6 +59,7 @@ public class TweetActivity extends ActionBarActivity {
 
         this.twitter = TwitterUtils.getTwitter(TweetActivity.this);
         mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(dpToPx(10)));
         mTweetsAdapter = new TweetsListAdapter(mDataSet, this, twitter);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
