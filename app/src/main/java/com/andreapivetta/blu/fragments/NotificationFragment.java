@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.activities.SpaceItemDecoration;
 import com.andreapivetta.blu.adapters.NotificationAdapter;
 import com.andreapivetta.blu.data.Notification;
 import com.andreapivetta.blu.data.NotificationsDatabaseManager;
@@ -27,7 +29,6 @@ public class NotificationFragment extends Fragment {
         Bundle args = new Bundle();
         args.putInt("KIND", mode);
         f.setArguments(args);
-
         return f;
     }
 
@@ -53,15 +54,19 @@ public class NotificationFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_notifications, container, false);
 
         RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.notificationsRecyclerView);
-        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        NotificationAdapter mNotificationAdapter = new NotificationAdapter(notificationList, getActivity());
-        mRecyclerView.setAdapter(mNotificationAdapter);
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(dpToPx(10)));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(new NotificationAdapter(notificationList, getActivity()));
 
         if (notificationList.size() == 0)
             rootView.findViewById(R.id.nothingToShowTextView).setVisibility(View.VISIBLE);
 
         return rootView;
+    }
+
+    int dpToPx(int dp) {
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     @Override

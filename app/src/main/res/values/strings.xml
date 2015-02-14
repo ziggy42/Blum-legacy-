@@ -57,7 +57,6 @@
     <string name="send_tweet">Send Tweet</string>
     <string name="too_many_characters">Too many characters</string>
     <string name="chars_left">Chars Left</string>
-    <string name="new_tweets">%1$d new Tweets</string>
     <string name="title_activity_hashtag" />
     <string name="title_activity_image" />
 

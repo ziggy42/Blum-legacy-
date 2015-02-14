@@ -234,6 +234,8 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             holder.statusTextView.setText(Html.fromHtml(iHateHtml.toString()));
             holder.statusTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
+            ((VHHeader) holder).screenNameTextView.setText("@" + currentStatus.getUser().getScreenName());
+
             String amount = currentStatus.getFavoriteCount() + "";
             StyleSpan b = new StyleSpan(android.graphics.Typeface.BOLD);
 
