@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.activities.SpaceItemDecoration;
 import com.andreapivetta.blu.adapters.TweetsListAdapter;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 
@@ -59,7 +61,9 @@ public class SearchTweetsFragment extends Fragment {
 
         twitter = TwitterUtils.getTwitter(getActivity());
         RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.notificationsRecyclerView);
+
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(dpToPx(10)));
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mAdapter = new TweetsListAdapter(mDataSet, getActivity(), twitter, -1);
         mRecyclerView.setAdapter(mAdapter);
@@ -87,6 +91,11 @@ public class SearchTweetsFragment extends Fragment {
         new LoadTweets().execute(null,null,null);
 
         return rootView;
+    }
+
+    int dpToPx(int dp) {
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     private class LoadTweets extends AsyncTask<Void, Void, Boolean> {
