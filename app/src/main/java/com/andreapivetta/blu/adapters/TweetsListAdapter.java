@@ -176,7 +176,6 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                                 currentStatus.getUser().getScreenName() + "/status/" + currentStatus.getId())
                         .setType("text/plain");
                 context.startActivity(Intent.createChooser(sendIntent, context.getString(R.string.share_tweet)));
-
             }
         });
 
@@ -353,6 +352,11 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
 
     private boolean isPositionHeader(int position) {
         return position == headerPosition;
+    }
+
+    public void add(Status status) {
+        mDataSet.add(status);
+        notifyItemInserted(mDataSet.size() - 1);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

@@ -61,9 +61,8 @@ public class SearchTweetsFragment extends Fragment {
 
         twitter = TwitterUtils.getTwitter(getActivity());
         RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.notificationsRecyclerView);
-
-        mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(dpToPx(10)));
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mAdapter = new TweetsListAdapter(mDataSet, getActivity(), twitter, -1);
         mRecyclerView.setAdapter(mAdapter);
@@ -88,7 +87,7 @@ public class SearchTweetsFragment extends Fragment {
         loadingProgressBar = (ProgressBar) rootView.findViewById(R.id.loadingProgressBar);
         nothingToShowTextView = (TextView) rootView.findViewById(R.id.nothingToShowTextView);
 
-        new LoadTweets().execute(null,null,null);
+        new LoadTweets().execute(null, null, null);
 
         return rootView;
     }

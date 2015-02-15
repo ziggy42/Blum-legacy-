@@ -2,6 +2,7 @@ package com.andreapivetta.blu.activities;
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,11 +20,13 @@ import android.widget.RelativeLayout;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.TweetsListAdapter;
+import com.andreapivetta.blu.utilities.Common;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import jp.wasabeef.recyclerview.animators.ScaleInBottomAnimator;
 import twitter4j.Paging;
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -61,6 +64,13 @@ public abstract class TimeLineActivity extends ActionBarActivity {
 
         mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(dpToPx(10)));
+
+        SharedPreferences mSharedPreferences = getSharedPreferences(Common.PREF, 0);
+        if (mSharedPreferences.getBoolean(Common.PREF_ANIMATIONS, true)) {
+            mRecyclerView.setItemAnimator(new ScaleInBottomAnimator());
+            mRecyclerView.getItemAnimator().setAddDuration(300);
+        }
+
         mTweetsAdapter = new TweetsListAdapter(tweetList, this, twitter, -1);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
@@ -75,11 +85,9 @@ public abstract class TimeLineActivity extends ActionBarActivity {
                 totalItemCount = mLinearLayoutManager.getItemCount();
                 pastVisibleItems = mLinearLayoutManager.findFirstVisibleItemPosition() + 1;
 
-                if (loading) {
-                    if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
-                        loading = false;
-                        new GetTimeLine().execute(null, null, null);
-                    }
+                if (loading && ((visibleItemCount + pastVisibleItems) >= totalItemCount)) {
+                    loading = false;
+                    new GetTimeLine().execute(null, null, null);
                 }
 
                 if (dy > 0) {
@@ -112,10 +120,6 @@ public abstract class TimeLineActivity extends ActionBarActivity {
         if (tweetList.size() > 0)
             loadingProgressBar.setVisibility(View.GONE);
 
-        setOnClickListeners();
-    }
-
-    void setOnClickListeners() {
         this.newTweetImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,7 +204,7 @@ public abstract class TimeLineActivity extends ActionBarActivity {
             try {
                 paging.setPage(currentPage);
                 for (twitter4j.Status status : getCurrentTimeLine())
-                    tweetList.add(status);
+                    mTweetsAdapter.add(status);
             } catch (TwitterException e) {
                 e.printStackTrace();
                 return false;
@@ -210,7 +214,6 @@ public abstract class TimeLineActivity extends ActionBarActivity {
 
         protected void onPostExecute(Boolean result) {
             if (result) {
-                mTweetsAdapter.notifyDataSetChanged();
                 currentPage += 1;
                 loadingProgressBar.setVisibility(View.GONE);
             }

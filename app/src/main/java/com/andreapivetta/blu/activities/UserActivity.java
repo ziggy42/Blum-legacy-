@@ -19,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -115,6 +116,7 @@ public class UserActivity extends ActionBarActivity {
         followImageButton = (ImageButton) findViewById(R.id.followImageButton);
 
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.userTweetsRecyclerView);
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(dpToPx(10)));
         mTweetsAdapter = new TweetsListAdapter(userTweetList, this, twitter, -1);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
@@ -345,6 +347,11 @@ public class UserActivity extends ActionBarActivity {
         builder.setView(dialogView)
                 .setPositiveButton(R.string.ok, null)
                 .create().show();
+    }
+
+    int dpToPx(int dp) {
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     @Override

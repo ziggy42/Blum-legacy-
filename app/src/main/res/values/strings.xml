@@ -21,9 +21,6 @@
     <string name="follow">Follow %1$s?</string>
     <string name="check_out">Check out %1$s on Twitter http://twitter.com/%2$s</string>
     <string name="share">Share</string>
-    <string name="pref_account_title">Account</string>
-    <string name="logout_pref_title">Logout</string>
-    <string name="logout_pref_summary">Logout and Exit</string>
     <string name="logout_title_dialog">Logout?</string>
     <string name="yes">Yes</string>
     <string name="title_activity_settings">Settings</string>
@@ -75,6 +72,14 @@
         <item>Users</item>
     </array>
 
+    <!-- Preferences -->
+    <string name="prefcat_account_title">Account</string>
+    <string name="logout_pref_title">Logout</string>
+    <string name="logout_pref_summary">Logout and Exit</string>
+    <string name="prefcat_behavior_title">Behavior</string>
+    <string name="animations_pref_title">Animations</string>
+    <string name="animations_pref_summary">You\'ll need to restart the app</string>
+
     <!-- Content Descriptors -->
     <string name="profile_background_contentDescriptor">User Background Image View</string>
     <string name="retweet_imageButton_contentDescriptor">Retweet Image Button</string>
@@ -89,5 +94,6 @@
     <string name="send_tweet_button_contentDescriptor">Send Tweet image Button</string>
     <string name="follow_user_contentDescription">Follow User ImageButton</string>
     <string name="notifications_contentDescription">Notifications</string>
+
 
 </resources>
