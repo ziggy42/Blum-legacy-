@@ -18,6 +18,7 @@ import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.data.NotificationsDatabaseManager;
 import com.andreapivetta.blu.services.NotificationService;
 import com.andreapivetta.blu.twitter.TwitterUtils;
+import com.andreapivetta.blu.utilities.Common;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,7 @@ public class HomeActivity extends TimeLineActivity {
     @Override
     @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
-        mSharedPreferences = getSharedPreferences("MyPref", 0);
+        mSharedPreferences = getSharedPreferences(Common.PREF, 0);
 
         if (!isTwitterLoggedInAlready()) {
             startActivityForResult(new Intent(HomeActivity.this, LoginActivity.class), REQUEST_LOGIN);
@@ -75,7 +76,8 @@ public class HomeActivity extends TimeLineActivity {
                 mLinearLayoutManager.smoothScrollToPosition(mRecyclerView, null, 0);
                 getSupportActionBar().setTitle(getString(R.string.app_name));
                 newTweetsCount = 0;
-                upComingTweets.clear();            }
+                upComingTweets.clear();
+            }
         });
 
         if (newTweetsCount > 0)

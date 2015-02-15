@@ -411,19 +411,10 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
         public VHHeader(View container) {
             super(container);
 
-            this.userProfilePicImageView = (ImageView) container.findViewById(R.id.userProfilePicImageView);
             this.tweetPhotoImageView = (ImageView) container.findViewById(R.id.tweetPhotoImageView);
-            this.userNameTextView = (TextView) container.findViewById(R.id.userNameTextView);
             this.screenNameTextView = (TextView) container.findViewById(R.id.screenNameTextView);
-            this.timeTextView = (TextView) container.findViewById(R.id.timeTextView);
-            this.statusTextView = (TextView) container.findViewById(R.id.statusTextView);
-            this.retweetTextView = (TextView) container.findViewById(R.id.retweetTextView);
             this.retweetsStatsTextView = (TextView) container.findViewById(R.id.retweetsStatsTextView);
             this.favouritesStatsTextView = (TextView) container.findViewById(R.id.favouritesStatsTextView);
-            this.favouriteImageButton = (ImageButton) container.findViewById(R.id.favouriteImageButton);
-            this.retweetImageButton = (ImageButton) container.findViewById(R.id.retweetImageButton);
-            this.respondImageButton = (ImageButton) container.findViewById(R.id.respondImageButton);
-            this.shareImageButton = (ImageButton) container.findViewById(R.id.shareImageButton);
         }
     }
 }

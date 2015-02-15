@@ -11,7 +11,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -63,7 +62,7 @@ public abstract class TimeLineActivity extends ActionBarActivity {
         }
 
         mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
-        mRecyclerView.addItemDecoration(new SpaceItemDecoration(dpToPx(10)));
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(Common.dpToPx(this, 10)));
 
         SharedPreferences mSharedPreferences = getSharedPreferences(Common.PREF, 0);
         if (mSharedPreferences.getBoolean(Common.PREF_ANIMATIONS, true)) {
@@ -143,11 +142,6 @@ public abstract class TimeLineActivity extends ActionBarActivity {
 
     abstract List<Status> getRefreshedTimeLine(Paging paging) throws TwitterException;
 
-    int dpToPx(int dp) {
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-    }
-
     void newTweetDown() {
         final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newTweetImageButton.getLayoutParams();
         ValueAnimator downAnimator = ValueAnimator.ofInt(params.bottomMargin, -newTweetImageButton.getHeight());
@@ -166,7 +160,7 @@ public abstract class TimeLineActivity extends ActionBarActivity {
 
     void newTweetUp() {
         final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newTweetImageButton.getLayoutParams();
-        ValueAnimator upAnimator = ValueAnimator.ofInt(params.bottomMargin, dpToPx(20));
+        ValueAnimator upAnimator = ValueAnimator.ofInt(params.bottomMargin, Common.dpToPx(this, 20));
         upAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {

@@ -2,13 +2,13 @@ package com.andreapivetta.blu.activities;
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,9 +19,11 @@ import android.widget.RelativeLayout;
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.TweetsListAdapter;
 import com.andreapivetta.blu.twitter.TwitterUtils;
+import com.andreapivetta.blu.utilities.Common;
 
 import java.util.ArrayList;
 
+import jp.wasabeef.recyclerview.animators.ScaleInBottomAnimator;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Status;
@@ -59,7 +61,14 @@ public class TweetActivity extends ActionBarActivity {
 
         this.twitter = TwitterUtils.getTwitter(TweetActivity.this);
         mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
-        mRecyclerView.addItemDecoration(new SpaceItemDecoration(dpToPx(10)));
+
+        SharedPreferences mSharedPreferences = getSharedPreferences(Common.PREF, 0);
+        if (mSharedPreferences.getBoolean(Common.PREF_ANIMATIONS, true)) {
+            mRecyclerView.setItemAnimator(new ScaleInBottomAnimator());
+            mRecyclerView.getItemAnimator().setAddDuration(300);
+        }
+
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(Common.dpToPx(this, 10)));
         mTweetsAdapter = new TweetsListAdapter(mDataSet, this, twitter);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
@@ -124,7 +133,7 @@ public class TweetActivity extends ActionBarActivity {
 
     void newTweetUp() {
         final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) replyImageButton.getLayoutParams();
-        ValueAnimator upAnimator = ValueAnimator.ofInt(params.bottomMargin, dpToPx(20));
+        ValueAnimator upAnimator = ValueAnimator.ofInt(params.bottomMargin, Common.dpToPx(this, 20));
         upAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -136,11 +145,6 @@ public class TweetActivity extends ActionBarActivity {
         upAnimator.start();
 
         isUp = true;
-    }
-
-    int dpToPx(int dp) {
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     @Override
@@ -192,7 +196,7 @@ public class TweetActivity extends ActionBarActivity {
                 QueryResult result = twitter.search(new Query("to:" + status.getUser().getScreenName()));
                 for (twitter4j.Status tmpStatus : result.getTweets()) {
                     if (status.getId() == tmpStatus.getInReplyToStatusId())
-                        mDataSet.add(tmpStatus);
+                        mTweetsAdapter.add(tmpStatus);
                 }
             } catch (TwitterException e) {
                 e.printStackTrace();
