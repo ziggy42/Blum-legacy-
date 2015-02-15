@@ -1,11 +1,11 @@
 package com.andreapivetta.blu.fragments;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +16,11 @@ import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.SpaceItemDecoration;
 import com.andreapivetta.blu.adapters.TweetsListAdapter;
 import com.andreapivetta.blu.twitter.TwitterUtils;
+import com.andreapivetta.blu.utilities.Common;
 
 import java.util.ArrayList;
 
+import jp.wasabeef.recyclerview.animators.ScaleInBottomAnimator;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Status;
@@ -61,7 +63,14 @@ public class SearchTweetsFragment extends Fragment {
 
         twitter = TwitterUtils.getTwitter(getActivity());
         RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.notificationsRecyclerView);
-        mRecyclerView.addItemDecoration(new SpaceItemDecoration(dpToPx(10)));
+
+        SharedPreferences mSharedPreferences = getActivity().getSharedPreferences(Common.PREF, 0);
+        if (mSharedPreferences.getBoolean(Common.PREF_ANIMATIONS, true)) {
+            mRecyclerView.setItemAnimator(new ScaleInBottomAnimator());
+            mRecyclerView.getItemAnimator().setAddDuration(300);
+        }
+
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(Common.dpToPx(getActivity(), 10)));
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mAdapter = new TweetsListAdapter(mDataSet, getActivity(), twitter, -1);
@@ -90,11 +99,6 @@ public class SearchTweetsFragment extends Fragment {
         new LoadTweets().execute(null, null, null);
 
         return rootView;
-    }
-
-    int dpToPx(int dp) {
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     private class LoadTweets extends AsyncTask<Void, Void, Boolean> {

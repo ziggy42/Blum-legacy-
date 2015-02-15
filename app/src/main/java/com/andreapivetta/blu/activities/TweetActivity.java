@@ -2,7 +2,6 @@ package com.andreapivetta.blu.activities;
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -13,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.andreapivetta.blu.R;
@@ -23,7 +21,6 @@ import com.andreapivetta.blu.utilities.Common;
 
 import java.util.ArrayList;
 
-import jp.wasabeef.recyclerview.animators.ScaleInBottomAnimator;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.Status;
@@ -31,6 +28,8 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
 public class TweetActivity extends ActionBarActivity {
+
+    private static final String TWEETS_LIST_TAG = "tweetlist";
 
     protected boolean isUp = true;
     private Twitter twitter;
@@ -40,9 +39,9 @@ public class TweetActivity extends ActionBarActivity {
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private ImageButton replyImageButton;
-    private ProgressBar loadingProgressBar;
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tweet);
@@ -59,15 +58,16 @@ public class TweetActivity extends ActionBarActivity {
             });
         }
 
-        this.twitter = TwitterUtils.getTwitter(TweetActivity.this);
-        mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
-
-        SharedPreferences mSharedPreferences = getSharedPreferences(Common.PREF, 0);
-        if (mSharedPreferences.getBoolean(Common.PREF_ANIMATIONS, true)) {
-            mRecyclerView.setItemAnimator(new ScaleInBottomAnimator());
-            mRecyclerView.getItemAnimator().setAddDuration(300);
+        if (savedInstanceState == null) {
+            this.status = (Status) getIntent().getBundleExtra("STATUS").getSerializable("TWEET");
+            mDataSet.add(status);
+        } else {
+            mDataSet = (ArrayList<Status>) savedInstanceState.getSerializable(TWEETS_LIST_TAG);
+            this.status = mDataSet.get(0);
         }
 
+        this.twitter = TwitterUtils.getTwitter(TweetActivity.this);
+        mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(Common.dpToPx(this, 10)));
         mTweetsAdapter = new TweetsListAdapter(mDataSet, this, twitter);
         mLinearLayoutManager = new LinearLayoutManager(this);
@@ -103,9 +103,9 @@ public class TweetActivity extends ActionBarActivity {
                 reply(status);
             }
         });
-        loadingProgressBar = (ProgressBar) findViewById(R.id.loadingProgressBar);
 
-        new LoadStatus().execute(null, null, null);
+        if (mDataSet.size() == 1) new LoadResponses().execute(null, null, null);
+
     }
 
     void reply(Status status) {
@@ -148,6 +148,12 @@ public class TweetActivity extends ActionBarActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(TWEETS_LIST_TAG, mDataSet);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_timeline, menu);
         return true;
@@ -165,39 +171,16 @@ public class TweetActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class LoadStatus extends AsyncTask<Void, Void, Boolean> {
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            try {
-                status = twitter.showStatus(getIntent().getLongExtra("STATUS", (long) 0));
-            } catch (TwitterException e) {
-                e.printStackTrace();
-                return false;
-            }
-
-            return true;
-        }
-
-        protected void onPostExecute(Boolean result) {
-            if (result) {
-                mDataSet.add(status);
-                loadingProgressBar.setVisibility(View.GONE);
-                new LoadResponses().execute(null, null, null);
-            }
-        }
-    }
-
     private class LoadResponses extends AsyncTask<Void, Void, Boolean> {
 
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
                 QueryResult result = twitter.search(new Query("to:" + status.getUser().getScreenName()));
-                for (twitter4j.Status tmpStatus : result.getTweets()) {
+                for (twitter4j.Status tmpStatus : result.getTweets())
                     if (status.getId() == tmpStatus.getInReplyToStatusId())
                         mTweetsAdapter.add(tmpStatus);
-                }
+
             } catch (TwitterException e) {
                 e.printStackTrace();
                 return false;
@@ -207,10 +190,9 @@ public class TweetActivity extends ActionBarActivity {
         }
 
         protected void onPostExecute(Boolean result) {
-            if (result) {
-                mTweetsAdapter.notifyDataSetChanged();
-            }
+            /* if (!result) {
+                // TODO error message
+            } */
         }
     }
-
 }
