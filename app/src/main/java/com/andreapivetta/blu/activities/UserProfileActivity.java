@@ -4,6 +4,8 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -20,7 +22,6 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewStub;
@@ -144,7 +145,7 @@ public class UserProfileActivity extends ActionBarActivity {
     void setUpUI() {
 
         final int height = Common.dpToPx(UserProfileActivity.this, 200);
-        final double da = 1.0/height;
+        final double da = 1.0 / height;
 
         profileScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
 
@@ -154,13 +155,12 @@ public class UserProfileActivity extends ActionBarActivity {
                 profileBackgroundImageView.setY(-y / 2);
 
                 if (toolbar.getVisibility() == View.VISIBLE) {
-                    if(height <= y) {
+                    if (height <= y) {
                         toolbar.setVisibility(View.GONE);
                     } else {
                         toolbar.setAlpha((float) (1 - da * y));
                     }
-                }
-                else if (toolbar.getVisibility() == View.GONE && height >= y) {
+                } else if (toolbar.getVisibility() == View.GONE && height >= y) {
                     toolbar.setVisibility(View.VISIBLE);
                 }
             }
@@ -174,18 +174,22 @@ public class UserProfileActivity extends ActionBarActivity {
                     @TargetApi(21)
                     public void onSuccess() {
                         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            /*Bitmap onePixelBitmap = Bitmap.createScaledBitmap(
-                            ((BitmapDrawable) profileBackgroundImageView.getDrawable()).getBitmap(), 1, 1, true);
-                            int pixel = onePixelBitmap.getPixel(0, 0);
-                            getWindow().setStatusBarColor(
-                            Color.rgb(Color.red(pixel), Color.green(pixel), Color.blue(pixel)));*/
-
                             Palette.generateAsync(
                                     ((BitmapDrawable) profileBackgroundImageView.getDrawable()).getBitmap(),
                                     new Palette.PaletteAsyncListener() {
                                         public void onGenerated(Palette palette) {
-                                            getWindow().setStatusBarColor(palette.getLightVibrantColor(
-                                                    getResources().getColor(R.color.colorAccent)));
+
+                                            Palette.Swatch swatch = palette.getLightVibrantSwatch();
+                                            if (swatch != null) {
+                                                getWindow().setStatusBarColor(swatch.getRgb());
+                                            } else {
+                                                Bitmap onePixelBitmap = Bitmap.createScaledBitmap(
+                                                        ((BitmapDrawable) profileBackgroundImageView.getDrawable()).getBitmap(), 1, 1, true);
+                                                int pixel = onePixelBitmap.getPixel(0, 0);
+                                                getWindow().setStatusBarColor(
+                                                        Color.rgb(Color.red(pixel), Color.green(pixel), Color.blue(pixel)));
+                                            }
+
                                         }
                                     });
 
@@ -622,7 +626,6 @@ public class UserProfileActivity extends ActionBarActivity {
         protected Boolean doInBackground(String... params) {
             try {
                 if (!params[0].equals(twitter.getScreenName())) {
-                    Log.i("USER:::", params[0]);
                     user = twitter.showUser(params[0]);
 
                     Relationship rel = twitter.showFriendship(twitter.getId(), user.getId());
