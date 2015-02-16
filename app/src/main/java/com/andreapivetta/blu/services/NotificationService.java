@@ -11,7 +11,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.TweetActivity;
-import com.andreapivetta.blu.activities.UserActivity;
+import com.andreapivetta.blu.activities.UserProfileActivity;
 import com.andreapivetta.blu.data.Notification;
 import com.andreapivetta.blu.data.NotificationsDatabaseManager;
 import com.andreapivetta.blu.twitter.TwitterUtils;
@@ -38,10 +38,6 @@ public class NotificationService extends Service {
 
     public final static String NEW_TWEETS_INTENT = "com.andreapivetta.blu.NEW_TWEETS_INTENT";
     public final static String NEW_NOTIFICATION_INTENT = "com.andreapivetta.blu.NEW_NOTIFICATION_INTENT";
-
-    private Twitter twitter;
-    private NotificationManager mNotifyMgr;
-
     private final UserStreamListener listener = new UserStreamListener() {
         @Override
         public void onDeletionNotice(long l, long l2) {
@@ -198,6 +194,8 @@ public class NotificationService extends Service {
 
         }
     };
+    private Twitter twitter;
+    private NotificationManager mNotifyMgr;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -262,7 +260,7 @@ public class NotificationService extends Service {
 
                 break;
             case Notification.TYPE_FOLLOW:
-                resultIntent = new Intent(getApplicationContext(), UserActivity.class);
+                resultIntent = new Intent(getApplicationContext(), UserProfileActivity.class);
                 resultIntent.putExtra("ID", id);
                 resultPendingIntent = PendingIntent.getActivity(
                         getApplicationContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);

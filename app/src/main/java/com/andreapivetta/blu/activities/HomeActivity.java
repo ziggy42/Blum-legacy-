@@ -202,7 +202,7 @@ public class HomeActivity extends TimeLineActivity {
         if (item.getItemId() == R.id.action_search) {
             onSearchRequested();
         } else if (item.getItemId() == R.id.action_profile) {
-            startActivity(new Intent(HomeActivity.this, UserActivity.class));
+            startActivity(new Intent(HomeActivity.this, UserProfileActivity.class));
         }
 
         return super.onOptionsItemSelected(item);

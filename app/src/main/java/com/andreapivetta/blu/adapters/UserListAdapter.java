@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.activities.UserActivity;
+import com.andreapivetta.blu.activities.UserProfileActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -56,7 +56,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         holder.userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, UserActivity.class);
+                Intent i = new Intent(context, UserProfileActivity.class);
                 i.putExtra("ID", user.getId());
                 i.putExtra("Twitter", twitter);
                 context.startActivity(i);

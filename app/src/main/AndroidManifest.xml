@@ -33,22 +33,6 @@
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".twitter.TwitterOAuthActivity" />
         <activity
-            android:name=".activities.UserActivity"
-            android:label="@string/title_activity_user"
-            android:parentActivityName=".activities.HomeActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.HomeActivity" />
-
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <action android:name="android.intent.action.VIEW" />
-
-                <data android:scheme="com.andreapivetta.blu.user" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".activities.HomeActivity" >
@@ -58,10 +42,10 @@
         </activity>
         <activity
             android:name=".activities.UserTimeLineActivity"
-            android:parentActivityName=".activities.UserActivity" >
+            android:parentActivityName=".activities.UserProfileActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.UserActivity" />
+                android:value=".activities.UserProfileActivity" />
         </activity>
         <activity
             android:name=".activities.TweetActivity"
@@ -122,6 +106,26 @@
                 <data android:scheme="com.andreapivetta.blu.hashtag" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.ImageActivity"
+            android:label="@string/title_activity_image" >
+        </activity>
+        <activity
+            android:name=".activities.UserProfileActivity"
+            android:label="@string/title_activity_user_profile" >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.HomeActivity" />
+
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <data android:scheme="com.andreapivetta.blu.user" />
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".services.NotificationService"
@@ -137,10 +141,6 @@
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name=".activities.ImageActivity"
-            android:label="@string/title_activity_image" >
-        </activity>
     </application>
 
 </manifest>

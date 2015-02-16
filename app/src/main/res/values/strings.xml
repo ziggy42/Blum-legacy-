@@ -10,11 +10,9 @@
     <string name="new_tweet_hint">Tweet your life in 140 characters</string>
     <string name="sending_tweet_title">Sending Tweet</string>
     <string name="sending_tweet_content">Sending in Progress</string>
-    <string name="title_activity_user" />
     <string name="share_tweet">Share this Tweet!</string>
     <string name="retweet_title">Retweet?</string>
     <string name="retweet">Retweet</string>
-    <string name="you_are_following">You\'re following this user</string>
     <string name="stop_following">Stop following %1$s?</string>
     <string name="ok">OK</string>
     <string name="are_following_ea">You and %1$s are following each other</string>
@@ -56,6 +54,13 @@
     <string name="chars_left">Chars Left</string>
     <string name="title_activity_hashtag" />
     <string name="title_activity_image" />
+    <string name="tweet">TWEET</string>
+    <string name="follow_user">FOLLOW</string>
+    <string name="you_are_followed">%1$s follows you</string>
+    <string name="you_are_not_following">You aren\'t following %1$s</string>
+    <string name="you_are_following">You\'re following %1$s</string>
+    <string name="unfollow">UNFOLLOW</string>
+    <string name="title_activity_user_profile"/>
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>
@@ -92,8 +97,6 @@
     <string name="take_photo_contentDescriptor">Take and Add a Photo Image Button</string>
     <string name="uploaded_image_contentDescriptor">Uploaded ImageView</string>
     <string name="send_tweet_button_contentDescriptor">Send Tweet image Button</string>
-    <string name="follow_user_contentDescription">Follow User ImageButton</string>
     <string name="notifications_contentDescription">Notifications</string>
-
 
 </resources>

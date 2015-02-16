@@ -25,7 +25,7 @@ import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.ImageActivity;
 import com.andreapivetta.blu.activities.NewTweetActivity;
 import com.andreapivetta.blu.activities.TweetActivity;
-import com.andreapivetta.blu.activities.UserActivity;
+import com.andreapivetta.blu.activities.UserProfileActivity;
 import com.andreapivetta.blu.twitter.FavoriteTweet;
 import com.andreapivetta.blu.twitter.RetweetTweet;
 import com.squareup.picasso.Picasso;
@@ -117,7 +117,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
         holder.userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, UserActivity.class);
+                Intent i = new Intent(context, UserProfileActivity.class);
                 i.putExtra("ID", currentStatus.getUser().getId());
                 context.startActivity(i);
             }
@@ -281,10 +281,8 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             holder.statusTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (holder.interactionLinearLayout.getVisibility() == View.VISIBLE)
-                        holder.interactionLinearLayout.setVisibility(View.GONE);
-                    else
-                        holder.interactionLinearLayout.setVisibility(View.VISIBLE);
+                    holder.interactionLinearLayout.setVisibility(
+                            (holder.interactionLinearLayout.getVisibility() == View.VISIBLE) ? View.GONE : View.VISIBLE);
                 }
             });
 
@@ -316,10 +314,8 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             ((VHItem) holder).cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (holder.interactionLinearLayout.getVisibility() == View.VISIBLE)
-                        holder.interactionLinearLayout.setVisibility(View.GONE);
-                    else
-                        holder.interactionLinearLayout.setVisibility(View.VISIBLE);
+                    holder.interactionLinearLayout.setVisibility(
+                            (holder.interactionLinearLayout.getVisibility() == View.VISIBLE) ? View.GONE : View.VISIBLE);
                 }
             });
 

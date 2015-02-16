@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.TweetActivity;
-import com.andreapivetta.blu.activities.UserActivity;
+import com.andreapivetta.blu.activities.UserProfileActivity;
 import com.andreapivetta.blu.data.Notification;
 import com.squareup.picasso.Picasso;
 
@@ -35,7 +35,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public NotificationAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                         int viewType) {
+                                                             int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.notification, parent, false);
 
@@ -54,7 +54,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, UserActivity.class);
+                Intent i = new Intent(context, UserProfileActivity.class);
                 i.putExtra("ID", notification.userID);
                 context.startActivity(i);
             }
@@ -83,7 +83,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         String screenName = notification.user;
         StyleSpan b = new StyleSpan(android.graphics.Typeface.BOLD);
 
-        if(notification.type.equals(Notification.TYPE_FAVOURITE) || notification.type.equals(Notification.TYPE_RETWEET)
+        if (notification.type.equals(Notification.TYPE_FAVOURITE) || notification.type.equals(Notification.TYPE_RETWEET)
                 || notification.type.equals(Notification.TYPE_MENTION) || notification.type.equals(Notification.TYPE_RETWEET_MENTIONED)) {
             SpannableStringBuilder sb;
             switch (notification.type) {
@@ -114,7 +114,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                     context.startActivity(i);
                 }
             });
-        } else if(notification.type.equals(Notification.TYPE_FOLLOW)) {
+        } else if (notification.type.equals(Notification.TYPE_FOLLOW)) {
             SpannableStringBuilder sb = new SpannableStringBuilder(screenName + " " + context.getString(R.string.is_following_not));
             sb.setSpan(b, 0, screenName.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             holder.notificationExplanationTextView.setText(sb);
@@ -123,7 +123,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(context, UserActivity.class);
+                    Intent i = new Intent(context, UserProfileActivity.class);
                     i.putExtra("ID", notification.userID);
                     context.startActivity(i);
                 }
