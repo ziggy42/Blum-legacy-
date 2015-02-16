@@ -144,18 +144,25 @@ public class UserProfileActivity extends ActionBarActivity {
     void setUpUI() {
 
         final int height = Common.dpToPx(UserProfileActivity.this, 200);
+        final double da = 1.0/height;
+
         profileScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
 
             @Override
             public void onScrollChanged() {
-                profileBackgroundImageView.setY(-profileScrollView.getScrollY() / 2);
+                int y = profileScrollView.getScrollY();
+                profileBackgroundImageView.setY(-y / 2);
 
-                if (toolbar.getVisibility() == View.VISIBLE &&
-                        height <= profileScrollView.getScrollY())
-                    toolbar.setVisibility(View.GONE);
-                else if (toolbar.getVisibility() == View.GONE &&
-                        height >= profileScrollView.getScrollY())
+                if (toolbar.getVisibility() == View.VISIBLE) {
+                    if(height <= y) {
+                        toolbar.setVisibility(View.GONE);
+                    } else {
+                        toolbar.setAlpha((float) (1 - da * y));
+                    }
+                }
+                else if (toolbar.getVisibility() == View.GONE && height >= y) {
                     toolbar.setVisibility(View.VISIBLE);
+                }
             }
         });
 
