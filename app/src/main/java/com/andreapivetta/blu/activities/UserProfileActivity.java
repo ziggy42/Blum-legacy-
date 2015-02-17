@@ -45,8 +45,11 @@ import com.andreapivetta.blu.utilities.Common;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import twitter4j.MediaEntity;
 import twitter4j.PagableResponseList;
@@ -328,7 +331,33 @@ public class UserProfileActivity extends ActionBarActivity {
             } else retweetTextView.setVisibility(View.GONE);
 
             userNameTextView.setText(statuses[i].getUser().getName());
-            timeTextView.setText(new SimpleDateFormat("hh:mm").format(statuses[i].getCreatedAt()));
+
+            Date d = statuses[i].getCreatedAt();
+            Calendar c = Calendar.getInstance();
+            Calendar c2 = Calendar.getInstance();
+            c2.setTime(d);
+
+            long diff = c.getTimeInMillis() - c2.getTimeInMillis();
+            long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
+            if (seconds > 60) {
+                long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+                if (minutes > 60) {
+                    long hours = TimeUnit.MILLISECONDS.toHours(diff);
+                    if (hours > 24) {
+                        if (c.get(Calendar.YEAR) == c2.get(Calendar.YEAR)) {
+                            java.text.SimpleDateFormat simpleDateFormat =
+                                    new java.text.SimpleDateFormat("MMM dd", Locale.getDefault());
+                            String formattedCurrentDate = simpleDateFormat.format(d);
+                            timeTextView.setText(formattedCurrentDate);
+                        } else {
+                            java.text.SimpleDateFormat simpleDateFormat =
+                                    new java.text.SimpleDateFormat("MMM dd yyyy", Locale.getDefault());
+                            String formattedCurrentDate = simpleDateFormat.format(d);
+                            timeTextView.setText(formattedCurrentDate);
+                        }
+                    } else timeTextView.setText(getString(R.string.mini_hours, (int) hours));
+                } else timeTextView.setText(getString(R.string.mini_minutes, (int) minutes));
+            } else timeTextView.setText(getString(R.string.mini_seconds, (int) seconds));
 
             Picasso.with(this)
                     .load(statuses[i].getUser().getBiggerProfileImageURL())

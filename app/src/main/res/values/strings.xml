@@ -61,6 +61,9 @@
     <string name="you_are_following">You\'re following %1$s</string>
     <string name="unfollow">UNFOLLOW</string>
     <string name="title_activity_user_profile"/>
+    <string name="mini_seconds">%1$ds</string>
+    <string name="mini_minutes">%1$dm</string>
+    <string name="mini_hours">%1$dh</string>
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>
