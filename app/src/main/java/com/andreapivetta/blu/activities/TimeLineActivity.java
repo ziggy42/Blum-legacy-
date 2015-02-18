@@ -193,12 +193,18 @@ public abstract class TimeLineActivity extends ActionBarActivity {
     }
 
     protected class GetTimeLine extends AsyncTask<Void, Void, Boolean> {
+
+        // EXP
+        private ArrayList<twitter4j.Status> buffer = new ArrayList<>();
+        //
+
         @Override
         protected Boolean doInBackground(Void... uris) {
             try {
                 paging.setPage(currentPage);
                 for (twitter4j.Status status : getCurrentTimeLine())
-                    mTweetsAdapter.add(status);
+                    buffer.add(status);
+                    //mTweetsAdapter.add(status);
             } catch (TwitterException e) {
                 e.printStackTrace();
                 return false;
@@ -210,6 +216,14 @@ public abstract class TimeLineActivity extends ActionBarActivity {
             if (result) {
                 currentPage += 1;
                 loadingProgressBar.setVisibility(View.GONE);
+
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (twitter4j.Status tmp : buffer)
+                            mTweetsAdapter.add(tmp);
+                    }
+                });
             }
 
             loading = true;
