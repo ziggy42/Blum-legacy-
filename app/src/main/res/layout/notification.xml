@@ -53,8 +53,8 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/userProfilePicImageView"
-            android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:fontFamily="sans-serif-thin"
             android:includeFontPadding="false"
             android:textSize="12sp" />

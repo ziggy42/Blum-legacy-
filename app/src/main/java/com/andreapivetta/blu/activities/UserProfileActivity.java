@@ -187,10 +187,12 @@ public class UserProfileActivity extends ActionBarActivity {
                                                 getWindow().setStatusBarColor(swatch.getRgb());
                                             } else {
                                                 Bitmap onePixelBitmap = Bitmap.createScaledBitmap(
-                                                        ((BitmapDrawable) profileBackgroundImageView.getDrawable()).getBitmap(), 1, 1, true);
+                                                        ((BitmapDrawable) profileBackgroundImageView
+                                                                .getDrawable()).getBitmap(), 1, 1, true);
                                                 int pixel = onePixelBitmap.getPixel(0, 0);
                                                 getWindow().setStatusBarColor(
-                                                        Color.rgb(Color.red(pixel), Color.green(pixel), Color.blue(pixel)));
+                                                        Color.rgb(Color.red(pixel),
+                                                                Color.green(pixel), Color.blue(pixel)));
                                             }
 
                                         }
@@ -625,7 +627,6 @@ public class UserProfileActivity extends ActionBarActivity {
                     }
                 } else {
                     user = twitter.showUser(twitter.getId());
-
                     STATUS = THIS_IS_ME;
                 }
 
@@ -667,7 +668,6 @@ public class UserProfileActivity extends ActionBarActivity {
                     }
                 } else {
                     user = twitter.showUser(twitter.getId());
-
                     STATUS = THIS_IS_ME;
                 }
 
@@ -745,9 +745,8 @@ public class UserProfileActivity extends ActionBarActivity {
         }
 
         protected void onPostExecute(Boolean status) {
-            if (status) {
-                setUpTweets();
-            }
+            if (status) setUpTweets();
         }
     }
+
 }

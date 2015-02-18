@@ -131,8 +131,9 @@ public class HomeActivity extends TimeLineActivity {
     protected void onPause() {
         super.onPause();
 
-        if (dataUpdateReceiver != null)
-            unregisterReceiver(dataUpdateReceiver);
+        /*if (dataUpdateReceiver != null)
+            unregisterReceiver(dataUpdateReceiver);*/
+        // TODO testing
     }
 
     @Override
@@ -198,6 +199,14 @@ public class HomeActivity extends TimeLineActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (dataUpdateReceiver != null) // EXP
+            unregisterReceiver(dataUpdateReceiver);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_search) {
             onSearchRequested();
@@ -208,7 +217,7 @@ public class HomeActivity extends TimeLineActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class DataUpdateReceiver extends BroadcastReceiver {
+    public class DataUpdateReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(NotificationService.NEW_TWEETS_INTENT)) {

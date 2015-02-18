@@ -3,15 +3,14 @@
     android:id="@+id/linearlayout_root_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.andreapivetta.blu.activities.SettingsActivity">
 
     <include layout="@layout/toolbar" />
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.andreapivetta.blu.activities.SettingsActivity"
         tools:ignore="MergeRootFrame" />
 </LinearLayout>

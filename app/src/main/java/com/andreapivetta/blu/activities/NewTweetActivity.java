@@ -1,5 +1,6 @@
 package com.andreapivetta.blu.activities;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -154,7 +155,8 @@ public class NewTweetActivity extends ActionBarActivity {
     }
 
     File createImageFile() throws IOException {
-        String imageFileName = "JPEG_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_";
+        @SuppressLint("SimpleDateFormat") String imageFileName =
+                "JPEG_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_";
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         imageFile = File.createTempFile(imageFileName, ".jpg", storageDir);
 

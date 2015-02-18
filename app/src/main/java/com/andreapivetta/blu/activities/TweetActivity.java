@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.andreapivetta.blu.R;
@@ -30,6 +31,7 @@ import twitter4j.TwitterException;
 public class TweetActivity extends ActionBarActivity {
 
     private static final String TWEETS_LIST_TAG = "tweetlist";
+    private static final String CURRENT_TWEET_TAG = "header";
 
     protected boolean isUp = true;
     private Twitter twitter;
@@ -39,6 +41,9 @@ public class TweetActivity extends ActionBarActivity {
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private ImageButton replyImageButton;
+    private ProgressBar loadingProgressBar;
+
+    private int currentIndex = 0;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -58,18 +63,28 @@ public class TweetActivity extends ActionBarActivity {
             });
         }
 
+        loadingProgressBar = (ProgressBar) findViewById(R.id.loadingProgressBar);
+
         if (savedInstanceState == null) {
             this.status = (Status) getIntent().getBundleExtra("STATUS").getSerializable("TWEET");
-            mDataSet.add(status);
         } else {
             mDataSet = (ArrayList<Status>) savedInstanceState.getSerializable(TWEETS_LIST_TAG);
-            this.status = mDataSet.get(0);
+            this.currentIndex = savedInstanceState.getInt(CURRENT_TWEET_TAG);
+            this.status = mDataSet.get(currentIndex);
+            loadingProgressBar.setVisibility(View.GONE);
         }
 
         this.twitter = TwitterUtils.getTwitter(TweetActivity.this);
         mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
+
+        /*SharedPreferences mSharedPreferences = getSharedPreferences(Common.PREF, 0);
+        if (mSharedPreferences.getBoolean(Common.PREF_ANIMATIONS, true)) {
+            mRecyclerView.setItemAnimator(new ScaleInBottomAnimator());
+            mRecyclerView.getItemAnimator().setAddDuration(300);
+        }*/
+
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(Common.dpToPx(this, 10)));
-        mTweetsAdapter = new TweetsListAdapter(mDataSet, this, twitter);
+        mTweetsAdapter = new TweetsListAdapter(mDataSet, this, twitter, currentIndex);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
@@ -104,7 +119,8 @@ public class TweetActivity extends ActionBarActivity {
             }
         });
 
-        if (mDataSet.size() == 1) new LoadResponses().execute(null, null, null);
+        if (mDataSet.isEmpty()) //new LoadResponses().execute(null, null, null);
+            new LoadConversation().execute(null, null, null);
 
     }
 
@@ -150,6 +166,7 @@ public class TweetActivity extends ActionBarActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putSerializable(TWEETS_LIST_TAG, mDataSet);
+        outState.putInt(CURRENT_TWEET_TAG, currentIndex);
         super.onSaveInstanceState(outState);
     }
 
@@ -171,15 +188,26 @@ public class TweetActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class LoadResponses extends AsyncTask<Void, Void, Boolean> {
+    private class LoadConversation extends AsyncTask<Void, Void, Boolean> {
+        private ArrayList<twitter4j.Status> buffer = new ArrayList<>();
 
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
+                long id;
+                twitter4j.Status current = status;
+                while ((id = current.getInReplyToStatusId()) != -1) {
+                    current = twitter.showStatus(id);
+                    buffer.add(0, current);
+                }
+
+                currentIndex = buffer.size();
+                buffer.add(status);
+
                 QueryResult result = twitter.search(new Query("to:" + status.getUser().getScreenName()));
                 for (twitter4j.Status tmpStatus : result.getTweets())
                     if (status.getId() == tmpStatus.getInReplyToStatusId())
-                        mTweetsAdapter.add(tmpStatus);
+                        buffer.add(tmpStatus);
 
             } catch (TwitterException e) {
                 e.printStackTrace();
@@ -190,9 +218,13 @@ public class TweetActivity extends ActionBarActivity {
         }
 
         protected void onPostExecute(Boolean result) {
-            /* if (!result) {
-                // TODO error message
-            } */
+            if (result) {
+                mTweetsAdapter.setHeaderPosition(currentIndex);
+                loadingProgressBar.setVisibility(View.GONE);
+                for (int i = 0; i < buffer.size(); i++)
+                    mTweetsAdapter.add(buffer.get(i));
+                mRecyclerView.scrollToPosition(currentIndex);
+            }
         }
     }
 }

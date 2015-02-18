@@ -380,6 +380,10 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
         return TYPE_ITEM;
     }
 
+    public void setHeaderPosition(int position) {
+        this.headerPosition = position;
+    }
+
     private boolean isPositionHeader(int position) {
         return position == headerPosition;
     }

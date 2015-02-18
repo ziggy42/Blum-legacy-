@@ -55,9 +55,13 @@ public class HashtagActivity extends TimeLineActivity {
 
     @Override
     List<Status> getCurrentTimeLine() throws TwitterException {
-        QueryResult result = twitter.search(mQuery);
-        mQuery = result.nextQuery();
-        return result.getTweets();
+        try {
+            QueryResult result = twitter.search(mQuery);
+            mQuery = result.nextQuery();
+            return result.getTweets();
+        } catch (NullPointerException e) {
+            return new ArrayList<>();
+        }
     }
 
     @Override

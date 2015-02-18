@@ -1,8 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.andreapivetta.blu.activities.NewTweetActivity">
 
     <include layout="@layout/toolbar" />
 
@@ -10,11 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:context="com.andreapivetta.blu.activities.NewTweetActivity">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/contentLinearLayout"

@@ -35,6 +35,14 @@
             android:elevation="4dp"
             android:src="@drawable/ic_create_white_24dp" />
 
+        <ProgressBar
+            android:id="@+id/loadingProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:indeterminate="true" />
+
     </RelativeLayout>
 
 </LinearLayout>
