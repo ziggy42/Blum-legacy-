@@ -221,6 +221,7 @@
                 android:textSize="17sp" />
 
             <LinearLayout
+                android:id="@+id/followTweetLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/isHeFollowingTextView"

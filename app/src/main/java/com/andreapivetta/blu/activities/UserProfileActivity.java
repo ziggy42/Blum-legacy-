@@ -282,6 +282,10 @@ public class UserProfileActivity extends ActionBarActivity {
                 followButton.setText(getString(R.string.follow_user));
                 isHeFollowingTextView.setText(getString(R.string.you_are_not_following, user.getName()));
                 break;
+            case THIS_IS_ME:
+                findViewById(R.id.followTweetLinearLayout).setVisibility(View.GONE);
+                isHeFollowingTextView.setText(getString(R.string.you_are_awesome));
+                break;
         }
 
         tweetButton.setOnClickListener(new View.OnClickListener() {

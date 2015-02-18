@@ -194,9 +194,7 @@ public abstract class TimeLineActivity extends ActionBarActivity {
 
     protected class GetTimeLine extends AsyncTask<Void, Void, Boolean> {
 
-        // EXP
         private ArrayList<twitter4j.Status> buffer = new ArrayList<>();
-        //
 
         @Override
         protected Boolean doInBackground(Void... uris) {
@@ -204,7 +202,6 @@ public abstract class TimeLineActivity extends ActionBarActivity {
                 paging.setPage(currentPage);
                 for (twitter4j.Status status : getCurrentTimeLine())
                     buffer.add(status);
-                    //mTweetsAdapter.add(status);
             } catch (TwitterException e) {
                 e.printStackTrace();
                 return false;

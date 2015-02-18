@@ -101,5 +101,6 @@
     <string name="uploaded_image_contentDescriptor">Uploaded ImageView</string>
     <string name="send_tweet_button_contentDescriptor">Send Tweet image Button</string>
     <string name="notifications_contentDescription">Notifications</string>
+    <string name="you_are_awesome">You are awesome</string>
 
 </resources>
