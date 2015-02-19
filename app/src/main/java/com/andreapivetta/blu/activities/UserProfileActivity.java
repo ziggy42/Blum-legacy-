@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.UserListAdapter;
+import com.andreapivetta.blu.internet.ConnectionDetector;
 import com.andreapivetta.blu.twitter.FavoriteTweet;
 import com.andreapivetta.blu.twitter.FollowTwitterUser;
 import com.andreapivetta.blu.twitter.RetweetTweet;
@@ -642,7 +643,12 @@ public class UserProfileActivity extends ActionBarActivity {
                 invalidateOptionsMenu();
                 new LoadTweets().execute(null, null, null);
             } else {
-                Toast.makeText(UserProfileActivity.this, getString(R.string.cant_find_user), Toast.LENGTH_SHORT).show();
+                if (!new ConnectionDetector(UserProfileActivity.this).isConnectingToInternet())
+                    Toast.makeText(UserProfileActivity.this,
+                            getString(R.string.cant_find_user), Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(UserProfileActivity.this,
+                            getString(R.string.reached_twitter_user_limit), Toast.LENGTH_LONG).show();
                 finish();
             }
         }
@@ -683,7 +689,12 @@ public class UserProfileActivity extends ActionBarActivity {
                 invalidateOptionsMenu();
                 new LoadTweets().execute(null, null, null);
             } else {
-                Toast.makeText(UserProfileActivity.this, getString(R.string.cant_find_user), Toast.LENGTH_SHORT).show();
+                if (!new ConnectionDetector(UserProfileActivity.this).isConnectingToInternet())
+                    Toast.makeText(UserProfileActivity.this,
+                            getString(R.string.cant_find_user), Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(UserProfileActivity.this,
+                            getString(R.string.reached_twitter_user_limit), Toast.LENGTH_LONG).show();
                 finish();
             }
         }
@@ -718,7 +729,8 @@ public class UserProfileActivity extends ActionBarActivity {
                 mUsersAdapter.notifyDataSetChanged();
                 dialogLoading = true;
             } else {
-                Toast.makeText(UserProfileActivity.this, getString(R.string.cant_load_user), Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserProfileActivity.this, getString(R.string.cant_load_user),
+                        Toast.LENGTH_SHORT).show();
             }
         }
     }

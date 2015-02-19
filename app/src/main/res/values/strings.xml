@@ -45,7 +45,7 @@
     <string name="amount_tweets">%1$s\nTweets</string>
     <string name="amount_followers">%1$s\n Followers</string>
     <string name="amount_following">%1$s\nFollowing</string>
-    <string name="cant_find_user">Can\'t find this user</string>
+    <string name="cant_find_user">Can\'t load this user, check your internet connection</string>
     <string name="cant_load_user">Can\'t load users</string>
     <string name="action_profile">My Profile</string>
     <string name="title_activity_new_tweet">New Tweet</string>
@@ -65,6 +65,7 @@
     <string name="mini_minutes">%1$dm</string>
     <string name="mini_hours">%1$dh</string>
     <string name="you_are_awesome">You are awesome</string>
+    <string name="reached_twitter_user_limit">Reached Twitter limit, please try again in a few minutes</string>
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>
