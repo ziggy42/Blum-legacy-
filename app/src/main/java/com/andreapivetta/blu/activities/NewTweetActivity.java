@@ -142,11 +142,9 @@ public class NewTweetActivity extends ActionBarActivity {
         grabImageImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent()
                         .setType("image/*")
                         .setAction(Intent.ACTION_GET_CONTENT);
-
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_GRAB_IMAGE);
 
             }

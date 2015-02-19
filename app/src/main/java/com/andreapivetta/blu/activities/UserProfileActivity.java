@@ -329,7 +329,7 @@ public class UserProfileActivity extends ActionBarActivity {
             ImageButton respondImageButton = (ImageButton) tweetView.findViewById(R.id.respondImageButton);
             ImageButton shareImageButton = (ImageButton) tweetView.findViewById(R.id.shareImageButton);
             ImageButton openTweetImageButton = (ImageButton) tweetView.findViewById(R.id.openTweetImageButton);
-            final LinearLayout interactionLinearLayout = (LinearLayout) tweetView.findViewById(R.id.interactionLinearLayout);
+            final LinearLayout interLinearLayout = (LinearLayout) tweetView.findViewById(R.id.interactionLinearLayout);
             FrameLayout cardView = (FrameLayout) tweetView.findViewById(R.id.card_view);
 
             if (statuses[i].isRetweet()) {
@@ -353,17 +353,12 @@ public class UserProfileActivity extends ActionBarActivity {
                 if (minutes > 60) {
                     long hours = TimeUnit.MILLISECONDS.toHours(diff);
                     if (hours > 24) {
-                        if (c.get(Calendar.YEAR) == c2.get(Calendar.YEAR)) {
-                            java.text.SimpleDateFormat simpleDateFormat =
-                                    new java.text.SimpleDateFormat("MMM dd", Locale.getDefault());
-                            String formattedCurrentDate = simpleDateFormat.format(d);
-                            timeTextView.setText(formattedCurrentDate);
-                        } else {
-                            java.text.SimpleDateFormat simpleDateFormat =
-                                    new java.text.SimpleDateFormat("MMM dd yyyy", Locale.getDefault());
-                            String formattedCurrentDate = simpleDateFormat.format(d);
-                            timeTextView.setText(formattedCurrentDate);
-                        }
+                        if (c.get(Calendar.YEAR) == c2.get(Calendar.YEAR))
+                            timeTextView.setText(
+                                    (new java.text.SimpleDateFormat("MMM dd", Locale.getDefault())).format(d));
+                        else
+                            timeTextView.setText(
+                                    (new java.text.SimpleDateFormat("MMM dd yyyy", Locale.getDefault())).format(d));
                     } else timeTextView.setText(getString(R.string.mini_hours, (int) hours));
                 } else timeTextView.setText(getString(R.string.mini_minutes, (int) minutes));
             } else timeTextView.setText(getString(R.string.mini_seconds, (int) seconds));
@@ -382,14 +377,11 @@ public class UserProfileActivity extends ActionBarActivity {
             favouriteImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    long type;
                     if (statuses[index].isFavorited()) {
-                        type = -1;
-                        new FavoriteTweet(UserProfileActivity.this, twitter).execute(statuses[index].getId(), type);
+                        new FavoriteTweet(UserProfileActivity.this, twitter).execute(statuses[index].getId(), -1L);
                         favouriteImageButton.setImageResource(R.drawable.ic_star_grey600_36dp);
                     } else {
-                        type = 1;
-                        new FavoriteTweet(UserProfileActivity.this, twitter).execute(statuses[index].getId(), type);
+                        new FavoriteTweet(UserProfileActivity.this, twitter).execute(statuses[index].getId(), 1L);
                         favouriteImageButton.setImageResource(R.drawable.ic_star_outline_black_36dp);
                     }
                 }
@@ -443,21 +435,20 @@ public class UserProfileActivity extends ActionBarActivity {
             });
 
             statusTextView.setText(statuses[i].getText());
-            interactionLinearLayout.setVisibility(View.GONE);
+            interLinearLayout.setVisibility(View.GONE);
             Linkify.addLinks(statusTextView, Linkify.ALL);
 
             statusTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    interactionLinearLayout.setVisibility(
-                            (interactionLinearLayout.getVisibility() == View.VISIBLE) ? View.GONE : View.VISIBLE);
+                    interLinearLayout.setVisibility(
+                            (interLinearLayout.getVisibility() == View.VISIBLE) ? View.GONE : View.VISIBLE);
                 }
             });
 
             if (statuses[i].getMediaEntities().length > 0) {
                 ImageView tweetPhotoImageView = (ImageView) tweetView.findViewById(R.id.tweetPhotoImageView);
-                MediaEntity mediaEntityArray[] = statuses[i].getMediaEntities();
-                for (final MediaEntity mediaEntity : mediaEntityArray) {
+                for (final MediaEntity mediaEntity : statuses[i].getMediaEntities()) {
                     if (mediaEntity.getType().equals("photo")) {
                         Picasso.with(this)
                                 .load(mediaEntity.getMediaURL())
@@ -483,8 +474,8 @@ public class UserProfileActivity extends ActionBarActivity {
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    interactionLinearLayout.setVisibility(
-                            (interactionLinearLayout.getVisibility() == View.VISIBLE) ? View.GONE : View.VISIBLE);
+                    interLinearLayout.setVisibility(
+                            (interLinearLayout.getVisibility() == View.VISIBLE) ? View.GONE : View.VISIBLE);
                 }
             });
 

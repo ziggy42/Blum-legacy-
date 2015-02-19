@@ -57,8 +57,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, UserProfileActivity.class);
-                i.putExtra("ID", user.getId());
-                i.putExtra("Twitter", twitter);
+                i.putExtra("ID", user.getId())
+                        .putExtra("Twitter", twitter);
                 context.startActivity(i);
             }
         });

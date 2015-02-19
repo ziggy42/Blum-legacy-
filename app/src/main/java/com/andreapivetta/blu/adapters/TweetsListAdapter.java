@@ -57,13 +57,6 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
     private ArrayList<Long> favorites = new ArrayList<>();
     private ArrayList<Long> retweets = new ArrayList<>();
 
-    public TweetsListAdapter(ArrayList<Status> mDataSet, Context context, Twitter twitter) {
-        this.mDataSet = mDataSet;
-        this.context = context;
-        this.twitter = twitter;
-        this.headerPosition = 0;
-    }
-
     public TweetsListAdapter(ArrayList<Status> mDataSet, Context context, Twitter twitter, int headerPosition) {
         this.mDataSet = mDataSet;
         this.context = context;
@@ -102,8 +95,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
         holder.userNameTextView.setText(currentStatus.getUser().getName());
 
         Date d = currentStatus.getCreatedAt();
-        Calendar c = Calendar.getInstance();
-        Calendar c2 = Calendar.getInstance();
+        Calendar c = Calendar.getInstance(), c2 = Calendar.getInstance();
         c2.setTime(d);
 
         long diff = c.getTimeInMillis() - c2.getTimeInMillis();
@@ -113,21 +105,14 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             if (minutes > 60) {
                 long hours = TimeUnit.MILLISECONDS.toHours(diff);
                 if (hours > 24) {
-                    if (c.get(Calendar.YEAR) == c2.get(Calendar.YEAR)) {
-                        java.text.SimpleDateFormat simpleDateFormat =
-                                new java.text.SimpleDateFormat("MMM dd", Locale.getDefault());
-                        String formattedCurrentDate = simpleDateFormat.format(d);
-                        holder.timeTextView.setText(formattedCurrentDate);
-                    } else {
-                        java.text.SimpleDateFormat simpleDateFormat =
-                                new java.text.SimpleDateFormat("MMM dd yyyy", Locale.getDefault());
-                        String formattedCurrentDate = simpleDateFormat.format(d);
-                        holder.timeTextView.setText(formattedCurrentDate);
-                    }
-                } else
-                    holder.timeTextView.setText(context.getString(R.string.mini_hours, (int) hours));
-            } else
-                holder.timeTextView.setText(context.getString(R.string.mini_minutes, (int) minutes));
+                    if (c.get(Calendar.YEAR) == c2.get(Calendar.YEAR))
+                        holder.timeTextView.setText(
+                                (new java.text.SimpleDateFormat("MMM dd", Locale.getDefault())).format(d));
+                    else
+                        holder.timeTextView.setText(
+                                (new java.text.SimpleDateFormat("MMM dd yyyy", Locale.getDefault())).format(d));
+                } else holder.timeTextView.setText(context.getString(R.string.mini_hours, (int) hours));
+            } else holder.timeTextView.setText(context.getString(R.string.mini_minutes, (int) minutes));
         } else holder.timeTextView.setText(context.getString(R.string.mini_seconds, (int) seconds));
 
         Picasso.with(context)
@@ -157,15 +142,12 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
         holder.favouriteImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                long type;
                 if (currentStatus.isFavorited() || favorites.contains(currentStatus.getId())) {
-                    type = -1;
-                    new FavoriteTweet(context, twitter).execute(currentStatus.getId(), type);
+                    new FavoriteTweet(context, twitter).execute(currentStatus.getId(), -1L);
                     favorites.remove(currentStatus.getId());
                     holder.favouriteImageButton.setImageResource(R.drawable.ic_star_grey600_36dp);
                 } else {
-                    type = 1;
-                    new FavoriteTweet(context, twitter).execute(currentStatus.getId(), type);
+                    new FavoriteTweet(context, twitter).execute(currentStatus.getId(), 1L);
                     favorites.add(currentStatus.getId());
                     holder.favouriteImageButton.setImageResource(R.drawable.ic_star_outline_black_36dp);
                 }
@@ -318,8 +300,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             });
 
             if (TYPE == TYPE_ITEM_PHOTO) {
-                MediaEntity mediaEntityArray[] = currentStatus.getMediaEntities();
-                for (final MediaEntity mediaEntity : mediaEntityArray) {
+                for (final MediaEntity mediaEntity : currentStatus.getMediaEntities()) {
                     if (mediaEntity.getType().equals("photo")) {
                         Picasso.with(context)
                                 .load(mediaEntity.getMediaURL())

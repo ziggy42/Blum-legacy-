@@ -146,9 +146,8 @@ public class NotificationService extends Service {
 
         @Override
         public void onStatus(Status status) {
-            UserMentionEntity[] entities = status.getUserMentionEntities();
             ArrayList<String> names = new ArrayList<>();
-            for (UserMentionEntity e : entities)
+            for (UserMentionEntity e : status.getUserMentionEntities())
                 names.add(e.getScreenName());
 
             try {

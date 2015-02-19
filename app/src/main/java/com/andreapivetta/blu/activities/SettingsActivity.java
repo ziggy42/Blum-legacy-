@@ -37,11 +37,10 @@ public class SettingsActivity extends ActionBarActivity {
             });
         }
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null)
             getFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
-        }
     }
 
     public static class PlaceholderFragment extends PreferenceFragment {

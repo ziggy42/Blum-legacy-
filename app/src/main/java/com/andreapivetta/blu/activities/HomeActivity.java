@@ -107,22 +107,19 @@ public class HomeActivity extends TimeLineActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if (intent.hasExtra("exit")) {
+        if (intent.hasExtra("exit"))
             setIntent(intent);
-        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (getIntent() != null) {
-            if (("exit").equalsIgnoreCase(getIntent().getStringExtra(("exit")))) {
-                onBackPressed();
-            }
-        }
+        if (getIntent() != null && ("exit").equalsIgnoreCase(getIntent().getStringExtra(("exit"))))
+            onBackPressed();
 
         if (dataUpdateReceiver == null)
             dataUpdateReceiver = new DataUpdateReceiver();
+
         registerReceiver(dataUpdateReceiver, new IntentFilter(NotificationService.NEW_TWEETS_INTENT));
         registerReceiver(dataUpdateReceiver, new IntentFilter(NotificationService.NEW_NOTIFICATION_INTENT));
     }
@@ -131,9 +128,8 @@ public class HomeActivity extends TimeLineActivity {
     protected void onPause() {
         super.onPause();
 
-        /*if (dataUpdateReceiver != null)
+        /*if (dataUpdateReceiver != null) // TODO testing
             unregisterReceiver(dataUpdateReceiver);*/
-        // TODO testing
     }
 
     @Override
@@ -202,7 +198,7 @@ public class HomeActivity extends TimeLineActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        if (dataUpdateReceiver != null) // EXP
+        if (dataUpdateReceiver != null) // TODO testing
             unregisterReceiver(dataUpdateReceiver);
     }
 

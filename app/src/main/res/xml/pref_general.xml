@@ -8,6 +8,7 @@
             android:key="pref_key_logout"
             android:summary="@string/logout_pref_summary"
             android:title="@string/logout_pref_title" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
