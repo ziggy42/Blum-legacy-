@@ -66,7 +66,9 @@ public class TweetActivity extends ActionBarActivity {
         loadingProgressBar = (ProgressBar) findViewById(R.id.loadingProgressBar);
 
         if (savedInstanceState == null) {
-            this.status = (Status) getIntent().getBundleExtra("STATUS").getSerializable("TWEET");
+            Bundle bundle = getIntent().getBundleExtra("STATUS");
+            if (bundle != null)
+                this.status = (Status) bundle.getSerializable("TWEET");
         } else {
             mDataSet = (ArrayList<Status>) savedInstanceState.getSerializable(TWEETS_LIST_TAG);
             this.currentIndex = savedInstanceState.getInt(CURRENT_TWEET_TAG);
@@ -119,7 +121,7 @@ public class TweetActivity extends ActionBarActivity {
             }
         });
 
-        if (mDataSet.isEmpty()) //new LoadResponses().execute(null, null, null);
+        if (mDataSet.isEmpty())
             new LoadConversation().execute(null, null, null);
 
     }
@@ -194,8 +196,11 @@ public class TweetActivity extends ActionBarActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                long id;
+                if (status == null)
+                    status = twitter.showStatus(getIntent().getLongExtra("STATUS_ID", 0));
+
                 twitter4j.Status current = status;
+                long id;
                 while ((id = current.getInReplyToStatusId()) != -1) {
                     current = twitter.showStatus(id);
                     buffer.add(0, current);

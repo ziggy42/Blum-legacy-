@@ -79,7 +79,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             holder.timeTextView.setText(android.text.format.DateFormat.getDateFormat(context).format(current.getTime()));
         }
 
-
         String screenName = notification.user;
         StyleSpan b = new StyleSpan(android.graphics.Typeface.BOLD);
 
@@ -110,12 +109,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(context, TweetActivity.class);
-                    i.putExtra("STATUS", notification.tweetID);
+                    i.putExtra("STATUS_ID", notification.tweetID);
                     context.startActivity(i);
                 }
             });
         } else if (notification.type.equals(Notification.TYPE_FOLLOW)) {
-            SpannableStringBuilder sb = new SpannableStringBuilder(screenName + " " + context.getString(R.string.is_following_not));
+            SpannableStringBuilder sb = new SpannableStringBuilder(screenName + " " +
+                    context.getString(R.string.is_following_not));
             sb.setSpan(b, 0, screenName.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             holder.notificationExplanationTextView.setText(sb);
             holder.statusTextView.setVisibility(View.GONE);

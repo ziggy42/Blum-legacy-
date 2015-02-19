@@ -29,7 +29,7 @@
     <string name="retweets">%1$s RETWEETS</string>
     <string name="notifications">Notifications</string>
     <string name="nothing_to_show">Nothing to show here :(</string>
-    <string name="is_following_not">followed you</string>
+    <string name="is_following_not">is now following you</string>
     <string name="mentioned_not">%1$s mentioned you:</string>
     <string name="action_clear_db">Delete All Notifications</string>
     <string name="clear_database">Delete all notifications?</string>
@@ -64,6 +64,7 @@
     <string name="mini_seconds">%1$ds</string>
     <string name="mini_minutes">%1$dm</string>
     <string name="mini_hours">%1$dh</string>
+    <string name="you_are_awesome">You are awesome</string>
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>
@@ -101,6 +102,5 @@
     <string name="uploaded_image_contentDescriptor">Uploaded ImageView</string>
     <string name="send_tweet_button_contentDescriptor">Send Tweet image Button</string>
     <string name="notifications_contentDescription">Notifications</string>
-    <string name="you_are_awesome">You are awesome</string>
 
 </resources>

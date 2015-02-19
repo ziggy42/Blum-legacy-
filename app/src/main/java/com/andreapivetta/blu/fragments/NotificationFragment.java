@@ -19,6 +19,7 @@ import com.andreapivetta.blu.utilities.Common;
 import java.util.ArrayList;
 import java.util.Collections;
 
+
 public class NotificationFragment extends Fragment {
 
     private ArrayList<Notification> notificationList = new ArrayList<>();
@@ -38,11 +39,8 @@ public class NotificationFragment extends Fragment {
 
         databaseManager = new NotificationsDatabaseManager(getActivity());
         databaseManager.open();
-        if (getArguments().getInt("KIND") == 0) {
-            notificationList = databaseManager.getAllUnreadNotifications();
-        } else {
-            notificationList = databaseManager.getAllReadNotifications();
-        }
+        notificationList = (getArguments().getInt("KIND") == 0) ?
+                databaseManager.getAllUnreadNotifications() : databaseManager.getAllReadNotifications();
         databaseManager.close();
 
         Collections.sort(notificationList, Collections.reverseOrder());
