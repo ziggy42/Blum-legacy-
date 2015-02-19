@@ -42,7 +42,8 @@
                     android:id="@+id/userNickTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="145dp"
+                    android:layout_marginLeft="140dp"
+                    android:layout_marginTop="1dp"
                     android:fontFamily="sans-serif-thin"
                     android:textSize="15sp" />
 
@@ -51,7 +52,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/userNickTextView"
-                    android:layout_marginLeft="145dp"
+                    android:layout_marginLeft="140dp"
+                    android:layout_marginTop="-3dp"
                     android:singleLine="true"
                     android:textColor="@color/grey"
                     android:textIsSelectable="false"
@@ -185,16 +187,16 @@
                     android:id="@+id/firstViewStub"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
+                    android:layout_marginLeft="@dimen/profileTweetsMargins"
+                    android:layout_marginRight="@dimen/profileTweetsMargins"
                     android:layout_marginTop="14dp" />
 
                 <ViewStub
                     android:id="@+id/secondViewStub"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
+                    android:layout_marginLeft="@dimen/profileTweetsMargins"
+                    android:layout_marginRight="@dimen/profileTweetsMargins"
                     android:layout_marginTop="12dp" />
 
                 <ViewStub
@@ -202,8 +204,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="14dp"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
+                    android:layout_marginLeft="@dimen/profileTweetsMargins"
+                    android:layout_marginRight="@dimen/profileTweetsMargins"
                     android:layout_marginTop="12dp" />
 
             </LinearLayout>

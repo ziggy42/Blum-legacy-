@@ -147,6 +147,9 @@ public class UserProfileActivity extends ActionBarActivity {
 
     void setUpUI() {
 
+        profileBackgroundImageView.setVisibility(View.VISIBLE);
+        profileScrollView.setVisibility(View.VISIBLE);
+
         final int height = Common.dpToPx(UserProfileActivity.this, 200);
         final double da = 1.0 / height;
 
