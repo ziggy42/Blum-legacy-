@@ -20,6 +20,12 @@
             android:title="@string/animations_pref_title"
             android:defaultValue="true"/>
 
+        <CheckBoxPreference
+            android:key="pref_key_heads_up_notifications"
+            android:summary="@string/heads_up_notifications_pref_summary"
+            android:title="@string/heads_up_notifications_pref_title"
+            android:defaultValue="true"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>

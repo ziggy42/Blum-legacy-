@@ -4,8 +4,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
@@ -15,6 +17,7 @@ import com.andreapivetta.blu.activities.UserProfileActivity;
 import com.andreapivetta.blu.data.Notification;
 import com.andreapivetta.blu.data.NotificationsDatabaseManager;
 import com.andreapivetta.blu.twitter.TwitterUtils;
+import com.andreapivetta.blu.utilities.Common;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,6 +41,9 @@ public class NotificationService extends Service {
 
     public final static String NEW_TWEETS_INTENT = "com.andreapivetta.blu.NEW_TWEETS_INTENT";
     public final static String NEW_NOTIFICATION_INTENT = "com.andreapivetta.blu.NEW_NOTIFICATION_INTENT";
+
+    private SharedPreferences mSharedPreferences;
+
     private final UserStreamListener listener = new UserStreamListener() {
         @Override
         public void onDeletionNotice(long l, long l2) {
@@ -212,6 +218,8 @@ public class NotificationService extends Service {
         TwitterStream twitterStream = TwitterUtils.getTwitterStream(getApplicationContext());
         twitterStream.addListener(listener);
         twitterStream.user();
+
+        mSharedPreferences = getSharedPreferences(Common.PREF, 0);
     }
 
     void pushNotification(long tweetID, String user, String type, String status, String profilePicURL, long id) {
@@ -228,33 +236,46 @@ public class NotificationService extends Service {
         Intent resultIntent;
         PendingIntent resultPendingIntent;
 
+        mBuilder.setDefaults(android.app.Notification.DEFAULT_SOUND)
+                .setAutoCancel(true)
+                .setLights(Color.BLUE, 500, 1000);
+
+        if (mSharedPreferences.getBoolean(Common.PREF_HEADS_UP_NOTIFICATIONS, true))
+            mBuilder.setPriority(android.app.Notification.PRIORITY_HIGH);
+
         switch (type) {
             case Notification.TYPE_FAVOURITE:
                 resultIntent = new Intent(getApplicationContext(), TweetActivity.class);
-                resultIntent.putExtra("STATUS", tweetID);
+                resultIntent.putExtra("STATUS_ID", tweetID);
                 resultPendingIntent = PendingIntent.getActivity(
                         getApplicationContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                 mBuilder.setContentTitle(getString(R.string.fav_not_title, user))
                         .setContentText(status)
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText(status))
                         .setSmallIcon(R.drawable.ic_star_white_24dp)
-                        .setContentIntent(resultPendingIntent)
-                        .setAutoCancel(true);
+                        .setLargeIcon(getBitmapFromURL(profilePicURL))
+                        .setColor(getApplicationContext().getResources().getColor(R.color.colorPrimary))
+                        .setContentIntent(resultPendingIntent);
 
                 mNotifyMgr.notify((int) tweetID, mBuilder.build());
 
                 break;
             case Notification.TYPE_RETWEET:
                 resultIntent = new Intent(getApplicationContext(), TweetActivity.class);
-                resultIntent.putExtra("STATUS", tweetID);
+                resultIntent.putExtra("STATUS_ID", tweetID);
                 resultPendingIntent = PendingIntent.getActivity(
                         getApplicationContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                 mBuilder.setContentTitle(getString(R.string.retw_not_title, user))
                         .setContentText(status)
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText(status))
                         .setSmallIcon(R.drawable.ic_repeat_white_24dp)
-                        .setContentIntent(resultPendingIntent)
-                        .setAutoCancel(true);
+                        .setLargeIcon(getBitmapFromURL(profilePicURL))
+                        .setColor(getApplicationContext().getResources().getColor(R.color.colorPrimary))
+                        .setContentIntent(resultPendingIntent);
 
                 mNotifyMgr.notify((int) tweetID, mBuilder.build());
 
@@ -268,40 +289,45 @@ public class NotificationService extends Service {
                 mBuilder.setContentTitle(getString(R.string.follow_not_title, user))
                         .setContentText(status)
                         .setSmallIcon(R.drawable.ic_person_add_white_24dp)
-                        .setContentIntent(resultPendingIntent)
                         .setLargeIcon(getBitmapFromURL(profilePicURL))
-                        .setAutoCancel(true);
+                        .setColor(getApplicationContext().getResources().getColor(R.color.colorPrimary))
+                        .setContentIntent(resultPendingIntent);
 
                 mNotifyMgr.notify((int) id, mBuilder.build());
 
                 break;
             case Notification.TYPE_MENTION:
                 resultIntent = new Intent(getApplicationContext(), TweetActivity.class);
-                resultIntent.putExtra("STATUS", tweetID);
+                resultIntent.putExtra("STATUS_ID", tweetID);
                 resultPendingIntent = PendingIntent.getActivity(
                         getApplicationContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                 mBuilder.setContentTitle(getString(R.string.reply_not_title, user))
                         .setContentText(status)
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText(status))
                         .setSmallIcon(R.drawable.ic_reply_white_24dp)
-                        .setContentIntent(resultPendingIntent)
                         .setLargeIcon(getBitmapFromURL(profilePicURL))
-                        .setAutoCancel(true);
+                        .setColor(getApplicationContext().getResources().getColor(R.color.colorPrimary))
+                        .setContentIntent(resultPendingIntent);
 
                 mNotifyMgr.notify((int) id, mBuilder.build());
 
                 break;
             case Notification.TYPE_RETWEET_MENTIONED:
                 resultIntent = new Intent(getApplicationContext(), TweetActivity.class);
-                resultIntent.putExtra("STATUS", tweetID);
+                resultIntent.putExtra("STATUS_ID", tweetID);
                 resultPendingIntent = PendingIntent.getActivity(
                         getApplicationContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                 mBuilder.setContentTitle(getString(R.string.retw_ment_not_title, user))
                         .setContentText(status)
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText(status))
                         .setSmallIcon(R.drawable.ic_repeat_white_24dp)
-                        .setContentIntent(resultPendingIntent)
-                        .setAutoCancel(true);
+                        .setLargeIcon(getBitmapFromURL(profilePicURL))
+                        .setColor(getApplicationContext().getResources().getColor(R.color.colorPrimary))
+                        .setContentIntent(resultPendingIntent);
 
                 mNotifyMgr.notify((int) tweetID, mBuilder.build());
                 break;

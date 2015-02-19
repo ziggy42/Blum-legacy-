@@ -88,6 +88,8 @@
     <string name="prefcat_behavior_title">Behavior</string>
     <string name="animations_pref_title">Animations</string>
     <string name="animations_pref_summary">You\'ll need to restart the app</string>
+    <string name="heads_up_notifications_pref_summary">Allow heads-up notifications</string>
+    <string name="heads_up_notifications_pref_title">Heads-Up Notifications</string>
 
     <!-- Content Descriptors -->
     <string name="profile_background_contentDescriptor">User Background Image View</string>

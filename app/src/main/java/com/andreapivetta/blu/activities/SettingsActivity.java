@@ -47,7 +47,7 @@ public class SettingsActivity extends ActionBarActivity {
     public static class PlaceholderFragment extends PreferenceFragment {
 
         private Preference logoutPreference;
-        private CheckBoxPreference animationsPreference;
+        private CheckBoxPreference animationsPreference, headsUpNotificationsPreference;
         private SharedPreferences myPref;
 
         public PlaceholderFragment() {
@@ -62,6 +62,7 @@ public class SettingsActivity extends ActionBarActivity {
 
             logoutPreference = findPreference("pref_key_logout");
             animationsPreference = (CheckBoxPreference) findPreference("pref_key_animations");
+            headsUpNotificationsPreference = (CheckBoxPreference) findPreference("pref_key_heads_up_notifications");
 
             logoutPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
@@ -101,6 +102,16 @@ public class SettingsActivity extends ActionBarActivity {
                 public boolean onPreferenceClick(Preference preference) {
                     myPref.edit().putBoolean(
                             Common.PREF_ANIMATIONS, animationsPreference.isChecked()).apply();
+                    return true;
+                }
+            });
+
+            headsUpNotificationsPreference.setChecked(myPref.getBoolean(Common.PREF_HEADS_UP_NOTIFICATIONS, true));
+            headsUpNotificationsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    myPref.edit().putBoolean(
+                            Common.PREF_HEADS_UP_NOTIFICATIONS, headsUpNotificationsPreference.isChecked()).apply();
                     return true;
                 }
             });
