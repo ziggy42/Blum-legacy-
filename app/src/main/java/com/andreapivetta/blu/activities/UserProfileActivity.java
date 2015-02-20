@@ -309,6 +309,8 @@ public class UserProfileActivity extends ActionBarActivity {
 
     void setUpTweets() {
         for (int i = 0; i < statuses.length; i++) {
+            if (statuses[i] == null) break;
+
             final int index = i;
 
             if (statuses[i].getMediaEntities().length > 0) {
@@ -550,6 +552,7 @@ public class UserProfileActivity extends ActionBarActivity {
 
         mDialogLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(Common.dpToPx(this, 10)));
         mRecyclerView.setLayoutManager(mDialogLinearLayoutManager);
         mRecyclerView.setAdapter(mUsersAdapter);
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
