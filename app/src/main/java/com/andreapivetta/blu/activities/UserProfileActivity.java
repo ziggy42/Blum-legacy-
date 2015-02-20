@@ -495,7 +495,7 @@ public class UserProfileActivity extends ActionBarActivity {
 
         switch (STATUS) {
             case I_FOLLOW_HIM:
-                builder.setTitle(getString(R.string.you_are_following))
+                builder.setTitle(getString(R.string.you_are_following, user.getName()))
                         .setMessage(getString(R.string.stop_following, user.getName()))
                         .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                             @Override
@@ -503,6 +503,8 @@ public class UserProfileActivity extends ActionBarActivity {
                                 new FollowTwitterUser(UserProfileActivity.this, twitter, false)
                                         .execute(user.getId());
                                 followButton.setText(getString(R.string.follow, user.getScreenName()));
+                                isHeFollowingTextView.setText(
+                                        getString(R.string.you_are_not_following, user.getName()));
                                 STATUS = I_DONT_KNOW_WHO_YOU_ARE;
                             }
                         });
@@ -516,6 +518,8 @@ public class UserProfileActivity extends ActionBarActivity {
                                 new FollowTwitterUser(UserProfileActivity.this, twitter, false)
                                         .execute(user.getId());
                                 followButton.setText(getString(R.string.follow, user.getScreenName()));
+                                isHeFollowingTextView.setText(
+                                        getString(R.string.you_are_followed, user.getName()));
                                 STATUS = HE_FOLLOWS_ME;
                             }
                         });
@@ -528,6 +532,12 @@ public class UserProfileActivity extends ActionBarActivity {
                                 new FollowTwitterUser(UserProfileActivity.this, twitter, true)
                                         .execute(user.getId());
                                 followButton.setText(getString(R.string.unfollow));
+                                isHeFollowingTextView.setText(
+                                        getString(R.string.you_are_following, user.getName()));
+                                if (STATUS == HE_FOLLOWS_ME)
+                                    STATUS = WE_FOLLOW_EACH_OTHER;
+                                else
+                                    STATUS = I_FOLLOW_HIM;
                             }
                         });
                 break;
