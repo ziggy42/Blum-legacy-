@@ -100,7 +100,8 @@ public class NotificationFragment extends Fragment {
 
             databaseManager = new NotificationsDatabaseManager(getActivity());
             databaseManager.open();
-            buffer = (kind == 0) ? databaseManager.getAllUnreadNotifications() : databaseManager.getAllReadNotifications();
+            buffer = (kind == 0) ? databaseManager.getAllUnreadNotifications() :
+                    databaseManager.getAllReadNotifications();
             databaseManager.close();
 
             Collections.sort(buffer, Collections.reverseOrder());

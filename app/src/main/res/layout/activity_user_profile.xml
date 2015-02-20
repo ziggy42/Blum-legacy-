@@ -169,9 +169,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="-80dp"
-                android:scaleType="fitCenter"
-                app:riv_corner_radius="30dip"
-                app:riv_mutate_background="true"
+                android:scaleType="centerCrop"
                 app:riv_oval="true" />
 
             <LinearLayout
