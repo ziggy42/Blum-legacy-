@@ -148,9 +148,6 @@ public class UserProfileActivity extends ActionBarActivity {
 
     void setUpUI() {
 
-        profileBackgroundImageView.setVisibility(View.VISIBLE);
-        profileScrollView.setVisibility(View.VISIBLE);
-
         final int height = Common.dpToPx(UserProfileActivity.this, 200);
         final double da = 1.0 / height;
 
@@ -218,6 +215,7 @@ public class UserProfileActivity extends ActionBarActivity {
         userNameTextView.setText(user.getName());
         userNickTextView.setText("@" + user.getScreenName());
         descriptionTextView.setText(user.getDescription());
+        Linkify.addLinks(descriptionTextView, Linkify.ALL);
 
         String location = user.getLocation();
         if (location.length() != 0) userLocationTextView.setText(location);
