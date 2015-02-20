@@ -77,7 +77,7 @@ public class UserProfileActivity extends ActionBarActivity {
     private User user;
 
     private ArrayList<User> followers = new ArrayList<>(), following = new ArrayList<>();
-    private Status statuses[] = new Status[3];
+    private Status statuses[];
     private UserListAdapter mUsersAdapter;
     private LinearLayoutManager mDialogLinearLayoutManager;
     private boolean dialogLoading = true;
@@ -309,15 +309,10 @@ public class UserProfileActivity extends ActionBarActivity {
 
     void setUpTweets() {
         for (int i = 0; i < statuses.length; i++) {
-            if (statuses[i] == null) break;
-
             final int index = i;
 
-            if (statuses[i].getMediaEntities().length > 0) {
-                stubs[i].setLayoutResource(R.layout.tweet_photo);
-            } else {
-                stubs[i].setLayoutResource(R.layout.tweet_basic);
-            }
+            if (statuses[i].getMediaEntities().length > 0) stubs[i].setLayoutResource(R.layout.tweet_photo);
+            else stubs[i].setLayoutResource(R.layout.tweet_basic);
 
             View tweetView = stubs[i].inflate();
             TextView retweetTextView = (TextView) tweetView.findViewById(R.id.retweetTextView);
@@ -369,11 +364,11 @@ public class UserProfileActivity extends ActionBarActivity {
                     .placeholder(getResources().getDrawable(R.drawable.placeholder))
                     .into(userProfilePicImageView);
 
-            favouriteImageButton.setImageResource(
-                    (statuses[i].isFavorited()) ? R.drawable.ic_star_outline_black_36dp : R.drawable.ic_star_grey600_36dp);
+            favouriteImageButton.setImageResource((statuses[i].isFavorited()) ?
+                    R.drawable.ic_star_outline_black_36dp : R.drawable.ic_star_grey600_36dp);
 
-            retweetImageButton.setImageResource(
-                    (statuses[i].isRetweeted()) ? R.drawable.ic_repeat_black_36dp : R.drawable.ic_repeat_grey600_36dp);
+            retweetImageButton.setImageResource((statuses[i].isRetweeted()) ?
+                    R.drawable.ic_repeat_black_36dp : R.drawable.ic_repeat_grey600_36dp);
 
             favouriteImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -740,11 +735,10 @@ public class UserProfileActivity extends ActionBarActivity {
 
         protected Boolean doInBackground(Void... params) {
 
-            Paging paging = new Paging(1, 3);
-            paging.setPage(1);
-
             try {
-                ResponseList<twitter4j.Status> mList = twitter.getUserTimeline(user.getScreenName(), paging);
+                ResponseList<twitter4j.Status> mList =
+                        twitter.getUserTimeline(user.getScreenName(), new Paging(1, 3));
+                statuses = new twitter4j.Status[mList.size()];
                 for (int i = 0; i < mList.size(); i++)
                     statuses[i] = mList.get(i);
             } catch (TwitterException e) {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="homeMargins">60dp</dimen>
-    <dimen name="picHeight">300dp</dimen>
+    <dimen name="homeMargins">160dp</dimen>
+    <dimen name="picHeight">420dp</dimen>
+    <dimen name="profileBackgroundHeight">450dp</dimen>
 </resources>

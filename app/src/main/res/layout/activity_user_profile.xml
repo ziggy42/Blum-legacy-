@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/profileBackgroundImageView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="@dimen/profileBackgroundHeight"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:contentDescription="@string/profile_background_contentDescriptor"
@@ -29,7 +29,7 @@
             <View
                 android:id="@+id/transparentView"
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="@dimen/profileBackgroundHeight" />
 
             <RelativeLayout
                 android:id="@+id/containerRelativeLayout"
@@ -187,7 +187,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/profileTweetsMargins"
                     android:layout_marginRight="@dimen/profileTweetsMargins"
-                    android:layout_marginTop="14dp" />
+                    android:layout_marginTop="14dp"
+                    android:layout_marginBottom="6dp"/>
 
                 <ViewStub
                     android:id="@+id/secondViewStub"
@@ -195,7 +196,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/profileTweetsMargins"
                     android:layout_marginRight="@dimen/profileTweetsMargins"
-                    android:layout_marginTop="12dp" />
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"/>
 
                 <ViewStub
                     android:id="@+id/thirdViewStub"
@@ -204,7 +206,7 @@
                     android:layout_marginBottom="14dp"
                     android:layout_marginLeft="@dimen/profileTweetsMargins"
                     android:layout_marginRight="@dimen/profileTweetsMargins"
-                    android:layout_marginTop="12dp" />
+                    android:layout_marginTop="6dp" />
 
             </LinearLayout>
 
