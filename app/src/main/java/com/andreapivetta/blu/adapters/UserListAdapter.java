@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
@@ -52,8 +53,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         holder.userNameTextView.setText(user.getName());
         holder.screenNameTextView.setText("@" + user.getScreenName());
         holder.descriptionTextView.setText(user.getDescription());
-
-        holder.userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
+        holder.containerRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, UserProfileActivity.class);
@@ -62,6 +62,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
                 context.startActivity(i);
             }
         });
+
     }
 
     @Override
@@ -73,6 +74,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
 
         public ImageView userProfilePicImageView;
         public TextView userNameTextView, screenNameTextView, descriptionTextView;
+        public RelativeLayout containerRelativeLayout;
 
         public ViewHolder(View container) {
             super(container);
@@ -81,6 +83,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             this.userNameTextView = (TextView) container.findViewById(R.id.userNameTextView);
             this.descriptionTextView = (TextView) container.findViewById(R.id.descriptionTextView);
             this.screenNameTextView = (TextView) container.findViewById(R.id.screenNameTextView);
+            this.containerRelativeLayout = (RelativeLayout) container.findViewById(R.id.containerRelativeLayout);
         }
     }
 }

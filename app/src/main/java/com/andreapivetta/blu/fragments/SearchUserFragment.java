@@ -1,5 +1,6 @@
 package com.andreapivetta.blu.fragments;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,11 +13,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.activities.SpaceItemDecoration;
 import com.andreapivetta.blu.adapters.UserListAdapter;
 import com.andreapivetta.blu.twitter.TwitterUtils;
+import com.andreapivetta.blu.utilities.Common;
 
 import java.util.ArrayList;
 
+import jp.wasabeef.recyclerview.animators.ScaleInBottomAnimator;
 import twitter4j.Paging;
 import twitter4j.ResponseList;
 import twitter4j.Twitter;
@@ -62,6 +66,14 @@ public class SearchUserFragment extends Fragment {
 
         twitter = TwitterUtils.getTwitter(getActivity());
         RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.notificationsRecyclerView);
+
+        SharedPreferences mSharedPreferences = getActivity().getSharedPreferences(Common.PREF, 0);
+        if (mSharedPreferences.getBoolean(Common.PREF_ANIMATIONS, true)) {
+            mRecyclerView.setItemAnimator(new ScaleInBottomAnimator());
+            mRecyclerView.getItemAnimator().setAddDuration(300);
+        }
+
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(Common.dpToPx(getActivity(), 10)));
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mAdapter = new UserListAdapter(mDataSet, getActivity(), twitter);

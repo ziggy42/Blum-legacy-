@@ -102,13 +102,15 @@ public class SearchTweetsFragment extends Fragment {
     }
 
     private class LoadTweets extends AsyncTask<Void, Void, Boolean> {
+
+        private ArrayList<twitter4j.Status> buffer = new ArrayList<>();
+
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
                 QueryResult result = twitter.search(mQuery);
-                for (twitter4j.Status tmpStatus : result.getTweets()) {
-                    mDataSet.add(tmpStatus);
-                }
+                for (twitter4j.Status tmpStatus : result.getTweets())
+                    buffer.add(tmpStatus);
 
                 if (!result.hasNext()) {
                     loading = false;
@@ -126,11 +128,13 @@ public class SearchTweetsFragment extends Fragment {
 
         protected void onPostExecute(Boolean result) {
             if (result) {
-                mAdapter.notifyDataSetChanged();
                 loadingProgressBar.setVisibility(View.GONE);
 
-                if (mDataSet.size() == 0)
+                if (buffer.size() == 0)
                     nothingToShowTextView.setVisibility(View.VISIBLE);
+                else
+                    for (twitter4j.Status tmp : buffer)
+                        mAdapter.add(tmp);
             }
         }
     }

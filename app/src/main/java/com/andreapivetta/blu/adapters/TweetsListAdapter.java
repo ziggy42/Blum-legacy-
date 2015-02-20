@@ -1,14 +1,10 @@
 package com.andreapivetta.blu.adapters;
 
-import android.annotation.TargetApi;
-import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spannable;
@@ -115,8 +111,10 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                     else
                         holder.timeTextView.setText(
                                 (new java.text.SimpleDateFormat("MMM dd yyyy", Locale.getDefault())).format(d));
-                } else holder.timeTextView.setText(context.getString(R.string.mini_hours, (int) hours));
-            } else holder.timeTextView.setText(context.getString(R.string.mini_minutes, (int) minutes));
+                } else
+                    holder.timeTextView.setText(context.getString(R.string.mini_hours, (int) hours));
+            } else
+                holder.timeTextView.setText(context.getString(R.string.mini_minutes, (int) minutes));
         } else holder.timeTextView.setText(context.getString(R.string.mini_seconds, (int) seconds));
 
         Picasso.with(context)
