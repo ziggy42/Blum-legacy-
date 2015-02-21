@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/userProfilePicImageView"
+            android:layout_toLeftOf="@+id/timeTextView"
             android:layout_toRightOf="@+id/userProfilePicImageView"
             android:textSize="17sp"
             android:textStyle="bold" />
