@@ -1,5 +1,7 @@
 package com.andreapivetta.blu.activities;
 
+import android.app.SearchManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -22,7 +24,7 @@ public class SearchActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tabbed);
 
-        query = getIntent().getStringExtra("QUERY");
+        query = getIntent().getStringExtra(SearchManager.QUERY);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {

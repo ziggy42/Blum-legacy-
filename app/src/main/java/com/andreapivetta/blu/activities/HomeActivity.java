@@ -1,5 +1,6 @@
 package com.andreapivetta.blu.activities;
 
+import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -179,7 +181,7 @@ public class HomeActivity extends TimeLineActivity {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 Intent i = new Intent(HomeActivity.this, SearchActivity.class);
-                i.putExtra("QUERY", searchView.getQuery().toString());
+                i.putExtra(SearchManager.QUERY, searchView.getQuery().toString());
                 startActivity(i);
 
                 return true;
