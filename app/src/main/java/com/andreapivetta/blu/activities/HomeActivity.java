@@ -57,7 +57,7 @@ public class HomeActivity extends TimeLineActivity {
             } else {
                 new GetTimeLine().execute(null, null, null);
             }
-            startService(new Intent(HomeActivity.this, NotificationService.class)); // TODO
+            startService(new Intent(HomeActivity.this, NotificationService.class));
         }
 
         NotificationsDatabaseManager databaseManager = new NotificationsDatabaseManager(HomeActivity.this);
@@ -151,6 +151,7 @@ public class HomeActivity extends TimeLineActivity {
 
         if (requestCode == REQUEST_LOGIN) {
             twitter = TwitterUtils.getTwitter(HomeActivity.this);
+            startService(new Intent(HomeActivity.this, NotificationService.class));
             new GetTimeLine().execute(null, null, null);
         }
     }

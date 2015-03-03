@@ -41,6 +41,7 @@ public class NotificationService extends Service {
 
     public final static String NEW_TWEETS_INTENT = "com.andreapivetta.blu.NEW_TWEETS_INTENT";
     public final static String NEW_NOTIFICATION_INTENT = "com.andreapivetta.blu.NEW_NOTIFICATION_INTENT";
+    private TwitterStream twitterStream;
     private final UserStreamListener listener = new UserStreamListener() {
         @Override
         public void onDeletionNotice(long l, long l2) {
@@ -215,7 +216,7 @@ public class NotificationService extends Service {
         twitter = TwitterUtils.getTwitter(getApplicationContext());
         mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        TwitterStream twitterStream = TwitterUtils.getTwitterStream(getApplicationContext());
+        twitterStream = TwitterUtils.getTwitterStream(getApplicationContext());
         twitterStream.addListener(listener);
         twitterStream.user();
 
@@ -346,5 +347,13 @@ public class NotificationService extends Service {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        twitterStream.cleanUp();
+        twitterStream.shutdown();
+
+        super.onDestroy();
     }
 }
