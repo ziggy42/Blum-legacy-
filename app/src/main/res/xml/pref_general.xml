@@ -16,16 +16,16 @@
         android:title="@string/prefcat_behavior_title">
 
         <CheckBoxPreference
+            android:defaultValue="true"
             android:key="pref_key_animations"
             android:summary="@string/animations_pref_summary"
-            android:title="@string/animations_pref_title"
-            android:defaultValue="true"/>
+            android:title="@string/animations_pref_title" />
 
         <CheckBoxPreference
+            android:defaultValue="true"
             android:key="pref_key_heads_up_notifications"
             android:summary="@string/heads_up_notifications_pref_summary"
-            android:title="@string/heads_up_notifications_pref_title"
-            android:defaultValue="true"/>
+            android:title="@string/heads_up_notifications_pref_title" />
 
     </PreferenceCategory>
 

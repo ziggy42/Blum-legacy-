@@ -48,7 +48,7 @@ public abstract class TimeLineActivity extends ActionBarActivity {
     protected ArrayList<Status> tweetList = new ArrayList<>();
     protected LinearLayoutManager mLinearLayoutManager;
 
-    protected boolean isUp = true, loading = true;
+    protected boolean isUp = true, loading = false;
     protected int pastVisibleItems, visibleItemCount, totalItemCount;
 
     @Override
@@ -192,6 +192,10 @@ public abstract class TimeLineActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    protected void getTimeLineCallBack() {
+
+    }
+
     protected class GetTimeLine extends AsyncTask<Void, Void, Boolean> {
 
         private ArrayList<twitter4j.Status> buffer = new ArrayList<>();
@@ -221,6 +225,8 @@ public abstract class TimeLineActivity extends ActionBarActivity {
                             mTweetsAdapter.add(tmp);
                     }
                 });
+
+                getTimeLineCallBack();
             }
 
             loading = true;

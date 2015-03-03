@@ -185,19 +185,19 @@
                     android:id="@+id/firstViewStub"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
                     android:layout_marginLeft="@dimen/profileTweetsMargins"
                     android:layout_marginRight="@dimen/profileTweetsMargins"
-                    android:layout_marginTop="14dp"
-                    android:layout_marginBottom="6dp"/>
+                    android:layout_marginTop="14dp" />
 
                 <ViewStub
                     android:id="@+id/secondViewStub"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
                     android:layout_marginLeft="@dimen/profileTweetsMargins"
                     android:layout_marginRight="@dimen/profileTweetsMargins"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginBottom="6dp"/>
+                    android:layout_marginTop="6dp" />
 
                 <ViewStub
                     android:id="@+id/thirdViewStub"

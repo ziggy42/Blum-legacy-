@@ -39,17 +39,17 @@ public class SettingsActivity extends ActionBarActivity {
 
         if (savedInstanceState == null)
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new SettingsFragment())
                     .commit();
     }
 
-    public static class PlaceholderFragment extends PreferenceFragment {
+    public static class SettingsFragment extends PreferenceFragment {
 
         private Preference logoutPreference;
         private CheckBoxPreference animationsPreference, headsUpNotificationsPreference;
         private SharedPreferences myPref;
 
-        public PlaceholderFragment() {
+        public SettingsFragment() {
         }
 
         @Override

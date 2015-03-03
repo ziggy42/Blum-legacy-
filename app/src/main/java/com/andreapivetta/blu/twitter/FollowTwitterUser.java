@@ -9,7 +9,7 @@ import android.widget.Toast;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
-public class FollowTwitterUser  extends AsyncTask<Long, Void, Boolean> {
+public class FollowTwitterUser extends AsyncTask<Long, Void, Boolean> {
 
     private Context context;
     private Twitter twitter;

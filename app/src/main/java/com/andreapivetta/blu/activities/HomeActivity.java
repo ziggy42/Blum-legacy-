@@ -57,7 +57,7 @@ public class HomeActivity extends TimeLineActivity {
             } else {
                 new GetTimeLine().execute(null, null, null);
             }
-            startService(new Intent(HomeActivity.this, NotificationService.class));
+            startService(new Intent(HomeActivity.this, NotificationService.class)); // TODO
         }
 
         NotificationsDatabaseManager databaseManager = new NotificationsDatabaseManager(HomeActivity.this);
@@ -84,6 +84,18 @@ public class HomeActivity extends TimeLineActivity {
         if (newTweetsCount > 0)
             getSupportActionBar().setTitle(
                     getResources().getQuantityString(R.plurals.new_tweets, newTweetsCount, newTweetsCount));
+
+
+        // EXP
+        /*PendingIntent pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0,
+                new Intent(HomeActivity.this, AlarmReceiver.class), 0);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.add(Calendar.SECOND, 60); // first time
+        long frequency = 60 * 1000; // in ms
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), frequency, pendingIntent);*/
     }
 
     @Override
@@ -214,6 +226,17 @@ public class HomeActivity extends TimeLineActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void getTimeLineCallBack() {
+        for (Status tmp : upComingTweets)
+            if (tweetList.contains(tmp))
+                upComingTweets.remove(tmp);
+
+        if (upComingTweets.size() > 0)
+            getSupportActionBar().setTitle(getResources().getQuantityString(
+                    R.plurals.new_tweets, newTweetsCount, newTweetsCount));
+    }
+
     public class DataUpdateReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -221,8 +244,9 @@ public class HomeActivity extends TimeLineActivity {
                 Status newStatus = (Status) intent.getSerializableExtra("PARCEL_STATUS");
                 upComingTweets.add(newStatus);
                 newTweetsCount++;
-                getSupportActionBar().setTitle(
-                        getResources().getQuantityString(R.plurals.new_tweets, newTweetsCount, newTweetsCount));
+                if (loading)
+                    getSupportActionBar().setTitle(getResources().getQuantityString(
+                            R.plurals.new_tweets, newTweetsCount, newTweetsCount));
             } else if (intent.getAction().equals(NotificationService.NEW_NOTIFICATION_INTENT)) {
                 mNotificationsCount++;
                 invalidateOptionsMenu();

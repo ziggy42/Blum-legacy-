@@ -311,7 +311,8 @@ public class UserProfileActivity extends ActionBarActivity {
         for (int i = 0; i < statuses.length; i++) {
             final int index = i;
 
-            if (statuses[i].getMediaEntities().length > 0) stubs[i].setLayoutResource(R.layout.tweet_photo);
+            if (statuses[i].getMediaEntities().length > 0)
+                stubs[i].setLayoutResource(R.layout.tweet_photo);
             else stubs[i].setLayoutResource(R.layout.tweet_basic);
 
             View tweetView = stubs[i].inflate();
@@ -763,5 +764,4 @@ public class UserProfileActivity extends ActionBarActivity {
             if (status) setUpTweets();
         }
     }
-
 }

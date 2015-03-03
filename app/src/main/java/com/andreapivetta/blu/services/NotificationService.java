@@ -41,9 +41,6 @@ public class NotificationService extends Service {
 
     public final static String NEW_TWEETS_INTENT = "com.andreapivetta.blu.NEW_TWEETS_INTENT";
     public final static String NEW_NOTIFICATION_INTENT = "com.andreapivetta.blu.NEW_NOTIFICATION_INTENT";
-
-    private SharedPreferences mSharedPreferences;
-
     private final UserStreamListener listener = new UserStreamListener() {
         @Override
         public void onDeletionNotice(long l, long l2) {
@@ -91,6 +88,7 @@ public class NotificationService extends Service {
 
         @Override
         public void onDirectMessage(DirectMessage directMessage) {
+
 
         }
 
@@ -155,10 +153,12 @@ public class NotificationService extends Service {
                     if (status.isRetweet()) {
                         if (status.getRetweetedStatus().getUser().getScreenName().equals(twitter.getScreenName()))
                             pushNotification(status.getId(), status.getUser().getName(), Notification.TYPE_RETWEET,
-                                    status.getRetweetedStatus().getText(), status.getUser().getBiggerProfileImageURL(), status.getUser().getId());
+                                    status.getRetweetedStatus().getText(),
+                                    status.getUser().getBiggerProfileImageURL(), status.getUser().getId());
                         else
-                            pushNotification(status.getId(), status.getUser().getName(), Notification.TYPE_RETWEET_MENTIONED,
-                                    status.getRetweetedStatus().getText(), status.getUser().getBiggerProfileImageURL(), status.getUser().getId());
+                            pushNotification(status.getId(), status.getUser().getName(),
+                                    Notification.TYPE_RETWEET_MENTIONED, status.getRetweetedStatus().getText(),
+                                    status.getUser().getBiggerProfileImageURL(), status.getUser().getId());
                     } else {
                         pushNotification(status.getId(), status.getUser().getName(), Notification.TYPE_MENTION,
                                 status.getText(), status.getUser().getBiggerProfileImageURL(), status.getUser().getId());
@@ -199,6 +199,7 @@ public class NotificationService extends Service {
 
         }
     };
+    private SharedPreferences mSharedPreferences;
     private Twitter twitter;
     private NotificationManager mNotifyMgr;
 

@@ -146,100 +146,19 @@ public class TwitterOAuthView extends WebView {
      * to turn on debug logging.
      */
     private static final boolean DEBUG = false;
-
-
     /**
-     * Result code of Twitter OAuth process.
-     *
-     * @author Takahiko Kawasaki
+     * Flag for debug logging.
      */
-    public enum Result {
-        /**
-         * The application has been authorized by the user and
-         * got an access token successfully.
-         */
-        SUCCESS,
-
-
-        /**
-         * Twitter OAuth process was cancelled. This result code
-         * is generated when the internal {@link AsyncTask}
-         * subclass was cancelled for some reasons.
-         */
-        CANCELLATION,
-
-
-        /**
-         * Twitter OAuth process was not even started due to
-         * failure of getting a request token. The pair of
-         * consumer key and consumer secret was wrong or some
-         * kind of network error occurred.
-         */
-        REQUEST_TOKEN_ERROR,
-
-
-        /**
-         * The application has not been authorized by the user,
-         * or a network error occurred during the OAuth handshake.
-         */
-        AUTHORIZATION_ERROR,
-
-
-        /**
-         * The application has been authorized by the user but
-         * failed to get an access token.
-         */
-        ACCESS_TOKEN_ERROR
-    }
-
-
-    /**
-     * Listener to be notified of Twitter OAuth process result.
-     * <p/>
-     * <p>
-     * The methods of this listener are called on the UI thread.
-     * </p>
-     *
-     * @author Takahiko Kawasaki
-     */
-    public interface Listener {
-        /**
-         * Called when the application has been authorized by the user
-         * and got an access token successfully.
-         *
-         * @param view
-         * @param accessToken
-         */
-        void onSuccess(TwitterOAuthView view, AccessToken accessToken);
-
-
-        /**
-         * Called when the OAuth process was not completed successfully.
-         *
-         * @param view
-         * @param result
-         */
-        void onFailure(TwitterOAuthView view, Result result);
-    }
-
-
+    private boolean isDebugEnabled = DEBUG;
     /**
      * Twitter OAuth task that has been invoked by {@link
      * #start(String, String, String, boolean, Listener) start} method.
      */
     private TwitterOAuthTask twitterOAuthTask;
-
-
     /**
      * Flag to call cancel() from within onDetachedFromWindow().
      */
     private boolean cancelOnDetachedFromWindow = true;
-
-
-    /**
-     * Flag for debug logging.
-     */
-    private boolean isDebugEnabled = DEBUG;
 
 
     /**
@@ -285,7 +204,6 @@ public class TwitterOAuthView extends WebView {
         init();
     }
 
-
     /**
      * Initialization common for all constructors.
      */
@@ -304,7 +222,6 @@ public class TwitterOAuthView extends WebView {
         // Scroll bar
         setScrollBarStyle(WebView.SCROLLBARS_INSIDE_OVERLAY);
     }
-
 
     /**
      * Start Twitter OAuth process.
@@ -380,7 +297,6 @@ public class TwitterOAuthView extends WebView {
         newTask.execute(consumerKey, consumerSecret, callbackUrl, dummy, listener);
     }
 
-
     /**
      * Cancel the Twitter OAuth process.
      * <p/>
@@ -403,7 +319,6 @@ public class TwitterOAuthView extends WebView {
         // Cancel a task, if not null.
         cancelTask(task);
     }
-
 
     private void cancelTask(TwitterOAuthTask task) {
         // If the given argument is null.
@@ -432,7 +347,6 @@ public class TwitterOAuthView extends WebView {
         }
     }
 
-
     /**
      * Check if debug logging is enabled.
      * <p/>
@@ -447,7 +361,6 @@ public class TwitterOAuthView extends WebView {
         return isDebugEnabled;
     }
 
-
     /**
      * Enable or disable debug logging.
      *
@@ -456,7 +369,6 @@ public class TwitterOAuthView extends WebView {
     public void setDebugEnabled(boolean enabled) {
         isDebugEnabled = enabled;
     }
-
 
     /**
      * Check if cancellation is executed on {@code onDetachedFromWindow()}.
@@ -469,7 +381,6 @@ public class TwitterOAuthView extends WebView {
         return cancelOnDetachedFromWindow;
     }
 
-
     /**
      * Change the configuration to call {@link #cancel()} on
      * {@code onDetachedFromWindow()}.
@@ -481,7 +392,6 @@ public class TwitterOAuthView extends WebView {
     public void setCancelOnDetachedFromWindow(boolean enabled) {
         cancelOnDetachedFromWindow = enabled;
     }
-
 
     /**
      * Called when this view is detached from the window.
@@ -501,6 +411,80 @@ public class TwitterOAuthView extends WebView {
         }
     }
 
+
+    /**
+     * Result code of Twitter OAuth process.
+     *
+     * @author Takahiko Kawasaki
+     */
+    public enum Result {
+        /**
+         * The application has been authorized by the user and
+         * got an access token successfully.
+         */
+        SUCCESS,
+
+
+        /**
+         * Twitter OAuth process was cancelled. This result code
+         * is generated when the internal {@link AsyncTask}
+         * subclass was cancelled for some reasons.
+         */
+        CANCELLATION,
+
+
+        /**
+         * Twitter OAuth process was not even started due to
+         * failure of getting a request token. The pair of
+         * consumer key and consumer secret was wrong or some
+         * kind of network error occurred.
+         */
+        REQUEST_TOKEN_ERROR,
+
+
+        /**
+         * The application has not been authorized by the user,
+         * or a network error occurred during the OAuth handshake.
+         */
+        AUTHORIZATION_ERROR,
+
+
+        /**
+         * The application has been authorized by the user but
+         * failed to get an access token.
+         */
+        ACCESS_TOKEN_ERROR
+    }
+
+
+    /**
+     * Listener to be notified of Twitter OAuth process result.
+     * <p/>
+     * <p>
+     * The methods of this listener are called on the UI thread.
+     * </p>
+     *
+     * @author Takahiko Kawasaki
+     */
+    public interface Listener {
+        /**
+         * Called when the application has been authorized by the user
+         * and got an access token successfully.
+         *
+         * @param view
+         * @param accessToken
+         */
+        void onSuccess(TwitterOAuthView view, AccessToken accessToken);
+
+
+        /**
+         * Called when the OAuth process was not completed successfully.
+         *
+         * @param view
+         * @param result
+         */
+        void onFailure(TwitterOAuthView view, Result result);
+    }
 
     private class TwitterOAuthTask extends AsyncTask<Object, Void, Result> {
         private String callbackUrl;
@@ -779,6 +763,25 @@ public class TwitterOAuthView extends WebView {
             }
         }
 
+        private AccessToken getAccessToken() {
+            try {
+                // Get an access token. This triggers network access.
+                AccessToken token = twitter.getOAuthAccessToken(requestToken, verifier);
+
+                if (isDebugEnabled()) {
+                    Log.d(TAG, "Got an access token for " + token.getScreenName());
+                }
+
+                return token;
+            } catch (TwitterException e) {
+                // Failed to get an access token.
+                e.printStackTrace();
+                Log.e(TAG, "Failed to get an access token.", e);
+
+                // No access token.
+                return null;
+            }
+        }
 
         private class LocalWebViewClient extends WebViewClient {
 
@@ -856,27 +859,6 @@ public class TwitterOAuthView extends WebView {
                 // value of dummyCallbackUrl is true, the callback URL
                 // is not accessed.
                 return dummyCallbackUrl;
-            }
-        }
-
-
-        private AccessToken getAccessToken() {
-            try {
-                // Get an access token. This triggers network access.
-                AccessToken token = twitter.getOAuthAccessToken(requestToken, verifier);
-
-                if (isDebugEnabled()) {
-                    Log.d(TAG, "Got an access token for " + token.getScreenName());
-                }
-
-                return token;
-            } catch (TwitterException e) {
-                // Failed to get an access token.
-                e.printStackTrace();
-                Log.e(TAG, "Failed to get an access token.", e);
-
-                // No access token.
-                return null;
             }
         }
     }

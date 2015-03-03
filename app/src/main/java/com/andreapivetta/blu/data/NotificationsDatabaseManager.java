@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -15,9 +16,9 @@ public class NotificationsDatabaseManager {
     private static final int DB_VERSION = 1;
     private static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
             + SetsMetaData.TABLE_NAME + " (id INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + SetsMetaData.TYPE + " TEXT NOT NULL,"
-            + SetsMetaData.STATUS + " TEXT,"
-            + SetsMetaData.PICURL + " TEXT NOT NULL,"
+            + SetsMetaData.TYPE + " PM_TEXT NOT NULL,"
+            + SetsMetaData.STATUS + " PM_TEXT,"
+            + SetsMetaData.PICURL + " PM_TEXT NOT NULL,"
             + SetsMetaData.USER + " INTEGER NOT NULL,"
             + SetsMetaData.TARGET_TWEET + " INTEGER,"
             + SetsMetaData.FLAG_READ + " BOOLEAN NOT NULL,"
@@ -71,11 +72,11 @@ public class NotificationsDatabaseManager {
     private ArrayList<Notification> getAllNotifications(boolean unread) {
         ArrayList<Notification> notifications = new ArrayList<>();
         String sqlQuery = "SELECT " + SetsMetaData.TYPE + "," + SetsMetaData.USER + "," +
-                        SetsMetaData.STATUS + "," + SetsMetaData.PICURL + "," +
-                        SetsMetaData.FLAG_READ + "," + SetsMetaData.DAY + "," +
-                        SetsMetaData.MONTH + "," + SetsMetaData.YEAR + "," +
-                        SetsMetaData.MINUTE + "," + SetsMetaData.HOUR + "," +
-                        SetsMetaData.TARGET_TWEET + "," + SetsMetaData.USERID + ", id FROM " + SetsMetaData.TABLE_NAME;
+                SetsMetaData.STATUS + "," + SetsMetaData.PICURL + "," +
+                SetsMetaData.FLAG_READ + "," + SetsMetaData.DAY + "," +
+                SetsMetaData.MONTH + "," + SetsMetaData.YEAR + "," +
+                SetsMetaData.MINUTE + "," + SetsMetaData.HOUR + "," +
+                SetsMetaData.TARGET_TWEET + "," + SetsMetaData.USERID + ", id FROM " + SetsMetaData.TABLE_NAME;
 
         if (unread) sqlQuery += " WHERE " + SetsMetaData.FLAG_READ;
         else sqlQuery += " WHERE NOT " + SetsMetaData.FLAG_READ;
@@ -105,7 +106,7 @@ public class NotificationsDatabaseManager {
     public void setRead(Notification n) {
         ContentValues cv = new ContentValues();
         cv.put(SetsMetaData.FLAG_READ, true);
-        myDB.update(SetsMetaData.TABLE_NAME,  cv ,"id =" + n.notificationID, null);
+        myDB.update(SetsMetaData.TABLE_NAME, cv, "id =" + n.notificationID, null);
     }
 
     public int getCountUnreadNotifications() {
@@ -114,6 +115,19 @@ public class NotificationsDatabaseManager {
         int count = c.getCount();
         c.close();
         return count;
+    }
+
+    public long getLastRetweetID() {
+        Cursor c = myDB.rawQuery("SELECT " + SetsMetaData.TARGET_TWEET +
+                " FROM " + SetsMetaData.TABLE_NAME +
+                " WHERE " + SetsMetaData.TYPE + " = '" + Notification.TYPE_RETWEET + "'", null);
+        c.moveToLast();
+        if (c.getCount() == 0)
+            return -1L;
+        long id = c.getLong(0);
+        c.close();
+        Log.i("DatabaseManager", "ID: " + id);
+        return id;
     }
 
     static final class SetsMetaData {
