@@ -94,15 +94,16 @@ public class HomeActivity extends TimeLineActivity {
 
 
         if (!mSharedPreferences.getBoolean(Common.PREF_STREAM_ON, false)) {
+            int frequency = mSharedPreferences.getInt(Common.PREF_FREQ, 240);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0,
                     new Intent(HomeActivity.this, AlarmReceiver.class), 0);
 
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
-            calendar.add(Calendar.SECOND, 240);
-            long frequency = 240 * 1000;
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), frequency, pendingIntent);
+            calendar.add(Calendar.SECOND, frequency);
+            alarmManager.setRepeating(
+                    AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), frequency * 1000, pendingIntent);
         }
     }
 

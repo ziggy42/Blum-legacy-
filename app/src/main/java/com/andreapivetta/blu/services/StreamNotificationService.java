@@ -234,6 +234,7 @@ public class StreamNotificationService extends Service {
         mBuilder.setDefaults(android.app.Notification.DEFAULT_SOUND)
                 .setAutoCancel(true)
                 .setColor(getApplicationContext().getResources().getColor(R.color.colorPrimary))
+                .setLargeIcon(Common.getBitmapFromURL(profilePicURL))
                 .setLights(Color.BLUE, 500, 1000);
 
         if (mSharedPreferences.getBoolean(Common.PREF_HEADS_UP_NOTIFICATIONS, true))
@@ -251,7 +252,6 @@ public class StreamNotificationService extends Service {
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(status))
                         .setSmallIcon(R.drawable.ic_star_white_24dp)
-                        .setLargeIcon(Common.getBitmapFromURL(profilePicURL))
                         .setContentIntent(resultPendingIntent);
                 break;
             case Notification.TYPE_RETWEET:
@@ -276,7 +276,6 @@ public class StreamNotificationService extends Service {
                 mBuilder.setContentTitle(getString(R.string.follow_not_title, user))
                         .setContentText(status)
                         .setSmallIcon(R.drawable.ic_person_add_white_24dp)
-                        .setLargeIcon(Common.getBitmapFromURL(profilePicURL))
                         .setContentIntent(resultPendingIntent);
                 break;
             case Notification.TYPE_MENTION:

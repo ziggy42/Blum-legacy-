@@ -27,6 +27,12 @@
             android:summary="@string/heads_up_notifications_pref_summary"
             android:title="@string/heads_up_notifications_pref_title" />
 
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pref_key_stream_service"
+            android:summary="@string/enable_stream_service_pref_summary"
+            android:title="@string/enable_stream_service_pref_title"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>
