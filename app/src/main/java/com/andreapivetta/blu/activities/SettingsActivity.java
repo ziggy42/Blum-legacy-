@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.services.NotificationService;
+import com.andreapivetta.blu.services.StreamNotificationService;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.utilities.Common;
 
@@ -84,7 +84,7 @@ public class SettingsActivity extends ActionBarActivity {
 
                                             Toast.makeText(getActivity(), getString(R.string.logout_done), Toast.LENGTH_SHORT).show();
 
-                                            getActivity().stopService(new Intent(getActivity(), NotificationService.class));
+                                            getActivity().stopService(new Intent(getActivity(), StreamNotificationService.class));
 
                                             Intent intent = new Intent(getActivity(), HomeActivity.class);
                                             intent.putExtra("exit", "exit");

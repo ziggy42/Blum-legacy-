@@ -126,7 +126,7 @@
         </activity>
 
         <service
-            android:name=".services.NotificationService"
+            android:name=".services.StreamNotificationService"
             android:enabled="true"
             android:exported="false" />
 
@@ -140,13 +140,12 @@
         </receiver>
 
         <service
-            android:name=".services.AlternateNotificationService"
-            android:exported="false"></service>
+            android:name=".services.BasicNotificationService"
+            android:exported="false"/>
 
         <receiver
             android:name=".receivers.AlarmReceiver"
-            android:enabled="true"
-            android:exported="true"></receiver>
+            android:enabled="true"/>
     </application>
 
 </manifest>

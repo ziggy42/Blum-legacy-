@@ -5,8 +5,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
@@ -19,10 +17,6 @@ import com.andreapivetta.blu.data.NotificationsDatabaseManager;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.utilities.Common;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
 import twitter4j.DirectMessage;
@@ -37,11 +31,10 @@ import twitter4j.UserList;
 import twitter4j.UserMentionEntity;
 import twitter4j.UserStreamListener;
 
-public class NotificationService extends Service {
+public class StreamNotificationService extends Service {
 
     public final static String NEW_TWEETS_INTENT = "com.andreapivetta.blu.NEW_TWEETS_INTENT";
     public final static String NEW_NOTIFICATION_INTENT = "com.andreapivetta.blu.NEW_NOTIFICATION_INTENT";
-    private TwitterStream twitterStream;
     private final UserStreamListener listener = new UserStreamListener() {
         @Override
         public void onDeletionNotice(long l, long l2) {
@@ -200,6 +193,7 @@ public class NotificationService extends Service {
 
         }
     };
+    private TwitterStream twitterStream;
     private SharedPreferences mSharedPreferences;
     private Twitter twitter;
     private NotificationManager mNotifyMgr;
@@ -226,7 +220,7 @@ public class NotificationService extends Service {
     void pushNotification(long tweetID, String user, String type, String status, String profilePicURL, long id) {
         NotificationsDatabaseManager databaseManager = new NotificationsDatabaseManager(getApplicationContext());
         databaseManager.open();
-        databaseManager.insertNotification(new Notification(false, tweetID, user, type, status, profilePicURL, id));
+        long notId = databaseManager.insertNotification(new Notification(false, tweetID, user, type, status, profilePicURL, id));
         databaseManager.close();
 
         Intent i = new Intent();
@@ -239,6 +233,7 @@ public class NotificationService extends Service {
 
         mBuilder.setDefaults(android.app.Notification.DEFAULT_SOUND)
                 .setAutoCancel(true)
+                .setColor(getApplicationContext().getResources().getColor(R.color.colorPrimary))
                 .setLights(Color.BLUE, 500, 1000);
 
         if (mSharedPreferences.getBoolean(Common.PREF_HEADS_UP_NOTIFICATIONS, true))
@@ -256,12 +251,8 @@ public class NotificationService extends Service {
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(status))
                         .setSmallIcon(R.drawable.ic_star_white_24dp)
-                        .setLargeIcon(getBitmapFromURL(profilePicURL))
-                        .setColor(getApplicationContext().getResources().getColor(R.color.colorPrimary))
+                        .setLargeIcon(Common.getBitmapFromURL(profilePicURL))
                         .setContentIntent(resultPendingIntent);
-
-                mNotifyMgr.notify((int) tweetID, mBuilder.build());
-
                 break;
             case Notification.TYPE_RETWEET:
                 resultIntent = new Intent(getApplicationContext(), TweetActivity.class);
@@ -274,12 +265,7 @@ public class NotificationService extends Service {
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(status))
                         .setSmallIcon(R.drawable.ic_repeat_white_24dp)
-                        .setLargeIcon(getBitmapFromURL(profilePicURL))
-                        .setColor(getApplicationContext().getResources().getColor(R.color.colorPrimary))
                         .setContentIntent(resultPendingIntent);
-
-                mNotifyMgr.notify((int) tweetID, mBuilder.build());
-
                 break;
             case Notification.TYPE_FOLLOW:
                 resultIntent = new Intent(getApplicationContext(), UserProfileActivity.class);
@@ -290,12 +276,8 @@ public class NotificationService extends Service {
                 mBuilder.setContentTitle(getString(R.string.follow_not_title, user))
                         .setContentText(status)
                         .setSmallIcon(R.drawable.ic_person_add_white_24dp)
-                        .setLargeIcon(getBitmapFromURL(profilePicURL))
-                        .setColor(getApplicationContext().getResources().getColor(R.color.colorPrimary))
+                        .setLargeIcon(Common.getBitmapFromURL(profilePicURL))
                         .setContentIntent(resultPendingIntent);
-
-                mNotifyMgr.notify((int) id, mBuilder.build());
-
                 break;
             case Notification.TYPE_MENTION:
                 resultIntent = new Intent(getApplicationContext(), TweetActivity.class);
@@ -308,12 +290,7 @@ public class NotificationService extends Service {
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(status))
                         .setSmallIcon(R.drawable.ic_reply_white_24dp)
-                        .setLargeIcon(getBitmapFromURL(profilePicURL))
-                        .setColor(getApplicationContext().getResources().getColor(R.color.colorPrimary))
                         .setContentIntent(resultPendingIntent);
-
-                mNotifyMgr.notify((int) id, mBuilder.build());
-
                 break;
             case Notification.TYPE_RETWEET_MENTIONED:
                 resultIntent = new Intent(getApplicationContext(), TweetActivity.class);
@@ -326,27 +303,11 @@ public class NotificationService extends Service {
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(status))
                         .setSmallIcon(R.drawable.ic_repeat_white_24dp)
-                        .setLargeIcon(getBitmapFromURL(profilePicURL))
-                        .setColor(getApplicationContext().getResources().getColor(R.color.colorPrimary))
                         .setContentIntent(resultPendingIntent);
-
-                mNotifyMgr.notify((int) tweetID, mBuilder.build());
                 break;
         }
-    }
 
-    Bitmap getBitmapFromURL(String strURL) {
-        try {
-            URL url = new URL(strURL);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            return BitmapFactory.decodeStream(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        mNotifyMgr.notify((int) notId, mBuilder.build());
     }
 
     @Override

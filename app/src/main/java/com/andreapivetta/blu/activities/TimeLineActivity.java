@@ -48,7 +48,7 @@ public abstract class TimeLineActivity extends ActionBarActivity {
     protected ArrayList<Status> tweetList = new ArrayList<>();
     protected LinearLayoutManager mLinearLayoutManager;
 
-    protected boolean isUp = true, loading = false;
+    protected boolean isUp = true, loading = true;
     protected int pastVisibleItems, visibleItemCount, totalItemCount;
 
     @Override

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -48,7 +47,7 @@ public class NotificationsDatabaseManager {
         myDB.execSQL(TABLE_CREATE);
     }
 
-    public void insertNotification(Notification notification) {
+    public long insertNotification(Notification notification) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(SetsMetaData.TYPE, notification.type);
         contentValues.put(SetsMetaData.USER, notification.user);
@@ -66,7 +65,7 @@ public class NotificationsDatabaseManager {
             contentValues.put(SetsMetaData.STATUS, notification.status);
         }
 
-        myDB.insert(SetsMetaData.TABLE_NAME, null, contentValues);
+        return myDB.insert(SetsMetaData.TABLE_NAME, null, contentValues);
     }
 
     private ArrayList<Notification> getAllNotifications(boolean unread) {
@@ -117,19 +116,6 @@ public class NotificationsDatabaseManager {
         return count;
     }
 
-    public long getLastRetweetID() {
-        Cursor c = myDB.rawQuery("SELECT " + SetsMetaData.TARGET_TWEET +
-                " FROM " + SetsMetaData.TABLE_NAME +
-                " WHERE " + SetsMetaData.TYPE + " = '" + Notification.TYPE_RETWEET + "'", null);
-        c.moveToLast();
-        if (c.getCount() == 0)
-            return -1L;
-        long id = c.getLong(0);
-        c.close();
-        Log.i("DatabaseManager", "ID: " + id);
-        return id;
-    }
-
     static final class SetsMetaData {
         static final String TABLE_NAME = "notifications_table";
         static final String TYPE = "not_type";
@@ -164,6 +150,5 @@ public class NotificationsDatabaseManager {
         }
 
     }
-
 
 }

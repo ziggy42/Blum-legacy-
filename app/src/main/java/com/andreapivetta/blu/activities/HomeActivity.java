@@ -1,5 +1,7 @@
 package com.andreapivetta.blu.activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,12 +18,18 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.data.FavoritesDatabaseManager;
+import com.andreapivetta.blu.data.FollowersDatabaseManager;
+import com.andreapivetta.blu.data.MentionsDatabaseManager;
 import com.andreapivetta.blu.data.NotificationsDatabaseManager;
-import com.andreapivetta.blu.services.NotificationService;
+import com.andreapivetta.blu.data.RetweetsDatabaseManager;
+import com.andreapivetta.blu.receivers.AlarmReceiver;
+import com.andreapivetta.blu.services.StreamNotificationService;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.utilities.Common;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import twitter4j.Paging;
@@ -57,7 +65,6 @@ public class HomeActivity extends TimeLineActivity {
             } else {
                 new GetTimeLine().execute(null, null, null);
             }
-            startService(new Intent(HomeActivity.this, NotificationService.class));
         }
 
         NotificationsDatabaseManager databaseManager = new NotificationsDatabaseManager(HomeActivity.this);
@@ -86,16 +93,17 @@ public class HomeActivity extends TimeLineActivity {
                     getResources().getQuantityString(R.plurals.new_tweets, newTweetsCount, newTweetsCount));
 
 
-        // EXP
-        /*PendingIntent pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0,
-                new Intent(HomeActivity.this, AlarmReceiver.class), 0);
+        if (!mSharedPreferences.getBoolean(Common.PREF_STREAM_ON, false)) {
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0,
+                    new Intent(HomeActivity.this, AlarmReceiver.class), 0);
 
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.add(Calendar.SECOND, 60); // first time
-        long frequency = 60 * 1000; // in ms
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), frequency, pendingIntent);*/
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.add(Calendar.SECOND, 240);
+            long frequency = 240 * 1000;
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), frequency, pendingIntent);
+        }
     }
 
     @Override
@@ -133,16 +141,16 @@ public class HomeActivity extends TimeLineActivity {
         if (dataUpdateReceiver == null)
             dataUpdateReceiver = new DataUpdateReceiver();
 
-        registerReceiver(dataUpdateReceiver, new IntentFilter(NotificationService.NEW_TWEETS_INTENT));
-        registerReceiver(dataUpdateReceiver, new IntentFilter(NotificationService.NEW_NOTIFICATION_INTENT));
+        registerReceiver(dataUpdateReceiver, new IntentFilter(StreamNotificationService.NEW_TWEETS_INTENT));
+        registerReceiver(dataUpdateReceiver, new IntentFilter(StreamNotificationService.NEW_NOTIFICATION_INTENT));
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onDestroy() {
+        super.onDestroy();
 
-        /*if (dataUpdateReceiver != null) // TODO testing
-            unregisterReceiver(dataUpdateReceiver);*/
+        if (dataUpdateReceiver != null)
+            unregisterReceiver(dataUpdateReceiver);
     }
 
     @Override
@@ -151,8 +159,16 @@ public class HomeActivity extends TimeLineActivity {
 
         if (requestCode == REQUEST_LOGIN) {
             twitter = TwitterUtils.getTwitter(HomeActivity.this);
-            startService(new Intent(HomeActivity.this, NotificationService.class));
             new GetTimeLine().execute(null, null, null);
+
+            if (mSharedPreferences.getBoolean(Common.PREF_STREAM_ON, false)) {
+                startService(new Intent(HomeActivity.this, StreamNotificationService.class));
+            } else {
+                new FavoritesDatabaseManager(HomeActivity.this).populateDatabase();
+                new RetweetsDatabaseManager(HomeActivity.this).populateDatabase();
+                new FollowersDatabaseManager(HomeActivity.this).populateDatabase();
+                new MentionsDatabaseManager(HomeActivity.this).populateDatabase();
+            }
         }
     }
 
@@ -209,14 +225,6 @@ public class HomeActivity extends TimeLineActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (dataUpdateReceiver != null) // TODO testing
-            unregisterReceiver(dataUpdateReceiver);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_search) {
             onSearchRequested();
@@ -241,14 +249,14 @@ public class HomeActivity extends TimeLineActivity {
     public class DataUpdateReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(NotificationService.NEW_TWEETS_INTENT)) {
+            if (intent.getAction().equals(StreamNotificationService.NEW_TWEETS_INTENT)) {
                 Status newStatus = (Status) intent.getSerializableExtra("PARCEL_STATUS");
                 upComingTweets.add(newStatus);
                 newTweetsCount++;
                 if (loading)
                     getSupportActionBar().setTitle(getResources().getQuantityString(
                             R.plurals.new_tweets, newTweetsCount, newTweetsCount));
-            } else if (intent.getAction().equals(NotificationService.NEW_NOTIFICATION_INTENT)) {
+            } else if (intent.getAction().equals(StreamNotificationService.NEW_NOTIFICATION_INTENT)) {
                 mNotificationsCount++;
                 invalidateOptionsMenu();
             }

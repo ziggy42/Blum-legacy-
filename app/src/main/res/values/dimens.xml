@@ -4,7 +4,4 @@
     <dimen name="picHeight">200dp</dimen>
     <dimen name="profileTweetsMargins">12dp</dimen>
     <dimen name="profileBackgroundHeight">200dp</dimen>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
 </resources>

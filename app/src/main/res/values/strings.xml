@@ -66,7 +66,6 @@
     <string name="mini_hours">%1$dh</string>
     <string name="you_are_awesome">You are awesome</string>
     <string name="reached_twitter_user_limit">Reached Twitter limit, please try again in a few minutes</string>
-    <string name="dm_not_title">%1$s sent you a message</string>
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>
@@ -106,8 +105,5 @@
     <string name="uploaded_image_contentDescriptor">Uploaded ImageView</string>
     <string name="send_tweet_button_contentDescriptor">Send Tweet image Button</string>
     <string name="notifications_contentDescription">Notifications</string>
-    <string name="direct_messages">Messages</string>
-    <string name="title_activity_private_messages">Conversations</string>
-    <string name="hello_world">Hello world!</string>
 
 </resources>
