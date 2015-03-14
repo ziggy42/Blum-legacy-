@@ -9,12 +9,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -58,6 +58,7 @@ public class SettingsActivity extends ActionBarActivity {
         private Preference logoutPreference;
         private CheckBoxPreference animationsPreference, headsUpNotificationsPreference;
         private SwitchPreference streamServicePreference;
+        private ListPreference frequencyListPreference;
 
         public SettingsFragment() {
         }
@@ -73,6 +74,7 @@ public class SettingsActivity extends ActionBarActivity {
             animationsPreference = (CheckBoxPreference) findPreference("pref_key_animations");
             headsUpNotificationsPreference = (CheckBoxPreference) findPreference("pref_key_heads_up_notifications");
             streamServicePreference = (SwitchPreference) findPreference("pref_key_stream_service");
+            frequencyListPreference = (ListPreference) findPreference("pref_key_frequencies");
 
             logoutPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
@@ -86,15 +88,23 @@ public class SettingsActivity extends ActionBarActivity {
                                         public void onClick(DialogInterface dialog,
                                                             int which) {
 
+                                            Toast.makeText(getActivity(), getString(R.string.logout_done), Toast.LENGTH_SHORT).show();
+                                            if (mSharedPreferences.getBoolean(Common.PREF_STREAM_ON, false))
+                                                getActivity().stopService(new Intent(getActivity(), StreamNotificationService.class));
+                                            else {
+                                                PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0,
+                                                        new Intent(getActivity(), AlarmReceiver.class), 0);
+
+                                                AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+                                                alarmManager.cancel(pendingIntent);
+                                            }
+
                                             mSharedPreferences.edit().remove(TwitterUtils.PREF_KEY_OAUTH_TOKEN)
                                                     .remove(TwitterUtils.PREF_KEY_OAUTH_SECRET)
                                                     .remove(TwitterUtils.PREF_KEY_TWITTER_LOGIN)
                                                     .remove(TwitterUtils.PREF_KEY_PICTURE_URL)
+                                                    .remove(Common.PREF_STREAM_ON)
                                                     .apply();
-
-                                            Toast.makeText(getActivity(), getString(R.string.logout_done), Toast.LENGTH_SHORT).show();
-
-                                            getActivity().stopService(new Intent(getActivity(), StreamNotificationService.class));
 
                                             Intent intent = new Intent(getActivity(), HomeActivity.class);
                                             intent.putExtra("exit", "exit");
@@ -128,6 +138,56 @@ public class SettingsActivity extends ActionBarActivity {
                 }
             });
 
+            if (mSharedPreferences.getBoolean(Common.PREF_STREAM_ON, false))
+                frequencyListPreference.setEnabled(false);
+
+            switch (mSharedPreferences.getInt(Common.PREF_FREQ, 300)) {
+                case 300:
+                    frequencyListPreference.setValueIndex(0);
+                    break;
+                case 600:
+                    frequencyListPreference.setValueIndex(1);
+                    break;
+                case 900:
+                    frequencyListPreference.setValueIndex(2);
+                    break;
+                case 1200:
+                    frequencyListPreference.setValueIndex(3);
+                    break;
+                case 1800:
+                    frequencyListPreference.setValueIndex(4);
+                    break;
+                case 3600:
+                    frequencyListPreference.setValueIndex(5);
+                    break;
+                default:
+                    frequencyListPreference.setValueIndex(0);
+                    break;
+            }
+
+            frequencyListPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    mSharedPreferences.edit()
+                            .putInt(Common.PREF_FREQ, Integer.parseInt(newValue.toString())).apply();
+
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0,
+                            new Intent(getActivity(), AlarmReceiver.class), 0);
+
+                    AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+                    alarmManager.cancel(pendingIntent);
+
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(System.currentTimeMillis());
+                    calendar.add(Calendar.SECOND, Integer.parseInt(newValue.toString()));
+                    alarmManager.setRepeating(
+                            AlarmManager.RTC_WAKEUP,
+                            calendar.getTimeInMillis(),
+                            Integer.parseInt(newValue.toString()) * 1000,
+                            pendingIntent);
+                    return true;
+                }
+            });
 
             streamServicePreference.setChecked(mSharedPreferences.getBoolean(Common.PREF_STREAM_ON, false));
             streamServicePreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -168,7 +228,7 @@ public class SettingsActivity extends ActionBarActivity {
                         mSharedPreferences.edit().putBoolean(Common.PREF_STREAM_ON, false).apply();
                         getActivity().stopService(new Intent(getActivity(), StreamNotificationService.class));
 
-                        int frequency = mSharedPreferences.getInt(Common.PREF_FREQ, 240);
+                        int frequency = mSharedPreferences.getInt(Common.PREF_FREQ, 300);
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0,
                                 new Intent(getActivity(), AlarmReceiver.class), 0);
 

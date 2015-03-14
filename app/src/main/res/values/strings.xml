@@ -81,6 +81,24 @@
         <item>Tweets</item>
         <item>Users</item>
     </array>
+    
+    <string-array name="frequencies">
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+        <item>20 minutes</item>
+        <item>30 minutes</item>
+        <item>60 minutes</item>
+    </string-array>
+
+    <string-array name="frequencies_values">
+        <item>300</item>
+        <item>600</item>
+        <item>900</item>
+        <item>1200</item>
+        <item>1800</item>
+        <item>3600</item>
+    </string-array>
 
     <!-- Preferences -->
     <string name="prefcat_account_title">Account</string>
@@ -110,5 +128,7 @@
     <string name="streamDialogTitle">Use Stream Notification Service</string>
     <string name="streamContinue">Continue</string>
     <string name="streamDialogMessage">Using the stream notification service, you\'ll get real time notifications and new tweets will be brought to you without the need of a refresh. Unfortunately, if you follow a huge number of people and if your network isn\'t that great, you may experience a really high battery consuming. It\'s up to you. Blu will be restarted.</string>
+    <string name="frequency_pref_summary">How often check for notifications</string>
+    <string name="frequency_pref_title">Frequency</string>
 
 </resources>

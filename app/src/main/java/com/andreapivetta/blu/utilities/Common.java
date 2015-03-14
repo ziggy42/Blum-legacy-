@@ -1,9 +1,22 @@
 package com.andreapivetta.blu.utilities;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
+
+import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.activities.TweetActivity;
+import com.andreapivetta.blu.activities.UserProfileActivity;
+import com.andreapivetta.blu.data.Notification;
+import com.andreapivetta.blu.data.NotificationsDatabaseManager;
+import com.andreapivetta.blu.twitter.TwitterUtils;
 
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -20,6 +33,10 @@ import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.User;
+
 public class Common {
 
     public static final String PREF = "MyPref";
@@ -33,6 +50,8 @@ public class Common {
 
     private static final String USER_AGENT =
             "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36";
+
+    public final static String NEW_NOTIFICATION_INTENT = "com.andreapivetta.blu.NEW_NOTIFICATION_INTENT";
 
     public static ArrayList<Long> getFavoriters(long tweetID) {
         return getUsers(tweetID, FAVORITERS_URL);
@@ -106,4 +125,103 @@ public class Common {
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
+    public static void pushNotification(long tweetID, long userID, String type, Context context) throws TwitterException {
+        Twitter twitter = TwitterUtils.getTwitter(context);
+        SharedPreferences mSharedPreferences = context.getSharedPreferences(PREF, 0);
+        NotificationManager mNotifyMgr = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        User currentUser = twitter.showUser(userID);
+        String user = currentUser.getName();
+        String status = twitter.showStatus(tweetID).getText();
+
+        NotificationsDatabaseManager dbManager = new NotificationsDatabaseManager(context);
+        dbManager.open();
+        long id = dbManager.insertNotification(
+                new Notification(false, tweetID, user, type, status, currentUser.getProfileImageURL(), userID));
+        dbManager.close();
+
+        Intent i = new Intent();
+        i.setAction(NEW_NOTIFICATION_INTENT);
+        context.sendBroadcast(i);
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
+        Intent resultIntent;
+        PendingIntent resultPendingIntent;
+
+        mBuilder.setDefaults(android.app.Notification.DEFAULT_SOUND)
+                .setAutoCancel(true)
+                .setLargeIcon(Common.getBitmapFromURL(currentUser.getProfileImageURL()))
+                .setColor(context.getResources().getColor(R.color.colorPrimary))
+                .setLights(Color.BLUE, 500, 1000);
+
+        if (mSharedPreferences.getBoolean(Common.PREF_HEADS_UP_NOTIFICATIONS, true))
+            mBuilder.setPriority(android.app.Notification.PRIORITY_HIGH);
+
+        switch (type) {
+            case Notification.TYPE_FAVOURITE:
+                resultIntent = new Intent(context, TweetActivity.class);
+                resultIntent.putExtra("STATUS_ID", tweetID);
+                resultPendingIntent = PendingIntent.getActivity(
+                        context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                mBuilder.setContentTitle(context.getString(R.string.fav_not_title, user))
+                        .setContentText(status)
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText(status))
+                        .setSmallIcon(R.drawable.ic_star_white_24dp)
+                        .setContentIntent(resultPendingIntent);
+                break;
+            case Notification.TYPE_RETWEET:
+                resultIntent = new Intent(context, TweetActivity.class);
+                resultIntent.putExtra("STATUS_ID", tweetID);
+                resultPendingIntent = PendingIntent.getActivity(
+                        context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                mBuilder.setContentTitle(context.getString(R.string.retw_not_title, user))
+                        .setContentText(status)
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText(status))
+                        .setSmallIcon(R.drawable.ic_repeat_white_24dp)
+                        .setContentIntent(resultPendingIntent);
+                break;
+            case Notification.TYPE_FOLLOW:
+                resultIntent = new Intent(context, UserProfileActivity.class);
+                resultIntent.putExtra("ID", userID);
+                resultPendingIntent = PendingIntent.getActivity(
+                        context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                mBuilder.setContentTitle(context.getString(R.string.follow_not_title, user))
+                        .setContentText(status)
+                        .setSmallIcon(R.drawable.ic_person_add_white_24dp)
+                        .setContentIntent(resultPendingIntent);
+                break;
+            case Notification.TYPE_MENTION:
+                resultIntent = new Intent(context, TweetActivity.class);
+                resultIntent.putExtra("STATUS_ID", tweetID);
+                resultPendingIntent = PendingIntent.getActivity(
+                        context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                mBuilder.setContentTitle(context.getString(R.string.reply_not_title, user))
+                        .setContentText(status)
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText(status))
+                        .setSmallIcon(R.drawable.ic_reply_white_24dp)
+                        .setContentIntent(resultPendingIntent);
+                break;
+            case Notification.TYPE_RETWEET_MENTIONED:
+                resultIntent = new Intent(context, TweetActivity.class);
+                resultIntent.putExtra("STATUS_ID", tweetID);
+                resultPendingIntent = PendingIntent.getActivity(
+                        context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                mBuilder.setContentTitle(context.getString(R.string.retw_ment_not_title, user))
+                        .setContentText(status)
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText(status))
+                        .setSmallIcon(R.drawable.ic_repeat_white_24dp)
+                        .setContentIntent(resultPendingIntent);
+                break;
+        }
+
+        mNotifyMgr.notify((int) id, mBuilder.build());
+    }
 }

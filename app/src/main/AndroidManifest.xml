@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.andreapivetta.blu">
+    package="com.andreapivetta.blu" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -15,11 +15,11 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".activities.HomeActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,14 +35,14 @@
         <activity
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".activities.HomeActivity">
+            android:parentActivityName=".activities.HomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.HomeActivity" />
         </activity>
         <activity
             android:name=".activities.UserTimeLineActivity"
-            android:parentActivityName=".activities.UserProfileActivity">
+            android:parentActivityName=".activities.UserProfileActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.UserProfileActivity" />
@@ -50,7 +50,7 @@
         <activity
             android:name=".activities.TweetActivity"
             android:label="@string/title_activity_tweet"
-            android:parentActivityName=".activities.HomeActivity">
+            android:parentActivityName=".activities.HomeActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.HomeActivity" />
@@ -60,7 +60,7 @@
             android:label="@string/notifications" />
         <activity
             android:name=".activities.SearchActivity"
-            android:label="@string/title_activity_search">
+            android:label="@string/title_activity_search" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -72,7 +72,7 @@
         <activity
             android:name=".activities.NewTweetActivity"
             android:label="@string/title_activity_new_tweet"
-            android:windowSoftInputMode="stateVisible">
+            android:windowSoftInputMode="stateVisible" >
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -97,7 +97,7 @@
         </activity>
         <activity
             android:name=".activities.HashtagActivity"
-            android:label="@string/title_activity_hashtag">
+            android:label="@string/title_activity_hashtag" >
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
 
@@ -108,10 +108,10 @@
         </activity>
         <activity
             android:name=".activities.ImageActivity"
-            android:label="@string/title_activity_image"></activity>
+            android:label="@string/title_activity_image" />
         <activity
             android:name=".activities.UserProfileActivity"
-            android:label="@string/title_activity_user_profile">
+            android:label="@string/title_activity_user_profile" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.HomeActivity" />
@@ -133,7 +133,7 @@
         <receiver
             android:name=".receivers.BootReceiver"
             android:enabled="true"
-            android:exported="false">
+            android:exported="false" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -141,11 +141,24 @@
 
         <service
             android:name=".services.BasicNotificationService"
-            android:exported="false"/>
+            android:exported="false" />
 
         <receiver
             android:name=".receivers.AlarmReceiver"
-            android:enabled="true"/>
+            android:enabled="true" />
+
+        <service
+            android:name=".services.CheckInteractionsService"
+            android:exported="false" >
+        </service>
+        <service
+            android:name=".services.CheckFollowersService"
+            android:exported="false" >
+        </service>
+        <service
+            android:name=".services.CheckMentionsService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

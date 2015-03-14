@@ -129,8 +129,9 @@ public class MentionsDatabaseManager {
 
             try {
                 for (twitter4j.Status tmp : TwitterUtils.getTwitter(context).
-                        getMentionsTimeline(new Paging(1, 200)))
-                    insertTriple(tmp.getUser().getId(), tmp.getId(), tmp.getCreatedAt().getTime());
+                        getMentionsTimeline(new Paging(1, 200))) {
+                    insertTriple(tmp.getId(), tmp.getUser().getId(), tmp.getCreatedAt().getTime());
+                }
 
             } catch (TwitterException e) {
                 e.printStackTrace();

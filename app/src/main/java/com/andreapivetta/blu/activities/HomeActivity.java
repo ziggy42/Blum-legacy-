@@ -94,7 +94,7 @@ public class HomeActivity extends TimeLineActivity {
 
 
         if (!mSharedPreferences.getBoolean(Common.PREF_STREAM_ON, false)) {
-            int frequency = mSharedPreferences.getInt(Common.PREF_FREQ, 240);
+            int frequency = mSharedPreferences.getInt(Common.PREF_FREQ, 300);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0,
                     new Intent(HomeActivity.this, AlarmReceiver.class), 0);
 
