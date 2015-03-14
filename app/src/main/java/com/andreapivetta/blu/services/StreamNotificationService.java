@@ -1,19 +1,10 @@
 package com.andreapivetta.blu.services;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
 
-import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.activities.TweetActivity;
-import com.andreapivetta.blu.activities.UserProfileActivity;
 import com.andreapivetta.blu.data.Notification;
-import com.andreapivetta.blu.data.NotificationsDatabaseManager;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.utilities.Common;
 
@@ -50,8 +41,8 @@ public class StreamNotificationService extends Service {
         public void onFavorite(User user, User user2, Status status) {
             try {
                 if (user2.getScreenName().equals(twitter.getScreenName()))
-                    pushNotification(status.getId(), user.getName(), Notification.TYPE_FAVOURITE,
-                            status.getText(), user.getBiggerProfileImageURL(), user.getId());
+                    Common.pushNotification(status.getId(), user.getName(), Notification.TYPE_FAVOURITE,
+                            status.getText(), user.getBiggerProfileImageURL(), user.getId(), getApplicationContext());
             } catch (TwitterException e) {
                 e.printStackTrace();
             }
@@ -67,8 +58,8 @@ public class StreamNotificationService extends Service {
 
             try {
                 if (user2.getScreenName().equals(twitter.getScreenName())) {
-                    pushNotification((long) -1, user.getName(), Notification.TYPE_FOLLOW,
-                            "", user.getBiggerProfileImageURL(), user.getId());
+                    Common.pushNotification((long) -1, user.getName(), Notification.TYPE_FOLLOW,
+                            "", user.getBiggerProfileImageURL(), user.getId(), getApplicationContext());
                 }
             } catch (TwitterException e) {
                 e.printStackTrace();
@@ -146,16 +137,19 @@ public class StreamNotificationService extends Service {
                 if (names.contains(twitter.getScreenName())) {
                     if (status.isRetweet()) {
                         if (status.getRetweetedStatus().getUser().getScreenName().equals(twitter.getScreenName()))
-                            pushNotification(status.getId(), status.getUser().getName(), Notification.TYPE_RETWEET,
+                            Common.pushNotification(status.getId(), status.getUser().getName(), Notification.TYPE_RETWEET,
                                     status.getRetweetedStatus().getText(),
-                                    status.getUser().getBiggerProfileImageURL(), status.getUser().getId());
+                                    status.getUser().getBiggerProfileImageURL(), status.getUser().getId(),
+                                    getApplicationContext());
                         else
-                            pushNotification(status.getId(), status.getUser().getName(),
+                            Common.pushNotification(status.getId(), status.getUser().getName(),
                                     Notification.TYPE_RETWEET_MENTIONED, status.getRetweetedStatus().getText(),
-                                    status.getUser().getBiggerProfileImageURL(), status.getUser().getId());
+                                    status.getUser().getBiggerProfileImageURL(), status.getUser().getId(),
+                                    getApplicationContext());
                     } else {
-                        pushNotification(status.getId(), status.getUser().getName(), Notification.TYPE_MENTION,
-                                status.getText(), status.getUser().getBiggerProfileImageURL(), status.getUser().getId());
+                        Common.pushNotification(status.getId(), status.getUser().getName(), Notification.TYPE_MENTION,
+                                status.getText(), status.getUser().getBiggerProfileImageURL(), status.getUser().getId(),
+                                getApplicationContext());
                     }
                 }
             } catch (TwitterException e) {
@@ -194,9 +188,7 @@ public class StreamNotificationService extends Service {
         }
     };
     private TwitterStream twitterStream;
-    private SharedPreferences mSharedPreferences;
     private Twitter twitter;
-    private NotificationManager mNotifyMgr;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -208,105 +200,10 @@ public class StreamNotificationService extends Service {
         super.onCreate();
 
         twitter = TwitterUtils.getTwitter(getApplicationContext());
-        mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         twitterStream = TwitterUtils.getTwitterStream(getApplicationContext());
         twitterStream.addListener(listener);
         twitterStream.user();
-
-        mSharedPreferences = getSharedPreferences(Common.PREF, 0);
-    }
-
-    void pushNotification(long tweetID, String user, String type, String status, String profilePicURL, long id) {
-        NotificationsDatabaseManager databaseManager = new NotificationsDatabaseManager(getApplicationContext());
-        databaseManager.open();
-        long notId = databaseManager.insertNotification(new Notification(false, tweetID, user, type, status, profilePicURL, id));
-        databaseManager.close();
-
-        Intent i = new Intent();
-        i.setAction(NEW_NOTIFICATION_INTENT);
-        sendBroadcast(i);
-
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext());
-        Intent resultIntent;
-        PendingIntent resultPendingIntent;
-
-        mBuilder.setDefaults(android.app.Notification.DEFAULT_SOUND)
-                .setAutoCancel(true)
-                .setColor(getApplicationContext().getResources().getColor(R.color.colorPrimary))
-                .setLargeIcon(Common.getBitmapFromURL(profilePicURL))
-                .setLights(Color.BLUE, 500, 1000);
-
-        if (mSharedPreferences.getBoolean(Common.PREF_HEADS_UP_NOTIFICATIONS, true))
-            mBuilder.setPriority(android.app.Notification.PRIORITY_HIGH);
-
-        switch (type) {
-            case Notification.TYPE_FAVOURITE:
-                resultIntent = new Intent(getApplicationContext(), TweetActivity.class);
-                resultIntent.putExtra("STATUS_ID", tweetID);
-                resultPendingIntent = PendingIntent.getActivity(
-                        getApplicationContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                mBuilder.setContentTitle(getString(R.string.fav_not_title, user))
-                        .setContentText(status)
-                        .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText(status))
-                        .setSmallIcon(R.drawable.ic_star_white_24dp)
-                        .setContentIntent(resultPendingIntent);
-                break;
-            case Notification.TYPE_RETWEET:
-                resultIntent = new Intent(getApplicationContext(), TweetActivity.class);
-                resultIntent.putExtra("STATUS_ID", tweetID);
-                resultPendingIntent = PendingIntent.getActivity(
-                        getApplicationContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                mBuilder.setContentTitle(getString(R.string.retw_not_title, user))
-                        .setContentText(status)
-                        .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText(status))
-                        .setSmallIcon(R.drawable.ic_repeat_white_24dp)
-                        .setContentIntent(resultPendingIntent);
-                break;
-            case Notification.TYPE_FOLLOW:
-                resultIntent = new Intent(getApplicationContext(), UserProfileActivity.class);
-                resultIntent.putExtra("ID", id);
-                resultPendingIntent = PendingIntent.getActivity(
-                        getApplicationContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                mBuilder.setContentTitle(getString(R.string.follow_not_title, user))
-                        .setContentText(status)
-                        .setSmallIcon(R.drawable.ic_person_add_white_24dp)
-                        .setContentIntent(resultPendingIntent);
-                break;
-            case Notification.TYPE_MENTION:
-                resultIntent = new Intent(getApplicationContext(), TweetActivity.class);
-                resultIntent.putExtra("STATUS_ID", tweetID);
-                resultPendingIntent = PendingIntent.getActivity(
-                        getApplicationContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                mBuilder.setContentTitle(getString(R.string.reply_not_title, user))
-                        .setContentText(status)
-                        .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText(status))
-                        .setSmallIcon(R.drawable.ic_reply_white_24dp)
-                        .setContentIntent(resultPendingIntent);
-                break;
-            case Notification.TYPE_RETWEET_MENTIONED:
-                resultIntent = new Intent(getApplicationContext(), TweetActivity.class);
-                resultIntent.putExtra("STATUS_ID", tweetID);
-                resultPendingIntent = PendingIntent.getActivity(
-                        getApplicationContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                mBuilder.setContentTitle(getString(R.string.retw_ment_not_title, user))
-                        .setContentText(status)
-                        .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText(status))
-                        .setSmallIcon(R.drawable.ic_repeat_white_24dp)
-                        .setContentIntent(resultPendingIntent);
-                break;
-        }
-
-        mNotifyMgr.notify((int) notId, mBuilder.build());
     }
 
     @Override

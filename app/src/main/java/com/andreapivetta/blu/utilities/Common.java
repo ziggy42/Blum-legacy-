@@ -4,7 +4,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -44,14 +43,11 @@ public class Common {
     public static final String PREF_HEADS_UP_NOTIFICATIONS = "headsup";
     public static final String PREF_STREAM_ON = "twitterstream";
     public static final String PREF_FREQ = "freq";
-
+    public final static String NEW_NOTIFICATION_INTENT = "com.andreapivetta.blu.NEW_NOTIFICATION_INTENT";
     private static final String FAVORITERS_URL = "https://twitter.com/i/activity/favorited_popup?id=";
     private static final String RETWEETERS_URL = "https://twitter.com/i/activity/retweeted_popup?id=";
-
     private static final String USER_AGENT =
             "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36";
-
-    public final static String NEW_NOTIFICATION_INTENT = "com.andreapivetta.blu.NEW_NOTIFICATION_INTENT";
 
     public static ArrayList<Long> getFavoriters(long tweetID) {
         return getUsers(tweetID, FAVORITERS_URL);
@@ -66,7 +62,7 @@ public class Common {
         try {
             Document doc = Jsoup.parse(getJson(tweetID, url).getString("htmlUsers"));
 
-            if(doc != null) {
+            if (doc != null) {
                 for (Element e : doc.getElementsByTag("img")) {
                     try {
                         usersIDs.add(Long.parseLong(e.attr("data-user-id")));
@@ -125,19 +121,11 @@ public class Common {
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
-    public static void pushNotification(long tweetID, long userID, String type, Context context) throws TwitterException {
-        Twitter twitter = TwitterUtils.getTwitter(context);
-        SharedPreferences mSharedPreferences = context.getSharedPreferences(PREF, 0);
-        NotificationManager mNotifyMgr = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        User currentUser = twitter.showUser(userID);
-        String user = currentUser.getName();
-        String status = twitter.showStatus(tweetID).getText();
-
-        NotificationsDatabaseManager dbManager = new NotificationsDatabaseManager(context);
-        dbManager.open();
-        long id = dbManager.insertNotification(
-                new Notification(false, tweetID, user, type, status, currentUser.getProfileImageURL(), userID));
-        dbManager.close();
+    public static void pushNotification(long tweetID, String user, String type, String status, String profilePicURL, long id, Context context) {
+        NotificationsDatabaseManager databaseManager = new NotificationsDatabaseManager(context);
+        databaseManager.open();
+        long notId = databaseManager.insertNotification(new Notification(false, tweetID, user, type, status, profilePicURL, id));
+        databaseManager.close();
 
         Intent i = new Intent();
         i.setAction(NEW_NOTIFICATION_INTENT);
@@ -149,11 +137,11 @@ public class Common {
 
         mBuilder.setDefaults(android.app.Notification.DEFAULT_SOUND)
                 .setAutoCancel(true)
-                .setLargeIcon(Common.getBitmapFromURL(currentUser.getProfileImageURL()))
                 .setColor(context.getResources().getColor(R.color.colorPrimary))
+                .setLargeIcon(Common.getBitmapFromURL(profilePicURL))
                 .setLights(Color.BLUE, 500, 1000);
 
-        if (mSharedPreferences.getBoolean(Common.PREF_HEADS_UP_NOTIFICATIONS, true))
+        if (context.getSharedPreferences(PREF, 0).getBoolean(Common.PREF_HEADS_UP_NOTIFICATIONS, true))
             mBuilder.setPriority(android.app.Notification.PRIORITY_HIGH);
 
         switch (type) {
@@ -185,7 +173,7 @@ public class Common {
                 break;
             case Notification.TYPE_FOLLOW:
                 resultIntent = new Intent(context, UserProfileActivity.class);
-                resultIntent.putExtra("ID", userID);
+                resultIntent.putExtra("ID", id);
                 resultPendingIntent = PendingIntent.getActivity(
                         context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -222,6 +210,15 @@ public class Common {
                 break;
         }
 
-        mNotifyMgr.notify((int) id, mBuilder.build());
+        ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE))
+                .notify((int) notId, mBuilder.build());
+    }
+
+    public static void pushNotification(long tweetID, long userID, String type, Context context) throws TwitterException {
+        Twitter twitter = TwitterUtils.getTwitter(context);
+        User currentUser = twitter.showUser(userID);
+
+        pushNotification(tweetID, currentUser.getName(), type, twitter.showStatus(tweetID).getText(),
+                currentUser.getProfileImageURL(), currentUser.getId(), context);
     }
 }
