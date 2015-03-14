@@ -237,7 +237,7 @@ public abstract class TimeLineActivity extends ActionBarActivity {
         @Override
         protected Boolean doInBackground(Void... uris) {
             try {
-                Paging currentPaging = new Paging();
+                Paging currentPaging = new Paging(1, 200);
                 currentPaging.setSinceId(tweetList.get(0).getId());
                 List<twitter4j.Status> newTweets = getRefreshedTimeLine(currentPaging);
                 ListIterator<twitter4j.Status> it = newTweets.listIterator(newTweets.size());
