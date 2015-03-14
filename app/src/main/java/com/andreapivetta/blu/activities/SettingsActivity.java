@@ -55,7 +55,7 @@ public class SettingsActivity extends ActionBarActivity {
     public static class SettingsFragment extends PreferenceFragment {
 
         private SharedPreferences mSharedPreferences;
-        private Preference logoutPreference;
+        private Preference logoutPreference, sharePreference, aboutPreference;
         private CheckBoxPreference animationsPreference, headsUpNotificationsPreference;
         private SwitchPreference streamServicePreference;
         private ListPreference frequencyListPreference;
@@ -75,6 +75,8 @@ public class SettingsActivity extends ActionBarActivity {
             headsUpNotificationsPreference = (CheckBoxPreference) findPreference("pref_key_heads_up_notifications");
             streamServicePreference = (SwitchPreference) findPreference("pref_key_stream_service");
             frequencyListPreference = (ListPreference) findPreference("pref_key_frequencies");
+            sharePreference = findPreference("pref_key_share");
+            aboutPreference = findPreference("pref_key_about");
 
             logoutPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
@@ -248,6 +250,31 @@ public class SettingsActivity extends ActionBarActivity {
                     return true;
                 }
             });
+
+            sharePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_SEND)
+                            .putExtra(Intent.EXTRA_TEXT, getString(R.string.share_this_app))
+                            .setType("text/plain");
+                    startActivity(intent);
+
+                    return true;
+                }
+            });
+
+            aboutPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Intent i = new Intent(getActivity(), UserProfileActivity.class);
+                    i.putExtra("ID", 290695594);
+                    getActivity().startActivity(i);
+
+                    return true;
+                }
+            });
+
         }
     }
 }

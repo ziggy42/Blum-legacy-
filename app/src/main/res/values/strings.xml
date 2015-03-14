@@ -66,6 +66,15 @@
     <string name="mini_hours">%1$dh</string>
     <string name="you_are_awesome">You are awesome</string>
     <string name="reached_twitter_user_limit">Reached Twitter limit, please try again in a few minutes</string>
+    <string name="streamDialogTitle">Use Stream Notification Service</string>
+    <string name="streamContinue">Continue</string>
+    <string name="streamDialogMessage">Using the stream notification service, you\'ll get real time
+        notifications and new tweets will be brought to you without the need of a refresh.
+        Unfortunately, if you follow a huge number of people and if your network isn\'t that great,
+        you may experience a really high battery consuming. It\'s up to you. Blu will be restarted.</string>
+    <string name="share_this_app">Yes, another Twitter client
+        https://play.google.com/apps/testing/com.andreapivetta.blu</string>
+
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>
@@ -109,6 +118,15 @@
     <string name="animations_pref_summary">You\'ll need to restart the app</string>
     <string name="heads_up_notifications_pref_summary">Allow heads-up notifications</string>
     <string name="heads_up_notifications_pref_title">Heads-Up Notifications</string>
+    <string name="frequency_pref_summary">How often check for notifications</string>
+    <string name="frequency_pref_title">Frequency</string>
+    <string name="enable_stream_service_pref_summary">Better experience, worst battery life</string>
+    <string name="enable_stream_service_pref_title">Enable Stream Notification Service</string>
+    <string name="prefcat_others_title">Others</string>
+    <string name="share_pref_title">Share this App</string>
+    <string name="share_pref_summary">Suggest it to your friends!</string>
+    <string name="about_pref_summary">About the authors</string>
+    <string name="about_pref_title">About</string>
 
     <!-- Content Descriptors -->
     <string name="profile_background_contentDescriptor">User Background Image View</string>
@@ -123,12 +141,5 @@
     <string name="uploaded_image_contentDescriptor">Uploaded ImageView</string>
     <string name="send_tweet_button_contentDescriptor">Send Tweet image Button</string>
     <string name="notifications_contentDescription">Notifications</string>
-    <string name="enable_stream_service_pref_summary">Better experience, worst battery life</string>
-    <string name="enable_stream_service_pref_title">Enable Stream Notification Service</string>
-    <string name="streamDialogTitle">Use Stream Notification Service</string>
-    <string name="streamContinue">Continue</string>
-    <string name="streamDialogMessage">Using the stream notification service, you\'ll get real time notifications and new tweets will be brought to you without the need of a refresh. Unfortunately, if you follow a huge number of people and if your network isn\'t that great, you may experience a really high battery consuming. It\'s up to you. Blu will be restarted.</string>
-    <string name="frequency_pref_summary">How often check for notifications</string>
-    <string name="frequency_pref_title">Frequency</string>
 
 </resources>

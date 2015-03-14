@@ -121,7 +121,8 @@ public class Common {
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
-    public static void pushNotification(long tweetID, String user, String type, String status, String profilePicURL, long id, Context context) {
+    public static void pushNotification(long tweetID, String user, String type, String status,
+                                        String profilePicURL, long id, Context context) {
         NotificationsDatabaseManager databaseManager = new NotificationsDatabaseManager(context);
         databaseManager.open();
         long notId = databaseManager.insertNotification(new Notification(false, tweetID, user, type, status, profilePicURL, id));
@@ -214,7 +215,8 @@ public class Common {
                 .notify((int) notId, mBuilder.build());
     }
 
-    public static void pushNotification(long tweetID, long userID, String type, Context context) throws TwitterException {
+    public static void pushNotification(long tweetID, long userID,
+                                        String type, Context context) throws TwitterException {
         Twitter twitter = TwitterUtils.getTwitter(context);
         User currentUser = twitter.showUser(userID);
 
