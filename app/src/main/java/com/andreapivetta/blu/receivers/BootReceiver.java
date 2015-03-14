@@ -11,7 +11,7 @@ public class BootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (context.getSharedPreferences("MyPRef", 0).getBoolean(Common.PREF_STREAM_ON, false))
+        if (context.getSharedPreferences(Common.PREF, 0).getBoolean(Common.PREF_STREAM_ON, false))
             context.startService(new Intent(context, StreamNotificationService.class));
     }
 }

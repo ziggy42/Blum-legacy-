@@ -6,30 +6,20 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.AsyncTask;
-
-import com.andreapivetta.blu.twitter.TwitterUtils;
 
 import java.util.ArrayList;
 
-import twitter4j.IDs;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-
 public class FollowersDatabaseManager {
-
-    private Context context;
-    private DatabaseHelper myDBHelper;
-    private SQLiteDatabase myDB;
 
     private static final String DB_NAME = "followers_db";
     private static final int DB_VERSION = 1;
     private static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
             + SetsMetaData.TABLE_NAME + " (" + SetsMetaData.FOLLOWER_ID + " INTEGER NOT NULL);";
+    private DatabaseHelper myDBHelper;
+    private SQLiteDatabase myDB;
 
     public FollowersDatabaseManager(Context context) {
         this.myDBHelper = new DatabaseHelper(context, DB_NAME, null, DB_VERSION);
-        this.context = context;
     }
 
     public void open() {
@@ -40,7 +30,7 @@ public class FollowersDatabaseManager {
         this.myDB.close();
     }
 
-    private void insertFollower(long followerID) {
+    public void insertFollower(long followerID) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(SetsMetaData.FOLLOWER_ID, followerID);
         myDB.insert(SetsMetaData.TABLE_NAME, null, contentValues);
@@ -82,10 +72,6 @@ public class FollowersDatabaseManager {
         return newUsersIDs;
     }
 
-    public void populateDatabase() {
-        new PopulateDatabaseAsyncTask().execute(null, null, null);
-    }
-
     static final class SetsMetaData {
         static final String TABLE_NAME = "followers_table";
         static final String FOLLOWER_ID = "userid";
@@ -108,32 +94,5 @@ public class FollowersDatabaseManager {
 
         }
 
-    }
-
-    private class PopulateDatabaseAsyncTask extends AsyncTask<Void, Void, Boolean> {
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            Twitter t = TwitterUtils.getTwitter(context);
-            open();
-
-            try {
-                IDs ids = t.getFollowersIDs(-1);
-                do {
-                    for (long userID : ids.getIDs())
-                        insertFollower(userID);
-                } while (ids.hasNext());
-            } catch (TwitterException e) {
-                e.printStackTrace();
-            }
-
-            close();
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-
-        }
     }
 }

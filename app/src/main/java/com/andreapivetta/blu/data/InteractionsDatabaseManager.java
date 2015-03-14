@@ -4,13 +4,8 @@ package com.andreapivetta.blu.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.AsyncTask;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import twitter4j.Status;
-import twitter4j.TwitterException;
 
 public abstract class InteractionsDatabaseManager {
 
@@ -32,7 +27,7 @@ public abstract class InteractionsDatabaseManager {
         this.myDB.close();
     }
 
-    abstract void insertCouple(long userID, long tweetID);
+    public abstract void insertCouple(long userID, long tweetID);
 
     abstract void deleteCouple(long userID, long tweetID);
 
@@ -57,14 +52,6 @@ public abstract class InteractionsDatabaseManager {
         return newUsersIDs;
     }
 
-    abstract ArrayList<Long> getInteractors(Status status);
-
-    abstract List<Status> getPopulationSource() throws TwitterException;
-
-    public void populateDatabase() {
-        new PopulateDatabaseAsyncTask().execute(null, null, null);
-    }
-
     protected class DatabaseHelper extends SQLiteOpenHelper {
 
         public DatabaseHelper(Context context, String name,
@@ -83,30 +70,4 @@ public abstract class InteractionsDatabaseManager {
         }
 
     }
-
-    private class PopulateDatabaseAsyncTask extends AsyncTask<Void, Void, Boolean> {
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            open();
-
-            try {
-                for (twitter4j.Status tmp : getPopulationSource())
-                    for (long userID : getInteractors(tmp))
-                        insertCouple(userID, tmp.getId());
-
-            } catch (TwitterException e) {
-                e.printStackTrace();
-            }
-
-            close();
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-
-        }
-    }
-
 }

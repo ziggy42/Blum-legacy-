@@ -5,15 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.andreapivetta.blu.twitter.TwitterUtils;
-import com.andreapivetta.blu.utilities.Common;
-
 import java.util.ArrayList;
-import java.util.List;
-
-import twitter4j.Paging;
-import twitter4j.Status;
-import twitter4j.TwitterException;
 
 public class FavoritesDatabaseManager extends InteractionsDatabaseManager {
 
@@ -35,7 +27,7 @@ public class FavoritesDatabaseManager extends InteractionsDatabaseManager {
     }
 
     @Override
-    void insertCouple(long userID, long tweetID) {
+    public void insertCouple(long userID, long tweetID) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(SetsMetaData.TWEET_ID, tweetID);
         contentValues.put(SetsMetaData.USER_ID, userID);
@@ -60,16 +52,6 @@ public class FavoritesDatabaseManager extends InteractionsDatabaseManager {
 
         cursor.close();
         return list;
-    }
-
-    @Override
-    ArrayList<Long> getInteractors(Status status) {
-        return Common.getFavoriters(status.getId());
-    }
-
-    @Override
-    List<Status> getPopulationSource() throws TwitterException {
-        return TwitterUtils.getTwitter(context).getUserTimeline(new Paging(1, 200));
     }
 
     static final class SetsMetaData {

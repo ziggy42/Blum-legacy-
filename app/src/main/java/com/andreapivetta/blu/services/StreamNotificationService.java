@@ -4,7 +4,11 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import com.andreapivetta.blu.data.FavoritesDatabaseManager;
+import com.andreapivetta.blu.data.FollowersDatabaseManager;
+import com.andreapivetta.blu.data.MentionsDatabaseManager;
 import com.andreapivetta.blu.data.Notification;
+import com.andreapivetta.blu.data.RetweetsDatabaseManager;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.utilities.Common;
 
@@ -40,9 +44,15 @@ public class StreamNotificationService extends Service {
         @Override
         public void onFavorite(User user, User user2, Status status) {
             try {
-                if (user2.getScreenName().equals(twitter.getScreenName()))
+                if (user2.getScreenName().equals(twitter.getScreenName())) {
                     Common.pushNotification(status.getId(), user.getName(), Notification.TYPE_FAVOURITE,
                             status.getText(), user.getBiggerProfileImageURL(), user.getId(), getApplicationContext());
+
+                    FavoritesDatabaseManager databaseManager = new FavoritesDatabaseManager(getApplicationContext());
+                    databaseManager.open();
+                    databaseManager.insertCouple(user.getId(), status.getId());
+                    databaseManager.close();
+                }
             } catch (TwitterException e) {
                 e.printStackTrace();
             }
@@ -60,6 +70,11 @@ public class StreamNotificationService extends Service {
                 if (user2.getScreenName().equals(twitter.getScreenName())) {
                     Common.pushNotification((long) -1, user.getName(), Notification.TYPE_FOLLOW,
                             "", user.getBiggerProfileImageURL(), user.getId(), getApplicationContext());
+
+                    FollowersDatabaseManager databaseManager = new FollowersDatabaseManager(getApplicationContext());
+                    databaseManager.open();
+                    databaseManager.insertFollower(user.getId());
+                    databaseManager.close();
                 }
             } catch (TwitterException e) {
                 e.printStackTrace();
@@ -136,12 +151,17 @@ public class StreamNotificationService extends Service {
             try {
                 if (names.contains(twitter.getScreenName())) {
                     if (status.isRetweet()) {
-                        if (status.getRetweetedStatus().getUser().getScreenName().equals(twitter.getScreenName()))
+                        if (status.getRetweetedStatus().getUser().getScreenName().equals(twitter.getScreenName())) {
                             Common.pushNotification(status.getId(), status.getUser().getName(), Notification.TYPE_RETWEET,
                                     status.getRetweetedStatus().getText(),
                                     status.getUser().getBiggerProfileImageURL(), status.getUser().getId(),
                                     getApplicationContext());
-                        else
+
+                            RetweetsDatabaseManager databaseManager = new RetweetsDatabaseManager(getApplicationContext());
+                            databaseManager.open();
+                            databaseManager.insertCouple(status.getUser().getId(), status.getId());
+                            databaseManager.close();
+                        } else
                             Common.pushNotification(status.getId(), status.getUser().getName(),
                                     Notification.TYPE_RETWEET_MENTIONED, status.getRetweetedStatus().getText(),
                                     status.getUser().getBiggerProfileImageURL(), status.getUser().getId(),
@@ -150,6 +170,12 @@ public class StreamNotificationService extends Service {
                         Common.pushNotification(status.getId(), status.getUser().getName(), Notification.TYPE_MENTION,
                                 status.getText(), status.getUser().getBiggerProfileImageURL(), status.getUser().getId(),
                                 getApplicationContext());
+
+                        MentionsDatabaseManager databaseManager = new MentionsDatabaseManager(getApplicationContext());
+                        databaseManager.open();
+                        databaseManager
+                                .insertTriple(status.getId(), status.getUser().getId(), status.getCreatedAt().getTime());
+                        databaseManager.close();
                     }
                 }
             } catch (TwitterException e) {

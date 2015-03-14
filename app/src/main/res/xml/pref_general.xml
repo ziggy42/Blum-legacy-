@@ -1,17 +1,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:key="pref_key_account"
-        android:title="@string/prefcat_account_title">
-
-        <Preference
-            android:key="pref_key_logout"
-            android:summary="@string/logout_pref_summary"
-            android:title="@string/logout_pref_title" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
         android:key="pref_key_behavior"
         android:title="@string/prefcat_behavior_title">
 
@@ -39,6 +28,17 @@
             android:key="pref_key_stream_service"
             android:summary="@string/enable_stream_service_pref_summary"
             android:title="@string/enable_stream_service_pref_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_key_account"
+        android:title="@string/prefcat_account_title">
+
+        <Preference
+            android:key="pref_key_logout"
+            android:summary="@string/logout_pref_summary"
+            android:title="@string/logout_pref_title" />
 
     </PreferenceCategory>
 

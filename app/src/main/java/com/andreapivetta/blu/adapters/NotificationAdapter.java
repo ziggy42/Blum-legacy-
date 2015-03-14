@@ -67,21 +67,25 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             current.set(Calendar.HOUR_OF_DAY, notification.hh);
             current.set(Calendar.MINUTE, notification.mm);
 
-            holder.timeTextView.setText(android.text.format.DateFormat.getTimeFormat(context).format(current.getTime()));
+            holder.timeTextView.setText(
+                    android.text.format.DateFormat.getTimeFormat(context).format(current.getTime()));
         } else {
             if (c.get(Calendar.YEAR) != notification.YY)
                 current.set(Calendar.YEAR, notification.YY);
             current.set(Calendar.DAY_OF_MONTH, notification.DD);
             current.set(Calendar.MONTH, notification.MM);
 
-            holder.timeTextView.setText(android.text.format.DateFormat.getDateFormat(context).format(current.getTime()));
+            holder.timeTextView.setText(
+                    android.text.format.DateFormat.getDateFormat(context).format(current.getTime()));
         }
 
         String screenName = notification.user;
         StyleSpan b = new StyleSpan(android.graphics.Typeface.BOLD);
 
-        if (notification.type.equals(Notification.TYPE_FAVOURITE) || notification.type.equals(Notification.TYPE_RETWEET)
-                || notification.type.equals(Notification.TYPE_MENTION) || notification.type.equals(Notification.TYPE_RETWEET_MENTIONED)) {
+        if (notification.type.equals(Notification.TYPE_FAVOURITE)
+                || notification.type.equals(Notification.TYPE_RETWEET)
+                || notification.type.equals(Notification.TYPE_MENTION)
+                || notification.type.equals(Notification.TYPE_RETWEET_MENTIONED)) {
             SpannableStringBuilder sb;
             switch (notification.type) {
                 case Notification.TYPE_FAVOURITE:
@@ -99,7 +103,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             }
 
             sb.setSpan(b, 0, screenName.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-            holder.notificationExplanationTextView.setText(sb);
+            holder.notificationExplainedTextView.setText(sb);
 
             holder.statusTextView.setText(notification.status);
 
@@ -115,7 +119,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             SpannableStringBuilder sb = new SpannableStringBuilder(screenName + " " +
                     context.getString(R.string.is_following_not));
             sb.setSpan(b, 0, screenName.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-            holder.notificationExplanationTextView.setText(sb);
+            holder.notificationExplainedTextView.setText(sb);
             holder.statusTextView.setVisibility(View.GONE);
 
             holder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -137,14 +141,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView userProfilePicImageView;
-        public TextView notificationExplanationTextView, statusTextView, timeTextView;
+        public TextView notificationExplainedTextView, statusTextView, timeTextView;
         public FrameLayout cardView;
 
         public ViewHolder(View container) {
             super(container);
 
             this.userProfilePicImageView = (ImageView) container.findViewById(R.id.userProfilePicImageView);
-            this.notificationExplanationTextView = (TextView) container.findViewById(R.id.notificationExplanationTextView);
+            this.notificationExplainedTextView = (TextView) container.findViewById(R.id.notificationExplanationTextView);
             this.timeTextView = (TextView) container.findViewById(R.id.timeTextView);
             this.statusTextView = (TextView) container.findViewById(R.id.statusTextView);
             this.cardView = (FrameLayout) container.findViewById(R.id.card_view);

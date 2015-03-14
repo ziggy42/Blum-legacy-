@@ -122,10 +122,11 @@ public class Common {
     }
 
     public static void pushNotification(long tweetID, String user, String type, String status,
-                                        String profilePicURL, long id, Context context) {
+                                        String profilePicURL, long userID, Context context) {
         NotificationsDatabaseManager databaseManager = new NotificationsDatabaseManager(context);
         databaseManager.open();
-        long notId = databaseManager.insertNotification(new Notification(false, tweetID, user, type, status, profilePicURL, id));
+        long id = databaseManager.insertNotification(
+                new Notification(false, tweetID, user, type, status, profilePicURL, userID));
         databaseManager.close();
 
         Intent i = new Intent();
@@ -174,7 +175,7 @@ public class Common {
                 break;
             case Notification.TYPE_FOLLOW:
                 resultIntent = new Intent(context, UserProfileActivity.class);
-                resultIntent.putExtra("ID", id);
+                resultIntent.putExtra("ID", userID);
                 resultPendingIntent = PendingIntent.getActivity(
                         context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -212,7 +213,7 @@ public class Common {
         }
 
         ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE))
-                .notify((int) notId, mBuilder.build());
+                .notify((int) id, mBuilder.build());
     }
 
     public static void pushNotification(long tweetID, long userID,

@@ -152,8 +152,8 @@ public abstract class TimeLineActivity extends ActionBarActivity {
                 newTweetImageButton.requestLayout();
             }
         });
-        downAnimator.setDuration(200);
-        downAnimator.start();
+        downAnimator.setDuration(200)
+                .start();
 
         isUp = false;
     }
@@ -168,8 +168,8 @@ public abstract class TimeLineActivity extends ActionBarActivity {
                 newTweetImageButton.requestLayout();
             }
         });
-        upAnimator.setDuration(200);
-        upAnimator.start();
+        upAnimator.setDuration(200)
+                .start();
 
         isUp = true;
     }

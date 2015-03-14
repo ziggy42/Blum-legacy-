@@ -64,7 +64,8 @@ public class NotificationsActivity extends ActionBarActivity {
                     .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            NotificationsDatabaseManager databaseManager = new NotificationsDatabaseManager(NotificationsActivity.this);
+                            NotificationsDatabaseManager databaseManager =
+                                    new NotificationsDatabaseManager(NotificationsActivity.this);
                             databaseManager.open();
                             databaseManager.clearDatabase();
                             databaseManager.close();

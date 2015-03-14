@@ -5,14 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.AsyncTask;
-
-import com.andreapivetta.blu.twitter.TwitterUtils;
 
 import java.util.ArrayList;
-
-import twitter4j.Paging;
-import twitter4j.TwitterException;
 
 public class MentionsDatabaseManager {
 
@@ -25,15 +19,9 @@ public class MentionsDatabaseManager {
             + SetsMetaData.TIMESTAMP + " INTEGER NOT NULL);";
     protected DatabaseHelper myDBHelper;
     protected SQLiteDatabase myDB;
-    private Context context;
 
     public MentionsDatabaseManager(Context context) {
-        this.context = context;
         this.myDBHelper = new DatabaseHelper(context, DB_NAME, null, DB_VERSION);
-    }
-
-    public void populateDatabase() {
-        new PopulateDatabaseAsyncTask().execute(null, null, null);
     }
 
     public void open() {
@@ -44,7 +32,7 @@ public class MentionsDatabaseManager {
         this.myDB.close();
     }
 
-    private void insertTriple(long tweetID, long userID, long timestamp) {
+    public void insertTriple(long tweetID, long userID, long timestamp) {
         ContentValues cv = new ContentValues();
         cv.put(SetsMetaData.USER_ID, userID);
         cv.put(SetsMetaData.TWEET_ID, tweetID);
@@ -119,31 +107,5 @@ public class MentionsDatabaseManager {
 
         }
 
-    }
-
-    private class PopulateDatabaseAsyncTask extends AsyncTask<Void, Void, Boolean> {
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            open();
-
-            try {
-                for (twitter4j.Status tmp : TwitterUtils.getTwitter(context).
-                        getMentionsTimeline(new Paging(1, 200))) {
-                    insertTriple(tmp.getId(), tmp.getUser().getId(), tmp.getCreatedAt().getTime());
-                }
-
-            } catch (TwitterException e) {
-                e.printStackTrace();
-            }
-
-            close();
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-
-        }
     }
 }

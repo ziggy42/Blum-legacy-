@@ -75,7 +75,6 @@
     <string name="share_this_app">Yes, another Twitter client
         https://play.google.com/apps/testing/com.andreapivetta.blu</string>
 
-
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>
         <item quantity="other">%1$d new Tweets</item>
@@ -90,7 +89,7 @@
         <item>Tweets</item>
         <item>Users</item>
     </array>
-    
+
     <string-array name="frequencies">
         <item>5 minutes</item>
         <item>10 minutes</item>

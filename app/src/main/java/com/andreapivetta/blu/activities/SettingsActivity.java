@@ -56,7 +56,7 @@ public class SettingsActivity extends ActionBarActivity {
 
         private SharedPreferences mSharedPreferences;
         private Preference logoutPreference, sharePreference, aboutPreference;
-        private CheckBoxPreference animationsPreference, headsUpNotificationsPreference;
+        private CheckBoxPreference animationsPreference, headsUpPreference;
         private SwitchPreference streamServicePreference;
         private ListPreference frequencyListPreference;
 
@@ -72,7 +72,7 @@ public class SettingsActivity extends ActionBarActivity {
 
             logoutPreference = findPreference("pref_key_logout");
             animationsPreference = (CheckBoxPreference) findPreference("pref_key_animations");
-            headsUpNotificationsPreference = (CheckBoxPreference) findPreference("pref_key_heads_up_notifications");
+            headsUpPreference = (CheckBoxPreference) findPreference("pref_key_heads_up_notifications");
             streamServicePreference = (SwitchPreference) findPreference("pref_key_stream_service");
             frequencyListPreference = (ListPreference) findPreference("pref_key_frequencies");
             sharePreference = findPreference("pref_key_share");
@@ -92,13 +92,14 @@ public class SettingsActivity extends ActionBarActivity {
 
                                             Toast.makeText(getActivity(), getString(R.string.logout_done), Toast.LENGTH_SHORT).show();
                                             if (mSharedPreferences.getBoolean(Common.PREF_STREAM_ON, false))
-                                                getActivity().stopService(new Intent(getActivity(), StreamNotificationService.class));
+                                                getActivity().stopService(
+                                                        new Intent(getActivity(), StreamNotificationService.class));
                                             else {
                                                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0,
                                                         new Intent(getActivity(), AlarmReceiver.class), 0);
 
-                                                AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-                                                alarmManager.cancel(pendingIntent);
+                                                ((AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE))
+                                                        .cancel(pendingIntent);
                                             }
 
                                             mSharedPreferences.edit().remove(TwitterUtils.PREF_KEY_OAUTH_TOKEN)
@@ -108,10 +109,10 @@ public class SettingsActivity extends ActionBarActivity {
                                                     .remove(Common.PREF_STREAM_ON)
                                                     .apply();
 
-                                            Intent intent = new Intent(getActivity(), HomeActivity.class);
-                                            intent.putExtra("exit", "exit");
-                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                            startActivity(intent);
+                                            Intent i = new Intent(getActivity(), HomeActivity.class);
+                                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                                                    .putExtra("exit", "exit");
+                                            startActivity(i);
                                         }
                                     }
                             ).setNegativeButton(getString(R.string.cancel), null).create().show();
@@ -130,12 +131,12 @@ public class SettingsActivity extends ActionBarActivity {
                 }
             });
 
-            headsUpNotificationsPreference.setChecked(mSharedPreferences.getBoolean(Common.PREF_HEADS_UP_NOTIFICATIONS, true));
-            headsUpNotificationsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            headsUpPreference.setChecked(mSharedPreferences.getBoolean(Common.PREF_HEADS_UP_NOTIFICATIONS, true));
+            headsUpPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     mSharedPreferences.edit().putBoolean(
-                            Common.PREF_HEADS_UP_NOTIFICATIONS, headsUpNotificationsPreference.isChecked()).apply();
+                            Common.PREF_HEADS_UP_NOTIFICATIONS, headsUpPreference.isChecked()).apply();
                     return true;
                 }
             });
@@ -203,18 +204,19 @@ public class SettingsActivity extends ActionBarActivity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         mSharedPreferences.edit().putBoolean(Common.PREF_STREAM_ON, true).apply();
-                                        getActivity().startService(new Intent(getActivity(), StreamNotificationService.class));
+                                        getActivity().startService(
+                                                new Intent(getActivity(), StreamNotificationService.class));
 
                                         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0,
                                                 new Intent(getActivity(), AlarmReceiver.class), 0);
 
-                                        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-                                        alarmManager.cancel(pendingIntent);
+                                        ((AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE))
+                                                .cancel(pendingIntent);
 
-                                        Intent intent = new Intent(getActivity(), HomeActivity.class);
-                                        intent.putExtra("exit", "exit");
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                        startActivity(intent);
+                                        Intent i = new Intent(getActivity(), HomeActivity.class);
+                                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                                                .putExtra("exit", "exit");
+                                        startActivity(i);
                                     }
                                 })
                                 .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -234,17 +236,17 @@ public class SettingsActivity extends ActionBarActivity {
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0,
                                 new Intent(getActivity(), AlarmReceiver.class), 0);
 
-                        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+                        AlarmManager a = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTimeInMillis(System.currentTimeMillis());
                         calendar.add(Calendar.SECOND, frequency);
-                        alarmManager.setRepeating(
+                        a.setRepeating(
                                 AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), frequency * 1000, pendingIntent);
 
-                        Intent intent = new Intent(getActivity(), HomeActivity.class);
-                        intent.putExtra("exit", "exit");
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        startActivity(intent);
+                        Intent i = new Intent(getActivity(), HomeActivity.class);
+                        i.putExtra("exit", "exit")
+                                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(i);
                     }
 
                     return true;

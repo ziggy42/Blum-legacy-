@@ -18,7 +18,8 @@ public class Notification implements Comparable<Notification> {
     public String user, type, status, profilePicURL;
     public int hh, mm, YY, MM, DD, notificationID;
 
-    public Notification(boolean read, long tweet, String user, String type, String status, String profilePicURL, long userID) {
+    public Notification(boolean read, long tweet, String user, String type, String status, String profilePicURL,
+                        long userID) {
         this.read = read;
         this.tweetID = tweet;
         this.user = user;

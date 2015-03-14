@@ -18,12 +18,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.data.FavoritesDatabaseManager;
-import com.andreapivetta.blu.data.FollowersDatabaseManager;
-import com.andreapivetta.blu.data.MentionsDatabaseManager;
 import com.andreapivetta.blu.data.NotificationsDatabaseManager;
-import com.andreapivetta.blu.data.RetweetsDatabaseManager;
 import com.andreapivetta.blu.receivers.AlarmReceiver;
+import com.andreapivetta.blu.services.PopulateDatabasesService;
 import com.andreapivetta.blu.services.StreamNotificationService;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.utilities.Common;
@@ -92,19 +89,6 @@ public class HomeActivity extends TimeLineActivity {
             getSupportActionBar().setTitle(
                     getResources().getQuantityString(R.plurals.new_tweets, newTweetsCount, newTweetsCount));
 
-
-        if (!mSharedPreferences.getBoolean(Common.PREF_STREAM_ON, false)) {
-            int frequency = mSharedPreferences.getInt(Common.PREF_FREQ, 300);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0,
-                    new Intent(HomeActivity.this, AlarmReceiver.class), 0);
-
-            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(System.currentTimeMillis());
-            calendar.add(Calendar.SECOND, frequency);
-            alarmManager.setRepeating(
-                    AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), frequency * 1000, pendingIntent);
-        }
     }
 
     @Override
@@ -165,10 +149,17 @@ public class HomeActivity extends TimeLineActivity {
             if (mSharedPreferences.getBoolean(Common.PREF_STREAM_ON, false)) {
                 startService(new Intent(HomeActivity.this, StreamNotificationService.class));
             } else {
-                new FavoritesDatabaseManager(HomeActivity.this).populateDatabase();
-                new RetweetsDatabaseManager(HomeActivity.this).populateDatabase();
-                new FollowersDatabaseManager(HomeActivity.this).populateDatabase();
-                new MentionsDatabaseManager(HomeActivity.this).populateDatabase();
+                startService(new Intent(HomeActivity.this, PopulateDatabasesService.class));
+
+                int frequency = mSharedPreferences.getInt(Common.PREF_FREQ, 300);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0,
+                        new Intent(HomeActivity.this, AlarmReceiver.class), 0);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(System.currentTimeMillis());
+                calendar.add(Calendar.SECOND, frequency);
+                alarmManager.setRepeating(
+                        AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), frequency * 1000, pendingIntent);
             }
         }
     }
