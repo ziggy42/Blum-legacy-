@@ -2,7 +2,6 @@ package com.andreapivetta.blu.services;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.util.Log;
 
 import com.andreapivetta.blu.data.MentionsDatabaseManager;
 import com.andreapivetta.blu.data.Notification;
@@ -26,7 +25,6 @@ public class CheckMentionsService extends IntentService {
         Twitter twitter = TwitterUtils.getTwitter(getApplicationContext());
         MentionsDatabaseManager dbm = new MentionsDatabaseManager(getApplicationContext());
         dbm.open();
-        Log.i("BasicService", "CheckMentions");
         try {
             ArrayList<ArrayList<Long>> triples = new ArrayList<>();
             for (twitter4j.Status mention : twitter.getMentionsTimeline(new Paging(1, 200))) {
@@ -45,7 +43,6 @@ public class CheckMentionsService extends IntentService {
         } catch (TwitterException e) {
             e.printStackTrace();
         }
-        Log.i("BasicService", "CheckMentions FINISH");
         dbm.close();
     }
 

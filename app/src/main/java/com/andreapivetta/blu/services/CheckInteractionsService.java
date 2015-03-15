@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 import twitter4j.Paging;
 import twitter4j.Twitter;
-import twitter4j.TwitterException;
 
 
 public class CheckInteractionsService extends IntentService {
@@ -41,8 +40,7 @@ public class CheckInteractionsService extends IntentService {
                 for (long userID : newUsersIDs)
                     Common.pushNotification(tmp.getId(), userID, Notification.TYPE_RETWEET, getApplicationContext());
             }
-
-        } catch (TwitterException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         rdbm.close();

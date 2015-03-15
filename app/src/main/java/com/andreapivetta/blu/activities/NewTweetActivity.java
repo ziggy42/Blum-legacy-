@@ -3,6 +3,9 @@ package com.andreapivetta.blu.activities;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -37,6 +40,8 @@ public class NewTweetActivity extends ActionBarActivity {
 
     private static final int REQUEST_GRAB_IMAGE = 3;
     private static final int REQUEST_TAKE_PHOTO = 1;
+    private static final String FILE = "file";
+    private static final String TEXT = "text";
 
     private ImageView uploadedImageView;
     private EditText newTweetEditText;
@@ -81,10 +86,10 @@ public class NewTweetActivity extends ActionBarActivity {
                 Uri selectedImageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
                 imageFile = new File(FileUtils.getPath(NewTweetActivity.this, selectedImageUri));
 
-                uploadedImageView.setVisibility(View.VISIBLE);
-                Picasso.with(NewTweetActivity.this)
-                        .load(selectedImageUri)
-                        .into(uploadedImageView);
+                Bitmap thumbImage = ThumbnailUtils.extractThumbnail(
+                        BitmapFactory.decodeFile(imageFile.getAbsolutePath()),
+                        uploadedImageView.getWidth(), uploadedImageView.getWidth());
+                uploadedImageView.setImageBitmap(thumbImage);
             }
         } /*else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
             if (type.startsWith("image/")) {
@@ -150,6 +155,16 @@ public class NewTweetActivity extends ActionBarActivity {
             }
         });
 
+
+        if (savedInstanceState != null) {
+            imageFile = (File) savedInstanceState.getSerializable(FILE);
+            if (imageFile != null)
+                uploadedImageView.setImageBitmap(ThumbnailUtils.extractThumbnail(
+                        BitmapFactory.decodeFile(imageFile.getAbsolutePath()),
+                        uploadedImageView.getWidth(), uploadedImageView.getWidth()));
+
+            newTweetEditText.setText(savedInstanceState.getString(TEXT));
+        }
     }
 
     File createImageFile() throws IOException {
@@ -170,20 +185,23 @@ public class NewTweetActivity extends ActionBarActivity {
                 if (resultCode == RESULT_OK) {
 
                     uploadedImageView.setVisibility(View.VISIBLE);
-                    Picasso.with(NewTweetActivity.this)
-                            .load(imageReturnedIntent.getData())
-                            .into(uploadedImageView);
-
                     imageFile = new File(FileUtils.getPath(NewTweetActivity.this, imageReturnedIntent.getData()));
+
+                    Bitmap thumbImage = ThumbnailUtils.extractThumbnail(
+                            BitmapFactory.decodeFile(imageFile.getAbsolutePath()),
+                            uploadedImageView.getWidth(), uploadedImageView.getWidth());
+                    uploadedImageView.setImageBitmap(thumbImage);
+
                 }
                 break;
             case REQUEST_TAKE_PHOTO:
                 if (resultCode == RESULT_OK) {
-
                     uploadedImageView.setVisibility(View.VISIBLE);
-                    Picasso.with(this)
-                            .load(Uri.parse("file:" + imageFile.getAbsolutePath()))
-                            .into(uploadedImageView);
+
+                    Bitmap thumbImage = ThumbnailUtils.extractThumbnail(
+                            BitmapFactory.decodeFile(imageFile.getAbsolutePath()),
+                            uploadedImageView.getWidth(), uploadedImageView.getWidth());
+                    uploadedImageView.setImageBitmap(thumbImage);
                 }
                 break;
         }

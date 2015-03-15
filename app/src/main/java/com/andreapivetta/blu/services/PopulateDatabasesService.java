@@ -41,7 +41,7 @@ public class PopulateDatabasesService extends IntentService {
                 for (long userID : Common.getRetweeters(tmp.getId()))
                     retweetsDatabaseManager.insertCouple(userID, tmp.getId());
             }
-        } catch (TwitterException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         favoritesDatabaseManager.close();

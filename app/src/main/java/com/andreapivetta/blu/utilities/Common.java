@@ -49,31 +49,26 @@ public class Common {
     private static final String USER_AGENT =
             "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36";
 
-    public static ArrayList<Long> getFavoriters(long tweetID) {
+    public static ArrayList<Long> getFavoriters(long tweetID) throws Exception {
         return getUsers(tweetID, FAVORITERS_URL);
     }
 
-    public static ArrayList<Long> getRetweeters(long tweetID) {
+    public static ArrayList<Long> getRetweeters(long tweetID) throws Exception {
         return getUsers(tweetID, RETWEETERS_URL);
     }
 
-    private static ArrayList<Long> getUsers(long tweetID, String url) {
+    private static ArrayList<Long> getUsers(long tweetID, String url) throws Exception {
         ArrayList<Long> usersIDs = new ArrayList<>();
-        try {
-            Document doc = Jsoup.parse(getJson(tweetID, url).getString("htmlUsers"));
+        Document doc = Jsoup.parse(getJson(tweetID, url).getString("htmlUsers"));
 
-            if (doc != null) {
-                for (Element e : doc.getElementsByTag("img")) {
-                    try {
-                        usersIDs.add(Long.parseLong(e.attr("data-user-id")));
-                    } catch (Exception x) {
-                        // doesn't have it, could be an emoji or something from the looks of it.
-                    }
+        if (doc != null) {
+            for (Element e : doc.getElementsByTag("img")) {
+                try {
+                    usersIDs.add(Long.parseLong(e.attr("data-user-id")));
+                } catch (Exception x) {
+                    // doesn't have it, could be an emoji or something from the looks of it.
                 }
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return usersIDs;
     }

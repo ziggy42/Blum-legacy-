@@ -43,11 +43,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="15dp"
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/uploaded_image_contentDescriptor"
-                    android:scaleType="fitCenter"
-                    android:visibility="gone" />
+                    android:scaleType="fitCenter" />
 
             </LinearLayout>
 
