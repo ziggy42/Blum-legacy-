@@ -27,7 +27,6 @@ import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.twitter.UpdateTwitterStatus;
 import com.andreapivetta.blu.utilities.FileUtils;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;

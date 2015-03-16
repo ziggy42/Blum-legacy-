@@ -55,7 +55,7 @@ public class SettingsActivity extends ActionBarActivity {
     public static class SettingsFragment extends PreferenceFragment {
 
         private SharedPreferences mSharedPreferences;
-        private Preference logoutPreference, sharePreference, aboutPreference;
+        private Preference logoutPreference, sharePreference, aboutPreference, feedbackPreference;
         private CheckBoxPreference animationsPreference, headsUpPreference;
         private SwitchPreference streamServicePreference;
         private ListPreference frequencyListPreference;
@@ -77,6 +77,7 @@ public class SettingsActivity extends ActionBarActivity {
             frequencyListPreference = (ListPreference) findPreference("pref_key_frequencies");
             sharePreference = findPreference("pref_key_share");
             aboutPreference = findPreference("pref_key_about");
+            feedbackPreference = findPreference("pref_key_feedback");
 
             logoutPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
@@ -144,7 +145,7 @@ public class SettingsActivity extends ActionBarActivity {
             if (mSharedPreferences.getBoolean(Common.PREF_STREAM_ON, false))
                 frequencyListPreference.setEnabled(false);
 
-            switch (mSharedPreferences.getInt(Common.PREF_FREQ, 300)) {
+            switch (mSharedPreferences.getInt(Common.PREF_FREQ, 1200)) {
                 case 300:
                     frequencyListPreference.setValueIndex(0);
                     break;
@@ -253,6 +254,14 @@ public class SettingsActivity extends ActionBarActivity {
                 }
             });
 
+            feedbackPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    startActivity(new Intent(getActivity(), FeedbackActivity.class));
+                    return true;
+                }
+            });
+
             sharePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -270,7 +279,7 @@ public class SettingsActivity extends ActionBarActivity {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     Intent i = new Intent(getActivity(), UserProfileActivity.class);
-                    i.putExtra("ID", 290695594);
+                    i.putExtra("ID", 290695594L);
                     getActivity().startActivity(i);
 
                     return true;

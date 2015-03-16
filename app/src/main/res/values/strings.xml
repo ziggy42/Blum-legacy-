@@ -74,6 +74,17 @@
         you may experience a really high battery consuming. It\'s up to you. Blu will be restarted.</string>
     <string name="share_this_app">Yes, another Twitter client
         https://play.google.com/apps/testing/com.andreapivetta.blu</string>
+    <string name="subject_form_hint">Subject</string>
+    <string name="email_form_hint">Email</string>
+    <string name="content_form">Content</string>
+    <string name="send">Send</string>
+    <string name="all_fields_needed">All fields are mandatory.</string>
+    <string name="provide_valid_email">Please enter a valid email.</string>
+    <string name="message_sent">Message successfully sent!</string>
+    <string name="sending_message_error">There was some error in sending message.
+        Please try again after some time.</string>
+    <string name="title_activity_feedback">Send Feedback</string>
+
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>
@@ -97,6 +108,7 @@
         <item>20 minutes</item>
         <item>30 minutes</item>
         <item>60 minutes</item>
+        <item>120 minutes</item>
     </string-array>
 
     <string-array name="frequencies_values">
@@ -106,6 +118,7 @@
         <item>1200</item>
         <item>1800</item>
         <item>3600</item>
+        <item>7200</item>
     </string-array>
 
     <!-- Preferences -->
@@ -126,6 +139,8 @@
     <string name="share_pref_summary">Suggest it to your friends!</string>
     <string name="about_pref_summary">About the authors</string>
     <string name="about_pref_title">About</string>
+    <string name="feedback_pref_summary">Let us know what do you think</string>
+    <string name="feedback_pref_title">Send Feedback</string>
 
     <!-- Content Descriptors -->
     <string name="profile_background_contentDescriptor">User Background Image View</string>

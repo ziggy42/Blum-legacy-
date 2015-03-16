@@ -46,7 +46,7 @@ public class Common {
     public final static String NEW_NOTIFICATION_INTENT = "com.andreapivetta.blu.NEW_NOTIFICATION_INTENT";
     private static final String FAVORITERS_URL = "https://twitter.com/i/activity/favorited_popup?id=";
     private static final String RETWEETERS_URL = "https://twitter.com/i/activity/retweeted_popup?id=";
-    private static final String USER_AGENT =
+    public static final String USER_AGENT =
             "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36";
 
     public static ArrayList<Long> getFavoriters(long tweetID) throws Exception {

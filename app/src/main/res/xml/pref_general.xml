@@ -47,6 +47,11 @@
         android:title="@string/prefcat_others_title">
 
         <Preference
+            android:key="pref_key_feedback"
+            android:summary="@string/feedback_pref_summary"
+            android:title="@string/feedback_pref_title" />
+
+        <Preference
             android:key="pref_key_share"
             android:summary="@string/share_pref_summary"
             android:title="@string/share_pref_title" />

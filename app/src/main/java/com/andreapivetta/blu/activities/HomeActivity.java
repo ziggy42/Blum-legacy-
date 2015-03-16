@@ -151,7 +151,7 @@ public class HomeActivity extends TimeLineActivity {
             } else {
                 startService(new Intent(HomeActivity.this, PopulateDatabasesService.class));
 
-                int frequency = mSharedPreferences.getInt(Common.PREF_FREQ, 300);
+                int frequency = mSharedPreferences.getInt(Common.PREF_FREQ, 1200);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0,
                         new Intent(HomeActivity.this, AlarmReceiver.class), 0);
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);

@@ -1,0 +1,70 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    tools:context="com.andreapivetta.blu.activities.FeedbackActivity">
+
+    <include layout="@layout/toolbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/emailEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@null"
+            android:hint="@string/email_form_hint"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/grey"
+            android:textColorHint="@color/lightGrey" />
+
+        <View
+            android:id="@+id/firstDivider"
+            android:layout_width="match_parent"
+            android:layout_height="0.2dp"
+            android:layout_below="@id/emailEditText"
+            android:background="@color/grey" />
+
+        <EditText
+            android:id="@+id/subjectEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/emailEditText"
+            android:layout_margin="10dp"
+            android:background="@null"
+            android:hint="@string/subject_form_hint"
+            android:textColor="@color/grey"
+            android:textColorHint="@color/lightGrey" />
+
+        <View
+            android:id="@+id/secondDivider"
+            android:layout_width="match_parent"
+            android:layout_height="0.2dp"
+            android:layout_below="@id/subjectEditText"
+            android:background="@color/grey" />
+
+        <EditText
+            android:id="@+id/contentEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/secondDivider"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@null"
+            android:gravity="top"
+            android:hint="@string/content_form"
+            android:inputType="textMultiLine"
+            android:textColor="@color/grey"
+            android:textColorHint="@color/lightGrey"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>
