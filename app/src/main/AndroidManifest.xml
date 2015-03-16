@@ -60,7 +60,7 @@
             android:label="@string/notifications" />
         <activity
             android:name=".activities.SearchActivity"
-            android:label="@string/title_activity_search" >
+            android:label="@string/title_empty" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -97,7 +97,7 @@
         </activity>
         <activity
             android:name=".activities.HashtagActivity"
-            android:label="@string/title_activity_hashtag" >
+            android:label="@string/title_empty" >
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
 
@@ -108,10 +108,10 @@
         </activity>
         <activity
             android:name=".activities.ImageActivity"
-            android:label="@string/title_activity_image" />
+            android:label="@string/title_empty" />
         <activity
             android:name=".activities.UserProfileActivity"
-            android:label="@string/title_activity_user_profile" >
+            android:label="@string/title_empty" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.HomeActivity" />
@@ -123,6 +123,14 @@
 
                 <data android:scheme="com.andreapivetta.blu.user" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.FeedbackActivity"
+            android:label="@string/title_activity_feedback"
+            android:parentActivityName=".activities.SettingsActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.andreapivetta.blu.activities.SettingsActivity" />
         </activity>
 
         <service
@@ -160,14 +168,6 @@
             android:name=".services.PopulateDatabasesService"
             android:exported="false" />
 
-        <activity
-            android:name=".activities.FeedbackActivity"
-            android:label="@string/title_activity_feedback"
-            android:parentActivityName=".activities.SettingsActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.andreapivetta.blu.activities.SettingsActivity" />
-        </activity>
     </application>
 
 </manifest>
