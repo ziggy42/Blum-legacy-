@@ -163,6 +163,9 @@ public class SettingsActivity extends ActionBarActivity {
                 case 3600:
                     frequencyListPreference.setValueIndex(5);
                     break;
+                case 7200:
+                    frequencyListPreference.setValueIndex(6);
+                    break;
                 default:
                     frequencyListPreference.setValueIndex(0);
                     break;

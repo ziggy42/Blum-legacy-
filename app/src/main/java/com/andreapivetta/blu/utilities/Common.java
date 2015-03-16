@@ -216,7 +216,8 @@ public class Common {
         Twitter twitter = TwitterUtils.getTwitter(context);
         User currentUser = twitter.showUser(userID);
 
-        pushNotification(tweetID, currentUser.getName(), type, twitter.showStatus(tweetID).getText(),
-                currentUser.getProfileImageURL(), currentUser.getId(), context);
+        pushNotification(tweetID, currentUser.getName(), type,
+                (tweetID > 0) ? twitter.showStatus(tweetID).getText() : "", currentUser.getProfileImageURL(),
+                currentUser.getId(), context);
     }
 }
