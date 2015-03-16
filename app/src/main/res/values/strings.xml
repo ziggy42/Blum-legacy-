@@ -76,6 +76,8 @@
     <string name="message_sent">Message successfully sent!</string>
     <string name="sending_message_error">There was some error in sending message.
         Please try again after some time.</string>
+    <string name="authorized_by">Authorized by %1$s</string>
+    <string name="failed_due">Failed due to %1$s</string>
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>

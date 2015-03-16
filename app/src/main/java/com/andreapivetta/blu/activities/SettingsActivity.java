@@ -106,7 +106,6 @@ public class SettingsActivity extends ActionBarActivity {
                                             mSharedPreferences.edit().remove(TwitterUtils.PREF_KEY_OAUTH_TOKEN)
                                                     .remove(TwitterUtils.PREF_KEY_OAUTH_SECRET)
                                                     .remove(TwitterUtils.PREF_KEY_TWITTER_LOGIN)
-                                                    .remove(TwitterUtils.PREF_KEY_PICTURE_URL)
                                                     .remove(Common.PREF_STREAM_ON)
                                                     .apply();
 
