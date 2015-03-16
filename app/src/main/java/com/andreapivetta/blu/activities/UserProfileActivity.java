@@ -64,14 +64,13 @@ import twitter4j.User;
 
 public class UserProfileActivity extends ActionBarActivity {
 
-    private final static String FOLLOWERS = "NJFHWI";
-    private final static String FOLLOWING = "HIJHOJOJO";
-    private final static int I_FOLLOW_HIM = 0;
-    private final static int HE_FOLLOWS_ME = 1;
-    private final static int WE_FOLLOW_EACH_OTHER = 2;
-    private final static int I_DONT_KNOW_WHO_YOU_ARE = -1;
-    private final static int THIS_IS_ME = 42;
-    private int STATUS;
+    private final static String FOLLOWERS = "followers";
+    private final static String FOLLOWING = "following";
+
+    private enum TYPE {
+        I_FOLLOW_HIM, HE_FOLLOWS_ME, WE_FOLLOW_EACH_OTHER, I_DONT_KNOW_WHO_YOU_ARE, THIS_IS_ME
+    }
+    private TYPE type;
 
     private Twitter twitter;
     private User user;
@@ -267,7 +266,7 @@ public class UserProfileActivity extends ActionBarActivity {
             }
         });
 
-        switch (STATUS) {
+        switch (type) {
             case I_FOLLOW_HIM:
                 followButton.setText(getString(R.string.unfollow));
                 isHeFollowingTextView.setText(getString(R.string.you_are_following, user.getName()));
@@ -494,7 +493,7 @@ public class UserProfileActivity extends ActionBarActivity {
     void displayFollowDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(UserProfileActivity.this);
 
-        switch (STATUS) {
+        switch (type) {
             case I_FOLLOW_HIM:
                 builder.setTitle(getString(R.string.you_are_following, user.getName()))
                         .setMessage(getString(R.string.stop_following, user.getName()))
@@ -506,7 +505,7 @@ public class UserProfileActivity extends ActionBarActivity {
                                 followButton.setText(getString(R.string.follow, user.getScreenName()));
                                 isHeFollowingTextView.setText(
                                         getString(R.string.you_are_not_following, user.getName()));
-                                STATUS = I_DONT_KNOW_WHO_YOU_ARE;
+                                type = TYPE.I_DONT_KNOW_WHO_YOU_ARE;
                             }
                         });
                 break;
@@ -521,7 +520,7 @@ public class UserProfileActivity extends ActionBarActivity {
                                 followButton.setText(getString(R.string.follow, user.getScreenName()));
                                 isHeFollowingTextView.setText(
                                         getString(R.string.you_are_followed, user.getName()));
-                                STATUS = HE_FOLLOWS_ME;
+                                type = TYPE.HE_FOLLOWS_ME;
                             }
                         });
                 break;
@@ -535,10 +534,10 @@ public class UserProfileActivity extends ActionBarActivity {
                                 followButton.setText(getString(R.string.unfollow));
                                 isHeFollowingTextView.setText(
                                         getString(R.string.you_are_following, user.getName()));
-                                if (STATUS == HE_FOLLOWS_ME)
-                                    STATUS = WE_FOLLOW_EACH_OTHER;
+                                if (type.equals(TYPE.HE_FOLLOWS_ME))
+                                    type = TYPE.WE_FOLLOW_EACH_OTHER;
                                 else
-                                    STATUS = I_FOLLOW_HIM;
+                                    type = TYPE.I_FOLLOW_HIM;
                             }
                         });
                 break;
@@ -608,7 +607,7 @@ public class UserProfileActivity extends ActionBarActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putSerializable("USER", user);
-        outState.putInt("STATUS", STATUS);
+        outState.putSerializable("STATUS", type);
         outState.putSerializable("ARRAY", statuses);
         super.onSaveInstanceState(outState);
     }
@@ -623,17 +622,17 @@ public class UserProfileActivity extends ActionBarActivity {
 
                     Relationship rel = twitter.showFriendship(twitter.getId(), user.getId());
                     if (rel.isSourceFollowingTarget() && rel.isTargetFollowingSource()) {
-                        STATUS = WE_FOLLOW_EACH_OTHER;
+                        type = TYPE.WE_FOLLOW_EACH_OTHER;
                     } else if (rel.isTargetFollowingSource()) {
-                        STATUS = HE_FOLLOWS_ME;
+                        type = TYPE.HE_FOLLOWS_ME;
                     } else if (rel.isSourceFollowingTarget()) {
-                        STATUS = I_FOLLOW_HIM;
+                        type = TYPE.I_FOLLOW_HIM;
                     } else {
-                        STATUS = I_DONT_KNOW_WHO_YOU_ARE;
+                        type = TYPE.I_DONT_KNOW_WHO_YOU_ARE;
                     }
                 } else {
                     user = twitter.showUser(twitter.getId());
-                    STATUS = THIS_IS_ME;
+                    type = TYPE.THIS_IS_ME;
                 }
 
             } catch (TwitterException e) {
@@ -671,15 +670,15 @@ public class UserProfileActivity extends ActionBarActivity {
 
                     Relationship rel = twitter.showFriendship(twitter.getId(), user.getId());
                     if (rel.isSourceFollowingTarget() && rel.isTargetFollowingSource()) {
-                        STATUS = WE_FOLLOW_EACH_OTHER;
+                        type = TYPE.WE_FOLLOW_EACH_OTHER;
                     } else if (rel.isSourceFollowingTarget()) {
-                        STATUS = I_FOLLOW_HIM;
+                        type = TYPE.I_FOLLOW_HIM;
                     } else {
-                        STATUS = I_DONT_KNOW_WHO_YOU_ARE;
+                        type = TYPE.I_DONT_KNOW_WHO_YOU_ARE;
                     }
                 } else {
                     user = twitter.showUser(twitter.getId());
-                    STATUS = THIS_IS_ME;
+                    type = TYPE.THIS_IS_ME;
                 }
 
             } catch (TwitterException e) {

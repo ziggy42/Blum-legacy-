@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Blu</string>
+    <string name="app_name" translatable="false">Blu</string>
+    <string name="retweet_title" translatable="false">Retweet?</string>
+    <string name="retweet" translatable="false">Retweet</string>
+    <string name="ok" translatable="false">OK</string>
+    <string name="tweet" translatable="false">TWEET</string>
+    <string name="follow_user" translatable="false">FOLLOW</string>
+    <string name="unfollow" translatable="false">UNFOLLOW</string>
+    <string name="email_form_hint" translatable="false">Email</string>
+    <string name="mini_seconds" translatable="false">%1$ds</string>
+    <string name="mini_minutes" translatable="false">%1$dm</string>
+    <string name="mini_hours" translatable="false">%1$dh</string>
     <string name="action_settings">Settings</string>
     <string name="login_button_text">Log in with Twitter</string>
     <string name="welcome">Welcome</string>
@@ -11,10 +21,7 @@
     <string name="sending_tweet_title">Sending Tweet</string>
     <string name="sending_tweet_content">Sending in Progress</string>
     <string name="share_tweet">Share this Tweet!</string>
-    <string name="retweet_title">Retweet?</string>
-    <string name="retweet">Retweet</string>
     <string name="stop_following">Stop following %1$s?</string>
-    <string name="ok">OK</string>
     <string name="are_following_ea">You and %1$s are following each other</string>
     <string name="follow">Follow %1$s?</string>
     <string name="check_out">Check out %1$s on Twitter http://twitter.com/%2$s</string>
@@ -22,7 +29,6 @@
     <string name="logout_title_dialog">Logout?</string>
     <string name="yes">Yes</string>
     <string name="internet_connection_required">This operation requires an internet connection</string>
-    <string name="openTweet_imageButton_contentDescriptor">Open Tweet Image Button</string>
     <string name="favourites">%1$s FAVOURITES</string>
     <string name="retweets">%1$s RETWEETS</string>
     <string name="notifications">Notifications</string>
@@ -48,15 +54,9 @@
     <string name="send_tweet">Send Tweet</string>
     <string name="too_many_characters">Too many characters</string>
     <string name="chars_left">Chars Left</string>
-    <string name="tweet">TWEET</string>
-    <string name="follow_user">FOLLOW</string>
     <string name="you_are_followed">%1$s follows you</string>
     <string name="you_are_not_following">You aren\'t following %1$s</string>
     <string name="you_are_following">You\'re following %1$s</string>
-    <string name="unfollow">UNFOLLOW</string>
-    <string name="mini_seconds">%1$ds</string>
-    <string name="mini_minutes">%1$dm</string>
-    <string name="mini_hours">%1$dh</string>
     <string name="you_are_awesome">You are awesome</string>
     <string name="reached_twitter_user_limit">Reached Twitter limit, please try again in a few minutes</string>
     <string name="streamDialogTitle">Use Stream Notification Service</string>
@@ -66,9 +66,8 @@
         Unfortunately, if you follow a huge number of people and if your network isn\'t that great,
         you may experience a really high battery consuming. It\'s up to you. Blu will be restarted.</string>
     <string name="share_this_app">Yes, another Twitter client
-        https://play.google.com/apps/testing/com.andreapivetta.blu</string>
+        https://play.google.com/store/apps/details?id=com.andreapivetta.blu</string>
     <string name="subject_form_hint">Subject</string>
-    <string name="email_form_hint">Email</string>
     <string name="content_form">Content</string>
     <string name="send">Send</string>
     <string name="all_fields_needed">All fields are mandatory.</string>
@@ -104,7 +103,7 @@
         <item>120 minutes</item>
     </string-array>
 
-    <string-array name="frequencies_values">
+    <string-array name="frequencies_values" translatable="false">
         <item>300</item>
         <item>600</item>
         <item>900</item>
@@ -115,15 +114,16 @@
     </string-array>
 
     <!-- Activities titles -->
+    <string name="title_empty" translatable="false"/>
+    <string name="title_activity_tweet" translatable="false">Tweet</string>
     <string name="title_activity_feedback">Send Feedback</string>
     <string name="title_activity_new_tweet">New Tweet</string>
-    <string name="title_activity_tweet">Tweet</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="title_empty" />
 
     <!-- Preferences -->
-    <string name="prefcat_account_title">Account</string>
-    <string name="logout_pref_title">Logout</string>
+    <string name="prefcat_account_title" translatable="false">Account</string>
+    <string name="logout_pref_title" translatable="false">Logout</string>
+    <string name="about_pref_title" translatable="false">About</string>
     <string name="logout_pref_summary">Logout and Exit</string>
     <string name="prefcat_behavior_title">Behavior</string>
     <string name="animations_pref_title">Animations</string>
@@ -138,22 +138,22 @@
     <string name="share_pref_title">Share this App</string>
     <string name="share_pref_summary">Suggest it to your friends!</string>
     <string name="about_pref_summary">About the authors</string>
-    <string name="about_pref_title">About</string>
     <string name="feedback_pref_summary">Let us know what do you think</string>
     <string name="feedback_pref_title">Send Feedback</string>
 
     <!-- Content Descriptors -->
-    <string name="profile_background_contentDescriptor">User Background Image View</string>
-    <string name="retweet_imageButton_contentDescriptor">Retweet Image Button</string>
-    <string name="favourite_imageButton_contentDescriptor">Favourite Image Button</string>
-    <string name="respond_imageButton_contentDescriptor">Respond Image Button</string>
-    <string name="share_imageButton_contentDescriptor">Share Image Button</string>
-    <string name="profile_pic_contentDescriptor">User Profile Picture</string>
-    <string name="tweet_photo_contentDescriptor">Tweet Photo</string>
-    <string name="grab_image_contentDescriptor">Upload a Picture Image Button</string>
-    <string name="take_photo_contentDescriptor">Take and Add a Photo Image Button</string>
-    <string name="uploaded_image_contentDescriptor">Uploaded ImageView</string>
-    <string name="send_tweet_button_contentDescriptor">Send Tweet image Button</string>
-    <string name="notifications_contentDescription">Notifications</string>
+    <string name="profile_background_contentDescriptor" translatable="false">User Background Image View</string>
+    <string name="retweet_imageButton_contentDescriptor" translatable="false">Retweet Image Button</string>
+    <string name="favourite_imageButton_contentDescriptor" translatable="false">Favourite Image Button</string>
+    <string name="respond_imageButton_contentDescriptor" translatable="false">Respond Image Button</string>
+    <string name="share_imageButton_contentDescriptor" translatable="false">Share Image Button</string>
+    <string name="profile_pic_contentDescriptor" translatable="false">User Profile Picture</string>
+    <string name="tweet_photo_contentDescriptor" translatable="false">Tweet Photo</string>
+    <string name="grab_image_contentDescriptor" translatable="false">Upload a Picture Image Button</string>
+    <string name="take_photo_contentDescriptor" translatable="false">Take and Add a Photo Image Button</string>
+    <string name="uploaded_image_contentDescriptor" translatable="false">Uploaded ImageView</string>
+    <string name="send_tweet_button_contentDescriptor" translatable="false">Send Tweet image Button</string>
+    <string name="notifications_contentDescription" translatable="false">Notifications</string>
+    <string name="openTweet_imageButton_contentDescriptor" translatable="false">Open Tweet Image Button</string>
 
 </resources>
