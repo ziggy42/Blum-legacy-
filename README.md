@@ -1,8 +1,4 @@
-Blu
+Blum
 ===
-Blu wants to be a simple Android Twitter Client, with a clean UI and without thousands of unnecessary options.
-
-Alpha Program
----
-This app is published as alpha on Google Play so, if you want to become an alpha tester, contact me.
-Please note that Blu is not a complete replacement for the official Twitter application (or for another client).
+Blum wants to be a simple Android Twitter Client, with a clean UI and without thousands of unnecessary options.
+Available on [Google Play](https://play.google.com/store/apps/details?id=com.andreapivetta.blu) 
