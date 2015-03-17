@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name" translatable="false">Blu</string>
+    <string name="app_name" translatable="false">Blum</string>
     <string name="retweet_title" translatable="false">Retweet?</string>
     <string name="retweet" translatable="false">Retweet</string>
     <string name="ok" translatable="false">OK</string>

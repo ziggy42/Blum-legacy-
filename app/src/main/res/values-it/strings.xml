@@ -79,4 +79,30 @@
     <string name="sending_message_error">C\'è stato qualche problema a mandare il messaggio. Riprova tra qualche minuto.</string>
     <string name="share_this_app">Si, un altro Twitter client https://play.google.com/store/apps/details?id=com.andreapivetta.blu</string>
     <string name="streamDialogMessage">Usando lo Stream Notification Service, avrai notifiche real-time e non dovrai mai aggiornare per ricevere i nuovi tweet. Sfortunatamente, se segui un grande numero di utenti e la tua connessione non è tra le migliori, usare questa opzione può intaccare sensibilmente la durata della batteria del tuo device.</string>
+
+    <plurals name="new_tweets">
+        <item quantity="one">%1$d nuovo Tweet</item>
+        <item quantity="other">%1$d nuovi Tweet</item>
+    </plurals>
+
+    <array name="notifications_tabs_names">
+        <item>Nuove</item>
+        <item>Già Lette</item>
+    </array>
+
+    <array name="search_tabs_names">
+        <item>Tweet</item>
+        <item>Utenti</item>
+    </array>
+
+    <string-array name="frequencies">
+        <item>5 minuti</item>
+        <item>10 minuti</item>
+        <item>15 minuti</item>
+        <item>20 minuti</item>
+        <item>30 minuti</item>
+        <item>60 minuti</item>
+        <item>120 minuti</item>
+    </string-array>
+
 </resources>

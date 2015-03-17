@@ -43,6 +43,7 @@ public class Common {
     public static final String PREF_HEADS_UP_NOTIFICATIONS = "headsup";
     public static final String PREF_STREAM_ON = "twitterstream";
     public static final String PREF_FREQ = "freq";
+    public static final String PREF_DATABASE_POPULATED = "populated";
     public final static String NEW_NOTIFICATION_INTENT = "com.andreapivetta.blu.NEW_NOTIFICATION_INTENT";
     private static final String FAVORITERS_URL = "https://twitter.com/i/activity/favorited_popup?id=";
     private static final String RETWEETERS_URL = "https://twitter.com/i/activity/retweeted_popup?id=";

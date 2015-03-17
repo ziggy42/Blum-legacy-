@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.andreapivetta.blu.internet.ConnectionDetector;
+import com.andreapivetta.blu.utilities.Common;
 
 public class BasicNotificationService extends IntentService {
 
@@ -17,12 +18,18 @@ public class BasicNotificationService extends IntentService {
 
         Log.i("NotificationService", "Checking...");
         if (new ConnectionDetector(getApplicationContext()).isConnectingToInternet()) {
-            getApplicationContext()
-                    .startService(new Intent(getApplicationContext(), CheckInteractionsService.class));
-            getApplicationContext()
-                    .startService(new Intent(getApplicationContext(), CheckFollowersService.class));
-            getApplicationContext()
-                    .startService(new Intent(getApplicationContext(), CheckMentionsService.class));
+            if (getApplicationContext().getSharedPreferences(Common.PREF, 0)
+                    .getBoolean(Common.PREF_DATABASE_POPULATED, false)) {
+                getApplicationContext()
+                        .startService(new Intent(getApplicationContext(), CheckInteractionsService.class));
+                getApplicationContext()
+                        .startService(new Intent(getApplicationContext(), CheckFollowersService.class));
+                getApplicationContext()
+                        .startService(new Intent(getApplicationContext(), CheckMentionsService.class));
+            } else {
+                getApplicationContext()
+                        .startActivity(new Intent(getApplicationContext(), PopulateDatabasesService.class));
+            }
         }
 
     }

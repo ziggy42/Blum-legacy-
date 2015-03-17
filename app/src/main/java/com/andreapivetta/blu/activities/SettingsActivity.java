@@ -103,10 +103,14 @@ public class SettingsActivity extends ActionBarActivity {
                                                         .cancel(pendingIntent);
                                             }
 
-                                            mSharedPreferences.edit().remove(TwitterUtils.PREF_KEY_OAUTH_TOKEN)
+                                            mSharedPreferences.edit()
+                                                    .remove(TwitterUtils.PREF_KEY_OAUTH_TOKEN)
                                                     .remove(TwitterUtils.PREF_KEY_OAUTH_SECRET)
                                                     .remove(TwitterUtils.PREF_KEY_TWITTER_LOGIN)
                                                     .remove(Common.PREF_STREAM_ON)
+                                                    .remove(Common.PREF_FREQ)
+                                                    .remove(Common.PREF_HEADS_UP_NOTIFICATIONS)
+                                                    .remove(Common.PREF_DATABASE_POPULATED)
                                                     .apply();
 
                                             Intent i = new Intent(getActivity(), HomeActivity.class);

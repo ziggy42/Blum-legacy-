@@ -27,6 +27,12 @@ public class RetweetsDatabaseManager extends InteractionsDatabaseManager {
     }
 
     @Override
+    public void clearDatabase() {
+        myDB.execSQL("DROP TABLE IF EXISTS " + SetsMetaData.TABLE_NAME);
+        myDB.execSQL(TABLE_CREATE);
+    }
+
+    @Override
     public void insertCouple(long userID, long tweetID) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(SetsMetaData.TWEET_ID, tweetID);

@@ -32,6 +32,11 @@ public class MentionsDatabaseManager {
         this.myDB.close();
     }
 
+    public void clearDatabase() {
+        myDB.execSQL("DROP TABLE IF EXISTS " + SetsMetaData.TABLE_NAME);
+        myDB.execSQL(TABLE_CREATE);
+    }
+
     public void insertTriple(long tweetID, long userID, long timestamp) {
         ContentValues cv = new ContentValues();
         cv.put(SetsMetaData.USER_ID, userID);

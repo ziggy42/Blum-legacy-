@@ -30,6 +30,11 @@ public class FollowersDatabaseManager {
         this.myDB.close();
     }
 
+    public void clearDatabase() {
+        myDB.execSQL("DROP TABLE IF EXISTS " + SetsMetaData.TABLE_NAME);
+        myDB.execSQL(TABLE_CREATE);
+    }
+
     public void insertFollower(long followerID) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(SetsMetaData.FOLLOWER_ID, followerID);
