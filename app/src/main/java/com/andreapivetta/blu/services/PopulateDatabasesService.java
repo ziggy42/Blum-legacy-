@@ -70,6 +70,8 @@ public class PopulateDatabasesService extends IntentService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        Log.i("PopulateService", "FINISH");
     }
 
 }

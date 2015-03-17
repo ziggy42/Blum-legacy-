@@ -2,6 +2,7 @@ package com.andreapivetta.blu.services;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
 
 import com.andreapivetta.blu.data.MentionsDatabaseManager;
 import com.andreapivetta.blu.data.Notification;
@@ -22,6 +23,7 @@ public class CheckMentionsService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        Log.i("CheckMentions", "STARTED");
         Twitter twitter = TwitterUtils.getTwitter(getApplicationContext());
         MentionsDatabaseManager dbm = new MentionsDatabaseManager(getApplicationContext());
         dbm.open();
@@ -44,6 +46,7 @@ public class CheckMentionsService extends IntentService {
             e.printStackTrace();
         }
         dbm.close();
+        Log.i("CheckMentions", "FINISHED");
     }
 
 }

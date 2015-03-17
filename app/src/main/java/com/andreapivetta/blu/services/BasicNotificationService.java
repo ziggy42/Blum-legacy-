@@ -16,10 +16,10 @@ public class BasicNotificationService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        Log.i("NotificationService", "Checking...");
         if (new ConnectionDetector(getApplicationContext()).isConnectingToInternet()) {
             if (getApplicationContext().getSharedPreferences(Common.PREF, 0)
                     .getBoolean(Common.PREF_DATABASE_POPULATED, false)) {
+                Log.i("NotificationService", "Checking...");
                 getApplicationContext()
                         .startService(new Intent(getApplicationContext(), CheckInteractionsService.class));
                 getApplicationContext()
@@ -27,8 +27,9 @@ public class BasicNotificationService extends IntentService {
                 getApplicationContext()
                         .startService(new Intent(getApplicationContext(), CheckMentionsService.class));
             } else {
+                Log.i("NotificationService", "Populating...");
                 getApplicationContext()
-                        .startActivity(new Intent(getApplicationContext(), PopulateDatabasesService.class));
+                        .startService(new Intent(getApplicationContext(), PopulateDatabasesService.class));
             }
         }
 

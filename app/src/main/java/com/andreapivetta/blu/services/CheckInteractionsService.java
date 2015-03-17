@@ -2,6 +2,7 @@ package com.andreapivetta.blu.services;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
 
 import com.andreapivetta.blu.data.FavoritesDatabaseManager;
 import com.andreapivetta.blu.data.Notification;
@@ -24,6 +25,7 @@ public class CheckInteractionsService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        Log.i("CheckInteractions", "STARTED");
         Twitter twitter = TwitterUtils.getTwitter(getApplicationContext());
         FavoritesDatabaseManager fdbm = new FavoritesDatabaseManager(getApplicationContext());
         RetweetsDatabaseManager rdbm = new RetweetsDatabaseManager(getApplicationContext());
@@ -45,6 +47,7 @@ public class CheckInteractionsService extends IntentService {
         }
         rdbm.close();
         fdbm.close();
+        Log.i("CheckInteractions", "FINISH");
     }
 
 }
