@@ -15,6 +15,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +39,8 @@ import twitter4j.Twitter;
 
 public class NewTweetActivity extends ActionBarActivity {
 
+    private static final int MAX_URL_SHORTERED_LENGTH = 23; // it will change
+
     private static final int REQUEST_GRAB_IMAGE = 3;
     private static final int REQUEST_TAKE_PHOTO = 1;
     private static final String FILE = "file";
@@ -51,6 +54,7 @@ public class NewTweetActivity extends ActionBarActivity {
     private Intent intent;
 
     private int charsLeft;
+    private boolean hasImage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,12 +92,8 @@ public class NewTweetActivity extends ActionBarActivity {
                     public boolean onPreDraw() {
                         Uri selectedImageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
                         imageFile = new File(FileUtils.getPath(NewTweetActivity.this, selectedImageUri));
+                        setImage();
 
-                        Bitmap thumbImage = ThumbnailUtils.extractThumbnail(
-                                BitmapFactory.decodeFile(imageFile.getAbsolutePath()),
-                                uploadedImageView.getMeasuredWidth(),
-                                uploadedImageView.getMeasuredWidth());
-                        uploadedImageView.setImageBitmap(thumbImage);
                         return true;
                     }
                 });
@@ -117,19 +117,17 @@ public class NewTweetActivity extends ActionBarActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                charsLeft = (140 - s.length());
-                invalidateOptionsMenu();
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                checkLength(s.toString());
             }
         });
-        newTweetEditText.setSelection(newTweetEditText.getText().length());
 
-        charsLeft = 140 - newTweetEditText.getText().length();
-        invalidateOptionsMenu();
+        newTweetEditText.setSelection(newTweetEditText.getText().length());
+        checkLength(newTweetEditText.getText().toString());
 
         takePhotoImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,6 +173,22 @@ public class NewTweetActivity extends ActionBarActivity {
         }
     }
 
+    void checkLength(String text) {
+        int wordsLength = 0;
+        int urls = (hasImage) ? 1 : 0;
+
+        for (String entry : text.split(" ")) {
+            if (Patterns.WEB_URL.matcher(entry).matches() && entry.length() > MAX_URL_SHORTERED_LENGTH)
+                urls++;
+            else
+                wordsLength += entry.length();
+        }
+
+        int spaces = text.length() - text.replace(" ", "").length();
+        charsLeft = (140 - urls * MAX_URL_SHORTERED_LENGTH) - spaces - wordsLength;
+        invalidateOptionsMenu();
+    }
+
     File createImageFile() throws IOException {
         @SuppressLint("SimpleDateFormat") String imageFileName =
                 "JPEG_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_";
@@ -191,28 +205,25 @@ public class NewTweetActivity extends ActionBarActivity {
         switch (requestCode) {
             case REQUEST_GRAB_IMAGE:
                 if (resultCode == RESULT_OK) {
-
-                    uploadedImageView.setVisibility(View.VISIBLE);
                     imageFile = new File(FileUtils.getPath(NewTweetActivity.this, imageReturnedIntent.getData()));
-
-                    Bitmap thumbImage = ThumbnailUtils.extractThumbnail(
-                            BitmapFactory.decodeFile(imageFile.getAbsolutePath()),
-                            uploadedImageView.getWidth(), uploadedImageView.getWidth());
-                    uploadedImageView.setImageBitmap(thumbImage);
-
+                    setImage();
                 }
                 break;
             case REQUEST_TAKE_PHOTO:
-                if (resultCode == RESULT_OK) {
-                    uploadedImageView.setVisibility(View.VISIBLE);
-
-                    Bitmap thumbImage = ThumbnailUtils.extractThumbnail(
-                            BitmapFactory.decodeFile(imageFile.getAbsolutePath()),
-                            uploadedImageView.getWidth(), uploadedImageView.getWidth());
-                    uploadedImageView.setImageBitmap(thumbImage);
-                }
+                if (resultCode == RESULT_OK)
+                    setImage();
                 break;
         }
+    }
+
+    void setImage() {
+        Bitmap thumbImage = ThumbnailUtils.extractThumbnail(
+                BitmapFactory.decodeFile(imageFile.getAbsolutePath()),
+                uploadedImageView.getWidth(), uploadedImageView.getWidth());
+        uploadedImageView.setImageBitmap(thumbImage);
+
+        hasImage = true;
+        checkLength(newTweetEditText.getText().toString());
     }
 
     @Override
