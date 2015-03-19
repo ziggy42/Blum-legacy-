@@ -116,11 +116,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 }
             });
         } else if (notification.type.equals(Notification.TYPE_FOLLOW)) {
-            SpannableStringBuilder sb = new SpannableStringBuilder(screenName + " " +
-                    context.getString(R.string.is_following_not));
+            SpannableStringBuilder sb = new SpannableStringBuilder(screenName);
             sb.setSpan(b, 0, screenName.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             holder.notificationExplainedTextView.setText(sb);
-            holder.statusTextView.setVisibility(View.GONE);
+            holder.statusTextView.setText(screenName + " " +
+                    context.getString(R.string.is_following_not));
 
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override

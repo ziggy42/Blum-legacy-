@@ -10,7 +10,6 @@ import com.andreapivetta.blu.data.MentionsDatabaseManager;
 import com.andreapivetta.blu.data.Notification;
 import com.andreapivetta.blu.data.RetweetsDatabaseManager;
 import com.andreapivetta.blu.twitter.TwitterUtils;
-import com.andreapivetta.blu.utilities.Common;
 
 import java.util.ArrayList;
 
@@ -45,7 +44,7 @@ public class StreamNotificationService extends Service {
         public void onFavorite(User user, User user2, Status status) {
             try {
                 if (user2.getScreenName().equals(twitter.getScreenName())) {
-                    Common.pushNotification(status.getId(), user.getName(), Notification.TYPE_FAVOURITE,
+                    Notification.pushNotification(status.getId(), user.getName(), Notification.TYPE_FAVOURITE,
                             status.getText(), user.getBiggerProfileImageURL(), user.getId(), getApplicationContext());
 
                     FavoritesDatabaseManager databaseManager = new FavoritesDatabaseManager(getApplicationContext());
@@ -68,7 +67,7 @@ public class StreamNotificationService extends Service {
 
             try {
                 if (user2.getScreenName().equals(twitter.getScreenName())) {
-                    Common.pushNotification((long) -1, user.getName(), Notification.TYPE_FOLLOW,
+                    Notification.pushNotification((long) -1, user.getName(), Notification.TYPE_FOLLOW,
                             "", user.getBiggerProfileImageURL(), user.getId(), getApplicationContext());
 
                     FollowersDatabaseManager databaseManager = new FollowersDatabaseManager(getApplicationContext());
@@ -152,7 +151,7 @@ public class StreamNotificationService extends Service {
                 if (names.contains(twitter.getScreenName())) {
                     if (status.isRetweet()) {
                         if (status.getRetweetedStatus().getUser().getScreenName().equals(twitter.getScreenName())) {
-                            Common.pushNotification(status.getId(), status.getUser().getName(), Notification.TYPE_RETWEET,
+                            Notification.pushNotification(status.getId(), status.getUser().getName(), Notification.TYPE_RETWEET,
                                     status.getRetweetedStatus().getText(),
                                     status.getUser().getBiggerProfileImageURL(), status.getUser().getId(),
                                     getApplicationContext());
@@ -162,12 +161,12 @@ public class StreamNotificationService extends Service {
                             databaseManager.insertCouple(status.getUser().getId(), status.getId());
                             databaseManager.close();
                         } else
-                            Common.pushNotification(status.getId(), status.getUser().getName(),
+                            Notification.pushNotification(status.getId(), status.getUser().getName(),
                                     Notification.TYPE_RETWEET_MENTIONED, status.getRetweetedStatus().getText(),
                                     status.getUser().getBiggerProfileImageURL(), status.getUser().getId(),
                                     getApplicationContext());
                     } else {
-                        Common.pushNotification(status.getId(), status.getUser().getName(), Notification.TYPE_MENTION,
+                        Notification.pushNotification(status.getId(), status.getUser().getName(), Notification.TYPE_MENTION,
                                 status.getText(), status.getUser().getBiggerProfileImageURL(), status.getUser().getId(),
                                 getApplicationContext());
 

@@ -1,7 +1,5 @@
 package com.andreapivetta.blu.activities;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,14 +17,12 @@ import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.data.NotificationsDatabaseManager;
-import com.andreapivetta.blu.receivers.AlarmReceiver;
 import com.andreapivetta.blu.services.PopulateDatabasesService;
 import com.andreapivetta.blu.services.StreamNotificationService;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.utilities.Common;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import twitter4j.Paging;
@@ -88,7 +84,6 @@ public class HomeActivity extends TimeLineActivity {
         if (newTweetsCount > 0)
             getSupportActionBar().setTitle(
                     getResources().getQuantityString(R.plurals.new_tweets, newTweetsCount, newTweetsCount));
-
     }
 
     @Override
@@ -150,16 +145,7 @@ public class HomeActivity extends TimeLineActivity {
                 startService(new Intent(HomeActivity.this, StreamNotificationService.class));
             } else {
                 startService(new Intent(HomeActivity.this, PopulateDatabasesService.class));
-
-                int frequency = mSharedPreferences.getInt(Common.PREF_FREQ, 1200);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 0,
-                        new Intent(HomeActivity.this, AlarmReceiver.class), 0);
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(System.currentTimeMillis());
-                calendar.add(Calendar.SECOND, frequency);
-                alarmManager.setRepeating(
-                        AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), frequency * 1000, pendingIntent);
+                Common.startBasicNotificationService(HomeActivity.this);
             }
         }
     }

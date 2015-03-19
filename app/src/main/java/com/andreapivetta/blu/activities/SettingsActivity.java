@@ -1,9 +1,6 @@
 package com.andreapivetta.blu.activities;
 
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,12 +16,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.receivers.AlarmReceiver;
 import com.andreapivetta.blu.services.StreamNotificationService;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.utilities.Common;
-
-import java.util.Calendar;
 
 
 public class SettingsActivity extends ActionBarActivity {
@@ -96,11 +90,7 @@ public class SettingsActivity extends ActionBarActivity {
                                                 getActivity().stopService(
                                                         new Intent(getActivity(), StreamNotificationService.class));
                                             else {
-                                                PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0,
-                                                        new Intent(getActivity(), AlarmReceiver.class), 0);
-
-                                                ((AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE))
-                                                        .cancel(pendingIntent);
+                                                Common.stopBasicNotificationService(getActivity());
                                             }
 
                                             mSharedPreferences.edit()
@@ -181,20 +171,9 @@ public class SettingsActivity extends ActionBarActivity {
                     mSharedPreferences.edit()
                             .putInt(Common.PREF_FREQ, Integer.parseInt(newValue.toString())).apply();
 
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0,
-                            new Intent(getActivity(), AlarmReceiver.class), 0);
+                    Common.stopBasicNotificationService(getActivity());
+                    Common.startBasicNotificationService(getActivity());
 
-                    AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-                    alarmManager.cancel(pendingIntent);
-
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTimeInMillis(System.currentTimeMillis());
-                    calendar.add(Calendar.SECOND, Integer.parseInt(newValue.toString()));
-                    alarmManager.setRepeating(
-                            AlarmManager.RTC_WAKEUP,
-                            calendar.getTimeInMillis(),
-                            Integer.parseInt(newValue.toString()) * 1000,
-                            pendingIntent);
                     return true;
                 }
             });
@@ -214,11 +193,7 @@ public class SettingsActivity extends ActionBarActivity {
                                         getActivity().startService(
                                                 new Intent(getActivity(), StreamNotificationService.class));
 
-                                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0,
-                                                new Intent(getActivity(), AlarmReceiver.class), 0);
-
-                                        ((AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE))
-                                                .cancel(pendingIntent);
+                                        Common.stopBasicNotificationService(getActivity());
 
                                         Intent i = new Intent(getActivity(), HomeActivity.class);
                                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP)
@@ -237,18 +212,9 @@ public class SettingsActivity extends ActionBarActivity {
                                 .show();
                     else {
                         mSharedPreferences.edit().putBoolean(Common.PREF_STREAM_ON, false).apply();
+
                         getActivity().stopService(new Intent(getActivity(), StreamNotificationService.class));
-
-                        int frequency = mSharedPreferences.getInt(Common.PREF_FREQ, 300);
-                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0,
-                                new Intent(getActivity(), AlarmReceiver.class), 0);
-
-                        AlarmManager a = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTimeInMillis(System.currentTimeMillis());
-                        calendar.add(Calendar.SECOND, frequency);
-                        a.setRepeating(
-                                AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), frequency * 1000, pendingIntent);
+                        Common.startBasicNotificationService(getActivity());
 
                         Intent i = new Intent(getActivity(), HomeActivity.class);
                         i.putExtra("exit", "exit")
@@ -293,5 +259,6 @@ public class SettingsActivity extends ActionBarActivity {
             });
 
         }
+
     }
 }

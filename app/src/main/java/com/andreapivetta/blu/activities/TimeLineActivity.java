@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.TweetsListAdapter;
+import com.andreapivetta.blu.data.Notification;
 import com.andreapivetta.blu.utilities.Common;
 
 import java.util.ArrayList;
@@ -249,7 +250,6 @@ public abstract class TimeLineActivity extends ActionBarActivity {
                 e.printStackTrace();
                 return false;
             }
-
             return true;
         }
 

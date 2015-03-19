@@ -36,11 +36,11 @@ public class CheckInteractionsService extends IntentService {
             for (twitter4j.Status tmp : twitter.getUserTimeline(new Paging(1, 200))) {
                 ArrayList<Long> newUsersIDs = fdbm.check(Common.getFavoriters(tmp.getId()), tmp.getId());
                 for (long userID : newUsersIDs)
-                    Common.pushNotification(tmp.getId(), userID, Notification.TYPE_FAVOURITE, getApplicationContext());
+                    Notification.pushNotification(tmp.getId(), userID, Notification.TYPE_FAVOURITE, getApplicationContext());
 
                 newUsersIDs = rdbm.check(Common.getRetweeters(tmp.getId()), tmp.getId());
                 for (long userID : newUsersIDs)
-                    Common.pushNotification(tmp.getId(), userID, Notification.TYPE_RETWEET, getApplicationContext());
+                    Notification.pushNotification(tmp.getId(), userID, Notification.TYPE_RETWEET, getApplicationContext());
             }
         } catch (Exception e) {
             e.printStackTrace();

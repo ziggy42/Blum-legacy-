@@ -7,7 +7,6 @@ import android.util.Log;
 import com.andreapivetta.blu.data.FollowersDatabaseManager;
 import com.andreapivetta.blu.data.Notification;
 import com.andreapivetta.blu.twitter.TwitterUtils;
-import com.andreapivetta.blu.utilities.Common;
 
 import java.util.ArrayList;
 
@@ -38,7 +37,7 @@ public class CheckFollowersService extends IntentService {
 
             ArrayList<Long> newUsersIDs = dbm.check(usersIDs);
             for (long userID : newUsersIDs)
-                Common.pushNotification(-1L, userID, Notification.TYPE_FOLLOW, getApplicationContext());
+                Notification.pushNotification(-1L, userID, Notification.TYPE_FOLLOW, getApplicationContext());
         } catch (TwitterException e) {
             e.printStackTrace();
         }

@@ -18,6 +18,7 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -75,26 +76,34 @@ public class NewTweetActivity extends ActionBarActivity {
         ImageButton grabImageImageButton = (ImageButton) findViewById(R.id.grabImageImageButton);
 
         intent = getIntent();
-        String action = intent.getAction();
-        String type = intent.getType();
+        final String action = intent.getAction();
+        final String type = intent.getType();
 
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type)) {
                 newTweetEditText.setText(intent.getStringExtra(Intent.EXTRA_TEXT));
             } else if (type.startsWith("image/")) {
-                Uri selectedImageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-                imageFile = new File(FileUtils.getPath(NewTweetActivity.this, selectedImageUri));
+                ViewTreeObserver viewTree = uploadedImageView.getViewTreeObserver();
+                viewTree.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                    public boolean onPreDraw() {
+                        Uri selectedImageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+                        imageFile = new File(FileUtils.getPath(NewTweetActivity.this, selectedImageUri));
 
-                Bitmap thumbImage = ThumbnailUtils.extractThumbnail(
-                        BitmapFactory.decodeFile(imageFile.getAbsolutePath()),
-                        uploadedImageView.getWidth(), uploadedImageView.getWidth());
-                uploadedImageView.setImageBitmap(thumbImage);
+                        Bitmap thumbImage = ThumbnailUtils.extractThumbnail(
+                                BitmapFactory.decodeFile(imageFile.getAbsolutePath()),
+                                uploadedImageView.getMeasuredWidth(),
+                                uploadedImageView.getMeasuredWidth());
+                        uploadedImageView.setImageBitmap(thumbImage);
+                        return true;
+                    }
+                });
             }
         } /*else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
             if (type.startsWith("image/")) {
 
             }
         }*/
+
 
         if (intent.getStringExtra("USER_PREFIX") != null &&
                 intent.getStringExtra("USER_PREFIX").length() > 0)
