@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.services.BasicNotificationService;
 import com.andreapivetta.blu.services.StreamNotificationService;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.utilities.Common;
@@ -90,7 +91,7 @@ public class SettingsActivity extends ActionBarActivity {
                                                 getActivity().stopService(
                                                         new Intent(getActivity(), StreamNotificationService.class));
                                             else {
-                                                Common.stopBasicNotificationService(getActivity());
+                                                BasicNotificationService.stopService(getActivity());
                                             }
 
                                             mSharedPreferences.edit()
@@ -171,8 +172,8 @@ public class SettingsActivity extends ActionBarActivity {
                     mSharedPreferences.edit()
                             .putInt(Common.PREF_FREQ, Integer.parseInt(newValue.toString())).apply();
 
-                    Common.stopBasicNotificationService(getActivity());
-                    Common.startBasicNotificationService(getActivity());
+                    BasicNotificationService.stopService(getActivity());
+                    BasicNotificationService.startService(getActivity());
 
                     return true;
                 }
@@ -193,7 +194,7 @@ public class SettingsActivity extends ActionBarActivity {
                                         getActivity().startService(
                                                 new Intent(getActivity(), StreamNotificationService.class));
 
-                                        Common.stopBasicNotificationService(getActivity());
+                                        BasicNotificationService.stopService(getActivity());
 
                                         Intent i = new Intent(getActivity(), HomeActivity.class);
                                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP)
@@ -214,7 +215,7 @@ public class SettingsActivity extends ActionBarActivity {
                         mSharedPreferences.edit().putBoolean(Common.PREF_STREAM_ON, false).apply();
 
                         getActivity().stopService(new Intent(getActivity(), StreamNotificationService.class));
-                        Common.startBasicNotificationService(getActivity());
+                        BasicNotificationService.startService(getActivity());
 
                         Intent i = new Intent(getActivity(), HomeActivity.class);
                         i.putExtra("exit", "exit")

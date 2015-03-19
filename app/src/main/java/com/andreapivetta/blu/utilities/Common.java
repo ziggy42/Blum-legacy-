@@ -1,14 +1,9 @@
 package com.andreapivetta.blu.utilities;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.DisplayMetrics;
-
-import com.andreapivetta.blu.receivers.AlarmReceiver;
 
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -22,7 +17,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -106,24 +100,4 @@ public class Common {
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
-    public static void stopBasicNotificationService(Context context) {
-        ((AlarmManager) context
-                .getSystemService(Context.ALARM_SERVICE))
-                .cancel(PendingIntent.getBroadcast(context, 0,
-                        new Intent(context, AlarmReceiver.class), 0));
-    }
-
-    public static void startBasicNotificationService(Context context) {
-        int frequency = context.getSharedPreferences(PREF, 0).getInt(Common.PREF_FREQ, 300);
-        AlarmManager a = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.add(Calendar.SECOND, frequency);
-        a.setRepeating(
-                AlarmManager.RTC_WAKEUP,
-                calendar.getTimeInMillis(),
-                frequency * 1000,
-                PendingIntent.getBroadcast(
-                        context, 0, new Intent(context, AlarmReceiver.class), 0));
-    }
 }

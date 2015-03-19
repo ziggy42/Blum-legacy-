@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.data.NotificationsDatabaseManager;
+import com.andreapivetta.blu.services.BasicNotificationService;
 import com.andreapivetta.blu.services.PopulateDatabasesService;
 import com.andreapivetta.blu.services.StreamNotificationService;
 import com.andreapivetta.blu.twitter.TwitterUtils;
@@ -145,7 +146,7 @@ public class HomeActivity extends TimeLineActivity {
                 startService(new Intent(HomeActivity.this, StreamNotificationService.class));
             } else {
                 startService(new Intent(HomeActivity.this, PopulateDatabasesService.class));
-                Common.startBasicNotificationService(HomeActivity.this);
+                BasicNotificationService.startService(HomeActivity.this);
             }
         }
     }
