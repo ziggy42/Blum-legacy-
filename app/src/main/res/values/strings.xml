@@ -77,6 +77,12 @@
         Please try again after some time.</string>
     <string name="authorized_by">Authorized by %1$s</string>
     <string name="failed_due">Failed due to %1$s</string>
+    <string name="favorite_removed">Favorite removed</string>
+    <string name="favorite_added">Tweet favourited!</string>
+    <string name="following_added">You\'re now following this user</string>
+    <string name="following_removed">You\'re not following this user</string>
+    <string name="status_retweeted">Status retweeted!</string>
+    <string name="tweet_sent_message">Tweet Sent!</string>
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>

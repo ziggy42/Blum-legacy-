@@ -104,5 +104,11 @@
         <item>60 minuti</item>
         <item>120 minuti</item>
     </string-array>
+    <string name="favorite_added">Tweet Preferito!</string>
+    <string name="favorite_removed">Preferito rimosso</string>
+    <string name="status_retweeted">Tweet Retwittato!</string>
+    <string name="tweet_sent_message">Tweet Inviato!</string>
+    <string name="following_added">Ora stai seguendo questo utente</string>
+    <string name="following_removed">Non stai seguendo questo utente</string>
 
 </resources>

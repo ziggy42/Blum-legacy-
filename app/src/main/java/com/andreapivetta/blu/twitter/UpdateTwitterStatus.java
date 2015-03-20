@@ -8,6 +8,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.utilities.Common;
 
 import java.io.File;
 
@@ -31,7 +32,7 @@ public class UpdateTwitterStatus extends AsyncTask<String, String, Boolean> {
         this.twitter = twitter;
         this.context = context;
         this.inReplyTo = inReplyTo;
-        mSharedPreferences = context.getSharedPreferences("MyPref", 0);
+        mSharedPreferences = context.getSharedPreferences(Common.PREF, 0);
     }
 
     public UpdateTwitterStatus(Context context, Twitter twitter, File file, long inReplyTo) {
@@ -39,7 +40,7 @@ public class UpdateTwitterStatus extends AsyncTask<String, String, Boolean> {
         this.context = context;
         this.file = file;
         this.inReplyTo = inReplyTo;
-        mSharedPreferences = context.getSharedPreferences("MyPref", 0);
+        mSharedPreferences = context.getSharedPreferences(Common.PREF, 0);
     }
 
     protected Boolean doInBackground(String... args) {
@@ -76,7 +77,7 @@ public class UpdateTwitterStatus extends AsyncTask<String, String, Boolean> {
     protected void onPostExecute(Boolean status) {
         if (status) {
             int i = mSharedPreferences.getInt("LAST", 1);
-            mBuilder.setContentText("Tweet sent!")
+            mBuilder.setContentText(context.getString(R.string.tweet_sent_message))
                     .setProgress(0, 0, false)
                     .setSmallIcon(R.drawable.ic_stat_navigation_check);
             mNotifyManager.notify(i, mBuilder.build());

@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.graphics.Palette;
@@ -171,7 +172,7 @@ public class UserProfileActivity extends ActionBarActivity {
 
         Picasso.with(this)
                 .load(user.getProfileBannerURL())
-                .placeholder(getResources().getDrawable(R.drawable.placeholder_banner))
+                .placeholder(ResourcesCompat.getDrawable(getResources(), R.drawable.placeholder_banner, null))
                 .into(profileBackgroundImageView, new Callback() {
                     @Override
                     @TargetApi(21)
@@ -208,7 +209,8 @@ public class UserProfileActivity extends ActionBarActivity {
                 });
 
         Picasso.with(this)
-                .load(user.getOriginalProfileImageURL()).placeholder(R.drawable.placeholder)
+                .load(user.getOriginalProfileImageURL())
+                .placeholder(R.drawable.placeholder)
                 .into(profilePictureImageView);
 
         userNameTextView.setText(user.getName());
@@ -361,7 +363,7 @@ public class UserProfileActivity extends ActionBarActivity {
 
             Picasso.with(this)
                     .load(statuses[i].getUser().getBiggerProfileImageURL())
-                    .placeholder(getResources().getDrawable(R.drawable.placeholder))
+                    .placeholder(ResourcesCompat.getDrawable(getResources(), R.drawable.placeholder, null))
                     .into(userProfilePicImageView);
 
             favouriteImageButton.setImageResource((statuses[i].isFavorited()) ?
@@ -448,7 +450,7 @@ public class UserProfileActivity extends ActionBarActivity {
                     if (mediaEntity.getType().equals("photo")) {
                         Picasso.with(this)
                                 .load(mediaEntity.getMediaURL())
-                                .placeholder(getResources().getDrawable(R.drawable.placeholder))
+                                .placeholder(ResourcesCompat.getDrawable(getResources(), R.drawable.placeholder, null))
                                 .fit()
                                 .centerCrop()
                                 .into(tweetPhotoImageView);

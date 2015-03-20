@@ -33,7 +33,7 @@ public class TweetActivity extends ActionBarActivity {
     private static final String TWEETS_LIST_TAG = "tweetlist";
     private static final String CURRENT_TWEET_TAG = "header";
 
-    protected boolean isUp = true;
+    private boolean isUp = true;
     private Twitter twitter;
     private Status status;
     private ArrayList<Status> mDataSet = new ArrayList<>();

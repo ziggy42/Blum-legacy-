@@ -402,13 +402,6 @@ public class TwitterOAuthView extends WebView {
                 handler.proceed();
             }
 
-
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
-            }
-
-
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (!url.startsWith(callbackUrl)) {

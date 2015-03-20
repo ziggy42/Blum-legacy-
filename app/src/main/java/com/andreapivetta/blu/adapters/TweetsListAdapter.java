@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spannable;
@@ -12,6 +13,7 @@ import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.text.style.StyleSpan;
 import android.text.util.Linkify;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +37,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import twitter4j.MediaEntity;
 import twitter4j.Status;
@@ -44,7 +44,6 @@ import twitter4j.Twitter;
 
 public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.ViewHolder> {
 
-    private static final String URL_REGEX = "^((https?|ftp)://|(www|ftp)\\.)?[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$";
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_ITEM_PHOTO = 2;
@@ -119,7 +118,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
 
         Picasso.with(context)
                 .load(currentStatus.getUser().getBiggerProfileImageURL())
-                .placeholder(context.getResources().getDrawable(R.drawable.placeholder))
+                .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
                 .into(holder.userProfilePicImageView);
 
         if (currentStatus.isFavorited() || favorites.contains(currentStatus.getId()))
@@ -197,12 +196,9 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
 
         if (TYPE == TYPE_HEADER) {
             StringBuilder iHateHtml = new StringBuilder();
-            Pattern p = Pattern.compile(URL_REGEX);
-            Matcher m;
             String endString = "";
             for (String word : currentStatus.getText().split(" |\n")) {
-                m = p.matcher(word);
-                if (m.find()) {
+                if (Patterns.WEB_URL.matcher(word).matches()) {
                     iHateHtml.append("<a href=\"")
                             .append(word)
                             .append("\">")
@@ -272,7 +268,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                         ((VHHeader) holder).tweetPhotoImageView.setVisibility(View.VISIBLE);
                         Picasso.with(context)
                                 .load(mediaEntity.getMediaURL())
-                                .placeholder(context.getResources().getDrawable(R.drawable.placeholder))
+                                .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
                                 .into(((VHHeader) holder).tweetPhotoImageView);
 
                         ((VHHeader) holder).tweetPhotoImageView.setOnClickListener(new View.OnClickListener() {
@@ -306,7 +302,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                     if (mediaEntity.getType().equals("photo")) {
                         Picasso.with(context)
                                 .load(mediaEntity.getMediaURL())
-                                .placeholder(context.getResources().getDrawable(R.drawable.placeholder))
+                                .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
                                 .fit()
                                 .centerCrop()
                                 .into(((VHItemPhoto) holder).tweetPhotoImageView);

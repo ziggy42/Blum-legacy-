@@ -18,7 +18,7 @@ public class RetweetsDatabaseManager extends InteractionsDatabaseManager {
 
     public RetweetsDatabaseManager(Context context) {
         super(context);
-        this.myDBHelper = new DatabaseHelper(context, DB_NAME, null, DB_VERSION);
+        this.myDBHelper = new DatabaseHelper(context, DB_NAME, DB_VERSION);
     }
 
     @Override

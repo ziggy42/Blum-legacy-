@@ -17,11 +17,11 @@ public class MentionsDatabaseManager {
             + SetsMetaData.TWEET_ID + " INTEGER NOT NULL, "
             + SetsMetaData.USER_ID + " INTEGER NOT NULL, "
             + SetsMetaData.TIMESTAMP + " INTEGER NOT NULL);";
-    protected DatabaseHelper myDBHelper;
-    protected SQLiteDatabase myDB;
+    private DatabaseHelper myDBHelper;
+    private SQLiteDatabase myDB;
 
     public MentionsDatabaseManager(Context context) {
-        this.myDBHelper = new DatabaseHelper(context, DB_NAME, null, DB_VERSION);
+        this.myDBHelper = new DatabaseHelper(context);
     }
 
     public void open() {
@@ -97,9 +97,8 @@ public class MentionsDatabaseManager {
 
     protected class DatabaseHelper extends SQLiteOpenHelper {
 
-        public DatabaseHelper(Context context, String name,
-                              SQLiteDatabase.CursorFactory factory, int version) {
-            super(context, name, factory, version);
+        public DatabaseHelper(Context context) {
+            super(context, DB_NAME, null, DB_VERSION);
         }
 
         @Override

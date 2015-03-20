@@ -3,6 +3,7 @@ package com.andreapivetta.blu.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +48,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
 
         Picasso.with(context)
                 .load(user.getOriginalProfileImageURL())
-                .placeholder(context.getResources().getDrawable(R.drawable.placeholder))
+                .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
                 .into(holder.userProfilePicImageView);
 
         holder.userNameTextView.setText(user.getName());

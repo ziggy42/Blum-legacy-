@@ -31,7 +31,7 @@ public class NotificationsDatabaseManager {
     private SQLiteDatabase myDB;
 
     public NotificationsDatabaseManager(Context context) {
-        this.myDBhelper = new DatabaseHelper(context, DB_NAME, null, DB_VERSION);
+        this.myDBhelper = new DatabaseHelper(context);
     }
 
     public void open() {
@@ -134,9 +134,8 @@ public class NotificationsDatabaseManager {
 
     private class DatabaseHelper extends SQLiteOpenHelper {
 
-        public DatabaseHelper(Context context, String name,
-                              SQLiteDatabase.CursorFactory factory, int version) {
-            super(context, name, factory, version);
+        public DatabaseHelper(Context context) {
+            super(context, DB_NAME, null, DB_VERSION);
         }
 
         @Override

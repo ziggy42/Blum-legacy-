@@ -39,7 +39,7 @@ import twitter4j.Twitter;
 
 public class NewTweetActivity extends ActionBarActivity {
 
-    private static final int MAX_URL_SHORTERED_LENGTH = 23; // it will change
+    private static final int MAX_URL_LENGTH = 23; // it will change
 
     private static final int REQUEST_GRAB_IMAGE = 3;
     private static final int REQUEST_TAKE_PHOTO = 1;
@@ -178,14 +178,14 @@ public class NewTweetActivity extends ActionBarActivity {
         int urls = (hasImage) ? 1 : 0;
 
         for (String entry : text.split(" ")) {
-            if (Patterns.WEB_URL.matcher(entry).matches() && entry.length() > MAX_URL_SHORTERED_LENGTH)
+            if (Patterns.WEB_URL.matcher(entry).matches() && entry.length() > MAX_URL_LENGTH)
                 urls++;
             else
                 wordsLength += entry.length();
         }
 
         int spaces = text.length() - text.replace(" ", "").length();
-        charsLeft = (140 - urls * MAX_URL_SHORTERED_LENGTH) - spaces - wordsLength;
+        charsLeft = (140 - urls * MAX_URL_LENGTH) - spaces - wordsLength;
         invalidateOptionsMenu();
     }
 

@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.andreapivetta.blu.R;
+
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
@@ -38,9 +40,9 @@ public class FollowTwitterUser extends AsyncTask<Long, Void, Boolean> {
     protected void onPostExecute(Boolean status) {
         if (status) {
             if (follow)
-                Toast.makeText(context, "You're now following this user", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.following_added), Toast.LENGTH_SHORT).show();
             else
-                Toast.makeText(context, "You're not following this user", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.following_removed), Toast.LENGTH_SHORT).show();
         } else {
             Log.i("FOLLOW STATUS", "Action not performed");
         }

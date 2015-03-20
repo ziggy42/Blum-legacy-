@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.andreapivetta.blu.R;
+
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
@@ -31,7 +33,7 @@ public class RetweetTweet extends AsyncTask<Long, Void, Boolean> {
 
     protected void onPostExecute(Boolean status) {
         if (status) {
-            Toast.makeText(context, "Status retweeted", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.status_retweeted), Toast.LENGTH_SHORT).show();
         } else {
             Log.i("RETWEET STATUS", "Action not performed");
         }

@@ -3,6 +3,7 @@ package com.andreapivetta.blu.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -48,7 +49,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
         Picasso.with(context)
                 .load(notification.profilePicURL)
-                .placeholder(context.getResources().getDrawable(R.drawable.placeholder))
+                .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
                 .into(holder.userProfilePicImageView);
 
         holder.userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
