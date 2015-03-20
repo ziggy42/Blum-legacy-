@@ -93,7 +93,7 @@ public class NewTweetActivity extends ActionBarActivity {
                         Uri selectedImageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
                         imageFile = new File(FileUtils.getPath(NewTweetActivity.this, selectedImageUri));
                         setImage();
-
+                        uploadedImageView.getViewTreeObserver().removeOnPreDrawListener(this);
                         return true;
                     }
                 });
