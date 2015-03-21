@@ -197,49 +197,52 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
         if (TYPE == TYPE_HEADER) {
             StringBuilder iHateHtml = new StringBuilder();
             String endString = "";
-            for (String word : currentStatus.getText().split(" |\n")) {
-                if (Patterns.WEB_URL.matcher(word).matches()) {
-                    iHateHtml.append("<a href=\"")
-                            .append(word)
-                            .append("\">")
-                            .append(word)
-                            .append("</a>");
-                } else if (word.length() > 1) {
-                    if (word.substring(0, 1).equals("@")) {
-                        for (int i = 1; i < word.length(); i++)
-                            if ("|/()=?'^[],;.:-\"\\".indexOf(word.charAt(i)) >= 0) {
-                                endString = word.substring(i);
-                                word = word.substring(0, i);
-                                break;
-                            }
-
-                        iHateHtml.append("<a href=\"com.andreapivetta.blu.user://")
-                                .append(word.substring(1))
+            for (String line : currentStatus.getText().split("\\r?\\n")) {
+                if (iHateHtml.length() > 0) iHateHtml.append("<br/>");
+                for (String word : line.split(" ")) {
+                    if (Patterns.WEB_URL.matcher(word).matches()) {
+                        iHateHtml.append("<a href=\"")
+                                .append(word)
                                 .append("\">")
                                 .append(word)
-                                .append("</a>")
-                                .append(endString);
-                    } else if (word.substring(0, 1).equals("#")) {
-                        for (int i = 1; i < word.length(); i++)
-                            if ("|/()=?'^[],;.:-\"\\".indexOf(word.charAt(i)) >= 0) {
-                                endString = word.substring(i);
-                                word = word.substring(0, i);
-                                break;
-                            }
+                                .append("</a>");
+                    } else if (word.length() > 1) {
+                        if (word.substring(0, 1).equals("@")) {
+                            for (int i = 1; i < word.length(); i++)
+                                if ("|/()=?'^[],;.:-\"\\".indexOf(word.charAt(i)) >= 0) {
+                                    endString = word.substring(i);
+                                    word = word.substring(0, i);
+                                    break;
+                                }
 
-                        iHateHtml.append("<a href=\"com.andreapivetta.blu.hashtag://")
-                                .append(word.substring(1))
-                                .append("\">")
-                                .append(word)
-                                .append("</a>")
-                                .append(endString);
+                            iHateHtml.append("<a href=\"com.andreapivetta.blu.user://")
+                                    .append(word.substring(1))
+                                    .append("\">")
+                                    .append(word)
+                                    .append("</a>")
+                                    .append(endString);
+                        } else if (word.substring(0, 1).equals("#")) {
+                            for (int i = 1; i < word.length(); i++)
+                                if ("|/()=?'^[],;.:-\"\\".indexOf(word.charAt(i)) >= 0) {
+                                    endString = word.substring(i);
+                                    word = word.substring(0, i);
+                                    break;
+                                }
+
+                            iHateHtml.append("<a href=\"com.andreapivetta.blu.hashtag://")
+                                    .append(word.substring(1))
+                                    .append("\">")
+                                    .append(word)
+                                    .append("</a>")
+                                    .append(endString);
+                        } else {
+                            iHateHtml.append(word);
+                        }
                     } else {
                         iHateHtml.append(word);
                     }
-                } else {
-                    iHateHtml.append(word);
+                    iHateHtml.append(" ");
                 }
-                iHateHtml.append(" ");
             }
 
             holder.statusTextView.setText(Html.fromHtml(iHateHtml.toString()));

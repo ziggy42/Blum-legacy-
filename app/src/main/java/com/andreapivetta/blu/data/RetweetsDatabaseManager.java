@@ -26,7 +26,6 @@ public class RetweetsDatabaseManager extends InteractionsDatabaseManager {
         return TABLE_CREATE;
     }
 
-    @Override
     public void clearDatabase() {
         myDB.execSQL("DROP TABLE IF EXISTS " + SetsMetaData.TABLE_NAME);
         myDB.execSQL(TABLE_CREATE);

@@ -27,8 +27,6 @@ public abstract class InteractionsDatabaseManager {
         this.myDB.close();
     }
 
-    public abstract void clearDatabase();
-
     public abstract void insertCouple(long userID, long tweetID);
 
     abstract void deleteCouple(long userID, long tweetID);

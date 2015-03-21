@@ -2,7 +2,6 @@ package com.andreapivetta.blu.twitter;
 
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.AsyncTask;
