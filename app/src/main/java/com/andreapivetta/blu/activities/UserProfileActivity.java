@@ -622,6 +622,11 @@ public class UserProfileActivity extends ActionBarActivity {
                 if (params[0] != 0) {
                     user = twitter.showUser(params[0]);
 
+                    if (user.getId() == twitter.getId()) {
+                        type = TYPE.THIS_IS_ME;
+                        return true;
+                    }
+
                     Relationship rel = twitter.showFriendship(twitter.getId(), user.getId());
                     if (rel.isSourceFollowingTarget() && rel.isTargetFollowingSource()) {
                         type = TYPE.WE_FOLLOW_EACH_OTHER;
