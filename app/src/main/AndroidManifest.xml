@@ -132,6 +132,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.andreapivetta.blu.activities.SettingsActivity" />
         </activity>
+        <activity
+            android:name=".activities.ConversationsListActivity"
+            android:label="@string/title_activity_conversations_list"
+            android:parentActivityName=".activities.HomeActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.andreapivetta.blu.activities.HomeActivity" />
+        </activity>
+        <activity
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:name=".activities.ConversationActivity"
+            android:label="@string/title_empty"
+            android:parentActivityName=".activities.ConversationsListActivity" >
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.andreapivetta.blu.activities.ConversationsListActivity" />
+        </activity>
 
         <service
             android:name=".services.StreamNotificationService"
@@ -166,6 +184,9 @@
             android:exported="false" />
         <service
             android:name=".services.PopulateDatabasesService"
+            android:exported="false" />
+        <service
+            android:name=".services.CheckMessageService"
             android:exported="false" />
 
     </application>

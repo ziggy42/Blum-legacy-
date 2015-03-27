@@ -14,7 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.activities.SpaceItemDecoration;
+import com.andreapivetta.blu.adapters.SpaceTopItemDecoration;
 import com.andreapivetta.blu.adapters.NotificationAdapter;
 import com.andreapivetta.blu.data.Notification;
 import com.andreapivetta.blu.data.NotificationsDatabaseManager;
@@ -69,7 +69,7 @@ public class NotificationFragment extends Fragment {
             mRecyclerView.getItemAnimator().setAddDuration(300);
         }
 
-        mRecyclerView.addItemDecoration(new SpaceItemDecoration(Common.dpToPx(getActivity(), 10)));
+        mRecyclerView.addItemDecoration(new SpaceTopItemDecoration(Common.dpToPx(getActivity(), 10)));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new NotificationAdapter(notificationList, getActivity());
         mRecyclerView.setAdapter(mAdapter);

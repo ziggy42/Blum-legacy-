@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.adapters.SpaceTopItemDecoration;
 import com.andreapivetta.blu.adapters.UserListAdapter;
 import com.andreapivetta.blu.internet.ConnectionDetector;
 import com.andreapivetta.blu.twitter.FavoriteTweet;
@@ -559,7 +560,7 @@ public class UserProfileActivity extends ActionBarActivity {
 
         mDialogLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.addItemDecoration(new SpaceItemDecoration(Common.dpToPx(this, 10)));
+        mRecyclerView.addItemDecoration(new SpaceTopItemDecoration(Common.dpToPx(this, 10)));
         mRecyclerView.setLayoutManager(mDialogLinearLayoutManager);
         mRecyclerView.setAdapter(mUsersAdapter);
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {

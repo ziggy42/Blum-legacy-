@@ -83,6 +83,10 @@
     <string name="following_removed">You\'re not following this user</string>
     <string name="status_retweeted">Status retweeted!</string>
     <string name="tweet_sent_message">Tweet Sent!</string>
+    <string name="messages_notifications">Messages Notifications</string>
+    <string name="hint_message">Message</string>
+    <string name="you_message">You: %1$s</string>
+    <string name="message_not_title">%1$s sent you a Message!</string>
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>
@@ -125,6 +129,7 @@
     <string name="title_activity_feedback">Send Feedback</string>
     <string name="title_activity_new_tweet">New Tweet</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_conversations_list">Conversations</string>
 
     <!-- Preferences -->
     <string name="prefcat_account_title" translatable="false">Account</string>
@@ -161,5 +166,6 @@
     <string name="send_tweet_button_contentDescriptor" translatable="false">Send Tweet image Button</string>
     <string name="notifications_contentDescription" translatable="false">Notifications</string>
     <string name="openTweet_imageButton_contentDescriptor" translatable="false">Open Tweet Image Button</string>
+    <string name="send_message_contentDescriptor" translatable="false">Send Message Button</string>
 
 </resources>

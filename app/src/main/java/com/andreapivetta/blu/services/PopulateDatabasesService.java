@@ -2,7 +2,9 @@ package com.andreapivetta.blu.services;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
 
+import com.andreapivetta.blu.data.DirectMessagesDatabaseManager;
 import com.andreapivetta.blu.data.FavoritesDatabaseManager;
 import com.andreapivetta.blu.data.FollowersDatabaseManager;
 import com.andreapivetta.blu.data.MentionsDatabaseManager;
@@ -10,6 +12,7 @@ import com.andreapivetta.blu.data.RetweetsDatabaseManager;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.utilities.Common;
 
+import twitter4j.DirectMessage;
 import twitter4j.IDs;
 import twitter4j.Paging;
 import twitter4j.Status;
@@ -24,11 +27,13 @@ public class PopulateDatabasesService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        Log.i("PopulateService", "START");
         Twitter twitter = TwitterUtils.getTwitter(getApplicationContext());
         FavoritesDatabaseManager favoritesDatabaseManager = new FavoritesDatabaseManager(getApplicationContext());
         RetweetsDatabaseManager retweetsDatabaseManager = new RetweetsDatabaseManager(getApplicationContext());
         MentionsDatabaseManager mentionsDatabaseManager = new MentionsDatabaseManager(getApplicationContext());
         FollowersDatabaseManager followersDatabaseManager = new FollowersDatabaseManager(getApplicationContext());
+        DirectMessagesDatabaseManager directMessagesDatabaseManager = new DirectMessagesDatabaseManager(getApplicationContext());
 
         try {
             favoritesDatabaseManager.open();
@@ -62,8 +67,25 @@ public class PopulateDatabasesService extends IntentService {
             } while (ids.hasNext());
             followersDatabaseManager.close();
 
+            directMessagesDatabaseManager.open();
+            directMessagesDatabaseManager.clearDatabase();
+            for (DirectMessage message : twitter.getDirectMessages(new Paging(1, 200)))
+                directMessagesDatabaseManager
+                        .insertMessage(message.getId(), message.getSenderId(), message.getRecipientId(),
+                                message.getText(), message.getCreatedAt().getTime(), message.getSender().getName(),
+                                message.getSender().getBiggerProfileImageURL());
+
+            for (DirectMessage message : twitter.getSentDirectMessages(new Paging(1, 200)))
+                directMessagesDatabaseManager
+                        .insertMessage(message.getId(), message.getSenderId(), message.getRecipientId(),
+                                message.getText(), message.getCreatedAt().getTime(), message.getRecipient().getName(),
+                                message.getRecipient().getBiggerProfileImageURL());
+            directMessagesDatabaseManager.close();
+
             getApplicationContext().getSharedPreferences(Common.PREF, 0).edit()
                     .putBoolean(Common.PREF_DATABASE_POPULATED, true).apply();
+
+            Log.i("PopulateService", "STOP");
         } catch (Exception e) {
             e.printStackTrace();
         }

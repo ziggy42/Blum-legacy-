@@ -28,6 +28,7 @@ public class Common {
     public static final String PREF_STREAM_ON = "twitterstream";
     public static final String PREF_FREQ = "freq";
     public static final String PREF_DATABASE_POPULATED = "populated";
+    public static final String PREF_LOGGED_USER = "user";
     public static final String USER_AGENT =
             "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36";
     private static final String FAVORITERS_URL = "https://twitter.com/i/activity/favorited_popup?id=";
@@ -48,7 +49,8 @@ public class Common {
         if (doc != null) {
             for (Element element : doc.getElementsByTag("img")) {
                 try {
-                    usersIDs.add(Long.parseLong(element.attr("data-user-id")));
+                    if (!element.attr("data-user-id").equals(""))
+                        usersIDs.add(Long.parseLong(element.attr("data-user-id")));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

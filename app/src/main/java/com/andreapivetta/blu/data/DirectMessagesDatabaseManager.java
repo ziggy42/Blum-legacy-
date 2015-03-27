@@ -1,0 +1,183 @@
+package com.andreapivetta.blu.data;
+
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import com.andreapivetta.blu.utilities.Common;
+
+import java.util.ArrayList;
+
+import twitter4j.DirectMessage;
+
+public class DirectMessagesDatabaseManager {
+    private static final String DB_NAME = "messages_db";
+    private static final int DB_VERSION = 1;
+    private static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
+            + SetsMetaData.TABLE_NAME + " ("
+            + SetsMetaData.MESSAGE_ID + " INTEGER NOT NULL, "
+            + SetsMetaData.SENDER_ID + " INTEGER NOT NULL, "
+            + SetsMetaData.RECIPIENT_ID + " INTEGER NOT NULL, "
+            + SetsMetaData.MESSAGE_TEXT + " PM_TEXT NOT NULL,"
+            + SetsMetaData.OTHER_NAME + " PM_TEXT,"
+            + SetsMetaData.PROFILE_PIC_URL + " PM_TEXT,"
+            + SetsMetaData.TIMESTAMP + " INTEGER NOT NULL);";
+    private DatabaseHelper myDBHelper;
+    private SQLiteDatabase myDB;
+    private long loggedUserID;
+
+    public DirectMessagesDatabaseManager(Context context) {
+        this.myDBHelper = new DatabaseHelper(context);
+        this.loggedUserID = context.getSharedPreferences(Common.PREF, 0).getLong(Common.PREF_LOGGED_USER, 0L);
+    }
+
+    public void open() {
+        this.myDB = myDBHelper.getWritableDatabase();
+    }
+
+    public void close() {
+        this.myDB.close();
+    }
+
+    public void clearDatabase() {
+        myDB.execSQL("DROP TABLE IF EXISTS " + SetsMetaData.TABLE_NAME);
+        myDB.execSQL(TABLE_CREATE);
+    }
+
+    public void insertMessage(long messageID, long senderID, long recipientID, String message, long timestamp,
+                              String otherUserName, String otherUserProfilePic) {
+        ContentValues cv = new ContentValues();
+        cv.put(SetsMetaData.MESSAGE_ID, messageID);
+        cv.put(SetsMetaData.SENDER_ID, senderID);
+        cv.put(SetsMetaData.RECIPIENT_ID, recipientID);
+        cv.put(SetsMetaData.MESSAGE_TEXT, message);
+        cv.put(SetsMetaData.OTHER_NAME, otherUserName);
+        cv.put(SetsMetaData.PROFILE_PIC_URL, otherUserProfilePic);
+        cv.put(SetsMetaData.TIMESTAMP, timestamp);
+        myDB.insert(SetsMetaData.TABLE_NAME, null, cv);
+    }
+
+    private void deleteMessage(long messageID) {
+        myDB.execSQL("DELETE FROM " + SetsMetaData.TABLE_NAME + " WHERE " + SetsMetaData.MESSAGE_ID +
+                " = " + messageID);
+    }
+
+    public ArrayList<Long> getInterlocutors() {
+        ArrayList<Long> interlocutors = new ArrayList<>();
+        String query = "SELECT DISTINCT " + SetsMetaData.RECIPIENT_ID + ", " + SetsMetaData.SENDER_ID +
+                " FROM " + SetsMetaData.TABLE_NAME;
+        Cursor cursor = myDB.rawQuery(query, null);
+
+        while (cursor.moveToNext()) {
+            if (cursor.getLong(0) == loggedUserID) {
+                if (!interlocutors.contains(cursor.getLong(1)))
+                    interlocutors.add(cursor.getLong(1));
+            } else {
+                if (!interlocutors.contains(cursor.getLong(0)))
+                    interlocutors.add(cursor.getLong(0));
+            }
+        }
+
+        cursor.close();
+        return interlocutors;
+    }
+
+    public Message getLastMessageForGivenUser(long otherUser) {
+        String query = "SELECT " + "MAX(" + SetsMetaData.TIMESTAMP + ")," +
+                SetsMetaData.MESSAGE_TEXT + "," + SetsMetaData.MESSAGE_ID + "," + SetsMetaData.SENDER_ID + "," +
+                SetsMetaData.RECIPIENT_ID + "," + SetsMetaData.OTHER_NAME + "," + SetsMetaData.PROFILE_PIC_URL +
+                " FROM " + SetsMetaData.TABLE_NAME +
+                " WHERE " + SetsMetaData.SENDER_ID + " = " + otherUser + " OR " + SetsMetaData.RECIPIENT_ID + " = " + otherUser;
+        Cursor cursor = myDB.rawQuery(query, null);
+        cursor.moveToNext();
+        Message message =
+                new Message(cursor.getLong(2), cursor.getLong(3), cursor.getLong(4), cursor.getString(1),
+                        cursor.getLong(0), cursor.getString(5), cursor.getString(6));
+        cursor.close();
+        return message;
+    }
+
+    public ArrayList<Message> getConversation(long otherUser) {
+        ArrayList<Message> conversation = new ArrayList<>();
+        String query = "SELECT " + SetsMetaData.MESSAGE_TEXT + "," + SetsMetaData.MESSAGE_ID + "," + SetsMetaData.SENDER_ID + "," +
+                SetsMetaData.RECIPIENT_ID + "," + SetsMetaData.TIMESTAMP + "," + SetsMetaData.OTHER_NAME + "," + SetsMetaData.PROFILE_PIC_URL +
+                " FROM " + SetsMetaData.TABLE_NAME +
+                " WHERE " + SetsMetaData.SENDER_ID + " = " + otherUser + " OR " + SetsMetaData.RECIPIENT_ID + " = " + otherUser +
+                " ORDER BY " + SetsMetaData.TIMESTAMP;
+        Cursor cursor = myDB.rawQuery(query, null);
+        while (cursor.moveToNext())
+            conversation.add(
+                    new Message(cursor.getLong(1), cursor.getLong(2), cursor.getLong(3), cursor.getString(0),
+                            cursor.getLong(4), cursor.getString(5), cursor.getString(6)));
+        cursor.close();
+        return conversation;
+    }
+
+    private ArrayList<Long> getAllMessages() {
+        ArrayList<Long> messages = new ArrayList<>();
+        String query = "SELECT " + SetsMetaData.MESSAGE_ID + " FROM " + SetsMetaData.TABLE_NAME;
+        Cursor cursor = myDB.rawQuery(query, null);
+
+        while (cursor.moveToNext())
+            messages.add(cursor.getLong(0));
+
+        cursor.close();
+        return messages;
+    }
+
+    public ArrayList<DirectMessage> check(ArrayList<DirectMessage> messages) {
+        ArrayList<DirectMessage> newMessages = new ArrayList<>();
+        ArrayList<Long> existingMessages = getAllMessages();
+
+        for (DirectMessage dm : messages) {
+            if (existingMessages.contains(dm.getId())) {
+                existingMessages.remove(dm.getId());
+            } else {
+                newMessages.add(dm);
+
+                if (dm.getSenderId() == loggedUserID)
+                    insertMessage(dm.getId(), dm.getSenderId(), dm.getRecipientId(), dm.getText(),
+                            dm.getCreatedAt().getTime(), dm.getRecipientScreenName(), dm.getRecipient().getBiggerProfileImageURL());
+                else
+                    insertMessage(dm.getId(), dm.getSenderId(), dm.getRecipientId(), dm.getText(),
+                            dm.getCreatedAt().getTime(), dm.getSenderScreenName(), dm.getSender().getBiggerProfileImageURL());
+            }
+        }
+
+        for (Long message : existingMessages)
+            deleteMessage(message);
+
+        return newMessages;
+    }
+
+    static final class SetsMetaData {
+        static final String TABLE_NAME = "dms_table";
+        static final String MESSAGE_ID = "message_id";
+        static final String SENDER_ID = "sender_id";
+        static final String RECIPIENT_ID = "recipient_id";
+        static final String MESSAGE_TEXT = "current_message";
+        static final String OTHER_NAME = "other_name";
+        static final String PROFILE_PIC_URL = "other_pic_url";
+        static final String TIMESTAMP = "timestamp";
+    }
+
+    protected class DatabaseHelper extends SQLiteOpenHelper {
+
+        public DatabaseHelper(Context context) {
+            super(context, DB_NAME, null, DB_VERSION);
+        }
+
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+            db.execSQL(TABLE_CREATE);
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+        }
+    }
+}

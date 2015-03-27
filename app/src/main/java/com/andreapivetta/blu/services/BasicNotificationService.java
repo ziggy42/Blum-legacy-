@@ -51,6 +51,8 @@ public class BasicNotificationService extends IntentService {
                         .startService(new Intent(getApplicationContext(), CheckFollowersService.class));
                 getApplicationContext()
                         .startService(new Intent(getApplicationContext(), CheckMentionsService.class));
+                getApplicationContext()
+                        .startService(new Intent(getApplicationContext(), CheckMessageService.class));
             } else {
                 getApplicationContext()
                         .startService(new Intent(getApplicationContext(), PopulateDatabasesService.class));

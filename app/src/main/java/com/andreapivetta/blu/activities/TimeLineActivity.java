@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.adapters.SpaceTopItemDecoration;
 import com.andreapivetta.blu.adapters.TweetsListAdapter;
 import com.andreapivetta.blu.utilities.Common;
 
@@ -62,7 +63,7 @@ public abstract class TimeLineActivity extends ActionBarActivity {
         }
 
         mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
-        mRecyclerView.addItemDecoration(new SpaceItemDecoration(Common.dpToPx(this, 10)));
+        mRecyclerView.addItemDecoration(new SpaceTopItemDecoration(Common.dpToPx(this, 10)));
 
         SharedPreferences mSharedPreferences = getSharedPreferences(Common.PREF, 0);
         if (mSharedPreferences.getBoolean(Common.PREF_ANIMATIONS, true)) {

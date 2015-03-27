@@ -48,6 +48,7 @@ public class TwitterOAuthActivity extends Activity implements TwitterOAuthView.L
                 putString(TwitterUtils.PREF_KEY_OAUTH_TOKEN, accessToken.getToken()).
                 putString(TwitterUtils.PREF_KEY_OAUTH_SECRET, accessToken.getTokenSecret()).
                 putBoolean(TwitterUtils.PREF_KEY_TWITTER_LOGIN, true).
+                putLong(Common.PREF_LOGGED_USER, accessToken.getUserId()).
                 apply();
 
         showMessage(getString(R.string.authorized_by, accessToken.getScreenName()));

@@ -183,6 +183,28 @@ public class HomeActivity extends TimeLineActivity {
             notificationsCountTextView.setText(String.valueOf(mNotificationsCount));
         }
 
+        item = menu.findItem(R.id.action_messages);
+        MenuItemCompat.setActionView(item, R.layout.menu_messages_button);
+        view = MenuItemCompat.getActionView(item);
+        ImageButton messagesImageButton = (ImageButton) view.findViewById(R.id.messagesImageButton);
+        messagesImageButton.setImageResource(R.drawable.ic_mail_white_24dp);
+        messagesImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // mMessageCount = 0;
+                invalidateOptionsMenu();
+                startActivity(new Intent(HomeActivity.this, ConversationsListActivity.class));
+            }
+        });
+
+        /*
+        if (mMessageCount > 0) {
+            TextView messagesCountTextView = (TextView) view.findViewById(R.id.messagesCountTextView);
+            messagesCountTextView.setVisibility(View.VISIBLE);
+            messagesCountTextView.setText(String.valueOf(mMessageCount));
+        }
+         */
+
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
