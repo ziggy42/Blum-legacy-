@@ -12,6 +12,7 @@ import android.support.v4.app.NotificationCompat;
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.ConversationActivity;
 import com.andreapivetta.blu.data.DirectMessagesDatabaseManager;
+import com.andreapivetta.blu.data.Message;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.utilities.Common;
 
@@ -67,14 +68,19 @@ public class CheckMessageService extends IntentService {
                 .setContentIntent(resultPendingIntent)
                 .setColor(getApplicationContext().getResources().getColor(R.color.colorPrimary))
                 .setLargeIcon(Common.getBitmapFromURL(dm.getSender().getProfileImageURL()))
-                .setSmallIcon(R.drawable.ic_mail_white_24dp)
+                .setSmallIcon(R.drawable.ic_message_white_24dp)
                 .setLights(Color.BLUE, 500, 1000)
                 .setContentIntent(resultPendingIntent);
 
-        if (getApplicationContext().getSharedPreferences(Common.PREF, 0).getBoolean(Common.PREF_HEADS_UP_NOTIFICATIONS, true))
+        if (getApplicationContext().getSharedPreferences(Common.PREF, 0)
+                .getBoolean(Common.PREF_HEADS_UP_NOTIFICATIONS, true))
             mBuilder.setPriority(android.app.Notification.PRIORITY_HIGH);
 
         ((NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE))
                 .notify((int) dm.getId(), mBuilder.build());
+
+        Intent i = new Intent();
+        i.setAction(Message.NEW_MESSAGE_INTENT);
+        getApplicationContext().sendBroadcast(i);
     }
 }

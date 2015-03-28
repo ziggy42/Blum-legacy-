@@ -16,6 +16,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.data.DirectMessagesDatabaseManager;
+import com.andreapivetta.blu.data.Message;
+import com.andreapivetta.blu.data.Notification;
 import com.andreapivetta.blu.data.NotificationsDatabaseManager;
 import com.andreapivetta.blu.services.BasicNotificationService;
 import com.andreapivetta.blu.services.PopulateDatabasesService;
@@ -39,7 +42,7 @@ public class HomeActivity extends TimeLineActivity {
 
     private SharedPreferences mSharedPreferences;
     private DataUpdateReceiver dataUpdateReceiver;
-    private int mNotificationsCount = 0, newTweetsCount = 0;
+    private int mNotificationsCount = 0, newTweetsCount = 0, mMessageCount = 0;
     private ArrayList<Status> upComingTweets = new ArrayList<>();
 
     @Override
@@ -60,11 +63,6 @@ public class HomeActivity extends TimeLineActivity {
                 new GetTimeLine().execute(null, null, null);
             }
         }
-
-        NotificationsDatabaseManager databaseManager = new NotificationsDatabaseManager(HomeActivity.this);
-        databaseManager.open();
-        mNotificationsCount = databaseManager.getCountUnreadNotifications();
-        databaseManager.close();
 
         super.onCreate(savedInstanceState);
 
@@ -123,7 +121,20 @@ public class HomeActivity extends TimeLineActivity {
             dataUpdateReceiver = new DataUpdateReceiver();
 
         registerReceiver(dataUpdateReceiver, new IntentFilter(StreamNotificationService.NEW_TWEETS_INTENT));
-        registerReceiver(dataUpdateReceiver, new IntentFilter(StreamNotificationService.NEW_NOTIFICATION_INTENT));
+        registerReceiver(dataUpdateReceiver, new IntentFilter(Notification.NEW_NOTIFICATION_INTENT));
+        registerReceiver(dataUpdateReceiver, new IntentFilter(Message.NEW_MESSAGE_INTENT));
+
+        NotificationsDatabaseManager notDatabaseManager = new NotificationsDatabaseManager(HomeActivity.this);
+        notDatabaseManager.open();
+        mNotificationsCount = notDatabaseManager.getCountUnreadNotifications();
+        notDatabaseManager.close();
+
+        DirectMessagesDatabaseManager mesDatabaseManager = new DirectMessagesDatabaseManager(HomeActivity.this);
+        mesDatabaseManager.open();
+        mMessageCount = mesDatabaseManager.getCountUnreadMessages();
+        mesDatabaseManager.close();
+
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -187,23 +198,18 @@ public class HomeActivity extends TimeLineActivity {
         MenuItemCompat.setActionView(item, R.layout.menu_messages_button);
         view = MenuItemCompat.getActionView(item);
         ImageButton messagesImageButton = (ImageButton) view.findViewById(R.id.messagesImageButton);
-        messagesImageButton.setImageResource(R.drawable.ic_mail_white_24dp);
         messagesImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // mMessageCount = 0;
-                invalidateOptionsMenu();
                 startActivity(new Intent(HomeActivity.this, ConversationsListActivity.class));
             }
         });
 
-        /*
         if (mMessageCount > 0) {
             TextView messagesCountTextView = (TextView) view.findViewById(R.id.messagesCountTextView);
             messagesCountTextView.setVisibility(View.VISIBLE);
             messagesCountTextView.setText(String.valueOf(mMessageCount));
         }
-         */
 
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -257,8 +263,11 @@ public class HomeActivity extends TimeLineActivity {
                 if (loading)
                     getSupportActionBar().setTitle(getResources().getQuantityString(
                             R.plurals.new_tweets, newTweetsCount, newTweetsCount));
-            } else if (intent.getAction().equals(StreamNotificationService.NEW_NOTIFICATION_INTENT)) {
+            } else if (intent.getAction().equals(Notification.NEW_NOTIFICATION_INTENT)) {
                 mNotificationsCount++;
+                invalidateOptionsMenu();
+            } else if (intent.getAction().equals(Message.NEW_MESSAGE_INTENT)) {
+                mMessageCount++;
                 invalidateOptionsMenu();
             }
         }

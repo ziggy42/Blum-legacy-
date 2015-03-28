@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 public class Message implements Comparable<Message> {
 
+    public final static String NEW_MESSAGE_INTENT = "com.andreapivetta.blu.NEW_MESSAGE_INTENT";
     private long messageID;
     private long senderID;
     private long recipientID;
@@ -11,9 +12,10 @@ public class Message implements Comparable<Message> {
     private String messageText;
     private String otherUserName;
     private String otherUserProfilePicUrl;
+    private boolean isRead;
 
     public Message(long messageID, long senderID, long recipientID, String messageText, long timeStamp,
-                   String otherUserName, String otherUserProfilePicUrl) {
+                   String otherUserName, String otherUserProfilePicUrl, boolean isRead) {
         this.messageID = messageID;
         this.senderID = senderID;
         this.recipientID = recipientID;
@@ -21,6 +23,15 @@ public class Message implements Comparable<Message> {
         this.timeStamp = timeStamp;
         this.otherUserName = otherUserName;
         this.otherUserProfilePicUrl = otherUserProfilePicUrl;
+        this.isRead = isRead;
+    }
+
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public long getMessageID() {
+        return messageID;
     }
 
     public String getOtherUserName() {

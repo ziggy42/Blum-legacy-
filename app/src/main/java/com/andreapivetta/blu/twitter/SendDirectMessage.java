@@ -20,7 +20,8 @@ public class SendDirectMessage extends AsyncTask<String, Void, Boolean> {
     private String otherUserName;
     private  String otherUserProfilePic;
 
-    public SendDirectMessage(Context context, Twitter twitter, long userID, String otherUserName, String otherUserProfilePic) {
+    public SendDirectMessage(Context context, Twitter twitter, long userID, String otherUserName,
+                             String otherUserProfilePic) {
         this.twitter = twitter;
         this.context = context;
         this.userID = userID;
@@ -36,8 +37,8 @@ public class SendDirectMessage extends AsyncTask<String, Void, Boolean> {
 
             DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(context);
             dbm.open();
-            dbm.insertMessage(message.getId(), twitter.getId(), userID, params[0], Calendar.getInstance().getTime().getTime(),
-                    otherUserName, otherUserProfilePic);
+            dbm.insertMessage(message.getId(), twitter.getId(), userID, params[0],
+                    Calendar.getInstance().getTime().getTime(), otherUserName, otherUserProfilePic, true);
             dbm.close();
         } catch (TwitterException e) {
             e.printStackTrace();
@@ -49,7 +50,7 @@ public class SendDirectMessage extends AsyncTask<String, Void, Boolean> {
 
     protected void onPostExecute(Boolean status) {
         if (!status) {
-            // TODO make something
+            // TODO do something
         }
     }
 }

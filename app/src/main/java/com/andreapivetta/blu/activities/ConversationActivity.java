@@ -1,5 +1,10 @@
 package com.andreapivetta.blu.activities;
 
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -31,13 +36,15 @@ public class ConversationActivity extends ActionBarActivity {
     private User currentUser;
     private Twitter twitter;
     private long userID;
-    private ArrayList<Message> messages = new ArrayList<>();
+    private ArrayList<Message> mDataSet = new ArrayList<>();
 
     private ProgressBar loadingProgressBar;
     private Toolbar toolbar;
     private EditText messageEditText;
+    private RecyclerView mRecyclerView;
 
     private ConversationAdapter mAdapter;
+    private DataUpdateReceiver dataUpdateReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +70,8 @@ public class ConversationActivity extends ActionBarActivity {
 
         userID = getIntent().getLongExtra("ID", 0L);
 
-        final RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.conversationRecyclerView);
-        mAdapter = new ConversationAdapter(messages, ConversationActivity.this);
+        mRecyclerView = (RecyclerView) findViewById(R.id.conversationRecyclerView);
+        mAdapter = new ConversationAdapter(mDataSet, ConversationActivity.this);
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
         mLinearLayoutManager.setStackFromEnd(true);
         mRecyclerView.setHasFixedSize(true);
@@ -76,17 +83,17 @@ public class ConversationActivity extends ActionBarActivity {
             public void onClick(View v) {
                 String message = messageEditText.getText().toString();
                 if (message.length() > 0) {
-                    new SendDirectMessage(ConversationActivity.this, twitter, userID, messages.get(0).getOtherUserName(),
-                            messages.get(0).getOtherUserProfilePicUrl()).execute(message, null, null);
+                    new SendDirectMessage(ConversationActivity.this, twitter, userID, mDataSet.get(0).getOtherUserName(),
+                            mDataSet.get(0).getOtherUserProfilePicUrl()).execute(message, null, null);
 
-                    messages.add(
+                    mDataSet.add(
                             new Message(0L, getSharedPreferences(Common.PREF, 0).getLong(Common.PREF_LOGGED_USER, 0L),
-                                    0L, message, Calendar.getInstance().getTime().getTime(), "", "")); // MOLTO PERICOLOSO
+                                    0L, message, Calendar.getInstance().getTime().getTime(), "", "", true)); // MOLTO STUPIDO
 
                     mAdapter.notifyDataSetChanged();
 
                     messageEditText.setText("");
-                    mRecyclerView.scrollToPosition(messages.size() - 1);
+                    mRecyclerView.scrollToPosition(mDataSet.size() - 1);
                 }
             }
         });
@@ -95,6 +102,24 @@ public class ConversationActivity extends ActionBarActivity {
             finish();
         else
             new Loader().execute(null, null, null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (dataUpdateReceiver == null)
+            dataUpdateReceiver = new DataUpdateReceiver();
+
+        registerReceiver(dataUpdateReceiver, new IntentFilter(Message.NEW_MESSAGE_INTENT));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (dataUpdateReceiver != null)
+            unregisterReceiver(dataUpdateReceiver);
     }
 
     private class Loader extends AsyncTask<Void, Void, Boolean> {
@@ -107,7 +132,13 @@ public class ConversationActivity extends ActionBarActivity {
                 dbm.open();
 
                 for (Message message : dbm.getConversation(userID))
-                    messages.add(message);
+                    mDataSet.add(message);
+
+                for (int i = mDataSet.size() - 1; i >= 0; i--)
+                    if (!mDataSet.get(i).isRead())
+                        dbm.setRead(mDataSet.get(i).getMessageID());
+                    else
+                        break;
 
                 dbm.close();
             } catch (TwitterException e) {
@@ -123,6 +154,28 @@ public class ConversationActivity extends ActionBarActivity {
                 loadingProgressBar.setVisibility(View.GONE);
                 toolbar.setTitle(currentUser.getName());
                 mAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    public class DataUpdateReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Message.NEW_MESSAGE_INTENT)) {
+                mDataSet.clear();
+                DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(ConversationActivity.this);
+                dbm.open();
+                for (Message message : dbm.getConversation(userID))
+                    mDataSet.add(message);
+                dbm.close();
+                mAdapter.notifyDataSetChanged();
+
+                NotificationManager nMgr = (NotificationManager)
+                        getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                nMgr.cancel((int) mDataSet.get(mDataSet.size() - 1).getMessageID());
+
+                mRecyclerView.scrollToPosition(mDataSet.size() - 1);
             }
         }
     }

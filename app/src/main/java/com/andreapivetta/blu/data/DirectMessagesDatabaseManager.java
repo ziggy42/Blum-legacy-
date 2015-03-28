@@ -18,12 +18,13 @@ public class DirectMessagesDatabaseManager {
     private static final int DB_VERSION = 1;
     private static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
             + SetsMetaData.TABLE_NAME + " ("
-            + SetsMetaData.MESSAGE_ID + " INTEGER NOT NULL, "
+            + SetsMetaData.MESSAGE_ID + " INTEGER NOT NULL PRIMARY KEY, "
             + SetsMetaData.SENDER_ID + " INTEGER NOT NULL, "
             + SetsMetaData.RECIPIENT_ID + " INTEGER NOT NULL, "
             + SetsMetaData.MESSAGE_TEXT + " PM_TEXT NOT NULL,"
             + SetsMetaData.OTHER_NAME + " PM_TEXT,"
             + SetsMetaData.PROFILE_PIC_URL + " PM_TEXT,"
+            + SetsMetaData.FLAG_READ + " BOOLEAN NOT NULL,"
             + SetsMetaData.TIMESTAMP + " INTEGER NOT NULL);";
     private DatabaseHelper myDBHelper;
     private SQLiteDatabase myDB;
@@ -48,7 +49,7 @@ public class DirectMessagesDatabaseManager {
     }
 
     public void insertMessage(long messageID, long senderID, long recipientID, String message, long timestamp,
-                              String otherUserName, String otherUserProfilePic) {
+                              String otherUserName, String otherUserProfilePic, boolean read) {
         ContentValues cv = new ContentValues();
         cv.put(SetsMetaData.MESSAGE_ID, messageID);
         cv.put(SetsMetaData.SENDER_ID, senderID);
@@ -57,6 +58,7 @@ public class DirectMessagesDatabaseManager {
         cv.put(SetsMetaData.OTHER_NAME, otherUserName);
         cv.put(SetsMetaData.PROFILE_PIC_URL, otherUserProfilePic);
         cv.put(SetsMetaData.TIMESTAMP, timestamp);
+        cv.put(SetsMetaData.FLAG_READ, read);
         myDB.insert(SetsMetaData.TABLE_NAME, null, cv);
     }
 
@@ -89,30 +91,31 @@ public class DirectMessagesDatabaseManager {
         String query = "SELECT " + "MAX(" + SetsMetaData.TIMESTAMP + ")," +
                 SetsMetaData.MESSAGE_TEXT + "," + SetsMetaData.MESSAGE_ID + "," + SetsMetaData.SENDER_ID + "," +
                 SetsMetaData.RECIPIENT_ID + "," + SetsMetaData.OTHER_NAME + "," + SetsMetaData.PROFILE_PIC_URL +
-                " FROM " + SetsMetaData.TABLE_NAME +
+                "," + SetsMetaData.FLAG_READ + " FROM " + SetsMetaData.TABLE_NAME +
                 " WHERE " + SetsMetaData.SENDER_ID + " = " + otherUser + " OR " + SetsMetaData.RECIPIENT_ID + " = " + otherUser;
-        Cursor cursor = myDB.rawQuery(query, null);
-        cursor.moveToNext();
+        Cursor c = myDB.rawQuery(query, null);
+        c.moveToNext();
         Message message =
-                new Message(cursor.getLong(2), cursor.getLong(3), cursor.getLong(4), cursor.getString(1),
-                        cursor.getLong(0), cursor.getString(5), cursor.getString(6));
-        cursor.close();
+                new Message(c.getLong(2), c.getLong(3), c.getLong(4), c.getString(1), c.getLong(0),
+                        c.getString(5), c.getString(6), c.getInt(7) == 1);
+        c.close();
         return message;
     }
 
     public ArrayList<Message> getConversation(long otherUser) {
         ArrayList<Message> conversation = new ArrayList<>();
         String query = "SELECT " + SetsMetaData.MESSAGE_TEXT + "," + SetsMetaData.MESSAGE_ID + "," + SetsMetaData.SENDER_ID + "," +
-                SetsMetaData.RECIPIENT_ID + "," + SetsMetaData.TIMESTAMP + "," + SetsMetaData.OTHER_NAME + "," + SetsMetaData.PROFILE_PIC_URL +
+                SetsMetaData.RECIPIENT_ID + "," + SetsMetaData.TIMESTAMP + "," + SetsMetaData.OTHER_NAME + "," +
+                SetsMetaData.PROFILE_PIC_URL + "," + SetsMetaData.FLAG_READ +
                 " FROM " + SetsMetaData.TABLE_NAME +
                 " WHERE " + SetsMetaData.SENDER_ID + " = " + otherUser + " OR " + SetsMetaData.RECIPIENT_ID + " = " + otherUser +
                 " ORDER BY " + SetsMetaData.TIMESTAMP;
-        Cursor cursor = myDB.rawQuery(query, null);
-        while (cursor.moveToNext())
+        Cursor c = myDB.rawQuery(query, null);
+        while (c.moveToNext())
             conversation.add(
-                    new Message(cursor.getLong(1), cursor.getLong(2), cursor.getLong(3), cursor.getString(0),
-                            cursor.getLong(4), cursor.getString(5), cursor.getString(6)));
-        cursor.close();
+                    new Message(c.getLong(1), c.getLong(2), c.getLong(3), c.getString(0), c.getLong(4),
+                            c.getString(5), c.getString(6), c.getInt(7) == 1));
+        c.close();
         return conversation;
     }
 
@@ -140,10 +143,12 @@ public class DirectMessagesDatabaseManager {
 
                 if (dm.getSenderId() == loggedUserID)
                     insertMessage(dm.getId(), dm.getSenderId(), dm.getRecipientId(), dm.getText(),
-                            dm.getCreatedAt().getTime(), dm.getRecipientScreenName(), dm.getRecipient().getBiggerProfileImageURL());
+                            dm.getCreatedAt().getTime(), dm.getRecipientScreenName(),
+                            dm.getRecipient().getBiggerProfileImageURL(), false);
                 else
                     insertMessage(dm.getId(), dm.getSenderId(), dm.getRecipientId(), dm.getText(),
-                            dm.getCreatedAt().getTime(), dm.getSenderScreenName(), dm.getSender().getBiggerProfileImageURL());
+                            dm.getCreatedAt().getTime(), dm.getSenderScreenName(),
+                            dm.getSender().getBiggerProfileImageURL(), false);
             }
         }
 
@@ -151,6 +156,20 @@ public class DirectMessagesDatabaseManager {
             deleteMessage(message);
 
         return newMessages;
+    }
+
+    public int getCountUnreadMessages() {
+        Cursor c = myDB.rawQuery(
+                "SELECT message_id FROM " + SetsMetaData.TABLE_NAME + " WHERE NOT " + SetsMetaData.FLAG_READ, null);
+        int count = c.getCount();
+        c.close();
+        return count;
+    }
+
+    public void setRead(long messageID) {
+        ContentValues cv = new ContentValues();
+        cv.put(SetsMetaData.FLAG_READ, true);
+        myDB.update(SetsMetaData.TABLE_NAME, cv, SetsMetaData.MESSAGE_ID + " =" + messageID, null);
     }
 
     static final class SetsMetaData {
@@ -161,6 +180,7 @@ public class DirectMessagesDatabaseManager {
         static final String MESSAGE_TEXT = "current_message";
         static final String OTHER_NAME = "other_name";
         static final String PROFILE_PIC_URL = "other_pic_url";
+        static final String FLAG_READ = "read";
         static final String TIMESTAMP = "timestamp";
     }
 

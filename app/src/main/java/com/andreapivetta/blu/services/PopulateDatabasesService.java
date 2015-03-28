@@ -73,13 +73,13 @@ public class PopulateDatabasesService extends IntentService {
                 directMessagesDatabaseManager
                         .insertMessage(message.getId(), message.getSenderId(), message.getRecipientId(),
                                 message.getText(), message.getCreatedAt().getTime(), message.getSender().getName(),
-                                message.getSender().getBiggerProfileImageURL());
+                                message.getSender().getBiggerProfileImageURL(), true);
 
             for (DirectMessage message : twitter.getSentDirectMessages(new Paging(1, 200)))
                 directMessagesDatabaseManager
                         .insertMessage(message.getId(), message.getSenderId(), message.getRecipientId(),
                                 message.getText(), message.getCreatedAt().getTime(), message.getRecipient().getName(),
-                                message.getRecipient().getBiggerProfileImageURL());
+                                message.getRecipient().getBiggerProfileImageURL(), true);
             directMessagesDatabaseManager.close();
 
             getApplicationContext().getSharedPreferences(Common.PREF, 0).edit()

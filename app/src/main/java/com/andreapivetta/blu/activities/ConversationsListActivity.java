@@ -1,7 +1,10 @@
 package com.andreapivetta.blu.activities;
 
 import android.animation.ValueAnimator;
-import android.os.AsyncTask;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.andreapivetta.blu.R;
@@ -26,11 +28,11 @@ public class ConversationsListActivity extends ActionBarActivity {
     private ArrayList<Message> mDataSet = new ArrayList<>();
     private ConversationListAdapter conversationListAdapter;
     private LinearLayoutManager mLinearLayoutManager;
-    private RecyclerView mRecyclerView;
+    private DataUpdateReceiver dataUpdateReceiver;
 
     private boolean isUp = true;
 
-    private ProgressBar loadingProgressBar;
+    private RecyclerView mRecyclerView;
     private ImageButton newMessageImageButton;
 
     @Override
@@ -50,8 +52,12 @@ public class ConversationsListActivity extends ActionBarActivity {
             });
         }
 
-        newMessageImageButton = (ImageButton) findViewById(R.id.newMessageImageButton);
-        loadingProgressBar = (ProgressBar) findViewById(R.id.loadingProgressBar);
+        DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(ConversationsListActivity.this);
+        dbm.open();
+        for (Long id : dbm.getInterlocutors())
+            mDataSet.add(dbm.getLastMessageForGivenUser(id));
+        dbm.close();
+        Collections.sort(mDataSet);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.conversationRecyclerView);
         conversationListAdapter = new ConversationListAdapter(ConversationsListActivity.this, mDataSet);
@@ -74,6 +80,14 @@ public class ConversationsListActivity extends ActionBarActivity {
             }
         });
 
+        newMessageImageButton = (ImageButton) findViewById(R.id.newMessageImageButton);
+        newMessageImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,7 +95,24 @@ public class ConversationsListActivity extends ActionBarActivity {
             }
         });
 
-        new LoadConversations().execute(null, null, null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (dataUpdateReceiver == null)
+            dataUpdateReceiver = new DataUpdateReceiver();
+
+        registerReceiver(dataUpdateReceiver, new IntentFilter(Message.NEW_MESSAGE_INTENT));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (dataUpdateReceiver != null)
+            unregisterReceiver(dataUpdateReceiver);
     }
 
     void newMessageDown() {
@@ -116,27 +147,19 @@ public class ConversationsListActivity extends ActionBarActivity {
         isUp = true;
     }
 
-    private class LoadConversations extends AsyncTask<Void, Void, Boolean> {
+    public class DataUpdateReceiver extends BroadcastReceiver {
 
         @Override
-        protected Boolean doInBackground(Void... params) {
-            DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(ConversationsListActivity.this);
-            dbm.open();
-
-            for (Long id : dbm.getInterlocutors())
-                mDataSet.add(dbm.getLastMessageForGivenUser(id));
-
-            Collections.sort(mDataSet);
-
-            dbm.close();
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            if (result) {
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Message.NEW_MESSAGE_INTENT)) {
+                mDataSet.clear();
+                DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(ConversationsListActivity.this);
+                dbm.open();
+                for (Long id : dbm.getInterlocutors())
+                    mDataSet.add(dbm.getLastMessageForGivenUser(id));
+                dbm.close();
+                Collections.sort(mDataSet);
                 conversationListAdapter.notifyDataSetChanged();
-                loadingProgressBar.setVisibility(View.GONE);
             }
         }
     }
