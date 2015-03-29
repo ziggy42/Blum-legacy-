@@ -168,5 +168,6 @@
     <string name="notifications_contentDescription" translatable="false">Notifications</string>
     <string name="openTweet_imageButton_contentDescriptor" translatable="false">Open Tweet Image Button</string>
     <string name="send_message_contentDescriptor" translatable="false">Send Message Button</string>
+    <string name="message_chars_warning">Message length must be in ]0, 140]</string>
 
 </resources>

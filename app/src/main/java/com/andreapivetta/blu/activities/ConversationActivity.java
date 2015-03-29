@@ -11,10 +11,14 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.ConversationAdapter;
@@ -42,6 +46,9 @@ public class ConversationActivity extends ActionBarActivity {
     private Toolbar toolbar;
     private EditText messageEditText;
     private RecyclerView mRecyclerView;
+    private TextView charsLeftTextView;
+
+    private int charsLeft = 140;
 
     private ConversationAdapter mAdapter;
     private DataUpdateReceiver dataUpdateReceiver;
@@ -63,12 +70,38 @@ public class ConversationActivity extends ActionBarActivity {
             });
         }
 
+        userID = getIntent().getLongExtra("ID", 0L);
+
         twitter = TwitterUtils.getTwitter(ConversationActivity.this);
+        ImageButton sendMessageImageButton = (ImageButton) findViewById(R.id.sendMessageImageButton);
         loadingProgressBar = (ProgressBar) findViewById(R.id.loadingProgressBar);
         messageEditText = (EditText) findViewById(R.id.messageEditText);
-        ImageButton sendMessageImageButton = (ImageButton) findViewById(R.id.sendMessageImageButton);
+        messageEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        userID = getIntent().getLongExtra("ID", 0L);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                charsLeft = 140 - s.toString().length();
+                charsLeftTextView.setText(String.valueOf(charsLeft));
+                
+
+                if (charsLeft < 0)
+                    charsLeftTextView.setTextColor(getResources().getColor(R.color.red));
+                else
+                    charsLeftTextView.setTextColor(getResources().getColor(R.color.lightGrey));
+            }
+        });
+
+        charsLeftTextView = (TextView) findViewById(R.id.charsLeftTextView);
+        charsLeftTextView.setText(String.valueOf(charsLeft));
 
         mRecyclerView = (RecyclerView) findViewById(R.id.conversationRecyclerView);
         mAdapter = new ConversationAdapter(mDataSet, ConversationActivity.this);
@@ -82,7 +115,7 @@ public class ConversationActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 String message = messageEditText.getText().toString();
-                if (message.length() > 0) {
+                if (message.length() > 0 && message.length() <= 140) {
                     new SendDirectMessage(ConversationActivity.this, twitter, userID, mDataSet.get(0).getOtherUserName(),
                             mDataSet.get(0).getOtherUserProfilePicUrl()).execute(message, null, null);
 
@@ -94,6 +127,9 @@ public class ConversationActivity extends ActionBarActivity {
 
                     messageEditText.setText("");
                     mRecyclerView.scrollToPosition(mDataSet.size() - 1);
+                } else {
+                    Toast.makeText(ConversationActivity.this, getString(R.string.message_chars_warning), Toast.LENGTH_SHORT)
+                            .show();
                 }
             }
         });
