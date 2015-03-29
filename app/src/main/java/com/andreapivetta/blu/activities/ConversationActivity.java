@@ -116,8 +116,8 @@ public class ConversationActivity extends ActionBarActivity {
             public void onClick(View v) {
                 String message = messageEditText.getText().toString();
                 if (message.length() > 0 && message.length() <= 140) {
-                    new SendDirectMessage(ConversationActivity.this, twitter, userID, mDataSet.get(0).getOtherUserName(),
-                            mDataSet.get(0).getOtherUserProfilePicUrl()).execute(message, null, null);
+                    new SendDirectMessage(ConversationActivity.this, twitter, userID, currentUser.getName(),
+                            currentUser.getBiggerProfileImageURL()).execute(message, null, null);
 
                     mDataSet.add(
                             new Message(0L, getSharedPreferences(Common.PREF, 0).getLong(Common.PREF_LOGGED_USER, 0L),
