@@ -129,10 +129,12 @@ public class HomeActivity extends TimeLineActivity {
         mNotificationsCount = notDatabaseManager.getCountUnreadNotifications();
         notDatabaseManager.close();
 
-        DirectMessagesDatabaseManager mesDatabaseManager = new DirectMessagesDatabaseManager(HomeActivity.this);
-        mesDatabaseManager.open();
-        mMessageCount = mesDatabaseManager.getCountUnreadMessages();
-        mesDatabaseManager.close();
+        if (mSharedPreferences.getBoolean(Common.PREF_DATABASE_POPULATED, false)) {
+            DirectMessagesDatabaseManager mesDatabaseManager = new DirectMessagesDatabaseManager(HomeActivity.this);
+            mesDatabaseManager.open();
+            mMessageCount = mesDatabaseManager.getCountUnreadMessages();
+            mesDatabaseManager.close();
+        }
 
         invalidateOptionsMenu();
     }

@@ -160,7 +160,7 @@ public class DirectMessagesDatabaseManager {
 
     public int getCountUnreadMessages() {
         Cursor c = myDB.rawQuery(
-                "SELECT message_id FROM " + SetsMetaData.TABLE_NAME + " WHERE NOT " + SetsMetaData.FLAG_READ, null);
+                "SELECT " + SetsMetaData.MESSAGE_ID + " FROM " + SetsMetaData.TABLE_NAME + " WHERE NOT " + SetsMetaData.FLAG_READ, null);
         int count = c.getCount();
         c.close();
         return count;
