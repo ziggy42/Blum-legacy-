@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -141,12 +142,11 @@ public class ConversationsListActivity extends ActionBarActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                String prefix = s.toString();
+                String prefix = s.toString().toLowerCase();
                 subset.clear();
-                for(User u : followers) {
-                    if (u.getName().startsWith(prefix))
+                for(User u : followers)
+                    if (u.getName().toLowerCase().startsWith(prefix))
                         subset.add(u);
-                }
 
                 mUsersSimpleAdapter.notifyDataSetChanged();
             }
