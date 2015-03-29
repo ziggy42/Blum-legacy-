@@ -8,8 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.activities.ConversationActivity;
 import com.andreapivetta.blu.activities.UserProfileActivity;
 import com.squareup.picasso.Picasso;
 
@@ -17,12 +21,12 @@ import java.util.ArrayList;
 
 import twitter4j.User;
 
-public class UserListSimpleAdapter extends RecyclerView.Adapter<UserListMessageAdapter.ViewHolder> {
+public class UserListMessageAdapter extends RecyclerView.Adapter<UserListMessageAdapter.ViewHolder> {
 
     private ArrayList<User> mDataSet;
     private Context context;
 
-    public UserListSimpleAdapter(ArrayList<User> mDataSet, Context context) {
+    public UserListMessageAdapter(ArrayList<User> mDataSet, Context context) {
         this.mDataSet = mDataSet;
         this.context = context;
     }
@@ -32,7 +36,7 @@ public class UserListSimpleAdapter extends RecyclerView.Adapter<UserListMessageA
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.user_simple, parent, false);
 
-        return new UserListMessageAdapter.ViewHolder(v);
+        return new ViewHolder(v);
     }
 
     @Override
@@ -44,12 +48,21 @@ public class UserListSimpleAdapter extends RecyclerView.Adapter<UserListMessageA
                 .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
                 .into(holder.userProfilePicImageView);
 
+        holder.userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, UserProfileActivity.class);
+                i.putExtra("ID", user.getId());
+                context.startActivity(i);
+            }
+        });
+
         holder.userNameTextView.setText(user.getName());
         holder.screenNameTextView.setText("@" + user.getScreenName());
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, UserProfileActivity.class);
+                Intent i = new Intent(context, ConversationActivity.class);
                 i.putExtra("ID", user.getId());
                 context.startActivity(i);
             }
@@ -59,5 +72,21 @@ public class UserListSimpleAdapter extends RecyclerView.Adapter<UserListMessageA
     @Override
     public int getItemCount() {
         return mDataSet.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        public ImageView userProfilePicImageView;
+        public TextView userNameTextView, screenNameTextView;
+        public FrameLayout container;
+
+        public ViewHolder(View container) {
+            super(container);
+
+            this.userProfilePicImageView = (ImageView) container.findViewById(R.id.userProfilePicImageView);
+            this.userNameTextView = (TextView) container.findViewById(R.id.userNameTextView);
+            this.screenNameTextView = (TextView) container.findViewById(R.id.screenNameTextView);
+            this.container = (FrameLayout) container.findViewById(R.id.containerRelativeLayout);
+        }
     }
 }

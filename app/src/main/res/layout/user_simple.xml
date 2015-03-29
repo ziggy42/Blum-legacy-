@@ -1,45 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.balysv.materialripple.MaterialRippleLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/containerRelativeLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="5dp">
+    android:layout_height="wrap_content"
+    app:mrl_rippleColor="@color/colorAccent"
+    app:mrl_rippleOverlay="true">
 
-    <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/userProfilePicImageView"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="5dp"
-        android:contentDescription="@string/profile_pic_contentDescriptor"
-        android:scaleType="centerCrop"
-        android:src="@drawable/placeholder"
-        app:riv_oval="true" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="5dp">
 
-    <TextView
-        android:id="@+id/userNameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/userProfilePicImageView"
-        android:layout_marginTop="2dp"
-        android:layout_toEndOf="@+id/userProfilePicImageView"
-        android:layout_toRightOf="@+id/userProfilePicImageView"
-        android:fontFamily="sans-serif-bold"
-        android:textSize="20sp" />
+        <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/userProfilePicImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:contentDescription="@string/profile_pic_contentDescriptor"
+            android:scaleType="centerCrop"
+            android:src="@drawable/placeholder"
+            app:riv_oval="true" />
 
-    <TextView
-        android:id="@+id/screenNameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/userProfilePicImageView"
-        android:layout_alignLeft="@+id/userNameTextView"
-        android:layout_alignStart="@+id/userNameTextView"
-        android:layout_marginBottom="2dp"
-        android:fontFamily="sans-serif-thin"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/userNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/userProfilePicImageView"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@+id/userProfilePicImageView"
+            android:layout_toRightOf="@+id/userProfilePicImageView"
+            android:fontFamily="sans-serif-bold"
+            android:textSize="20sp" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/screenNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/userProfilePicImageView"
+            android:layout_alignLeft="@+id/userNameTextView"
+            android:layout_alignStart="@+id/userNameTextView"
+            android:layout_marginBottom="2dp"
+            android:fontFamily="sans-serif-thin"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+</com.balysv.materialripple.MaterialRippleLayout>

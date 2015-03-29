@@ -14,15 +14,15 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.ConversationListAdapter;
-import com.andreapivetta.blu.adapters.UserListSimpleAdapter;
+import com.andreapivetta.blu.adapters.UserListMessageAdapter;
 import com.andreapivetta.blu.data.DirectMessagesDatabaseManager;
 import com.andreapivetta.blu.data.Message;
 import com.andreapivetta.blu.twitter.TwitterUtils;
@@ -43,7 +43,8 @@ public class ConversationsListActivity extends ActionBarActivity {
     private ConversationListAdapter conversationListAdapter;
     private LinearLayoutManager mLinearLayoutManager;
     private DataUpdateReceiver dataUpdateReceiver;
-    private UserListSimpleAdapter mUsersSimpleAdapter;
+    private UserListMessageAdapter mUsersSimpleAdapter;
+    private ProgressBar loadingProgressBar;
     private Twitter t;
 
 
@@ -116,7 +117,7 @@ public class ConversationsListActivity extends ActionBarActivity {
     }
 
     void showDialog() {
-        mUsersSimpleAdapter = new UserListSimpleAdapter(subset, ConversationsListActivity.this);
+        mUsersSimpleAdapter = new UserListMessageAdapter(subset, ConversationsListActivity.this);
         new LoadFollowers().execute(null, null, null);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ConversationsListActivity.this);
@@ -128,7 +129,9 @@ public class ConversationsListActivity extends ActionBarActivity {
         mRecyclerView.setLayoutManager(mDialogLinearLayoutManager);
         mRecyclerView.setAdapter(mUsersSimpleAdapter);
 
-        EditText searchEditText = (EditText)  dialogView.findViewById(R.id.findUserEditText);
+        loadingProgressBar = (ProgressBar) dialogView.findViewById(R.id.loadingProgressBar);
+
+        EditText searchEditText = (EditText) dialogView.findViewById(R.id.findUserEditText);
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -144,7 +147,7 @@ public class ConversationsListActivity extends ActionBarActivity {
             public void afterTextChanged(Editable s) {
                 String prefix = s.toString().toLowerCase();
                 subset.clear();
-                for(User u : followers)
+                for (User u : followers)
                     if (u.getName().toLowerCase().startsWith(prefix))
                         subset.add(u);
 
@@ -250,6 +253,7 @@ public class ConversationsListActivity extends ActionBarActivity {
 
         protected void onPostExecute(Boolean status) {
             if (status) {
+                loadingProgressBar.setVisibility(View.GONE);
                 mUsersSimpleAdapter.notifyDataSetChanged();
             }
         }

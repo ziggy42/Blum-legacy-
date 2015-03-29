@@ -37,8 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.adapters.SpaceTopItemDecoration;
-import com.andreapivetta.blu.adapters.UserListAdapter;
+import com.andreapivetta.blu.adapters.UserListSimpleAdapter;
 import com.andreapivetta.blu.internet.ConnectionDetector;
 import com.andreapivetta.blu.twitter.FavoriteTweet;
 import com.andreapivetta.blu.twitter.FollowTwitterUser;
@@ -68,23 +67,15 @@ public class UserProfileActivity extends ActionBarActivity {
 
     private final static String FOLLOWERS = "followers";
     private final static String FOLLOWING = "following";
-
-    private enum TYPE {
-        I_FOLLOW_HIM, HE_FOLLOWS_ME, WE_FOLLOW_EACH_OTHER, I_DONT_KNOW_WHO_YOU_ARE, THIS_IS_ME
-    }
     private TYPE type;
-
     private Twitter twitter;
     private User user;
-
     private ArrayList<User> followers = new ArrayList<>(), following = new ArrayList<>();
     private Status statuses[];
-    private UserListAdapter mUsersAdapter;
-    private LinearLayoutManager mDialogLinearLayoutManager;
+    private UserListSimpleAdapter mUsersSimpleAdapter;
     private boolean dialogLoading = true;
     private int dialogPastVisibleItems, dialogVisibleItemCount, dialogTotalItemCount;
     private long cursor = -1;
-
     private Toolbar toolbar;
     private ScrollView profileScrollView;
     private ImageView profileBackgroundImageView, profilePictureImageView;
@@ -93,7 +84,6 @@ public class UserProfileActivity extends ActionBarActivity {
             followersAmountTextView, isHeFollowingTextView;
     private Button tweetButton, followButton;
     private ViewStub[] stubs = new ViewStub[3];
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -550,19 +540,19 @@ public class UserProfileActivity extends ActionBarActivity {
     }
 
     void createUsersDialog(final String mode) {
+        if (mode.equals(FOLLOWERS))
+            mUsersSimpleAdapter = new UserListSimpleAdapter(followers, UserProfileActivity.this);
+        else mUsersSimpleAdapter = new UserListSimpleAdapter(following, UserProfileActivity.this);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(UserProfileActivity.this);
         View dialogView = View.inflate(UserProfileActivity.this, R.layout.dialog_users, null);
         RecyclerView mRecyclerView = (RecyclerView) dialogView.findViewById(R.id.usersRecyclerView);
 
-        if (mode.equals(FOLLOWERS))
-            mUsersAdapter = new UserListAdapter(followers, UserProfileActivity.this, twitter);
-        else mUsersAdapter = new UserListAdapter(following, UserProfileActivity.this, twitter);
-
-        mDialogLinearLayoutManager = new LinearLayoutManager(this);
+        final LinearLayoutManager mDialogLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.addItemDecoration(new SpaceTopItemDecoration(Common.dpToPx(this, 10)));
         mRecyclerView.setLayoutManager(mDialogLinearLayoutManager);
-        mRecyclerView.setAdapter(mUsersAdapter);
+        mRecyclerView.setAdapter(mUsersSimpleAdapter);
+
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -613,6 +603,10 @@ public class UserProfileActivity extends ActionBarActivity {
         outState.putSerializable("STATUS", type);
         outState.putSerializable("ARRAY", statuses);
         super.onSaveInstanceState(outState);
+    }
+
+    private enum TYPE {
+        I_FOLLOW_HIM, HE_FOLLOWS_ME, WE_FOLLOW_EACH_OTHER, I_DONT_KNOW_WHO_YOU_ARE, THIS_IS_ME
     }
 
     private class LoadUser extends AsyncTask<Long, Void, Boolean> {
@@ -740,7 +734,7 @@ public class UserProfileActivity extends ActionBarActivity {
 
         protected void onPostExecute(Boolean status) {
             if (status) {
-                mUsersAdapter.notifyDataSetChanged();
+                mUsersSimpleAdapter.notifyDataSetChanged();
                 dialogLoading = true;
             } else {
                 Toast.makeText(UserProfileActivity.this, getString(R.string.cant_load_user),
