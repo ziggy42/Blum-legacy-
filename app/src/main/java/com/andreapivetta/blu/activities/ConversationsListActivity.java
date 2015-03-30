@@ -178,6 +178,20 @@ public class ConversationsListActivity extends ActionBarActivity {
             unregisterReceiver(dataUpdateReceiver);
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        mDataSet.clear();
+        DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(ConversationsListActivity.this);
+        dbm.open();
+        for (Long id : dbm.getInterlocutors())
+            mDataSet.add(dbm.getLastMessageForGivenUser(id));
+        dbm.close();
+        Collections.sort(mDataSet);
+        conversationListAdapter.notifyDataSetChanged();
+    }
+
     void newMessageDown() {
         final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newMessageImageButton.getLayoutParams();
         ValueAnimator downAnimator = ValueAnimator.ofInt(params.bottomMargin, -newMessageImageButton.getHeight());
