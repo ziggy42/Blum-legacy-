@@ -1,6 +1,18 @@
 package com.andreapivetta.blu.data;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
+
+import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.activities.ConversationActivity;
+import com.andreapivetta.blu.utilities.Common;
+
+import twitter4j.DirectMessage;
 
 public class Message implements Comparable<Message> {
 
@@ -56,6 +68,38 @@ public class Message implements Comparable<Message> {
 
     public long getTimeStamp() {
         return timeStamp;
+    }
+
+    public static void pushMessage(DirectMessage dm, Context context) {
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
+        Intent resultIntent = new Intent(context, ConversationActivity.class);
+        resultIntent.putExtra("ID", dm.getSenderId());
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(
+                context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        mBuilder.setDefaults(android.app.Notification.DEFAULT_SOUND)
+                .setAutoCancel(true)
+                .setContentTitle(context.getString(R.string.message_not_title, dm.getSender().getName()))
+                .setContentText(dm.getText())
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(dm.getText()))
+                .setContentIntent(resultPendingIntent)
+                .setColor(context.getResources().getColor(R.color.colorPrimary))
+                .setLargeIcon(Common.getBitmapFromURL(dm.getSender().getProfileImageURL()))
+                .setSmallIcon(R.drawable.ic_message_white_24dp)
+                .setLights(Color.BLUE, 500, 1000)
+                .setContentIntent(resultPendingIntent);
+
+        if (context.getSharedPreferences(Common.PREF, 0)
+                .getBoolean(Common.PREF_HEADS_UP_NOTIFICATIONS, true))
+            mBuilder.setPriority(android.app.Notification.PRIORITY_HIGH);
+
+        ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE))
+                .notify((int) dm.getId(), mBuilder.build());
+
+        Intent i = new Intent();
+        i.setAction(Message.NEW_MESSAGE_INTENT);
+        context.sendBroadcast(i);
     }
 
     @Override

@@ -4,12 +4,15 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import com.andreapivetta.blu.data.DirectMessagesDatabaseManager;
 import com.andreapivetta.blu.data.FavoritesDatabaseManager;
 import com.andreapivetta.blu.data.FollowersDatabaseManager;
 import com.andreapivetta.blu.data.MentionsDatabaseManager;
+import com.andreapivetta.blu.data.Message;
 import com.andreapivetta.blu.data.Notification;
 import com.andreapivetta.blu.data.RetweetsDatabaseManager;
 import com.andreapivetta.blu.twitter.TwitterUtils;
+import com.andreapivetta.blu.utilities.Common;
 
 import java.util.ArrayList;
 
@@ -86,8 +89,22 @@ public class StreamNotificationService extends Service {
 
         @Override
         public void onDirectMessage(DirectMessage directMessage) {
+            DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(getApplicationContext());
+            dbm.open();
 
+            if (getApplicationContext().getSharedPreferences(Common.PREF, 0).getLong(Common.PREF_LOGGED_USER, 0L)
+                    == directMessage.getSenderId()) {
+                dbm.insertMessage(directMessage.getId(), directMessage.getSenderId(), directMessage.getRecipientId(),
+                        directMessage.getText(), directMessage.getCreatedAt().getTime(), directMessage.getRecipientScreenName(),
+                        directMessage.getRecipient().getBiggerProfileImageURL(), true);
+            } else {
+                dbm.insertMessage(directMessage.getId(), directMessage.getSenderId(), directMessage.getRecipientId(),
+                        directMessage.getText(), directMessage.getCreatedAt().getTime(), directMessage.getSenderScreenName(),
+                        directMessage.getSender().getBiggerProfileImageURL(), false);
 
+                Message.pushMessage(directMessage, getApplicationContext());
+            }
+            dbm.close();
         }
 
         @Override

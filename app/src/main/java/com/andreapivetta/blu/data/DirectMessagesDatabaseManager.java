@@ -91,7 +91,8 @@ public class DirectMessagesDatabaseManager {
                 SetsMetaData.MESSAGE_TEXT + "," + SetsMetaData.MESSAGE_ID + "," + SetsMetaData.SENDER_ID + "," +
                 SetsMetaData.RECIPIENT_ID + "," + SetsMetaData.OTHER_NAME + "," + SetsMetaData.PROFILE_PIC_URL +
                 "," + SetsMetaData.FLAG_READ + " FROM " + SetsMetaData.TABLE_NAME +
-                " WHERE " + SetsMetaData.SENDER_ID + " = " + otherUser + " OR " + SetsMetaData.RECIPIENT_ID + " = " + otherUser;
+                " WHERE " + SetsMetaData.SENDER_ID + " = " + otherUser +
+                " OR " + SetsMetaData.RECIPIENT_ID + " = " + otherUser;
         Cursor c = myDB.rawQuery(query, null);
         c.moveToNext();
         Message message =
@@ -103,11 +104,12 @@ public class DirectMessagesDatabaseManager {
 
     public ArrayList<Message> getConversation(long otherUser) {
         ArrayList<Message> conversation = new ArrayList<>();
-        String query = "SELECT " + SetsMetaData.MESSAGE_TEXT + "," + SetsMetaData.MESSAGE_ID + "," + SetsMetaData.SENDER_ID + "," +
-                SetsMetaData.RECIPIENT_ID + "," + SetsMetaData.TIMESTAMP + "," + SetsMetaData.OTHER_NAME + "," +
-                SetsMetaData.PROFILE_PIC_URL + "," + SetsMetaData.FLAG_READ +
+        String query = "SELECT " + SetsMetaData.MESSAGE_TEXT + "," + SetsMetaData.MESSAGE_ID + "," +
+                SetsMetaData.SENDER_ID + "," + SetsMetaData.RECIPIENT_ID + "," + SetsMetaData.TIMESTAMP + "," +
+                SetsMetaData.OTHER_NAME + "," + SetsMetaData.PROFILE_PIC_URL + "," + SetsMetaData.FLAG_READ +
                 " FROM " + SetsMetaData.TABLE_NAME +
-                " WHERE " + SetsMetaData.SENDER_ID + " = " + otherUser + " OR " + SetsMetaData.RECIPIENT_ID + " = " + otherUser +
+                " WHERE " + SetsMetaData.SENDER_ID + " = " + otherUser + " OR " +
+                SetsMetaData.RECIPIENT_ID + " = " + otherUser +
                 " ORDER BY " + SetsMetaData.TIMESTAMP;
         Cursor c = myDB.rawQuery(query, null);
         while (c.moveToNext())
@@ -159,7 +161,8 @@ public class DirectMessagesDatabaseManager {
 
     public int getCountUnreadMessages() {
         Cursor c = myDB.rawQuery(
-                "SELECT " + SetsMetaData.MESSAGE_ID + " FROM " + SetsMetaData.TABLE_NAME + " WHERE NOT " + SetsMetaData.FLAG_READ, null);
+                "SELECT " + SetsMetaData.MESSAGE_ID + " FROM " + SetsMetaData.TABLE_NAME + " WHERE NOT " +
+                        SetsMetaData.FLAG_READ, null);
         int count = c.getCount();
         c.close();
         return count;

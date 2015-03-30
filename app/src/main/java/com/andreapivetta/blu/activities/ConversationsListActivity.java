@@ -74,7 +74,7 @@ public class ConversationsListActivity extends ActionBarActivity {
 
         DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(ConversationsListActivity.this);
         dbm.open();
-        for (Long id : dbm.getInterlocutors())
+        for (long id : dbm.getInterlocutors())
             mDataSet.add(dbm.getLastMessageForGivenUser(id));
         dbm.close();
         Collections.sort(mDataSet);
@@ -185,7 +185,7 @@ public class ConversationsListActivity extends ActionBarActivity {
         mDataSet.clear();
         DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(ConversationsListActivity.this);
         dbm.open();
-        for (Long id : dbm.getInterlocutors())
+        for (long id : dbm.getInterlocutors())
             mDataSet.add(dbm.getLastMessageForGivenUser(id));
         dbm.close();
         Collections.sort(mDataSet);
