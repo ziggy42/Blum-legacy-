@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 
@@ -21,7 +20,7 @@ public class MentionsDatabaseManager {
     private SQLiteDatabase myDB;
 
     public MentionsDatabaseManager(Context context) {
-        this.myDBHelper = new DatabaseHelper(context);
+        this.myDBHelper = new com.andreapivetta.blu.data.DatabaseHelper(context, DB_NAME, DB_VERSION, TABLE_CREATE);
     }
 
     public void open() {
@@ -93,23 +92,5 @@ public class MentionsDatabaseManager {
         static final String TWEET_ID = "tweetid";
         static final String USER_ID = "userid";
         static final String TIMESTAMP = "timestamp";
-    }
-
-    protected class DatabaseHelper extends SQLiteOpenHelper {
-
-        public DatabaseHelper(Context context) {
-            super(context, DB_NAME, null, DB_VERSION);
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-            db.execSQL(TABLE_CREATE);
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-        }
-
     }
 }

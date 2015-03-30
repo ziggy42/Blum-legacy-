@@ -19,7 +19,7 @@ public class FollowersDatabaseManager {
     private SQLiteDatabase myDB;
 
     public FollowersDatabaseManager(Context context) {
-        this.myDBHelper = new DatabaseHelper(context);
+        this.myDBHelper = new DatabaseHelper(context, DB_NAME, DB_VERSION, TABLE_CREATE);
     }
 
     public void open() {
@@ -80,23 +80,5 @@ public class FollowersDatabaseManager {
     static final class SetsMetaData {
         static final String TABLE_NAME = "followers_table";
         static final String FOLLOWER_ID = "userid";
-    }
-
-    private class DatabaseHelper extends SQLiteOpenHelper {
-
-        public DatabaseHelper(Context context) {
-            super(context, DB_NAME, null, DB_VERSION);
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-            db.execSQL(TABLE_CREATE);
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-        }
-
     }
 }

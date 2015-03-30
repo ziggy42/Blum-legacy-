@@ -5,7 +5,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
 import com.andreapivetta.blu.utilities.Common;
 
@@ -31,7 +30,7 @@ public class DirectMessagesDatabaseManager {
     private long loggedUserID;
 
     public DirectMessagesDatabaseManager(Context context) {
-        this.myDBHelper = new DatabaseHelper(context);
+        this.myDBHelper = new DatabaseHelper(context, DB_NAME, DB_VERSION, TABLE_CREATE);
         this.loggedUserID = context.getSharedPreferences(Common.PREF, 0).getLong(Common.PREF_LOGGED_USER, 0L);
     }
 
@@ -182,22 +181,5 @@ public class DirectMessagesDatabaseManager {
         static final String PROFILE_PIC_URL = "other_pic_url";
         static final String FLAG_READ = "read";
         static final String TIMESTAMP = "timestamp";
-    }
-
-    protected class DatabaseHelper extends SQLiteOpenHelper {
-
-        public DatabaseHelper(Context context) {
-            super(context, DB_NAME, null, DB_VERSION);
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-            db.execSQL(TABLE_CREATE);
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-        }
     }
 }

@@ -91,7 +91,7 @@ public class ConversationActivity extends ActionBarActivity {
             public void afterTextChanged(Editable s) {
                 charsLeft = 140 - s.toString().length();
                 charsLeftTextView.setText(String.valueOf(charsLeft));
-                
+
 
                 if (charsLeft < 0)
                     charsLeftTextView.setTextColor(getResources().getColor(R.color.red));

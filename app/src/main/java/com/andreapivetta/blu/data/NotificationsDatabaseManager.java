@@ -31,7 +31,7 @@ public class NotificationsDatabaseManager {
     private SQLiteDatabase myDB;
 
     public NotificationsDatabaseManager(Context context) {
-        this.myDBhelper = new DatabaseHelper(context);
+        this.myDBhelper = new DatabaseHelper(context, DB_NAME, DB_VERSION, TABLE_CREATE);
     }
 
     public void open() {
@@ -130,24 +130,6 @@ public class NotificationsDatabaseManager {
         static final String STATUS = "status";
         static final String PICURL = "picurl";
         static final String USERID = "fuckinguserid";
-    }
-
-    private class DatabaseHelper extends SQLiteOpenHelper {
-
-        public DatabaseHelper(Context context) {
-            super(context, DB_NAME, null, DB_VERSION);
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-            db.execSQL(TABLE_CREATE);
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-        }
-
     }
 
 }
