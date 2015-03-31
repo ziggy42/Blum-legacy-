@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.andreapivetta.blu.data.DirectMessagesDatabaseManager;
+import com.andreapivetta.blu.utilities.Common;
 
 import java.util.Calendar;
 
@@ -18,7 +19,7 @@ public class SendDirectMessage extends AsyncTask<String, Void, Boolean> {
     private Context context;
     private long userID;
     private String otherUserName;
-    private  String otherUserProfilePic;
+    private String otherUserProfilePic;
 
     public SendDirectMessage(Context context, Twitter twitter, long userID, String otherUserName,
                              String otherUserProfilePic) {
@@ -35,11 +36,13 @@ public class SendDirectMessage extends AsyncTask<String, Void, Boolean> {
         try {
             DirectMessage message = twitter.sendDirectMessage(userID, params[0]);
 
-            DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(context);
-            dbm.open();
-            dbm.insertMessage(message.getId(), twitter.getId(), userID, params[0],
-                    Calendar.getInstance().getTime().getTime(), otherUserName, otherUserProfilePic, true);
-            dbm.close();
+            if (!context.getSharedPreferences(Common.PREF, 0).getBoolean(Common.PREF_STREAM_ON, false)) {
+                DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(context);
+                dbm.open();
+                dbm.insertMessage(message.getId(), twitter.getId(), userID, params[0],
+                        Calendar.getInstance().getTime().getTime(), otherUserName, otherUserProfilePic, true);
+                dbm.close();
+            }
         } catch (TwitterException e) {
             e.printStackTrace();
             return false;

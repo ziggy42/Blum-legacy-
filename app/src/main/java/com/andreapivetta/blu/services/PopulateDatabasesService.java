@@ -41,11 +41,19 @@ public class PopulateDatabasesService extends IntentService {
             favoritesDatabaseManager.clearDatabase();
             retweetsDatabaseManager.clearDatabase();
             for (Status tmp : twitter.getUserTimeline(new Paging(1, 200))) {
-                for (long userID : Common.getFavoriters(tmp.getId()))
-                    favoritesDatabaseManager.insertCouple(userID, tmp.getId());
+                try {
+                    for (long userID : Common.getFavoriters(tmp.getId()))
+                        favoritesDatabaseManager.insertCouple(userID, tmp.getId());
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
 
-                for (long userID : Common.getRetweeters(tmp.getId()))
-                    retweetsDatabaseManager.insertCouple(userID, tmp.getId());
+                try {
+                    for (long userID : Common.getRetweeters(tmp.getId()))
+                        retweetsDatabaseManager.insertCouple(userID, tmp.getId());
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
             }
 
             favoritesDatabaseManager.close();

@@ -19,7 +19,7 @@ public class BasicNotificationService extends IntentService {
     }
 
     public static void startService(Context context) {
-        int frequency = context.getSharedPreferences(Common.PREF, 0).getInt(Common.PREF_FREQ, 300);
+        int frequency = context.getSharedPreferences(Common.PREF, 0).getInt(Common.PREF_FREQ, 1200);
         AlarmManager a = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
