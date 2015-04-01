@@ -91,6 +91,8 @@
     <string name="message_chars_warning">Message length must be in ]0, 140]</string>
     <string name="ops">Oops, that\'s embarrassing…</string>
     <string name="come_here_later_message">I\'m still downloading stuff for you. Please, come back here later ;)</string>
+    <string name="performing_logout">Performing logout</string>
+    <string name="please_wait">Please wait a few seconds…</string>
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>

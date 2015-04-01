@@ -1,9 +1,11 @@
 package com.andreapivetta.blu.activities;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
@@ -16,6 +18,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.data.DirectMessagesDatabaseManager;
+import com.andreapivetta.blu.data.FavoritesDatabaseManager;
+import com.andreapivetta.blu.data.FollowersDatabaseManager;
+import com.andreapivetta.blu.data.MentionsDatabaseManager;
+import com.andreapivetta.blu.data.NotificationsDatabaseManager;
+import com.andreapivetta.blu.data.RetweetsDatabaseManager;
 import com.andreapivetta.blu.services.BasicNotificationService;
 import com.andreapivetta.blu.services.StreamNotificationService;
 import com.andreapivetta.blu.twitter.TwitterUtils;
@@ -55,6 +63,8 @@ public class SettingsActivity extends ActionBarActivity {
         private SwitchPreference streamServicePreference;
         private ListPreference frequencyListPreference;
 
+        private ProgressDialog dialog;
+
         public SettingsFragment() {
         }
 
@@ -85,29 +95,8 @@ public class SettingsActivity extends ActionBarActivity {
                                         @Override
                                         public void onClick(DialogInterface dialog,
                                                             int which) {
-
-                                            Toast.makeText(getActivity(), getString(R.string.logout_done), Toast.LENGTH_SHORT).show();
-                                            if (mSharedPreferences.getBoolean(Common.PREF_STREAM_ON, false))
-                                                getActivity().stopService(
-                                                        new Intent(getActivity(), StreamNotificationService.class));
-                                            else {
-                                                BasicNotificationService.stopService(getActivity());
-                                            }
-
-                                            mSharedPreferences.edit()
-                                                    .remove(TwitterUtils.PREF_KEY_OAUTH_TOKEN)
-                                                    .remove(TwitterUtils.PREF_KEY_OAUTH_SECRET)
-                                                    .remove(TwitterUtils.PREF_KEY_TWITTER_LOGIN)
-                                                    .remove(Common.PREF_STREAM_ON)
-                                                    .remove(Common.PREF_FREQ)
-                                                    .remove(Common.PREF_HEADS_UP_NOTIFICATIONS)
-                                                    .remove(Common.PREF_DATABASE_POPULATED)
-                                                    .apply();
-
-                                            Intent i = new Intent(getActivity(), HomeActivity.class);
-                                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                                                    .putExtra("exit", "exit");
-                                            startActivity(i);
+                                            dialog.dismiss();
+                                            performLogout();
                                         }
                                     }
                             ).setNegativeButton(getString(R.string.cancel), null).create().show();
@@ -259,6 +248,85 @@ public class SettingsActivity extends ActionBarActivity {
                 }
             });
 
+        }
+
+        void performLogout() {
+            dialog = ProgressDialog.show(getActivity(), getString(R.string.performing_logout),
+                    getString(R.string.please_wait), true);
+            dialog.show();
+
+            new PerformLogOut().execute(null, null, null);
+        }
+
+        private class PerformLogOut extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                if (mSharedPreferences.getBoolean(Common.PREF_STREAM_ON, false))
+                    getActivity().stopService(
+                            new Intent(getActivity(), StreamNotificationService.class));
+                else
+                    BasicNotificationService.stopService(getActivity());
+
+                mSharedPreferences.edit()
+                        .remove(TwitterUtils.PREF_KEY_OAUTH_TOKEN)
+                        .remove(TwitterUtils.PREF_KEY_OAUTH_SECRET)
+                        .remove(TwitterUtils.PREF_KEY_TWITTER_LOGIN)
+                        .remove(Common.PREF_STREAM_ON)
+                        .remove(Common.PREF_FREQ)
+                        .remove(Common.PREF_HEADS_UP_NOTIFICATIONS)
+                        .remove(Common.PREF_DATABASE_POPULATED)
+                        .remove(Common.PREF_LOGGED_USER)
+                        .apply();
+
+                DirectMessagesDatabaseManager directMessagesDatabaseManager =
+                        new DirectMessagesDatabaseManager(getActivity());
+                directMessagesDatabaseManager.open();
+                directMessagesDatabaseManager.clearDatabase();
+                directMessagesDatabaseManager.close();
+
+                FavoritesDatabaseManager favoritesDatabaseManager =
+                        new FavoritesDatabaseManager(getActivity());
+                favoritesDatabaseManager.open();
+                favoritesDatabaseManager.clearDatabase();
+                favoritesDatabaseManager.close();
+
+                RetweetsDatabaseManager retweetsDatabaseManager =
+                        new RetweetsDatabaseManager(getActivity());
+                retweetsDatabaseManager.open();
+                retweetsDatabaseManager.clearDatabase();
+                retweetsDatabaseManager.close();
+
+                FollowersDatabaseManager followersDatabaseManager =
+                        new FollowersDatabaseManager(getActivity());
+                followersDatabaseManager.open();
+                followersDatabaseManager.clearDatabase();
+                followersDatabaseManager.close();
+
+                MentionsDatabaseManager mentionsDatabaseManager =
+                        new MentionsDatabaseManager(getActivity());
+                mentionsDatabaseManager.open();
+                mentionsDatabaseManager.clearDatabase();
+                mentionsDatabaseManager.close();
+
+                NotificationsDatabaseManager notificationsDatabaseManager =
+                        new NotificationsDatabaseManager(getActivity());
+                notificationsDatabaseManager.open();
+                notificationsDatabaseManager.clearDatabase();
+                notificationsDatabaseManager.close();
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoidValue) {
+                Toast.makeText(getActivity(), getString(R.string.logout_done), Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+                Intent i = new Intent(getActivity(), HomeActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                        .putExtra("exit", "exit");
+                startActivity(i);
+            }
         }
 
     }
