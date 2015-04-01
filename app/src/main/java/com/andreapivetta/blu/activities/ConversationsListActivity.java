@@ -4,6 +4,7 @@ import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
@@ -47,7 +48,6 @@ public class ConversationsListActivity extends ActionBarActivity {
     private ProgressBar loadingProgressBar;
     private Twitter t;
 
-
     private boolean isUp = true;
 
     private RecyclerView mRecyclerView;
@@ -69,6 +69,9 @@ public class ConversationsListActivity extends ActionBarActivity {
                 }
             });
         }
+
+        if (!getSharedPreferences(Common.PREF, 0).getBoolean(Common.PREF_DATABASE_POPULATED, false))
+            showComeHereLaterDialog();
 
         t = TwitterUtils.getTwitter(ConversationsListActivity.this);
 
@@ -104,7 +107,7 @@ public class ConversationsListActivity extends ActionBarActivity {
         newMessageImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog();
+                showChooseUserDialog();
             }
         });
 
@@ -116,7 +119,7 @@ public class ConversationsListActivity extends ActionBarActivity {
         });
     }
 
-    void showDialog() {
+    void showChooseUserDialog() {
         mUsersSimpleAdapter = new UserListMessageAdapter(subset, ConversationsListActivity.this);
         new LoadFollowers().execute(null, null, null);
 
@@ -158,6 +161,21 @@ public class ConversationsListActivity extends ActionBarActivity {
         builder.setView(dialogView)
                 .setPositiveButton(R.string.ok, null)
                 .create().show();
+    }
+
+    void showComeHereLaterDialog() {
+        new AlertDialog.Builder(ConversationsListActivity.this)
+                .setCancelable(false)
+                .setTitle(getString(R.string.ops))
+                .setMessage(R.string.come_here_later_message)
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ConversationsListActivity.this.finish();
+                    }
+                })
+                .create()
+                .show();
     }
 
     @Override
