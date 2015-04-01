@@ -92,11 +92,8 @@ public class ConversationActivity extends ActionBarActivity {
                 charsLeft = 140 - s.toString().length();
                 charsLeftTextView.setText(String.valueOf(charsLeft));
 
-
-                if (charsLeft < 0)
-                    charsLeftTextView.setTextColor(getResources().getColor(R.color.red));
-                else
-                    charsLeftTextView.setTextColor(getResources().getColor(R.color.lightGrey));
+                charsLeftTextView.setTextColor(
+                        getResources().getColor((charsLeft < 0) ? R.color.red : R.color.lightGrey));
             }
         });
 

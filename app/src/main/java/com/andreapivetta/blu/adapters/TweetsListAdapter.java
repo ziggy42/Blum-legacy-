@@ -41,6 +41,7 @@ import java.util.concurrent.TimeUnit;
 import twitter4j.MediaEntity;
 import twitter4j.Status;
 import twitter4j.Twitter;
+import twitter4j.User;
 
 public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.ViewHolder> {
 
@@ -91,7 +92,9 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             holder.retweetTextView.setVisibility(View.GONE);
         }
 
-        holder.userNameTextView.setText(currentStatus.getUser().getName());
+        final User currentUser = currentStatus.getUser();
+
+        holder.userNameTextView.setText(currentUser.getName());
 
         Date d = currentStatus.getCreatedAt();
         Calendar c = Calendar.getInstance(), c2 = Calendar.getInstance();
@@ -117,7 +120,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
         } else holder.timeTextView.setText(context.getString(R.string.mini_seconds, (int) seconds));
 
         Picasso.with(context)
-                .load(currentStatus.getUser().getBiggerProfileImageURL())
+                .load(currentUser.getBiggerProfileImageURL())
                 .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
                 .into(holder.userProfilePicImageView);
 
@@ -135,7 +138,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, UserProfileActivity.class);
-                i.putExtra("ID", currentStatus.getUser().getId());
+                i.putExtra("ID", currentUser.getId());
                 context.startActivity(i);
             }
         });
@@ -176,7 +179,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, NewTweetActivity.class);
-                i.putExtra("USER_PREFIX", "@" + currentStatus.getUser().getScreenName())
+                i.putExtra("USER_PREFIX", "@" + currentUser.getScreenName())
                         .putExtra("REPLY_ID", currentStatus.getId());
                 context.startActivity(i);
             }
@@ -188,7 +191,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND)
                         .putExtra(Intent.EXTRA_TEXT, "https://twitter.com/" +
-                                currentStatus.getUser().getScreenName() + "/status/" + currentStatus.getId())
+                                currentUser.getScreenName() + "/status/" + currentStatus.getId())
                         .setType("text/plain");
                 context.startActivity(Intent.createChooser(sendIntent, context.getString(R.string.share_tweet)));
             }
@@ -248,7 +251,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             holder.statusTextView.setText(Html.fromHtml(iHateHtml.toString()));
             holder.statusTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
-            ((VHHeader) holder).screenNameTextView.setText("@" + currentStatus.getUser().getScreenName());
+            ((VHHeader) holder).screenNameTextView.setText("@" + currentUser.getScreenName());
 
             String amount = currentStatus.getFavoriteCount() + "";
             StyleSpan b = new StyleSpan(android.graphics.Typeface.BOLD);

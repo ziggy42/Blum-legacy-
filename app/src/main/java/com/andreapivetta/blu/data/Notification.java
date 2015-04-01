@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 
@@ -93,7 +94,8 @@ public class Notification implements Comparable<Notification> {
                 .setLargeIcon(Common.getBitmapFromURL(profilePicURL))
                 .setLights(Color.BLUE, 500, 1000);
 
-        if (context.getSharedPreferences(Common.PREF, 0).getBoolean(Common.PREF_HEADS_UP_NOTIFICATIONS, true))
+        if (context.getSharedPreferences(Common.PREF, 0).getBoolean(Common.PREF_HEADS_UP_NOTIFICATIONS, true)
+                && (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1))
             mBuilder.setPriority(android.app.Notification.PRIORITY_HIGH);
 
         switch (type) {

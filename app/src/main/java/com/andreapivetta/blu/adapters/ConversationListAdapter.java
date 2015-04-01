@@ -54,12 +54,7 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ConversationLi
                 .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
                 .into(holder.userProfilePicImageView);
 
-        if (!current.isRead())
-            holder.messageTextView.setTypeface(null, Typeface.BOLD_ITALIC);
-        else
-            holder.messageTextView.setTypeface(null, Typeface.NORMAL);
-
-
+        holder.messageTextView.setTypeface(null, (current.isRead()) ? Typeface.NORMAL : Typeface.BOLD_ITALIC);
         holder.userNameTextView.setText(current.getOtherUserName());
         holder.messageTextView.setText((loggedUserID == current.getSenderID()) ?
                 context.getString(R.string.you_message, current.getMessageText()) : current.getMessageText());

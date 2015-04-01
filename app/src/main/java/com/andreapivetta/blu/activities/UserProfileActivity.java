@@ -527,10 +527,8 @@ public class UserProfileActivity extends ActionBarActivity {
                                 followButton.setText(getString(R.string.unfollow));
                                 isHeFollowingTextView.setText(
                                         getString(R.string.you_are_following, user.getName()));
-                                if (type.equals(TYPE.HE_FOLLOWS_ME))
-                                    type = TYPE.WE_FOLLOW_EACH_OTHER;
-                                else
-                                    type = TYPE.I_FOLLOW_HIM;
+                                type = (type.equals(TYPE.HE_FOLLOWS_ME)) ?
+                                        TYPE.WE_FOLLOW_EACH_OTHER : TYPE.I_FOLLOW_HIM;
                             }
                         });
                 break;
@@ -540,9 +538,8 @@ public class UserProfileActivity extends ActionBarActivity {
     }
 
     void createUsersDialog(final String mode) {
-        if (mode.equals(FOLLOWERS))
-            mUsersSimpleAdapter = new UserListSimpleAdapter(followers, UserProfileActivity.this);
-        else mUsersSimpleAdapter = new UserListSimpleAdapter(following, UserProfileActivity.this);
+        mUsersSimpleAdapter = new UserListSimpleAdapter(
+                (mode.equals(FOLLOWERS)) ? followers : following, UserProfileActivity.this);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(UserProfileActivity.this);
         View dialogView = View.inflate(UserProfileActivity.this, R.layout.dialog_users, null);
