@@ -121,7 +121,7 @@ public class ConversationActivity extends ActionBarActivity {
 
                     mDataSet.add(
                             new Message(0L, getSharedPreferences(Common.PREF, 0).getLong(Common.PREF_LOGGED_USER, 0L),
-                                    0L, message, Calendar.getInstance().getTime().getTime(), "", "", true)); // MOLTO STUPIDO
+                                    0L, message, Calendar.getInstance().getTime().getTime(), "", "", true));
 
                     mAdapter.notifyDataSetChanged();
 
@@ -204,8 +204,15 @@ public class ConversationActivity extends ActionBarActivity {
                 dbm.open();
                 for (Message message : dbm.getConversation(userID))
                     mDataSet.add(message);
-                dbm.close();
                 mAdapter.notifyDataSetChanged();
+
+                for (int i = mDataSet.size() - 1; i >= 0; i--)
+                    if (!mDataSet.get(i).isRead())
+                        dbm.setRead(mDataSet.get(i).getMessageID());
+                    else
+                        break;
+
+                dbm.close();
 
                 NotificationManager nMgr = (NotificationManager)
                         getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);

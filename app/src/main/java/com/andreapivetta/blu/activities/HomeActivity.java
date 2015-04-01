@@ -62,6 +62,9 @@ public class HomeActivity extends TimeLineActivity {
             } else {
                 new GetTimeLine().execute(null, null, null);
             }
+
+            if (mSharedPreferences.getBoolean(Common.PREF_STREAM_ON, false))
+                startService(new Intent(HomeActivity.this, StreamNotificationService.class));
         }
 
         super.onCreate(savedInstanceState);
