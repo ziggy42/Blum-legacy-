@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.utilities.Common;
@@ -83,7 +84,7 @@ public class UpdateTwitterStatus extends AsyncTask<String, String, Boolean> {
             mNotifyManager.notify(i, mBuilder.build());
             mSharedPreferences.edit().putInt("LAST", i + 1).apply();
         } else {
-            Log.i("UPDATE STATUS", "Tweet not sent");
+            Toast.makeText(context, context.getString(R.string.action_not_performed), Toast.LENGTH_SHORT).show();
         }
     }
 

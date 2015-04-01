@@ -3,7 +3,9 @@ package com.andreapivetta.blu.twitter;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
+import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.data.DirectMessagesDatabaseManager;
 import com.andreapivetta.blu.utilities.Common;
 
@@ -53,7 +55,7 @@ public class SendDirectMessage extends AsyncTask<String, Void, Boolean> {
 
     protected void onPostExecute(Boolean status) {
         if (!status) {
-            // TODO do something
+            Toast.makeText(context, context.getString(R.string.action_not_performed), Toast.LENGTH_SHORT).show();
         }
     }
 }

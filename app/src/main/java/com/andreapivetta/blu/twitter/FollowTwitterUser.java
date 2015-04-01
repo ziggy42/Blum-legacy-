@@ -44,7 +44,7 @@ public class FollowTwitterUser extends AsyncTask<Long, Void, Boolean> {
             else
                 Toast.makeText(context, context.getString(R.string.following_removed), Toast.LENGTH_SHORT).show();
         } else {
-            Log.i("FOLLOW STATUS", "Action not performed");
+            Toast.makeText(context, context.getString(R.string.action_not_performed), Toast.LENGTH_SHORT).show();
         }
     }
 }

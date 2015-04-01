@@ -45,7 +45,7 @@ public class FavoriteTweet extends AsyncTask<Long, Void, Boolean> {
             else
                 Toast.makeText(context, context.getString(R.string.favorite_added), Toast.LENGTH_SHORT).show();
         } else {
-            Log.i("FAVORITE STATUS", "Action not performed");
+            Toast.makeText(context, context.getString(R.string.action_not_performed), Toast.LENGTH_SHORT).show();
         }
     }
 }

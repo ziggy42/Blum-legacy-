@@ -121,5 +121,6 @@
     <string name="ops">Oops, questo è imbarazzante…</string>
     <string name="performing_logout">Sto facendo il Logout</string>
     <string name="please_wait">Aspetta qualche secondo</string>
+    <string name="action_not_performed">Oops! Qualcosa è andato storto, riprova più tardi</string>
 
 </resources>

@@ -35,7 +35,7 @@ public class RetweetTweet extends AsyncTask<Long, Void, Boolean> {
         if (status) {
             Toast.makeText(context, context.getString(R.string.status_retweeted), Toast.LENGTH_SHORT).show();
         } else {
-            Log.i("RETWEET STATUS", "Action not performed");
+            Toast.makeText(context, context.getString(R.string.action_not_performed), Toast.LENGTH_SHORT).show();
         }
     }
 }
