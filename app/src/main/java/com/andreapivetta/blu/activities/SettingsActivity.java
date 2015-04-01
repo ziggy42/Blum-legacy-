@@ -26,7 +26,6 @@ import com.andreapivetta.blu.data.NotificationsDatabaseManager;
 import com.andreapivetta.blu.data.RetweetsDatabaseManager;
 import com.andreapivetta.blu.services.BasicNotificationService;
 import com.andreapivetta.blu.services.StreamNotificationService;
-import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.utilities.Common;
 
 
@@ -176,7 +175,8 @@ public class SettingsActivity extends ActionBarActivity {
                         new AlertDialog.Builder(getActivity())
                                 .setTitle(getString(R.string.streamDialogTitle))
                                 .setMessage(getString(R.string.streamDialogMessage))
-                                .setPositiveButton(getString(R.string.streamContinue), new DialogInterface.OnClickListener() {
+                                .setPositiveButton(getString(R.string.streamContinue),
+                                        new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         mSharedPreferences.edit().putBoolean(Common.PREF_STREAM_ON, true).apply();
@@ -268,16 +268,7 @@ public class SettingsActivity extends ActionBarActivity {
                 else
                     BasicNotificationService.stopService(getActivity());
 
-                mSharedPreferences.edit()
-                        .remove(TwitterUtils.PREF_KEY_OAUTH_TOKEN)
-                        .remove(TwitterUtils.PREF_KEY_OAUTH_SECRET)
-                        .remove(TwitterUtils.PREF_KEY_TWITTER_LOGIN)
-                        .remove(Common.PREF_STREAM_ON)
-                        .remove(Common.PREF_FREQ)
-                        .remove(Common.PREF_HEADS_UP_NOTIFICATIONS)
-                        .remove(Common.PREF_DATABASE_POPULATED)
-                        .remove(Common.PREF_LOGGED_USER)
-                        .apply();
+                mSharedPreferences.edit().clear().apply();
 
                 DirectMessagesDatabaseManager directMessagesDatabaseManager =
                         new DirectMessagesDatabaseManager(getActivity());
