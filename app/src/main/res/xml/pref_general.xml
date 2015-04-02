@@ -1,20 +1,8 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:key="pref_key_behavior"
-        android:title="@string/prefcat_behavior_title">
-
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="pref_key_animations"
-            android:summary="@string/animations_pref_summary"
-            android:title="@string/animations_pref_title" />
-
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="pref_key_heads_up_notifications"
-            android:summary="@string/heads_up_notifications_pref_summary"
-            android:title="@string/heads_up_notifications_pref_title" />
+        android:key="pref_key_notifications"
+        android:title="@string/notifications">
 
         <ListPreference
             android:entries="@array/frequencies"
@@ -22,6 +10,40 @@
             android:key="pref_key_frequencies"
             android:summary="@string/frequency_pref_summary"
             android:title="@string/frequency_pref_title" />
+
+        <ListPreference
+            android:entries="@array/when_notifications"
+            android:entryValues="@array/when_notifications"
+            android:key="pref_key_fav_ret"
+            android:summary="@string/when_fav_ret_pref_summary"
+            android:title="@string/when_fav_ret_pref_title" />
+
+        <ListPreference
+            android:entries="@array/when_notifications"
+            android:entryValues="@array/when_notifications"
+            android:key="pref_key_mentions"
+            android:summary="@string/when_mentions_pref_summary"
+            android:title="@string/when_mentions_pref_title" />
+
+        <ListPreference
+            android:entries="@array/when_notifications"
+            android:entryValues="@array/when_notifications"
+            android:key="pref_key_followers"
+            android:summary="@string/when_followers_pref_summary"
+            android:title="@string/when_followers_pref_title" />
+
+        <ListPreference
+            android:entries="@array/when_notifications"
+            android:entryValues="@array/when_notifications"
+            android:key="pref_key_dms"
+            android:summary="@string/when_dms_pref_summary"
+            android:title="@string/when_dms_pref_title" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_key_heads_up_notifications"
+            android:summary="@string/heads_up_notifications_pref_summary"
+            android:title="@string/heads_up_notifications_pref_title" />
 
         <SwitchPreference
             android:defaultValue="false"
@@ -32,8 +54,14 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="pref_key_account"
-        android:title="@string/prefcat_account_title">
+        android:key="pref_key_behavior"
+        android:title="@string/prefcat_behavior_title">
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_key_animations"
+            android:summary="@string/animations_pref_summary"
+            android:title="@string/animations_pref_title" />
 
         <Preference
             android:key="pref_key_logout"
@@ -41,6 +69,7 @@
             android:title="@string/logout_pref_title" />
 
     </PreferenceCategory>
+
 
     <PreferenceCategory
         android:key="pref_key_behavior"

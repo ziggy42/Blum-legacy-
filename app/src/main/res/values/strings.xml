@@ -94,6 +94,14 @@
     <string name="performing_logout">Performing logout</string>
     <string name="please_wait">Please wait a few seconds…</string>
     <string name="action_not_performed">Oops! Something went wrong, try again later</string>
+    <string name="when_fav_ret_pref_title">Favorites and Retweets</string>
+    <string name="when_mentions_pref_title">Mentions</string>
+    <string name="when_followers_pref_title">Followers</string>
+    <string name="when_dms_pref_title">Direct Messages</string>
+    <string name="when_fav_ret_pref_summary">Show notifications for Favorites and Retweets</string>
+    <string name="when_mentions_pref_summary">Show notifications for Mentions</string>
+    <string name="when_followers_pref_summary">Show notifications for Followers</string>
+    <string name="when_dms_pref_summary">Show notifications for Direct Messages</string>
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>
@@ -109,6 +117,12 @@
         <item>Tweets</item>
         <item>Users</item>
     </array>
+
+    <string-array name="when_notifications">
+        <item>Never</item>
+        <item>Wi-Fi Only</item>
+        <item>Always</item>
+    </string-array>
 
     <string-array name="frequencies">
         <item>5 minutes</item>

@@ -25,4 +25,9 @@ public class ConnectionDetector {
         }
         return false;
     }
+
+    public boolean isConnectingToWiFi() {
+        return ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE))
+                .getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected();
+    }
 }

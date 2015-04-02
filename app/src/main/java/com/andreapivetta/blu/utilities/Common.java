@@ -29,6 +29,15 @@ public class Common {
     public static final String PREF_FREQ = "freq";
     public static final String PREF_DATABASE_POPULATED = "populated";
     public static final String PREF_LOGGED_USER = "user";
+    public final static String PREF_RET_FAV_NOTS = "retfavnots";
+    public final static String PREF_MENTIONS_NOTS = "mentionsnots";
+    public final static String PREF_FOLLOWERS_NOTS = "followersnots";
+    public final static String PREF_DMS_NOTS = "dmsnots";
+
+    public final static String ALWAYS = "always";
+    public final static String NEVER = "never";
+    public final static String WIFI_ONLY = "wifi";
+
     public static final String USER_AGENT =
             "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36";
     private static final String FAVORITERS_URL = "https://twitter.com/i/activity/favorited_popup?id=";

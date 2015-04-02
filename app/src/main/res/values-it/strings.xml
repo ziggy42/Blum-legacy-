@@ -95,6 +95,12 @@
         <item>Utenti</item>
     </array>
 
+    <string-array name="when_notifications">
+        <item>Mai</item>
+        <item>Solo con Wi-Fi</item>
+        <item>Sempre</item>
+    </string-array>
+
     <string-array name="frequencies">
         <item>5 minuti</item>
         <item>10 minuti</item>
@@ -122,5 +128,13 @@
     <string name="performing_logout">Sto facendo il Logout</string>
     <string name="please_wait">Aspetta qualche secondo</string>
     <string name="action_not_performed">Oops! Qualcosa è andato storto, riprova più tardi</string>
+    <string name="when_dms_pref_summary">Mostra notifiche per Messaggi Diretti</string>
+    <string name="when_dms_pref_title">Messaggi Diretti</string>
+    <string name="when_fav_ret_pref_summary">Mostra notifiche per Preferiti e Retweet</string>
+    <string name="when_fav_ret_pref_title">Preferiti e Retweet</string>
+    <string name="when_followers_pref_summary">Mostra notifiche per nuovi Follower</string>
+    <string name="when_followers_pref_title">Follower</string>
+    <string name="when_mentions_pref_summary">Mostra notifiche per Menzioni</string>
+    <string name="when_mentions_pref_title">Menzioni</string>
 
 </resources>
