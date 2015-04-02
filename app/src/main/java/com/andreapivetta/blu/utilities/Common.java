@@ -27,7 +27,7 @@ public class Common {
     public static final String PREF_HEADS_UP_NOTIFICATIONS = "headsup";
     public static final String PREF_STREAM_ON = "twitterstream";
     public static final String PREF_FREQ = "freq";
-    public static final String PREF_DATABASE_POPULATED = "populated";
+    public static final String PREF_DATABASE_POPULATED = "db_populated";
     public static final String PREF_LOGGED_USER = "user";
     public final static String PREF_RET_FAV_NOTS = "retfavnots";
     public final static String PREF_MENTIONS_NOTS = "mentionsnots";

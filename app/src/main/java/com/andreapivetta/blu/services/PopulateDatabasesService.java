@@ -2,7 +2,6 @@ package com.andreapivetta.blu.services;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.util.Log;
 
 import com.andreapivetta.blu.data.DirectMessagesDatabaseManager;
 import com.andreapivetta.blu.data.FavoritesDatabaseManager;
@@ -27,7 +26,6 @@ public class PopulateDatabasesService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.i("PopulateService", "START");
         Twitter twitter = TwitterUtils.getTwitter(getApplicationContext());
         FavoritesDatabaseManager favoritesDatabaseManager = new FavoritesDatabaseManager(getApplicationContext());
         RetweetsDatabaseManager retweetsDatabaseManager = new RetweetsDatabaseManager(getApplicationContext());
@@ -92,8 +90,6 @@ public class PopulateDatabasesService extends IntentService {
 
             getApplicationContext().getSharedPreferences(Common.PREF, 0).edit()
                     .putBoolean(Common.PREF_DATABASE_POPULATED, true).apply();
-
-            Log.i("PopulateService", "STOP");
         } catch (Exception e) {
             e.printStackTrace();
         }
