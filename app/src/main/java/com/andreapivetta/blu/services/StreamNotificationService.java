@@ -45,7 +45,7 @@ public class StreamNotificationService extends Service {
         @Override
         public void onFavorite(User user, User user2, Status status) {
             try {
-                if (user2.getScreenName().equals(twitter.getScreenName())) {
+                if (user2.getId() == twitter.getId()) {
                     Notification.pushNotification(status.getId(), user.getName(), Notification.TYPE_FAVOURITE,
                             status.getText(), user.getBiggerProfileImageURL(), user.getId(), getApplicationContext());
 
@@ -68,7 +68,7 @@ public class StreamNotificationService extends Service {
         public void onFollow(User user, User user2) {
 
             try {
-                if (user2.getScreenName().equals(twitter.getScreenName())) {
+                if (user2.getId() == twitter.getId()) {
                     Notification.pushNotification((long) -1, user.getName(), Notification.TYPE_FOLLOW,
                             "", user.getBiggerProfileImageURL(), user.getId(), getApplicationContext());
 
@@ -159,14 +159,14 @@ public class StreamNotificationService extends Service {
 
         @Override
         public void onStatus(Status status) {
-            ArrayList<String> names = new ArrayList<>();
+            ArrayList<Long> names = new ArrayList<>();
             for (UserMentionEntity e : status.getUserMentionEntities())
-                names.add(e.getScreenName());
+                names.add(e.getId());
 
             try {
-                if (names.contains(twitter.getScreenName())) {
+                if (names.contains(twitter.getId())) {
                     if (status.isRetweet()) {
-                        if (status.getRetweetedStatus().getUser().getScreenName().equals(twitter.getScreenName())) {
+                        if (status.getRetweetedStatus().getUser().getId() == twitter.getId()) {
                             Notification.pushNotification(status.getId(), status.getUser().getName(), Notification.TYPE_RETWEET,
                                     status.getRetweetedStatus().getText(),
                                     status.getUser().getBiggerProfileImageURL(), status.getUser().getId(),

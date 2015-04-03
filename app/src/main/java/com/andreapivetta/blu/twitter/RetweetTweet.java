@@ -2,7 +2,6 @@ package com.andreapivetta.blu.twitter;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.andreapivetta.blu.R;

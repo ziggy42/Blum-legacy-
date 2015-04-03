@@ -48,7 +48,6 @@ public class BasicNotificationService extends IntentService {
 
         if (detector.isConnectingToInternet()) {
             if (mSharedPreferences.getBoolean(Common.PREF_DATABASE_POPULATED, false)) {
-
                 String pref = mSharedPreferences.getString(Common.PREF_RET_FAV_NOTS, Common.WIFI_ONLY);
                 if (pref.equals(Common.WIFI_ONLY) && detector.isConnectingToWiFi())
                     getApplicationContext()

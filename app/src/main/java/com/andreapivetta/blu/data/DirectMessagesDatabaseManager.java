@@ -140,16 +140,17 @@ public class DirectMessagesDatabaseManager {
             if (existingMessages.contains(dm.getId())) {
                 existingMessages.remove(dm.getId());
             } else {
-                newMessages.add(dm);
-
-                if (dm.getSenderId() == loggedUserID)
+                if (dm.getSenderId() == loggedUserID) {
                     insertMessage(dm.getId(), dm.getSenderId(), dm.getRecipientId(), dm.getText(),
                             dm.getCreatedAt().getTime(), dm.getRecipientScreenName(),
-                            dm.getRecipient().getBiggerProfileImageURL(), false);
-                else
+                            dm.getRecipient().getBiggerProfileImageURL(), true);
+                }
+                else {
                     insertMessage(dm.getId(), dm.getSenderId(), dm.getRecipientId(), dm.getText(),
                             dm.getCreatedAt().getTime(), dm.getSenderScreenName(),
                             dm.getSender().getBiggerProfileImageURL(), false);
+                    newMessages.add(dm);
+                }
             }
         }
 
