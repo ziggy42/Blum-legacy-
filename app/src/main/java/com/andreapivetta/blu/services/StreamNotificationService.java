@@ -148,6 +148,16 @@ public class StreamNotificationService extends Service {
         }
 
         @Override
+        public void onUserSuspension(long suspendedUser) {
+
+        }
+
+        @Override
+        public void onUserDeletion(long deletedUser) {
+
+        }
+
+        @Override
         public void onBlock(User user, User user2) {
 
         }
