@@ -136,5 +136,7 @@
     <string name="when_followers_pref_title">Follower</string>
     <string name="when_mentions_pref_summary">Mostra notifiche per Menzioni</string>
     <string name="when_mentions_pref_title">Menzioni</string>
+    <string name="licenses_pref_summary">Licenze per il software open source usato in questa app</string>
+    <string name="licenses_pref_title">Licenze Open Source</string>
 
 </resources>

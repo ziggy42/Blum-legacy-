@@ -102,6 +102,8 @@
     <string name="when_mentions_pref_summary">Show notifications for Mentions</string>
     <string name="when_followers_pref_summary">Show notifications for Followers</string>
     <string name="when_dms_pref_summary">Show notifications for Direct Messages</string>
+    <string name="licenses_pref_title">Open Source Licenses</string>
+    <string name="licenses_pref_summary">Licenses for open source software used in this app</string>
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>

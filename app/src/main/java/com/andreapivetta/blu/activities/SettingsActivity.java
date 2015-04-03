@@ -15,6 +15,7 @@ import android.preference.SwitchPreference;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
@@ -27,6 +28,10 @@ import com.andreapivetta.blu.data.RetweetsDatabaseManager;
 import com.andreapivetta.blu.services.BasicNotificationService;
 import com.andreapivetta.blu.services.StreamNotificationService;
 import com.andreapivetta.blu.utilities.Common;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 
 public class SettingsActivity extends ActionBarActivity {
@@ -57,13 +62,14 @@ public class SettingsActivity extends ActionBarActivity {
     public static class SettingsFragment extends PreferenceFragment {
 
         private SharedPreferences mSharedPreferences;
-        private Preference logoutPreference, sharePreference, aboutPreference, feedbackPreference;
+        private Preference logoutPreference, sharePreference, aboutPreference, feedbackPreference, licensesPreference;
         private CheckBoxPreference animationsPreference, headsUpPreference;
         private SwitchPreference streamServicePreference;
         private ListPreference favoritesRetweetsListPreference, mentionsListPreference,
                 followersListPreference, messagesListPreference, frequencyListPreference;
 
         private ProgressDialog dialog;
+        private WebView mWebView;
 
         public SettingsFragment() {
         }
@@ -87,6 +93,7 @@ public class SettingsActivity extends ActionBarActivity {
             mentionsListPreference = (ListPreference) findPreference("pref_key_mentions");
             followersListPreference = (ListPreference) findPreference("pref_key_followers");
             messagesListPreference = (ListPreference) findPreference("pref_key_dms");
+            licensesPreference = findPreference("pref_key_licenses");
 
             if (mSharedPreferences.getBoolean(Common.PREF_STREAM_ON, false)) {
                 frequencyListPreference.setEnabled(false);
@@ -342,6 +349,51 @@ public class SettingsActivity extends ActionBarActivity {
                 }
             });
 
+            licensesPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    View content = View.inflate(getActivity(), R.layout.fragment_licenses, null);
+                    mWebView = (WebView) content.findViewById(R.id.licensesFragmentWebView);
+                    loadWebView();
+
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle(getString(R.string.licenses_pref_title))
+                            .setView(content)
+                            .setPositiveButton(getString(R.string.ok), null)
+                            .create()
+                            .show();
+
+                    return true;
+                }
+            });
+
+        }
+
+        void loadWebView() {
+            new AsyncTask<Void, Void, String>() {
+                @Override
+                protected String doInBackground(Void... params) {
+                    BufferedReader bufferedReader = new BufferedReader(
+                            new InputStreamReader(getActivity().getResources().openRawResource(R.raw.licenses)));
+
+                    String line;
+                    StringBuilder sb = new StringBuilder();
+                    try {
+                        while ((line = bufferedReader.readLine()) != null)
+                            sb.append(line).append("\n");
+                        bufferedReader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    return sb.toString();
+                }
+
+                @Override
+                protected void onPostExecute(String licensesBody) {
+                    mWebView.loadDataWithBaseURL(null, licensesBody, "text/html", "utf-8", null);
+                }
+            }.execute();
         }
 
         void performLogout() {
