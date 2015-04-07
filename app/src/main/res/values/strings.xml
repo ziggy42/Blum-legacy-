@@ -155,7 +155,6 @@
     <string name="title_activity_conversations_list">Conversations</string>
 
     <!-- Preferences -->
-    <string name="prefcat_account_title" translatable="false">Account</string>
     <string name="logout_pref_title" translatable="false">Logout</string>
     <string name="about_pref_title" translatable="false">About</string>
     <string name="logout_pref_summary">Logout and Exit</string>

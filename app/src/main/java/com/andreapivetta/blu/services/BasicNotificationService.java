@@ -42,7 +42,6 @@ public class BasicNotificationService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-
         SharedPreferences mSharedPreferences = getApplicationContext().getSharedPreferences(Common.PREF, 0);
         ConnectionDetector detector = new ConnectionDetector(getApplicationContext());
 
