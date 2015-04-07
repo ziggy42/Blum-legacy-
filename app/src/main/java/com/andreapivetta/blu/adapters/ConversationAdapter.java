@@ -14,6 +14,9 @@ import com.andreapivetta.blu.data.Message;
 import com.andreapivetta.blu.utilities.Common;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.ViewHolder> {
 
@@ -23,8 +26,11 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     private ArrayList<Message> mDataSet;
     private long loggedUserID;
 
+    private Context context;
+
     public ConversationAdapter(ArrayList<Message> mDataSet, Context context) {
         this.mDataSet = mDataSet;
+        this.context = context;
         this.loggedUserID = context.getSharedPreferences(Common.PREF, 0).getLong(Common.PREF_LOGGED_USER, 0L);
     }
 
@@ -42,8 +48,32 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.messageTextView.setText(mDataSet.get(position).getMessageText());
+        Message currentMessage = mDataSet.get(position);
+
+        holder.messageTextView.setText(currentMessage.getMessageText());
         Linkify.addLinks(holder.messageTextView, Linkify.ALL);
+
+        Calendar c = Calendar.getInstance(), c2 = Calendar.getInstance();
+        c2.setTimeInMillis(currentMessage.getTimeStamp());
+
+        long diff = c.getTimeInMillis() - c2.getTimeInMillis();
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
+        if (seconds > 60) {
+            long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+            if (minutes > 60) {
+                long hours = TimeUnit.MILLISECONDS.toHours(diff);
+                if (hours > 24) {
+                    if (c.get(Calendar.YEAR) == c2.get(Calendar.YEAR))
+                        holder.timeTextView.setText(
+                                (new java.text.SimpleDateFormat("MMM dd", Locale.getDefault())).format(c2.getTime()));
+                    else
+                        holder.timeTextView.setText(
+                                (new java.text.SimpleDateFormat("MMM dd yyyy", Locale.getDefault())).format(c2.getTime()));
+                } else
+                    holder.timeTextView.setText(context.getString(R.string.mini_hours, (int) hours));
+            } else
+                holder.timeTextView.setText(context.getString(R.string.mini_minutes, (int) minutes));
+        } else holder.timeTextView.setText(context.getString(R.string.mini_seconds, (int) seconds));
     }
 
     @Override
@@ -53,12 +83,13 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView messageTextView;
+        public TextView messageTextView, timeTextView;
 
         public ViewHolder(View container) {
             super(container);
 
             this.messageTextView = (TextView) container.findViewById(R.id.messageTextView);
+            this.timeTextView = (TextView) container.findViewById(R.id.timeTextView);
         }
     }
 }

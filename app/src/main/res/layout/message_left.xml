@@ -8,7 +8,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="4"
-        android:gravity="left">
+        android:gravity="start">
 
         <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/messageLeft"
@@ -16,21 +16,41 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="4dp"
             card_view:cardCornerRadius="3dp">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/lightGreen"
-                android:padding="5dp">
+                android:background="@color/lightGreen">
 
                 <TextView
                     android:id="@+id/messageTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/grey"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
                     android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/timeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/messageTextView"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginStart="5dp"
+                    android:fontFamily="sans-serif-thin"
+                    android:textSize="12sp" />
 
             </RelativeLayout>
 
