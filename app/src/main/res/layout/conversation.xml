@@ -4,7 +4,6 @@
     android:id="@+id/conversationContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
     app:mrl_rippleColor="@color/colorAccent"
     app:mrl_rippleOverlay="true">
 

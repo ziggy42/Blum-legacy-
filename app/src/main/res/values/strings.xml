@@ -104,6 +104,7 @@
     <string name="when_dms_pref_summary">Show notifications for Direct Messages</string>
     <string name="licenses_pref_title">Open Source Licenses</string>
     <string name="licenses_pref_summary">Licenses for open source software used in this app</string>
+    <string name="action_mark_as_read">Mark all as read</string>
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>

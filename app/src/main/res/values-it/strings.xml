@@ -138,5 +138,6 @@
     <string name="when_mentions_pref_title">Menzioni</string>
     <string name="licenses_pref_summary">Licenze per il software open source usato in questa app</string>
     <string name="licenses_pref_title">Licenze Open Source</string>
+    <string name="action_mark_as_read">Segna come letti</string>
 
 </resources>

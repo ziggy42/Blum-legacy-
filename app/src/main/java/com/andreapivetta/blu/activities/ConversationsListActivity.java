@@ -15,6 +15,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -242,6 +244,30 @@ public class ConversationsListActivity extends ActionBarActivity {
         isUp = true;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_conversations_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_mark_as_read) {
+            DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(ConversationsListActivity.this);
+            dbm.open();
+            dbm.markAllAsRead();
+
+            mDataSet.clear();
+            for (long id : dbm.getInterlocutors())
+                mDataSet.add(dbm.getLastMessageForGivenUser(id));
+            dbm.close();
+            Collections.sort(mDataSet);
+            conversationListAdapter.notifyDataSetChanged();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     public class DataUpdateReceiver extends BroadcastReceiver {
 
         @Override
@@ -250,7 +276,7 @@ public class ConversationsListActivity extends ActionBarActivity {
                 mDataSet.clear();
                 DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(ConversationsListActivity.this);
                 dbm.open();
-                for (Long id : dbm.getInterlocutors())
+                for (long id : dbm.getInterlocutors())
                     mDataSet.add(dbm.getLastMessageForGivenUser(id));
                 dbm.close();
                 Collections.sort(mDataSet);

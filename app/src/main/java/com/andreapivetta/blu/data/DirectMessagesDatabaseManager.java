@@ -175,6 +175,16 @@ public class DirectMessagesDatabaseManager {
         myDB.update(SetsMetaData.TABLE_NAME, cv, SetsMetaData.MESSAGE_ID + " =" + messageID, null);
     }
 
+    public void markAllAsRead() {
+        Cursor c = myDB.rawQuery( "SELECT " + SetsMetaData.MESSAGE_ID + " FROM " +
+                SetsMetaData.TABLE_NAME + " WHERE NOT " + SetsMetaData.FLAG_READ, null);
+
+        while (c.moveToNext())
+            setRead(c.getLong(0));
+
+        c.close();
+    }
+
     static final class SetsMetaData {
         static final String TABLE_NAME = "dms_table";
         static final String MESSAGE_ID = "message_id";
