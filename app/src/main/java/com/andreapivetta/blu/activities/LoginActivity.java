@@ -38,4 +38,8 @@ public class LoginActivity extends Activity {
         if (resultCode == RESULT_OK)
             finish();
     }
+
+    @Override
+    public void onBackPressed() {
+    }
 }
