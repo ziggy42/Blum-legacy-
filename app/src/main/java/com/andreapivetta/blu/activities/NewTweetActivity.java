@@ -254,11 +254,11 @@ public class NewTweetActivity extends ActionBarActivity {
             } else {
                 if (uploadedImageView.getVisibility() == View.VISIBLE)
                     new UpdateTwitterStatus(NewTweetActivity.this, twitter, imageFile,
-                            intent.getLongExtra("REPLY_ID", (long) -1))
+                            intent.getLongExtra("REPLY_ID", -1L))
                             .execute(newTweetEditText.getText().toString());
                 else
                     new UpdateTwitterStatus(NewTweetActivity.this, twitter,
-                            intent.getLongExtra("REPLY_ID", (long) -1))
+                            intent.getLongExtra("REPLY_ID", -1L))
                             .execute(newTweetEditText.getText().toString());
 
                 finish();

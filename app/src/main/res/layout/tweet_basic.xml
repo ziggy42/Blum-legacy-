@@ -103,6 +103,17 @@
                 android:src="@drawable/ic_repeat_grey600_36dp" />
 
             <ImageButton
+                android:id="@+id/quoteImageButton"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="?android:selectableItemBackground"
+                android:contentDescription="@string/respond_imageButton_contentDescriptor"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_format_quote_grey600_36dp"/>
+
+            <ImageButton
                 android:id="@+id/respondImageButton"
                 android:layout_width="0dp"
                 android:layout_height="25dp"

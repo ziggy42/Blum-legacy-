@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.ImageActivity;
 import com.andreapivetta.blu.activities.NewTweetActivity;
+import com.andreapivetta.blu.activities.NewTweetQuoteActivity;
 import com.andreapivetta.blu.activities.TweetActivity;
 import com.andreapivetta.blu.activities.UserProfileActivity;
 import com.andreapivetta.blu.twitter.FavoriteTweet;
@@ -172,6 +173,19 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                             }
                         })
                         .setNegativeButton(R.string.cancel, null).create().show();
+            }
+        });
+
+        holder.quoteImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, NewTweetQuoteActivity.class);
+
+                Bundle b = new Bundle();
+                b.putSerializable(NewTweetQuoteActivity.PAR_CURRENT_STATUS, currentStatus);
+                i.putExtra(NewTweetQuoteActivity.PAR_BUNDLE, b);
+
+                context.startActivity(i);
             }
         });
 
@@ -383,7 +397,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
         public TextView userNameTextView, statusTextView, timeTextView, retweetTextView;
         public ImageView userProfilePicImageView;
         public ImageButton favouriteImageButton, retweetImageButton, respondImageButton,
-                shareImageButton;
+                shareImageButton, quoteImageButton;
 
         public ViewHolder(View container) {
             super(container);
@@ -398,6 +412,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             this.retweetImageButton = (ImageButton) container.findViewById(R.id.retweetImageButton);
             this.respondImageButton = (ImageButton) container.findViewById(R.id.respondImageButton);
             this.shareImageButton = (ImageButton) container.findViewById(R.id.shareImageButton);
+            this.quoteImageButton = (ImageButton) container.findViewById(R.id.quoteImageButton);
         }
     }
 

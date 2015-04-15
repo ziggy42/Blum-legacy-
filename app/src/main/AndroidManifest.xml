@@ -96,6 +96,10 @@
             -->
         </activity>
         <activity
+            android:name=".activities.NewTweetQuoteActivity"
+            android:label="@string/title_activity_new_tweet" >
+        </activity>
+        <activity
             android:name=".activities.HashtagActivity"
             android:label="@string/title_empty" >
             <intent-filter>
@@ -141,11 +145,10 @@
                 android:value="com.andreapivetta.blu.activities.HomeActivity" />
         </activity>
         <activity
-            android:windowSoftInputMode="stateVisible|adjustResize"
             android:name=".activities.ConversationActivity"
             android:label="@string/title_empty"
-            android:parentActivityName=".activities.ConversationsListActivity" >
-
+            android:parentActivityName=".activities.ConversationsListActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.andreapivetta.blu.activities.ConversationsListActivity" />
