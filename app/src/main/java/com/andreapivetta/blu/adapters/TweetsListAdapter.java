@@ -14,6 +14,7 @@ import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.text.style.StyleSpan;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -347,9 +348,16 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                     }
                 }
             } else if (TYPE == TYPE_ITEM_QUOTE) {
+                String quotedStatusURL = "";
+                for (URLEntity entity : currentStatus.getURLEntities())
+                    if (entity.getExpandedURL().matches("(^https://twitter.com/)(.*)(/status/)(.*)")) {
+                        quotedStatusURL = entity.getExpandedURL();
+                        break;
+                    }
+                ((VHItemQuote) holder).photoImageView.setVisibility(View.GONE);
                 new FillQuote(((VHItemQuote) holder).quotedUserNameTextView, ((VHItemQuote) holder).quotedStatusTextView,
                         ((VHItemQuote) holder).photoImageView, ((VHItemQuote) holder).quotedStatusLinearLayout,
-                        currentStatus.getURLEntities()[0].getExpandedURL()).execute();
+                        quotedStatusURL).execute();
             }
 
             ((VHItem) holder).cardView.setOnClickListener(new View.OnClickListener() {
@@ -388,7 +396,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             return TYPE_ITEM_PHOTO;
 
         for (URLEntity entity : mDataSet.get(position).getURLEntities())
-            if (entity.getExpandedURL().matches("(^https:\\/\\/twitter.com\\/)(.*)(\\/status\\/)(.*)"))
+            if (entity.getExpandedURL().matches("(^https://twitter.com/)(.*)(/status/)(.*)"))
                 return TYPE_ITEM_QUOTE;
 
         return TYPE_ITEM;
@@ -497,7 +505,12 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             this.quotedUserNameTextView = quotedUserNameTextView;
             this.photoImageView = photoImageView;
             this.quotedStatusLinearLayout = quotedStatusLinearLayout;
-            this.statusID = Long.parseLong(status.substring(status.lastIndexOf('/') + 1));
+            try {
+                this.statusID = Long.parseLong(status.substring(status.lastIndexOf('/') + 1));
+            } catch (Exception e) {
+                Log.i("TWEETADAPTER", "Wrong status: " + status);
+                e.printStackTrace();
+            }
         }
 
         @Override
