@@ -436,7 +436,7 @@ public class UserProfileActivity extends ActionBarActivity {
             });
 
             if (statuses[i].getMediaEntities().length > 0) {
-                ImageView tweetPhotoImageView = (ImageView) tweetView.findViewById(R.id.tweetPhotoImageView);
+                ImageView tweetPhotoImageView = (ImageView) tweetView.findViewById(R.id.quotedStatusLinearLayout);
                 for (final MediaEntity mediaEntity : statuses[i].getMediaEntities()) {
                     if (mediaEntity.getType().equals("photo")) {
                         Picasso.with(this)

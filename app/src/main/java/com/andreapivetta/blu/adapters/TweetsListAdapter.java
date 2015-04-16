@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
@@ -42,6 +43,8 @@ import java.util.concurrent.TimeUnit;
 import twitter4j.MediaEntity;
 import twitter4j.Status;
 import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.URLEntity;
 import twitter4j.User;
 
 public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.ViewHolder> {
@@ -49,6 +52,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_ITEM_PHOTO = 2;
+    private static final int TYPE_ITEM_QUOTE = 3;
 
     private ArrayList<Status> mDataSet;
     private Context context;
@@ -73,6 +77,9 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
         else if (viewType == TYPE_ITEM_PHOTO)
             return new VHItemPhoto(
                     LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_photo, parent, false));
+        else if (viewType == TYPE_ITEM_QUOTE)
+            return new VHItemQuote(
+                    LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_quote, parent, false));
         else
             return new VHHeader(
                     LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_expanded, parent, false));
@@ -339,6 +346,10 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                         break;
                     }
                 }
+            } else if (TYPE == TYPE_ITEM_QUOTE) {
+                new FillQuote(((VHItemQuote) holder).quotedUserNameTextView, ((VHItemQuote) holder).quotedStatusTextView,
+                        ((VHItemQuote) holder).photoImageView, ((VHItemQuote) holder).quotedStatusLinearLayout,
+                        currentStatus.getURLEntities()[0].getExpandedURL()).execute();
             }
 
             ((VHItem) holder).cardView.setOnClickListener(new View.OnClickListener() {
@@ -375,6 +386,10 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
 
         if (mDataSet.get(position).getMediaEntities().length > 0)
             return TYPE_ITEM_PHOTO;
+
+        for (URLEntity entity : mDataSet.get(position).getURLEntities())
+            if (entity.getExpandedURL().matches("(^https:\\/\\/twitter.com\\/)(.*)(\\/status\\/)(.*)"))
+                return TYPE_ITEM_QUOTE;
 
         return TYPE_ITEM;
     }
@@ -438,6 +453,22 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
         }
     }
 
+    class VHItemQuote extends VHItem {
+        public TextView quotedUserNameTextView, quotedStatusTextView;
+        public ImageView photoImageView;
+        public LinearLayout quotedStatusLinearLayout;
+
+        public VHItemQuote(View container) {
+            super(container);
+
+            this.quotedUserNameTextView = (TextView) container.findViewById(R.id.quotedUserNameTextView);
+            this.quotedStatusTextView = (TextView) container.findViewById(R.id.quotedStatusTextView);
+            this.photoImageView = (ImageView) container.findViewById(R.id.photoImageView);
+            this.quotedStatusLinearLayout = (LinearLayout) container.findViewById(R.id.quotedStatusLinearLayout);
+        }
+
+    }
+
     class VHHeader extends ViewHolder {
         public TextView screenNameTextView, retweetsStatsTextView, favouritesStatsTextView;
         public ImageView tweetPhotoImageView; // TODO anche qui diversi header
@@ -449,6 +480,65 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             this.screenNameTextView = (TextView) container.findViewById(R.id.screenNameTextView);
             this.retweetsStatsTextView = (TextView) container.findViewById(R.id.retweetsStatsTextView);
             this.favouritesStatsTextView = (TextView) container.findViewById(R.id.favouritesStatsTextView);
+        }
+    }
+
+    class FillQuote extends AsyncTask<Void, Void, Boolean> {
+        private TextView quotedUserNameTextView, quotedStatusTextView;
+        private LinearLayout quotedStatusLinearLayout;
+        private ImageView photoImageView;
+
+        private twitter4j.Status status;
+        private long statusID;
+
+        public FillQuote(TextView quotedUserNameTextView, TextView quotedStatusTextView,
+                         ImageView photoImageView, LinearLayout quotedStatusLinearLayout, String status) {
+            this.quotedStatusTextView = quotedStatusTextView;
+            this.quotedUserNameTextView = quotedUserNameTextView;
+            this.photoImageView = photoImageView;
+            this.quotedStatusLinearLayout = quotedStatusLinearLayout;
+            this.statusID = Long.parseLong(status.substring(status.lastIndexOf('/') + 1));
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            try {
+                status = twitter.showStatus(statusID);
+            } catch (TwitterException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            if (aBoolean) {
+                this.quotedUserNameTextView.setText(status.getUser().getName());
+                this.quotedStatusTextView.setText(status.getText());
+
+                if (status.getMediaEntities().length > 0) {
+                    photoImageView.setVisibility(View.VISIBLE);
+                    Picasso.with(context)
+                            .load(status.getMediaEntities()[0].getMediaURL())
+                            .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
+                            .into(photoImageView);
+                } else
+                    photoImageView.setVisibility(View.GONE);
+
+                this.quotedStatusLinearLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(context, TweetActivity.class);
+                        Bundle b = new Bundle();
+                        b.putSerializable("TWEET", status);
+                        i.putExtra("STATUS", b);
+                        context.startActivity(i);
+                    }
+                });
+            }
         }
     }
 }
