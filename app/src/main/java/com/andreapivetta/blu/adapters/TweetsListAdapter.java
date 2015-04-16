@@ -14,7 +14,6 @@ import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.text.style.StyleSpan;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -505,12 +504,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             this.quotedUserNameTextView = quotedUserNameTextView;
             this.photoImageView = photoImageView;
             this.quotedStatusLinearLayout = quotedStatusLinearLayout;
-            try {
-                this.statusID = Long.parseLong(status.substring(status.lastIndexOf('/') + 1));
-            } catch (Exception e) {
-                Log.i("TWEETADAPTER", "Wrong status: " + status);
-                e.printStackTrace();
-            }
+            this.statusID = Long.parseLong(status.substring(status.lastIndexOf('/') + 1));
         }
 
         @Override

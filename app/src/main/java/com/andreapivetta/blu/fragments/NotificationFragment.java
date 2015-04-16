@@ -83,12 +83,12 @@ public class NotificationFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
 
-        if (kind == 0) {
+        /*if (kind == 0) {
             databaseManager.open();
             for (Notification n : notificationList)
                 databaseManager.setRead(n);
             databaseManager.close();
-        }
+        }*/
     }
 
     private class LoadNotifications extends AsyncTask<Void, Void, Boolean> {
@@ -122,6 +122,15 @@ public class NotificationFragment extends Fragment {
                         notificationList.add(buffer.get(i));
                         mAdapter.notifyItemChanged(i);
                     }
+
+                // TEST
+                if (kind == 0) {
+                    databaseManager.open();
+                    for (Notification n : notificationList)
+                        databaseManager.setRead(n);
+                    databaseManager.close();
+                }
+
             }
         }
     }
