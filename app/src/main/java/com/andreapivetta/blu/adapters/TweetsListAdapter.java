@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +29,7 @@ import com.andreapivetta.blu.activities.NewTweetActivity;
 import com.andreapivetta.blu.activities.NewTweetQuoteActivity;
 import com.andreapivetta.blu.activities.TweetActivity;
 import com.andreapivetta.blu.activities.UserProfileActivity;
+import com.andreapivetta.blu.asynctasks.FillQuote;
 import com.andreapivetta.blu.twitter.FavoriteTweet;
 import com.andreapivetta.blu.twitter.RetweetTweet;
 import com.squareup.picasso.Picasso;
@@ -43,7 +43,6 @@ import java.util.concurrent.TimeUnit;
 import twitter4j.MediaEntity;
 import twitter4j.Status;
 import twitter4j.Twitter;
-import twitter4j.TwitterException;
 import twitter4j.URLEntity;
 import twitter4j.User;
 
@@ -353,10 +352,12 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                         quotedStatusURL = entity.getExpandedURL();
                         break;
                     }
-                ((VHItemQuote) holder).photoImageView.setVisibility(View.GONE);
+                if (currentStatus.getMediaEntities().length == 0)
+                    ((VHItemQuote) holder).photoImageView.setVisibility(View.GONE);
+
                 new FillQuote(((VHItemQuote) holder).quotedUserNameTextView, ((VHItemQuote) holder).quotedStatusTextView,
                         ((VHItemQuote) holder).photoImageView, ((VHItemQuote) holder).quotedStatusLinearLayout,
-                        quotedStatusURL).execute();
+                        quotedStatusURL, twitter, context).execute();
             }
 
             ((VHItem) holder).cardView.setOnClickListener(new View.OnClickListener() {
@@ -487,65 +488,6 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             this.screenNameTextView = (TextView) container.findViewById(R.id.screenNameTextView);
             this.retweetsStatsTextView = (TextView) container.findViewById(R.id.retweetsStatsTextView);
             this.favouritesStatsTextView = (TextView) container.findViewById(R.id.favouritesStatsTextView);
-        }
-    }
-
-    class FillQuote extends AsyncTask<Void, Void, Boolean> {
-        private TextView quotedUserNameTextView, quotedStatusTextView;
-        private LinearLayout quotedStatusLinearLayout;
-        private ImageView photoImageView;
-
-        private twitter4j.Status status;
-        private long statusID;
-
-        public FillQuote(TextView quotedUserNameTextView, TextView quotedStatusTextView,
-                         ImageView photoImageView, LinearLayout quotedStatusLinearLayout, String status) {
-            this.quotedStatusTextView = quotedStatusTextView;
-            this.quotedUserNameTextView = quotedUserNameTextView;
-            this.photoImageView = photoImageView;
-            this.quotedStatusLinearLayout = quotedStatusLinearLayout;
-            this.statusID = Long.parseLong(status.substring(status.lastIndexOf('/') + 1));
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-
-            try {
-                status = twitter.showStatus(statusID);
-            } catch (TwitterException e) {
-                e.printStackTrace();
-                return false;
-            }
-
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            if (aBoolean) {
-                this.quotedUserNameTextView.setText(status.getUser().getName());
-                this.quotedStatusTextView.setText(status.getText());
-
-                if (status.getMediaEntities().length > 0) {
-                    photoImageView.setVisibility(View.VISIBLE);
-                    Picasso.with(context)
-                            .load(status.getMediaEntities()[0].getMediaURL())
-                            .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
-                            .into(photoImageView);
-                } else
-                    photoImageView.setVisibility(View.GONE);
-
-                this.quotedStatusLinearLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent i = new Intent(context, TweetActivity.class);
-                        Bundle b = new Bundle();
-                        b.putSerializable("TWEET", status);
-                        i.putExtra("STATUS", b);
-                        context.startActivity(i);
-                    }
-                });
-            }
         }
     }
 }

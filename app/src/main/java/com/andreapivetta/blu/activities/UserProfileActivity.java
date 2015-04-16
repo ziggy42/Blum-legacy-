@@ -38,6 +38,7 @@ import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.UserListSimpleAdapter;
+import com.andreapivetta.blu.asynctasks.FillQuote;
 import com.andreapivetta.blu.internet.ConnectionDetector;
 import com.andreapivetta.blu.twitter.FavoriteTweet;
 import com.andreapivetta.blu.twitter.FollowTwitterUser;
@@ -61,6 +62,7 @@ import twitter4j.ResponseList;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.URLEntity;
 import twitter4j.User;
 
 public class UserProfileActivity extends ActionBarActivity {
@@ -303,9 +305,25 @@ public class UserProfileActivity extends ActionBarActivity {
         for (int i = 0; i < statuses.length; i++) {
             final int index = i;
 
+            TWEET_TYPE tweetType = TWEET_TYPE.TYPE_ITEM;
             if (statuses[i].getMediaEntities().length > 0)
-                stubs[i].setLayoutResource(R.layout.tweet_photo);
-            else stubs[i].setLayoutResource(R.layout.tweet_basic);
+                tweetType = TWEET_TYPE.TYPE_ITEM_PHOTO;
+            else
+                for (URLEntity entity : statuses[i].getURLEntities())
+                    if (entity.getExpandedURL().matches("(^https://twitter.com/)(.*)(/status/)(.*)"))
+                        tweetType = TWEET_TYPE.TYPE_ITEM_QUOTE;
+
+            switch (tweetType) {
+                case TYPE_ITEM:
+                    stubs[i].setLayoutResource(R.layout.tweet_basic);
+                    break;
+                case TYPE_ITEM_PHOTO:
+                    stubs[i].setLayoutResource(R.layout.tweet_photo);
+                    break;
+                case TYPE_ITEM_QUOTE:
+                    stubs[i].setLayoutResource(R.layout.tweet_quote);
+                    break;
+            }
 
             View tweetView = stubs[i].inflate();
             TextView retweetTextView = (TextView) tweetView.findViewById(R.id.retweetTextView);
@@ -435,8 +453,8 @@ public class UserProfileActivity extends ActionBarActivity {
                 }
             });
 
-            if (statuses[i].getMediaEntities().length > 0) {
-                ImageView tweetPhotoImageView = (ImageView) tweetView.findViewById(R.id.quotedStatusLinearLayout);
+            if (tweetType == TWEET_TYPE.TYPE_ITEM_PHOTO) {
+                ImageView tweetPhotoImageView = (ImageView) tweetView.findViewById(R.id.tweetPhotoImageView);
                 for (final MediaEntity mediaEntity : statuses[i].getMediaEntities()) {
                     if (mediaEntity.getType().equals("photo")) {
                         Picasso.with(this)
@@ -458,6 +476,19 @@ public class UserProfileActivity extends ActionBarActivity {
                         break;
                     }
                 }
+            } else if (tweetType == TWEET_TYPE.TYPE_ITEM_QUOTE) {
+                String quotedStatusURL = "";
+                for (URLEntity entity : statuses[i].getURLEntities())
+                    if (entity.getExpandedURL().matches("(^https://twitter.com/)(.*)(/status/)(.*)")) {
+                        quotedStatusURL = entity.getExpandedURL();
+                        break;
+                    }
+
+                ImageView photoImageView = ((ImageView) tweetView.findViewById(R.id.photoImageView));
+                photoImageView.setVisibility(View.GONE);
+                new FillQuote((TextView) tweetView.findViewById(R.id.quotedUserNameTextView), (TextView) tweetView.findViewById(R.id.quotedStatusTextView),
+                        photoImageView, ((LinearLayout) tweetView.findViewById(R.id.quotedStatusLinearLayout)),
+                        quotedStatusURL, twitter, UserProfileActivity.this).execute();
             }
 
             cardView.setOnClickListener(new View.OnClickListener() {
@@ -601,6 +632,8 @@ public class UserProfileActivity extends ActionBarActivity {
         outState.putSerializable("ARRAY", statuses);
         super.onSaveInstanceState(outState);
     }
+
+    private enum TWEET_TYPE {TYPE_ITEM, TYPE_ITEM_PHOTO, TYPE_ITEM_QUOTE}
 
     private enum TYPE {
         I_FOLLOW_HIM, HE_FOLLOWS_ME, WE_FOLLOW_EACH_OTHER, I_DONT_KNOW_WHO_YOU_ARE, THIS_IS_ME

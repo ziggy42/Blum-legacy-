@@ -79,18 +79,6 @@ public class NotificationFragment extends Fragment {
         return rootView;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        /*if (kind == 0) {
-            databaseManager.open();
-            for (Notification n : notificationList)
-                databaseManager.setRead(n);
-            databaseManager.close();
-        }*/
-    }
-
     private class LoadNotifications extends AsyncTask<Void, Void, Boolean> {
 
         private ArrayList<Notification> buffer = new ArrayList<>();
@@ -102,7 +90,6 @@ public class NotificationFragment extends Fragment {
             databaseManager.open();
             buffer = (kind == 0) ? databaseManager.getAllUnreadNotifications() :
                     databaseManager.getAllReadNotifications();
-            databaseManager.close();
 
             Collections.sort(buffer, Collections.reverseOrder());
 
@@ -123,13 +110,10 @@ public class NotificationFragment extends Fragment {
                         mAdapter.notifyItemChanged(i);
                     }
 
-                // TEST
-                if (kind == 0) {
-                    databaseManager.open();
+                if (kind == 0)
                     for (Notification n : notificationList)
                         databaseManager.setRead(n);
-                    databaseManager.close();
-                }
+                databaseManager.close();
 
             }
         }
