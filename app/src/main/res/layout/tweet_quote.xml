@@ -57,8 +57,8 @@
             android:layout_toRightOf="@+id/userProfilePicImageView"
             android:textSize="15sp" />
 
-        <LinearLayout
-            android:id="@+id/quotedStatusLinearLayout"
+        <include android:id="@+id/quotedStatus"
+            layout="@layout/quoted_tweet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/statusTextView"
@@ -67,46 +67,15 @@
             android:layout_marginBottom="4dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginTop="2dp"
-            android:background="@drawable/quote_background"
-            android:orientation="vertical"
-            android:paddingBottom="4dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="4dp">
-
-            <TextView
-                android:id="@+id/quotedUserNameTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/quotedStatusTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="15sp" />
-
-            <ImageView
-                android:id="@+id/photoImageView"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/picHeight"
-                android:layout_margin="5dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/tweet_photo_contentDescriptor"
-                android:scaleType="fitCenter"
-                android:visibility="gone" />
-
-        </LinearLayout>
+            android:layout_marginTop="2dp"/>
 
         <TextView
             android:id="@+id/retweetTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/quotedStatusLinearLayout"
-            android:layout_alignStart="@+id/quotedStatusLinearLayout"
-            android:layout_below="@+id/quotedStatusLinearLayout"
+            android:layout_alignLeft="@+id/quotedStatus"
+            android:layout_alignStart="@+id/quotedStatus"
+            android:layout_below="@+id/quotedStatus"
             android:fontFamily="sans-serif-thin" />
 
         <include layout="@layout/interaction_row" />
