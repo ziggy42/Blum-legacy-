@@ -31,7 +31,7 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.makeramen:roundedimageview:2.0.1'
     compile 'com.github.chrisbanes.photoview:library:1.2.3'
-    compile 'jp.wasabeef:recyclerview-animators:1.1.2'
+    compile 'jp.wasabeef:recyclerview-animators:1.2.0'
     compile 'org.jsoup:jsoup:1.8.1'
     compile 'com.balysv:material-ripple:1.0.1'
 }
