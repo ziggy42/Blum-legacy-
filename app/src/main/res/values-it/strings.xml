@@ -139,5 +139,6 @@
     <string name="licenses_pref_summary">Licenze per il software open source usato in questa app</string>
     <string name="licenses_pref_title">Licenze Open Source</string>
     <string name="action_mark_as_read">Segna come letti</string>
+    <string name="my_twitter"><![CDATA[Sviluppata con ♥ da <a href="https://twitter.com/Pivix00">\@Pivix00<a><br/>Icona creata da <a href="https://twitter.com/stefano_openlab">\@stefano_openlab<a>]]></string>
 
 </resources>

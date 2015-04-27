@@ -105,6 +105,7 @@
     <string name="licenses_pref_title">Open Source Licenses</string>
     <string name="licenses_pref_summary">Licenses for open source software used in this app</string>
     <string name="action_mark_as_read">Mark all as read</string>
+    <string name="my_twitter"><![CDATA[Developed with ♥ by <a href="https://twitter.com/Pivix00">\@Pivix00<a><br/>Icon from <a href="https://twitter.com/stefano_openlab">\@stefano_openlab<a>]]></string>
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>
@@ -190,8 +191,5 @@
     <string name="notifications_contentDescription" translatable="false">Notifications</string>
     <string name="openTweet_imageButton_contentDescriptor" translatable="false">Open Tweet Image Button</string>
     <string name="send_message_contentDescriptor" translatable="false">Send Message Button</string>
-
-    <string name="my_twitter"><![CDATA[Developed with ♥ by <a href="https://twitter.com/Pivix00">\@Pivix00<a><br/>Icon from <a href="https://twitter.com/stefano_openlab">\@stefano_openlab<a>]]></string>
-    <string name="stefano_twitter">\@stefano_openlab</string>
 
 </resources>
