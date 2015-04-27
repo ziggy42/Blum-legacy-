@@ -32,6 +32,7 @@
             android:layout_toEndOf="@+id/userProfilePicImageView"
             android:layout_toLeftOf="@+id/timeTextView"
             android:layout_toRightOf="@+id/userProfilePicImageView"
+            android:textColor="@color/textColor"
             android:textSize="17sp"
             android:textStyle="bold" />
 
@@ -56,6 +57,7 @@
             android:layout_marginRight="5dp"
             android:layout_toRightOf="@+id/userProfilePicImageView"
             android:minHeight="40dp"
+            android:textColor="@color/textColor"
             android:textSize="15sp" />
 
         <ImageView

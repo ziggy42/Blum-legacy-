@@ -33,6 +33,7 @@
             android:layout_toRightOf="@+id/userProfilePicImageView"
             android:fontFamily="bold"
             android:includeFontPadding="false"
+            android:textColor="@color/textColor"
             android:textSize="25sp" />
 
         <TextView
@@ -44,6 +45,7 @@
             android:layout_toRightOf="@+id/userProfilePicImageView"
             android:fontFamily="sans-serif-light"
             android:includeFontPadding="false"
+            android:textColor="@color/textColor"
             android:textSize="18sp" />
 
         <TextView
@@ -64,6 +66,7 @@
             android:layout_below="@+id/userProfilePicImageView"
             android:layout_margin="10dp"
             android:gravity="center"
+            android:textColor="@color/textColor"
             android:textSize="19sp" />
 
         <LinearLayout

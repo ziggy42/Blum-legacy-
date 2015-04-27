@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -14,8 +15,12 @@ import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
@@ -341,9 +346,14 @@ public class SettingsActivity extends ActionBarActivity {
             aboutPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    Intent i = new Intent(getActivity(), UserProfileActivity.class);
-                    i.putExtra("ID", 290695594L);
-                    getActivity().startActivity(i);
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    View dialogView = View.inflate(getActivity(), R.layout.dialog_about, null);
+
+                    final TextView mTwitterTextView = (TextView) dialogView.findViewById(R.id.textView3);
+                    mTwitterTextView.setText(Html.fromHtml(getString(R.string.my_twitter)));
+                    mTwitterTextView.setMovementMethod(LinkMovementMethod.getInstance());
+
+                    builder.setView(dialogView).create().show();
 
                     return true;
                 }
