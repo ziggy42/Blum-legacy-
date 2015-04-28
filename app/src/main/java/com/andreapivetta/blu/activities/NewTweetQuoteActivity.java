@@ -1,10 +1,10 @@
 package com.andreapivetta.blu.activities;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
