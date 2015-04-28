@@ -171,11 +171,10 @@ public class UserProfileActivity extends AppCompatActivity {
                     @TargetApi(21)
                     public void onSuccess() {
                         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            Palette.generateAsync(
-                                    ((BitmapDrawable) profileBackgroundImageView.getDrawable()).getBitmap(),
-                                    new Palette.PaletteAsyncListener() {
+                            new Palette.Builder(((BitmapDrawable) profileBackgroundImageView.getDrawable()).getBitmap())
+                                    .generate(new Palette.PaletteAsyncListener() {
+                                        @Override
                                         public void onGenerated(Palette palette) {
-
                                             Palette.Swatch swatch = palette.getLightVibrantSwatch();
                                             if (swatch != null) {
                                                 getWindow().setStatusBarColor(swatch.getRgb());
@@ -188,10 +187,8 @@ public class UserProfileActivity extends AppCompatActivity {
                                                         Color.rgb(Color.red(pixel),
                                                                 Color.green(pixel), Color.blue(pixel)));
                                             }
-
                                         }
                                     });
-
                         }
                     }
 
@@ -581,7 +578,7 @@ public class UserProfileActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mDialogLinearLayoutManager);
         mRecyclerView.setAdapter(mUsersSimpleAdapter);
 
-        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);

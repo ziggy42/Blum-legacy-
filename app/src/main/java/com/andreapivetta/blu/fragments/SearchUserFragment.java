@@ -78,7 +78,7 @@ public class SearchUserFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mAdapter = new UserListAdapter(mDataSet, getActivity(), twitter);
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);

@@ -3,6 +3,7 @@ package com.andreapivetta.blu.activities;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
@@ -44,8 +45,9 @@ public class UserTimeLineActivity extends TimeLineActivity {
             }
         });
 
-        if (user != null)
-            getSupportActionBar().setTitle(user.getName());
+        ActionBar supportActionBar = getSupportActionBar();
+        if ((user != null) && (supportActionBar != null))
+            supportActionBar.setTitle(user.getName());
     }
 
     @Override

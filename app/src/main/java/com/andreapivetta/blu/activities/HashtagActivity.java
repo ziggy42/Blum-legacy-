@@ -1,6 +1,7 @@
 package com.andreapivetta.blu.activities;
 
 
+import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.view.View;
 
@@ -45,7 +46,9 @@ public class HashtagActivity extends TimeLineActivity {
             }
         });
 
-        getSupportActionBar().setTitle("#" + hashtag);
+        ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null)
+            supportActionBar.setTitle("#" + hashtag);
     }
 
     @Override

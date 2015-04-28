@@ -27,6 +27,7 @@ public class SearchActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
+            toolbar.setTitle(query);
             setSupportActionBar(toolbar);
             toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -36,8 +37,6 @@ public class SearchActivity extends AppCompatActivity {
                 }
             });
         }
-
-        getSupportActionBar().setTitle(query);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         SearchFragmentPagerAdapter myFragmentPagerAdapter = new SearchFragmentPagerAdapter();
