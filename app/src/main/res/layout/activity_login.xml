@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context="com.andreapivetta.tweetbooster.LoginActivity">
+    tools:context="com.andreapivetta.blu.activities.LoginActivity">
 
     <TextView
         android:id="@+id/textView3"
@@ -26,15 +26,13 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="40dp"
-        android:background="@drawable/login_layer"
         android:fontFamily="sans-serif-thin"
         android:paddingBottom="10dp"
         android:paddingEnd="10dp"
         android:paddingLeft="60dp"
-        android:paddingRight="10dp"
+        android:paddingRight="60dp"
         android:paddingTop="10dp"
         android:text="@string/login_button_text"
-        android:textColor="#000000"
         android:textSize="20sp" />
 
 </RelativeLayout>

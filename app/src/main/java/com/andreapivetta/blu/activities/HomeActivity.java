@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
@@ -275,6 +277,41 @@ public class HomeActivity extends TimeLineActivity {
                 mMessageCount++;
                 invalidateOptionsMenu();
             }
+        }
+    }
+
+    private class LoadFakeTweets extends AsyncTask<Void, Void, Void> {
+
+        private ArrayList<twitter4j.Status> buffer = new ArrayList<>();
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            try {
+                for (int i = 0; i < 8; i++) {
+                    buffer.add(twitter.showStatus(592827745522028544L));
+                }
+            } catch(TwitterException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            currentPage += 1;
+            loadingProgressBar.setVisibility(View.GONE);
+
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    for (twitter4j.Status tmp : buffer)
+                        mTweetsAdapter.add(tmp);
+                }
+            });
+
+            getTimeLineCallBack();
         }
     }
 }
