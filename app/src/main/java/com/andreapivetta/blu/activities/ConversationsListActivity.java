@@ -9,7 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -39,7 +39,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.User;
 
-public class ConversationsListActivity extends ActionBarActivity {
+public class ConversationsListActivity extends AppCompatActivity {
 
     private ArrayList<Message> mDataSet = new ArrayList<>();
     private ArrayList<User> followers = new ArrayList<>(), subset = new ArrayList<>();

@@ -3,9 +3,9 @@ package com.andreapivetta.blu.activities;
 import android.content.Intent;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,7 +27,7 @@ import com.squareup.picasso.Picasso;
 import twitter4j.Status;
 import twitter4j.Twitter;
 
-public class NewTweetQuoteActivity extends ActionBarActivity {
+public class NewTweetQuoteActivity extends AppCompatActivity {
 
     public static final String PAR_CURRENT_STATUS = "currentStatus";
     public static final String PAR_BUNDLE = "bundle";

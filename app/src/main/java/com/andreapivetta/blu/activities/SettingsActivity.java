@@ -11,8 +11,8 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -37,7 +37,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 
-public class SettingsActivity extends ActionBarActivity {
+public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -2,7 +2,7 @@ package com.andreapivetta.blu.activities;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -11,7 +11,7 @@ import com.squareup.picasso.Picasso;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 
-public class ImageActivity extends ActionBarActivity {
+public class ImageActivity extends AppCompatActivity {
 
     private PhotoViewAttacher mAttacher;
     private View decorView;

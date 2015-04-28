@@ -2,7 +2,7 @@ package com.andreapivetta.blu.activities;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -20,7 +20,7 @@ import java.net.URLEncoder;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class FeedbackActivity extends ActionBarActivity {
+public class FeedbackActivity extends AppCompatActivity {
 
     private static final String FORM_URL =
             "https://docs.google.com/forms/d/1x6_qUNrJQoD5wNB9U9LuA56a7ohHIgFS-6ackdYTkoo/formResponse";

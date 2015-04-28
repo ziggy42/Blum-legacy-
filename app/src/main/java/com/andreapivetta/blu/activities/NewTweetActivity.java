@@ -10,8 +10,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -37,7 +37,7 @@ import java.util.Date;
 
 import twitter4j.Twitter;
 
-public class NewTweetActivity extends ActionBarActivity {
+public class NewTweetActivity extends AppCompatActivity {
 
     private static final int MAX_URL_LENGTH = 23; // it will change
 

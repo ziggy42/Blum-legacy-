@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
@@ -14,7 +14,7 @@ import com.andreapivetta.blu.fragments.SearchTweetsFragment;
 import com.andreapivetta.blu.fragments.SearchUserFragment;
 import com.andreapivetta.blu.fragments.tabs.SlidingTabLayout;
 
-public class SearchActivity extends ActionBarActivity {
+public class SearchActivity extends AppCompatActivity {
 
     private String query;
 

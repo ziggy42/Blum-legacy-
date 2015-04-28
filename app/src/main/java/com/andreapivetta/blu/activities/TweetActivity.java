@@ -4,7 +4,7 @@ import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -29,7 +29,7 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
-public class TweetActivity extends ActionBarActivity {
+public class TweetActivity extends AppCompatActivity {
 
     private static final String TWEETS_LIST_TAG = "tweetlist";
     private static final String CURRENT_TWEET_TAG = "header";
