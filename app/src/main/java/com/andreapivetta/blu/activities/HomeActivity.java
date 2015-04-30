@@ -280,6 +280,7 @@ public class HomeActivity extends TimeLineActivity {
         }
     }
 
+    // For Screenshots only
     private class LoadFakeTweets extends AsyncTask<Void, Void, Void> {
 
         private ArrayList<twitter4j.Status> buffer = new ArrayList<>();

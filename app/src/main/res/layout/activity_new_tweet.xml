@@ -50,6 +50,7 @@
                     android:contentDescription="@string/uploaded_image_contentDescriptor"
                     android:scaleType="fitCenter" />
 
+
             </LinearLayout>
 
             <LinearLayout
