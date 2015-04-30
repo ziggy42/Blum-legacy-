@@ -18,7 +18,7 @@
             android:layout_marginRight="10dp"
             android:paddingLeft="@dimen/homeMargins"
             android:paddingRight="@dimen/homeMargins"
-            android:scrollbars="vertical" />
+            android:scrollbars="none" />
 
         <ImageButton
             android:id="@+id/replyImageButton"

@@ -293,28 +293,31 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             sb.setSpan(b, 0, amount.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             ((VHHeader) holder).retweetsStatsTextView.setText(sb);
 
-            MediaEntity mediaEntityArray[] = currentStatus.getMediaEntities();
-            if (mediaEntityArray.length > 0) {
-                for (final MediaEntity mediaEntity : mediaEntityArray) {
-                    if (mediaEntity.getType().equals("photo")) {
-                        ((VHHeader) holder).tweetPhotoImageView.setVisibility(View.VISIBLE);
-                        Picasso.with(context)
-                                .load(mediaEntity.getMediaURL())
-                                .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
-                                .into(((VHHeader) holder).tweetPhotoImageView);
+            MediaEntity mediaEntityArray[] = currentStatus.getExtendedMediaEntities();
+            if (mediaEntityArray.length == 1) {
+                final MediaEntity mediaEntity = mediaEntityArray[0];
+                if (mediaEntity.getType().equals("photo")) {
+                    ((VHHeader) holder).tweetPhotoImageView.setVisibility(View.VISIBLE);
+                    Picasso.with(context)
+                            .load(mediaEntity.getMediaURL())
+                            .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
+                            .into(((VHHeader) holder).tweetPhotoImageView);
 
-                        ((VHHeader) holder).tweetPhotoImageView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent i = new Intent(context, ImageActivity.class);
-                                i.putExtra("IMAGE", mediaEntity.getMediaURL());
-                                context.startActivity(i);
-                            }
-                        });
-
-                        break;
-                    }
+                    ((VHHeader) holder).tweetPhotoImageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent i = new Intent(context, ImageActivity.class);
+                            i.putExtra("IMAGE", mediaEntity.getMediaURL());
+                            context.startActivity(i);
+                        }
+                    });
                 }
+            } else if (mediaEntityArray.length > 1) {
+                RecyclerView mRecyclerView = ((VHHeader) holder).tweetPhotosRecyclerView;
+                mRecyclerView.setVisibility(View.VISIBLE);
+                mRecyclerView.addItemDecoration(new SpaceLeftItemDecoration(5));
+                mRecyclerView.setAdapter(new ImagesAdapter(currentStatus.getExtendedMediaEntities(), context));
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
             }
 
             for (URLEntity entity : mDataSet.get(position).getURLEntities())
@@ -493,7 +496,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
         public VHItemMultiplePhotos(View container) {
             super(container);
 
-            this.tweetPhotosRecyclerView = (RecyclerView) container.findViewById(R.id.tweetPhotoesRecyclerView);
+            this.tweetPhotosRecyclerView = (RecyclerView) container.findViewById(R.id.tweetPhotosRecyclerView);
         }
     }
 
@@ -515,8 +518,9 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
 
     class VHHeader extends ViewHolder {
         public TextView screenNameTextView, retweetsStatsTextView, favouritesStatsTextView;
-        public ImageView tweetPhotoImageView; // TODO anche qui diversi header
+        public ImageView tweetPhotoImageView;
         public ViewStub quotedTweetViewStub;
+        public RecyclerView tweetPhotosRecyclerView;
 
         public VHHeader(View container) {
             super(container);
@@ -526,6 +530,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             this.retweetsStatsTextView = (TextView) container.findViewById(R.id.retweetsStatsTextView);
             this.favouritesStatsTextView = (TextView) container.findViewById(R.id.favouritesStatsTextView);
             this.quotedTweetViewStub = (ViewStub) container.findViewById(R.id.quotedPhotoViewStub);
+            this.tweetPhotosRecyclerView = (RecyclerView) container.findViewById(R.id.tweetPhotosRecyclerView);
         }
     }
 }

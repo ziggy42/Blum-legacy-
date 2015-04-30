@@ -37,6 +37,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.adapters.ImagesAdapter;
+import com.andreapivetta.blu.adapters.SpaceLeftItemDecoration;
 import com.andreapivetta.blu.adapters.UserListSimpleAdapter;
 import com.andreapivetta.blu.asynctasks.FillQuote;
 import com.andreapivetta.blu.internet.ConnectionDetector;
@@ -303,8 +305,10 @@ public class UserProfileActivity extends AppCompatActivity {
             final int index = i;
 
             TWEET_TYPE tweetType = TWEET_TYPE.TYPE_ITEM;
-            if (statuses[i].getMediaEntities().length > 0)
+            if (statuses[i].getExtendedMediaEntities().length == 1)
                 tweetType = TWEET_TYPE.TYPE_ITEM_PHOTO;
+            else if (statuses[i].getExtendedMediaEntities().length > 1)
+                tweetType = TWEET_TYPE.TYPE_ITEM_MULTIPLEPHOTOS;
             else
                 for (URLEntity entity : statuses[i].getURLEntities())
                     if (entity.getExpandedURL().matches("(^https://twitter.com/)(.*)(/status/)(.*)"))
@@ -319,6 +323,9 @@ public class UserProfileActivity extends AppCompatActivity {
                     break;
                 case TYPE_ITEM_QUOTE:
                     stubs[i].setLayoutResource(R.layout.tweet_quote);
+                    break;
+                case TYPE_ITEM_MULTIPLEPHOTOS:
+                    stubs[i].setLayoutResource(R.layout.tweet_multiplephotos);
                     break;
             }
 
@@ -452,27 +459,29 @@ public class UserProfileActivity extends AppCompatActivity {
 
             if (tweetType == TWEET_TYPE.TYPE_ITEM_PHOTO) {
                 ImageView tweetPhotoImageView = (ImageView) tweetView.findViewById(R.id.tweetPhotoImageView);
-                for (final MediaEntity mediaEntity : statuses[i].getMediaEntities()) {
-                    if (mediaEntity.getType().equals("photo")) {
-                        Picasso.with(this)
-                                .load(mediaEntity.getMediaURL())
-                                .placeholder(ResourcesCompat.getDrawable(getResources(), R.drawable.placeholder, null))
-                                .fit()
-                                .centerCrop()
-                                .into(tweetPhotoImageView);
+                final MediaEntity mediaEntity = statuses[i].getMediaEntities()[0];
+                if (mediaEntity.getType().equals("photo")) {
+                    Picasso.with(this)
+                            .load(mediaEntity.getMediaURL())
+                            .placeholder(ResourcesCompat.getDrawable(getResources(), R.drawable.placeholder, null))
+                            .fit()
+                            .centerCrop()
+                            .into(tweetPhotoImageView);
 
-                        tweetPhotoImageView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent i = new Intent(UserProfileActivity.this, ImageActivity.class);
-                                i.putExtra("IMAGE", mediaEntity.getMediaURL());
-                                startActivity(i);
-                            }
-                        });
-
-                        break;
-                    }
+                    tweetPhotoImageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent i = new Intent(UserProfileActivity.this, ImageActivity.class);
+                            i.putExtra("IMAGE", mediaEntity.getMediaURL());
+                            startActivity(i);
+                        }
+                    });
                 }
+            } else if(tweetType == TWEET_TYPE.TYPE_ITEM_MULTIPLEPHOTOS) {
+                RecyclerView mRecyclerView = (RecyclerView) tweetView.findViewById(R.id.tweetPhotosRecyclerView);
+                mRecyclerView.addItemDecoration(new SpaceLeftItemDecoration(5));
+                mRecyclerView.setAdapter(new ImagesAdapter(statuses[i].getExtendedMediaEntities(), UserProfileActivity.this));
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(UserProfileActivity.this, LinearLayoutManager.HORIZONTAL, false));
             } else if (tweetType == TWEET_TYPE.TYPE_ITEM_QUOTE) {
                 String quotedStatusURL = "";
                 for (URLEntity entity : statuses[i].getURLEntities())
@@ -630,7 +639,7 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
-    private enum TWEET_TYPE {TYPE_ITEM, TYPE_ITEM_PHOTO, TYPE_ITEM_QUOTE}
+    private enum TWEET_TYPE {TYPE_ITEM, TYPE_ITEM_PHOTO, TYPE_ITEM_MULTIPLEPHOTOS, TYPE_ITEM_QUOTE}
 
     private enum TYPE {
         I_FOLLOW_HIM, HE_FOLLOWS_ME, WE_FOLLOW_EACH_OTHER, I_DONT_KNOW_WHO_YOU_ARE, THIS_IS_ME

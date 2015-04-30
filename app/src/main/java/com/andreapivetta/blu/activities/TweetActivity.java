@@ -74,7 +74,6 @@ public class TweetActivity extends AppCompatActivity {
             mRecyclerView.getItemAnimator().setAddDuration(300);
         }*/
 
-        mRecyclerView.setVerticalScrollBarEnabled(false);
         mRecyclerView.addItemDecoration(new SpaceTopItemDecoration(Common.dpToPx(this, 10)));
         mTweetsAdapter = new TweetsListAdapter(mDataSet, this, twitter, currentIndex);
         mLinearLayoutManager = new LinearLayoutManager(this);
@@ -118,20 +117,16 @@ public class TweetActivity extends AppCompatActivity {
         replyImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reply(status);
+                Intent i = new Intent(TweetActivity.this, NewTweetActivity.class);
+                i.putExtra("USER_PREFIX", "@" + status.getUser().getScreenName())
+                        .putExtra("REPLY_ID", status.getId());
+                startActivity(i);
             }
         });
 
         if (mDataSet.isEmpty())
             new LoadConversation().execute(null, null, null);
 
-    }
-
-    void reply(Status status) {
-        Intent i = new Intent(TweetActivity.this, NewTweetActivity.class);
-        i.putExtra("USER_PREFIX", "@" + status.getUser().getScreenName())
-                .putExtra("REPLY_ID", status.getId());
-        startActivity(i);
     }
 
     void newTweetDown() {

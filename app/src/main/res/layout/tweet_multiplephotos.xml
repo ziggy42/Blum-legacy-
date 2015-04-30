@@ -61,7 +61,7 @@
             android:textSize="15sp" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/tweetPhotoesRecyclerView"
+            android:id="@+id/tweetPhotosRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="@dimen/picHeight"
             android:layout_alignLeft="@+id/statusTextView"
@@ -76,9 +76,9 @@
             android:id="@+id/retweetTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tweetPhotoesRecyclerView"
-            android:layout_alignStart="@+id/tweetPhotoesRecyclerView"
-            android:layout_below="@+id/tweetPhotoesRecyclerView"
+            android:layout_alignLeft="@+id/tweetPhotosRecyclerView"
+            android:layout_alignStart="@+id/tweetPhotosRecyclerView"
+            android:layout_below="@+id/tweetPhotosRecyclerView"
             android:fontFamily="sans-serif-thin" />
 
         <include layout="@layout/interaction_row" />
