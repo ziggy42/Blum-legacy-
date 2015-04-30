@@ -67,16 +67,29 @@ public class FillQuote extends AsyncTask<Void, Void, Boolean> {
             } else
                 photoImageView.setVisibility(View.GONE);
 
-            this.quotedStatusLinearLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(context, TweetActivity.class);
-                    Bundle b = new Bundle();
-                    b.putSerializable("TWEET", status);
-                    i.putExtra("STATUS", b);
-                    context.startActivity(i);
-                }
-            });
+            // TODO workaround
+            if (this.quotedStatusLinearLayout != null)
+                this.quotedStatusLinearLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(context, TweetActivity.class);
+                        Bundle b = new Bundle();
+                        b.putSerializable("TWEET", status);
+                        i.putExtra("STATUS", b);
+                        context.startActivity(i);
+                    }
+                });
+            else
+                this.quotedStatusTextView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(context, TweetActivity.class);
+                        Bundle b = new Bundle();
+                        b.putSerializable("TWEET", status);
+                        i.putExtra("STATUS", b);
+                        context.startActivity(i);
+                    }
+                });
         }
     }
 }

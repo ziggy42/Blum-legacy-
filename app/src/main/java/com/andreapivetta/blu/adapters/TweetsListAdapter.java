@@ -328,7 +328,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                     ImageView photoImageView = ((ImageView) tweetView.findViewById(R.id.photoImageView));
                     photoImageView.setVisibility(View.GONE);
                     new FillQuote((TextView) tweetView.findViewById(R.id.quotedUserNameTextView), (TextView) tweetView.findViewById(R.id.quotedStatusTextView),
-                            photoImageView, ((LinearLayout) tweetView.findViewById(R.id.quotedStatusLinearLayout)),
+                            photoImageView, ((LinearLayout) tweetView),
                             entity.getExpandedURL(), twitter, context).execute();
                     break;
                 }
@@ -511,7 +511,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             this.quotedUserNameTextView = (TextView) container.findViewById(R.id.quotedUserNameTextView);
             this.quotedStatusTextView = (TextView) container.findViewById(R.id.quotedStatusTextView);
             this.photoImageView = (ImageView) container.findViewById(R.id.photoImageView);
-            this.quotedStatusLinearLayout = (LinearLayout) container.findViewById(R.id.quotedStatus); // EXP
+            this.quotedStatusLinearLayout = (LinearLayout) container.findViewById(R.id.quotedStatus);
         }
 
     }
