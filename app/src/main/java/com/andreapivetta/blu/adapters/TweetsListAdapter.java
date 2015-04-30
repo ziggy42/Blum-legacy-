@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spannable;
@@ -53,6 +54,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
     private static final int TYPE_ITEM = 1;
     private static final int TYPE_ITEM_PHOTO = 2;
     private static final int TYPE_ITEM_QUOTE = 3;
+    private static final int TYPE_ITEM_MULTIPLE_PHOTOS = 4;
 
     private ArrayList<Status> mDataSet;
     private Context context;
@@ -80,6 +82,9 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
         else if (viewType == TYPE_ITEM_QUOTE)
             return new VHItemQuote(
                     LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_quote, parent, false));
+        else if (viewType == TYPE_ITEM_MULTIPLE_PHOTOS)
+            return new VHItemMultiplePhotos(
+                    LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_multiplephotos, parent, false));
         else
             return new VHHeader(
                     LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_expanded, parent, false));
@@ -325,7 +330,6 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                     break;
                 }
 
-
         } else {
             holder.statusTextView.setText(currentStatus.getText());
             holder.interactionLinearLayout.setVisibility(View.GONE);
@@ -340,27 +344,29 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             });
 
             if (TYPE == TYPE_ITEM_PHOTO) {
-                for (final MediaEntity mediaEntity : currentStatus.getMediaEntities()) {
-                    if (mediaEntity.getType().equals("photo")) {
-                        Picasso.with(context)
-                                .load(mediaEntity.getMediaURL())
-                                .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
-                                .fit()
-                                .centerCrop()
-                                .into(((VHItemPhoto) holder).tweetPhotoImageView);
+                final MediaEntity mediaEntity = currentStatus.getMediaEntities()[0];
+                if (mediaEntity.getType().equals("photo")) {
+                    Picasso.with(context)
+                            .load(mediaEntity.getMediaURL())
+                            .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
+                            .fit()
+                            .centerCrop()
+                            .into(((VHItemPhoto) holder).tweetPhotoImageView);
 
-                        ((VHItemPhoto) holder).tweetPhotoImageView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent i = new Intent(context, ImageActivity.class);
-                                i.putExtra("IMAGE", mediaEntity.getMediaURL());
-                                context.startActivity(i);
-                            }
-                        });
-
-                        break;
-                    }
+                    ((VHItemPhoto) holder).tweetPhotoImageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent i = new Intent(context, ImageActivity.class);
+                            i.putExtra("IMAGE", mediaEntity.getMediaURL());
+                            context.startActivity(i);
+                        }
+                    });
                 }
+            } else if(TYPE == TYPE_ITEM_MULTIPLE_PHOTOS) {
+                RecyclerView mRecyclerView = ((VHItemMultiplePhotos) holder).tweetPhotosRecyclerView;
+                mRecyclerView.addItemDecoration(new SpaceLeftItemDecoration(5));
+                mRecyclerView.setAdapter(new ImagesAdapter(currentStatus.getExtendedMediaEntities(), context));
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
             } else if (TYPE == TYPE_ITEM_QUOTE) {
                 String quotedStatusURL = "";
                 for (URLEntity entity : currentStatus.getURLEntities())
@@ -409,8 +415,11 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
         if (isPositionHeader(position))
             return TYPE_HEADER;
 
-        if (mDataSet.get(position).getMediaEntities().length > 0)
+        if (mDataSet.get(position).getExtendedMediaEntities().length == 1)
             return TYPE_ITEM_PHOTO;
+
+        if(mDataSet.get(position).getExtendedMediaEntities().length > 1)
+            return TYPE_ITEM_MULTIPLE_PHOTOS;
 
         for (URLEntity entity : mDataSet.get(position).getURLEntities())
             if (entity.getExpandedURL().matches("(^https://twitter.com/)(.*)(/status/)(.*)"))
@@ -469,12 +478,22 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
     }
 
     class VHItemPhoto extends VHItem {
-        public ImageView tweetPhotoImageView; // TODO e se ho più foto?
+        public ImageView tweetPhotoImageView;
 
         public VHItemPhoto(View container) {
             super(container);
 
             this.tweetPhotoImageView = (ImageView) container.findViewById(R.id.tweetPhotoImageView);
+        }
+    }
+
+    class VHItemMultiplePhotos extends VHItem {
+        public RecyclerView tweetPhotosRecyclerView;
+
+        public VHItemMultiplePhotos(View container) {
+            super(container);
+
+            this.tweetPhotosRecyclerView = (RecyclerView) container.findViewById(R.id.tweetPhotoesRecyclerView);
         }
     }
 
