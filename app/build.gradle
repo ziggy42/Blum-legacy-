@@ -8,8 +8,8 @@ android {
         applicationId "com.andreapivetta.blu"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 20
-        versionName "0.3.5"
+        versionCode 21
+        versionName "0.3.6"
 
         resConfigs "en", "it"
         resConfigs "nodpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
@@ -32,6 +32,6 @@ dependencies {
     compile 'com.makeramen:roundedimageview:2.0.1'
     compile 'com.github.chrisbanes.photoview:library:1.2.3'
     compile 'jp.wasabeef:recyclerview-animators:1.2.0'
-    compile 'org.jsoup:jsoup:1.8.1'
-    compile 'com.balysv:material-ripple:1.0.1'
+    compile 'org.jsoup:jsoup:1.8.2'
+    compile 'com.balysv:material-ripple:1.0.2'
 }
