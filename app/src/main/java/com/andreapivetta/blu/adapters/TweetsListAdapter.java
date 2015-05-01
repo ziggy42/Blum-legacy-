@@ -73,21 +73,28 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == TYPE_ITEM)
-            return new VHItem(
-                    LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_basic, parent, false));
-        else if (viewType == TYPE_ITEM_PHOTO)
-            return new VHItemPhoto(
-                    LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_photo, parent, false));
-        else if (viewType == TYPE_ITEM_QUOTE)
-            return new VHItemQuote(
-                    LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_quote, parent, false));
-        else if (viewType == TYPE_ITEM_MULTIPLE_PHOTOS)
-            return new VHItemMultiplePhotos(
-                    LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_multiplephotos, parent, false));
-        else
-            return new VHHeader(
-                    LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_expanded, parent, false));
+        switch (viewType) {
+            case TYPE_ITEM:
+                return new VHItem(
+                        LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_basic, parent, false));
+            case TYPE_ITEM_PHOTO:
+                return new VHItemPhoto(
+                        LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_photo, parent, false));
+            case TYPE_ITEM_QUOTE:
+                return new VHItemQuote(
+                        LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_quote, parent, false));
+            case TYPE_ITEM_MULTIPLE_PHOTOS:
+                VHItemMultiplePhotos vhItemMultiplePhotos = new VHItemMultiplePhotos(
+                        LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_multiplephotos, parent, false));
+                vhItemMultiplePhotos.tweetPhotosRecyclerView.addItemDecoration(new SpaceLeftItemDecoration(5));
+                return  vhItemMultiplePhotos;
+            case TYPE_HEADER:
+                return new VHHeader(
+                        LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_expanded, parent, false));
+            default:
+                return new VHItem(
+                        LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_basic, parent, false));
+        }
     }
 
     @Override
@@ -314,8 +321,6 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                 }
             } else if (mediaEntityArray.length > 1) {
                 RecyclerView mRecyclerView = ((VHHeader) holder).tweetPhotosRecyclerView;
-                mRecyclerView.setVisibility(View.VISIBLE);
-                mRecyclerView.addItemDecoration(new SpaceLeftItemDecoration(5));
                 mRecyclerView.setAdapter(new ImagesAdapter(currentStatus.getExtendedMediaEntities(), context));
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
             }
@@ -367,7 +372,6 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                 }
             } else if(TYPE == TYPE_ITEM_MULTIPLE_PHOTOS) {
                 RecyclerView mRecyclerView = ((VHItemMultiplePhotos) holder).tweetPhotosRecyclerView;
-                mRecyclerView.addItemDecoration(new SpaceLeftItemDecoration(5));
                 mRecyclerView.setAdapter(new ImagesAdapter(currentStatus.getExtendedMediaEntities(), context));
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
             } else if (TYPE == TYPE_ITEM_QUOTE) {
