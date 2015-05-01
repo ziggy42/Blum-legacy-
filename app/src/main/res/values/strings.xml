@@ -106,6 +106,8 @@
     <string name="licenses_pref_summary">Licenses for open source software used in this app</string>
     <string name="action_mark_as_read">Mark all as read</string>
     <string name="my_twitter"><![CDATA[Developed with ♥ by <a href="https://twitter.com/Pivix00">\@Pivix00<a><br/>Icon from <a href="https://twitter.com/stefano_openlab">\@stefano_openlab<a>]]></string>
+    <string name="too_many_images">You can send at most 4 images</string>
+    <string name="operation_not_supported">Operation not supported</string>
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>
@@ -182,7 +184,6 @@
     <string name="favourite_imageButton_contentDescriptor" translatable="false">Favourite Image Button</string>
     <string name="respond_imageButton_contentDescriptor" translatable="false">Respond Image Button</string>
     <string name="share_imageButton_contentDescriptor" translatable="false">Share Image Button</string>
-    <string name="profile_pic_contentDescriptor" translatable="false">User Profile Picture</string>
     <string name="tweet_photo_contentDescriptor" translatable="false">Tweet Photo</string>
     <string name="grab_image_contentDescriptor" translatable="false">Upload a Picture Image Button</string>
     <string name="take_photo_contentDescriptor" translatable="false">Take and Add a Photo Image Button</string>

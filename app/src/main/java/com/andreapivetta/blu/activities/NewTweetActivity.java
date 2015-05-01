@@ -12,27 +12,34 @@ import android.provider.MediaStore;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.twitter.UpdateTwitterStatus;
+import com.andreapivetta.blu.utilities.Common;
 import com.andreapivetta.blu.utilities.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import twitter4j.Twitter;
@@ -43,20 +50,20 @@ public class NewTweetActivity extends AppCompatActivity {
 
     private static final int REQUEST_GRAB_IMAGE = 3;
     private static final int REQUEST_TAKE_PHOTO = 1;
-    private static final String FILE = "file";
-    private static final String TEXT = "text";
+    private static final String FILES = "file";
 
-    private ImageView uploadedImageView;
-    private EditText newTweetEditText;
-
-    private File imageFile;
+    private ArrayList<File> imageFiles = new ArrayList<>();
+    private DeletableImageAdapter mAdapter;
     private Twitter twitter;
     private Intent intent;
 
+    private EditText newTweetEditText;
+
     private int charsLeft;
-    private boolean hasImage = false;
+    private File imageFile;
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_tweet);
@@ -73,11 +80,18 @@ public class NewTweetActivity extends AppCompatActivity {
             });
         }
 
+        if (savedInstanceState != null) {
+            imageFiles = (ArrayList<File>) savedInstanceState.getSerializable(FILES);
+        }
+
         twitter = TwitterUtils.getTwitter(NewTweetActivity.this);
         newTweetEditText = (EditText) findViewById(R.id.newTweetEditText);
-        uploadedImageView = (ImageView) findViewById(R.id.uploadedImageView);
         ImageButton takePhotoImageButton = (ImageButton) findViewById(R.id.takePhotoImageButton);
         ImageButton grabImageImageButton = (ImageButton) findViewById(R.id.grabImageImageButton);
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.photosRecyclerView);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(NewTweetActivity.this, 2));
+        mAdapter = new DeletableImageAdapter();
+        mRecyclerView.setAdapter(mAdapter);
 
         intent = getIntent();
         final String action = intent.getAction();
@@ -87,23 +101,15 @@ public class NewTweetActivity extends AppCompatActivity {
             if ("text/plain".equals(type)) {
                 newTweetEditText.setText(intent.getStringExtra(Intent.EXTRA_TEXT));
             } else if (type.startsWith("image/")) {
-                ViewTreeObserver viewTree = uploadedImageView.getViewTreeObserver();
-                viewTree.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                    public boolean onPreDraw() {
-                        Uri selectedImageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-                        imageFile = new File(FileUtils.getPath(NewTweetActivity.this, selectedImageUri));
-                        setImage();
-                        uploadedImageView.getViewTreeObserver().removeOnPreDrawListener(this);
-                        return true;
-                    }
-                });
+                Uri selectedImageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+                imageFiles.add(new File(FileUtils.getPath(NewTweetActivity.this, selectedImageUri)));
+                mAdapter.notifyDataSetChanged();
             }
         } /*else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
             if (type.startsWith("image/")) {
 
             }
         }*/
-
 
         if (intent.getStringExtra("USER_PREFIX") != null &&
                 intent.getStringExtra("USER_PREFIX").length() > 0)
@@ -132,20 +138,24 @@ public class NewTweetActivity extends AppCompatActivity {
         takePhotoImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    File photoFile = null;
-                    try {
-                        photoFile = createImageFile();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
+                if (imageFiles.size() < 4) {
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                        File photoFile = null;
+                        try {
+                            photoFile = createImageFile();
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
 
-                    if (photoFile != null) {
-                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                                Uri.fromFile(photoFile));
-                        startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                        if (photoFile != null) {
+                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                                    Uri.fromFile(photoFile));
+                            startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                        }
                     }
+                } else {
+                    showTooMuchImagesToast();
                 }
             }
         });
@@ -153,29 +163,22 @@ public class NewTweetActivity extends AppCompatActivity {
         grabImageImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent()
-                        .setType("image/*")
-                        .setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_GRAB_IMAGE);
+                if (imageFiles.size() < 4) {
+                    Intent intent = new Intent()
+                            .setType("image/*")
+                            .setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_GRAB_IMAGE);
+                } else {
+                    showTooMuchImagesToast();
+                }
 
             }
         });
-
-
-        if (savedInstanceState != null) {
-            imageFile = (File) savedInstanceState.getSerializable(FILE);
-            if (imageFile != null)
-                uploadedImageView.setImageBitmap(ThumbnailUtils.extractThumbnail(
-                        BitmapFactory.decodeFile(imageFile.getAbsolutePath()),
-                        uploadedImageView.getWidth(), uploadedImageView.getWidth()));
-
-            newTweetEditText.setText(savedInstanceState.getString(TEXT));
-        }
     }
 
     void checkLength(String text) {
         int wordsLength = 0;
-        int urls = (hasImage) ? 1 : 0;
+        int urls = imageFiles.size();
 
         for (String entry : text.split(" ")) {
             if (Patterns.WEB_URL.matcher(entry).matches() && entry.length() > MAX_URL_LENGTH)
@@ -205,25 +208,26 @@ public class NewTweetActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_GRAB_IMAGE:
                 if (resultCode == RESULT_OK) {
-                    imageFile = new File(FileUtils.getPath(NewTweetActivity.this, imageReturnedIntent.getData()));
-                    setImage();
+                    try {
+                        imageFiles.add(new File(FileUtils.getPath(NewTweetActivity.this, imageReturnedIntent.getData())));
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                        Toast.makeText(NewTweetActivity.this, getString(R.string.operation_not_supported), Toast.LENGTH_SHORT).show();
+                    }
                 }
                 break;
             case REQUEST_TAKE_PHOTO:
                 if (resultCode == RESULT_OK)
-                    setImage();
+                    imageFiles.add(imageFile);
                 break;
         }
+
+        mAdapter.notifyItemInserted(imageFiles.size() - 1);
+        checkLength(newTweetEditText.getText().toString());
     }
 
-    void setImage() {
-        Bitmap thumbImage = ThumbnailUtils.extractThumbnail(
-                BitmapFactory.decodeFile(imageFile.getAbsolutePath()),
-                uploadedImageView.getWidth(), uploadedImageView.getWidth());
-        uploadedImageView.setImageBitmap(thumbImage);
-
-        hasImage = true;
-        checkLength(newTweetEditText.getText().toString());
+    private void showTooMuchImagesToast() {
+        Toast.makeText(NewTweetActivity.this, getString(R.string.too_many_images), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -252,14 +256,15 @@ public class NewTweetActivity extends AppCompatActivity {
                         .create()
                         .show();
             } else {
-                if (uploadedImageView.getVisibility() == View.VISIBLE)
-                    new UpdateTwitterStatus(NewTweetActivity.this, twitter, imageFile,
-                            intent.getLongExtra("REPLY_ID", -1L))
+                if (imageFiles.size() > 0) {
+                    new UpdateTwitterStatus(NewTweetActivity.this, twitter,
+                            intent.getLongExtra("REPLY_ID", -1L), imageFiles)
                             .execute(newTweetEditText.getText().toString());
-                else
+                } else {
                     new UpdateTwitterStatus(NewTweetActivity.this, twitter,
                             intent.getLongExtra("REPLY_ID", -1L))
                             .execute(newTweetEditText.getText().toString());
+                }
 
                 finish();
             }
@@ -267,5 +272,54 @@ public class NewTweetActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(FILES, imageFiles);
+        super.onSaveInstanceState(outState);
+    }
+
+    private class DeletableImageAdapter extends RecyclerView.Adapter<DeletableImageAdapter.VHItem> {
+        
+        @Override
+        public VHItem onCreateViewHolder(ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.photo_deletable, parent, false);
+
+            return new VHItem(v);
+        }
+
+        @Override
+        public void onBindViewHolder(VHItem holder, final int position) {
+            Bitmap thumbImage = ThumbnailUtils.extractThumbnail(
+                    BitmapFactory.decodeFile(imageFiles.get(position).getAbsolutePath()),
+                    Common.dpToPx(NewTweetActivity.this, 200), Common.dpToPx(NewTweetActivity.this, 200));
+            holder.photoImageView.setImageBitmap(thumbImage);
+        }
+
+        @Override
+        public int getItemCount() {
+            return imageFiles.size();
+        }
+
+        public class VHItem extends RecyclerView.ViewHolder {
+            public ImageView photoImageView;
+            public Button deleteButton;
+
+            public  VHItem(View container) {
+                super(container);
+
+                this.photoImageView = (ImageView) container.findViewById(R.id.tweetPhotoImageView);
+                this.deleteButton = (Button) container.findViewById(R.id.deleteButton);
+                this.deleteButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        imageFiles.remove(getAdapterPosition());
+                        DeletableImageAdapter.this.notifyItemRemoved(getAdapterPosition());
+                    }
+                });
+            }
+        }
     }
 }

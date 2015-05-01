@@ -11,6 +11,7 @@ import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.utilities.Common;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
@@ -21,7 +22,7 @@ public class UpdateTwitterStatus extends AsyncTask<String, String, Boolean> {
 
     private static SharedPreferences mSharedPreferences;
     private Twitter twitter;
-    private File file;
+    private ArrayList<File> imageFiles = new ArrayList<>();
     private long inReplyTo;
     private Context context;
 
@@ -35,25 +36,27 @@ public class UpdateTwitterStatus extends AsyncTask<String, String, Boolean> {
         mSharedPreferences = context.getSharedPreferences(Common.PREF, 0);
     }
 
-    public UpdateTwitterStatus(Context context, Twitter twitter, File file, long inReplyTo) {
-        this.twitter = twitter;
-        this.context = context;
-        this.file = file;
-        this.inReplyTo = inReplyTo;
-        mSharedPreferences = context.getSharedPreferences(Common.PREF, 0);
+    public UpdateTwitterStatus(Context context, Twitter twitter, long inReplyTo, ArrayList<File> imageFiles) {
+        this(context, twitter, inReplyTo);
+        this.imageFiles = imageFiles;
     }
 
     protected Boolean doInBackground(String... args) {
         try {
+            pushNotification();
             StatusUpdate status = new StatusUpdate(args[0]);
 
-            if (file != null)
-                status.setMedia(file);
+            if (imageFiles.size() > 0) {
+                long[] mediaIds = new long[imageFiles.size()];
+                for (int i = 0; i < mediaIds.length; i++)
+                    mediaIds[i] = twitter.uploadMedia(imageFiles.get(i)).getMediaId();
+
+                status.setMediaIds(mediaIds);
+            }
 
             if (inReplyTo > 0)
                 status.setInReplyToStatusId(inReplyTo);
 
-            pushNotification();
             twitter.updateStatus(status);
         } catch (TwitterException e) {
             e.printStackTrace();

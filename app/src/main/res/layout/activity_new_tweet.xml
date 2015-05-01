@@ -26,63 +26,55 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:layout_toLeftOf="@+id/imagesLinearLayout"
-                android:layout_toStartOf="@+id/imagesLinearLayout"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/newTweetEditText"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:background="@null"
                     android:hint="@string/new_tweet_hint"
                     android:inputType="textMultiLine|textCapSentences"
                     android:textColor="@color/grey"
                     android:textColorHint="@color/lightGrey" />
 
-                <ImageView
-                    android:id="@+id/uploadedImageView"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:id="@+id/imagesLinearLayout"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="15dp"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@string/uploaded_image_contentDescriptor"
-                    android:scaleType="fitCenter" />
+                    android:orientation="vertical">
 
+                    <ImageButton
+                        android:id="@+id/takePhotoImageButton"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:background="?android:selectableItemBackground"
+                        android:contentDescription="@string/take_photo_contentDescriptor"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_camera_alt_grey600_36dp" />
 
-            </LinearLayout>
+                    <ImageButton
+                        android:id="@+id/grabImageImageButton"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="5dp"
+                        android:background="?android:selectableItemBackground"
+                        android:contentDescription="@string/grab_image_contentDescriptor"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_image_grey600_36dp" />
 
-            <LinearLayout
-                android:id="@+id/imagesLinearLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical">
-
-                <ImageButton
-                    android:id="@+id/takePhotoImageButton"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:background="?android:selectableItemBackground"
-                    android:contentDescription="@string/take_photo_contentDescriptor"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_camera_alt_grey600_36dp" />
-
-                <ImageButton
-                    android:id="@+id/grabImageImageButton"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="5dp"
-                    android:background="?android:selectableItemBackground"
-                    android:contentDescription="@string/grab_image_contentDescriptor"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_image_grey600_36dp" />
+                </LinearLayout>
 
             </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/photosRecyclerView"
+                android:layout_width="fill_parent"
+                android:layout_height="400dp"
+                android:layout_below="@+id/contentLinearLayout"
+                android:layout_marginTop="15dp"
+                android:scrollbars="none" />
 
         </RelativeLayout>
     </ScrollView>
