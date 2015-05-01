@@ -192,5 +192,6 @@
     <string name="notifications_contentDescription" translatable="false">Notifications</string>
     <string name="openTweet_imageButton_contentDescriptor" translatable="false">Open Tweet Image Button</string>
     <string name="send_message_contentDescriptor" translatable="false">Send Message Button</string>
+    <string name="profile_pic_contentDescriptor">Profile Picture</string>
 
 </resources>

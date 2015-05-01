@@ -1,11 +1,13 @@
 package com.andreapivetta.blu.activities;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -167,6 +169,10 @@ public class NewTweetActivity extends AppCompatActivity {
                     Intent intent = new Intent()
                             .setType("image/*")
                             .setAction(Intent.ACTION_GET_CONTENT);
+
+                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+                        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+
                     startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_GRAB_IMAGE);
                 } else {
                     showTooMuchImagesToast();
@@ -208,21 +214,28 @@ public class NewTweetActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_GRAB_IMAGE:
                 if (resultCode == RESULT_OK) {
-                    try {
+                    if (imageReturnedIntent.getData() != null) {
                         imageFiles.add(new File(FileUtils.getPath(NewTweetActivity.this, imageReturnedIntent.getData())));
-                    } catch (NullPointerException e) {
-                        e.printStackTrace();
+                        mAdapter.notifyItemInserted(imageFiles.size() - 1);
+                    } else if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2
+                            && imageReturnedIntent.getClipData() != null) {
+                        ClipData mClipData = imageReturnedIntent.getClipData();
+                        for (int i = 0; i < mClipData.getItemCount() && i < 4; i++)
+                            imageFiles.add(new File(FileUtils.getPath(NewTweetActivity.this, mClipData.getItemAt(i).getUri())));
+                        mAdapter.notifyDataSetChanged();
+                    } else {
                         Toast.makeText(NewTweetActivity.this, getString(R.string.operation_not_supported), Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
             case REQUEST_TAKE_PHOTO:
-                if (resultCode == RESULT_OK)
+                if (resultCode == RESULT_OK) {
                     imageFiles.add(imageFile);
+                    mAdapter.notifyItemInserted(imageFiles.size() - 1);
+                }
                 break;
         }
 
-        mAdapter.notifyItemInserted(imageFiles.size() - 1);
         checkLength(newTweetEditText.getText().toString());
     }
 
