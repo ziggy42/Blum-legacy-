@@ -323,18 +323,19 @@ public class NewTweetActivity extends AppCompatActivity {
 
         public class VHItem extends RecyclerView.ViewHolder {
             public ImageView photoImageView;
-            public Button deleteButton;
+            public ImageButton deleteButton;
 
             public  VHItem(View container) {
                 super(container);
 
                 this.photoImageView = (ImageView) container.findViewById(R.id.tweetPhotoImageView);
-                this.deleteButton = (Button) container.findViewById(R.id.deleteButton);
+                this.deleteButton = (ImageButton) container.findViewById(R.id.deleteButton);
                 this.deleteButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         imageFiles.remove(getAdapterPosition());
                         DeletableImageAdapter.this.notifyItemRemoved(getAdapterPosition());
+                        checkLength(newTweetEditText.getText().toString());
                     }
                 });
             }
