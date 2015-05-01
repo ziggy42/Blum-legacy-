@@ -25,7 +25,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -189,7 +188,7 @@ public class NewTweetActivity extends AppCompatActivity {
 
     void checkLength(String text) {
         int wordsLength = 0;
-        int urls = imageFiles.size();
+        int urls = (imageFiles.size() > 0) ? 1 : 0;
 
         for (String entry : text.split(" ")) {
             if (Patterns.WEB_URL.matcher(entry).matches() && entry.length() > MAX_URL_LENGTH)
