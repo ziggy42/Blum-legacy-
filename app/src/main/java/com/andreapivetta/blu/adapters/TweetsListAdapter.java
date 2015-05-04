@@ -87,6 +87,8 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                 VHItemMultiplePhotos vhItemMultiplePhotos = new VHItemMultiplePhotos(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_multiplephotos, parent, false));
                 vhItemMultiplePhotos.tweetPhotosRecyclerView.addItemDecoration(new SpaceLeftItemDecoration(5));
+                vhItemMultiplePhotos.tweetPhotosRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+                vhItemMultiplePhotos.tweetPhotosRecyclerView.setHasFixedSize(true);
                 return  vhItemMultiplePhotos;
             case TYPE_HEADER:
                 return new VHHeader(
@@ -321,6 +323,8 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                 }
             } else if (mediaEntityArray.length > 1) {
                 RecyclerView mRecyclerView = ((VHHeader) holder).tweetPhotosRecyclerView;
+                mRecyclerView.setVisibility(View.VISIBLE);
+                mRecyclerView.addItemDecoration(new SpaceLeftItemDecoration(5));
                 mRecyclerView.setAdapter(new ImagesAdapter(currentStatus.getExtendedMediaEntities(), context));
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
             }
@@ -373,7 +377,6 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             } else if(TYPE == TYPE_ITEM_MULTIPLE_PHOTOS) {
                 RecyclerView mRecyclerView = ((VHItemMultiplePhotos) holder).tweetPhotosRecyclerView;
                 mRecyclerView.setAdapter(new ImagesAdapter(currentStatus.getExtendedMediaEntities(), context));
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
             } else if (TYPE == TYPE_ITEM_QUOTE) {
                 String quotedStatusURL = "";
                 for (URLEntity entity : currentStatus.getURLEntities())
