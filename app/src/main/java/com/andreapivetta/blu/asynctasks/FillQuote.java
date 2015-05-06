@@ -47,6 +47,9 @@ public class FillQuote extends AsyncTask<Void, Void, Boolean> {
         } catch (TwitterException e) {
             e.printStackTrace();
             return false;
+        } catch (NullPointerException ne) {
+            ne.printStackTrace();
+            return false;
         }
 
         return true;
