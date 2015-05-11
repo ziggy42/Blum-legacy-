@@ -63,6 +63,7 @@ public class HomeActivity extends TimeLineActivity {
                 newTweetsCount = savedInstanceState.getInt(UPCOMING_TWEET_COUNT_TAG);
             } else {
                 new GetTimeLine().execute(null, null, null);
+                //new LoadFakeTweets().execute(null, null, null); // For Screenshots only
             }
 
             if (mSharedPreferences.getBoolean(Common.PREF_STREAM_ON, false))
@@ -289,9 +290,16 @@ public class HomeActivity extends TimeLineActivity {
         protected Void doInBackground(Void... params) {
 
             try {
-                for (int i = 0; i < 8; i++) {
-                    buffer.add(twitter.showStatus(592827745522028544L));
-                }
+
+                buffer.add(twitter.showStatus(597193109559214080L));
+                buffer.add(twitter.showStatus(597189846889791489L));
+                buffer.add(twitter.showStatus(597189846889791489L));
+
+                buffer.add(twitter.showStatus(597189094209363968L));
+
+                buffer.add(twitter.showStatus(592827745522028544L));
+                buffer.add(twitter.showStatus(592827745522028544L));
+                buffer.add(twitter.showStatus(592827745522028544L));
             } catch(TwitterException e) {
                 e.printStackTrace();
             }
