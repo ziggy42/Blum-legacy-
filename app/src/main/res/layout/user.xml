@@ -34,7 +34,6 @@
             android:layout_alignTop="@+id/userProfilePicImageView"
             android:layout_toEndOf="@+id/userProfilePicImageView"
             android:layout_toRightOf="@+id/userProfilePicImageView"
-            android:textColor="@color/textColor"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -46,7 +45,6 @@
             android:layout_alignStart="@+id/userNameTextView"
             android:layout_below="@+id/userNameTextView"
             android:fontFamily="sans-serif-thin"
-            android:textColor="@color/textColor"
             android:textSize="14sp" />
 
         <TextView
@@ -58,7 +56,6 @@
             android:layout_below="@+id/screenNameTextView"
             android:layout_marginRight="5dp"
             android:layout_marginTop="2dp"
-            android:textColor="@color/textColor"
             android:textSize="16sp" />
 
     </RelativeLayout>

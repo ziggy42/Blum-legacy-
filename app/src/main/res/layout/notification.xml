@@ -32,7 +32,6 @@
             android:layout_toLeftOf="@+id/timeTextView"
             android:layout_toRightOf="@+id/userProfilePicImageView"
             android:layout_toStartOf="@+id/timeTextView"
-            android:textColor="@color/textColor"
             android:textSize="17sp" />
 
         <TextView
@@ -45,7 +44,6 @@
             android:layout_marginRight="5dp"
             android:layout_toRightOf="@+id/userProfilePicImageView"
             android:fontFamily="sans-serif-light"
-            android:textColor="@color/textColor"
             android:textSize="14sp" />
 
         <TextView

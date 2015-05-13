@@ -1,16 +1,16 @@
 <resources>
 
-    <!--
-    <style name="AppTheme" parent="AppTheme.Base" />
-    -->
+    <style name="LightBaseTheme" parent="Theme.AppCompat.Light.NoActionBar" >
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:textColorPrimary">@color/lightThemesTextColor</item>
+    </style>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="BlueAppTheme" parent="LightBaseTheme">
         <item name="colorPrimary">@color/blueThemeColorPrimary</item>
         <item name="colorPrimaryDark">@color/blueThemeColorPrimaryDark</item>
         <item name="colorAccent">@color/blueThemeColorAccent</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
         <item name="searchViewStyle">@style/CustomSearchViewStyle</item>
 
         <item name="appColorPrimary">@color/blueThemeColorPrimary</item>
@@ -28,9 +28,8 @@
         <item name="submitBackground">@color/blueThemeColorPrimary</item>
     </style>
 
-
     <!-- Pink Theme -->
-    <style name="PinkAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="PinkAppTheme" parent="LightBaseTheme">
         <item name="colorPrimary">@color/pinkThemeColorPrimary</item>
         <item name="colorPrimaryDark">@color/pinkThemeColorPrimaryDark</item>
         <item name="colorAccent">@color/pinkThemeColorAccent</item>

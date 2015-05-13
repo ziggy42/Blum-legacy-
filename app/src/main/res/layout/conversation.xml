@@ -34,7 +34,6 @@
             android:layout_toEndOf="@+id/userProfilePicImageView"
             android:layout_toRightOf="@+id/userProfilePicImageView"
             android:fontFamily="sans-serif-bold"
-            android:textColor="@color/textColor"
             android:textSize="18sp" />
 
         <TextView
@@ -61,7 +60,6 @@
             android:ellipsize="end"
             android:fontFamily="sans-serif-light"
             android:maxLines="2"
-            android:textColor="@color/textColor"
             android:textSize="14sp" />
 
         <View

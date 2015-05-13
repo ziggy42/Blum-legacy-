@@ -36,7 +36,6 @@
                     android:background="@null"
                     android:hint="@string/new_tweet_hint"
                     android:inputType="textMultiLine|textCapSentences"
-                    android:textColor="@color/grey"
                     android:textColorHint="@color/lightGrey" />
 
                 <LinearLayout

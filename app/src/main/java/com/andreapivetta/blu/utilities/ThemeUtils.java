@@ -6,7 +6,7 @@ import com.andreapivetta.blu.R;
 
 public class ThemeUtils {
 
-    public static int getResorceColorPrimary(Context context) {
+    public static int getResourceColorPrimary(Context context) {
         switch (context.getSharedPreferences(Common.PREF, 0).getInt(Common.PREF_THEME, 0)) {
             case 0:
                 return context.getResources().getColor(R.color.blueThemeColorPrimary);

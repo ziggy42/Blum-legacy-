@@ -54,7 +54,7 @@ public class Message implements Comparable<Message> {
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(dm.getText()))
                 .setContentIntent(resultPendingIntent)
-                .setColor(ThemeUtils.getResorceColorPrimary(context))
+                .setColor(ThemeUtils.getResourceColorPrimary(context))
                 .setLargeIcon(Common.getBitmapFromURL(dm.getSender().getProfileImageURL()))
                 .setSmallIcon(R.drawable.ic_message_white_24dp)
                 .setLights(Color.BLUE, 500, 1000)

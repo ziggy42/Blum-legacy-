@@ -91,7 +91,7 @@ public class Notification implements Comparable<Notification> {
 
         mBuilder.setDefaults(android.app.Notification.DEFAULT_SOUND)
                 .setAutoCancel(true)
-                .setColor(ThemeUtils.getResorceColorPrimary(context))
+                .setColor(ThemeUtils.getResourceColorPrimary(context))
                 .setLargeIcon(Common.getBitmapFromURL(profilePicURL))
                 .setLights(Color.BLUE, 500, 1000);
 

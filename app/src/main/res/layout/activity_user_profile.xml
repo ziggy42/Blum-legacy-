@@ -45,7 +45,6 @@
                     android:layout_marginLeft="140dp"
                     android:layout_marginTop="1dp"
                     android:fontFamily="sans-serif-thin"
-                    android:textColor="@color/textColor"
                     android:textSize="15sp" />
 
                 <TextView
@@ -56,7 +55,6 @@
                     android:layout_marginLeft="140dp"
                     android:layout_marginTop="-3dp"
                     android:singleLine="true"
-                    android:textColor="@color/grey"
                     android:textIsSelectable="false"
                     android:textSize="25sp" />
 
@@ -70,7 +68,6 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="6dp"
                     android:gravity="center_horizontal"
-                    android:textColor="@color/textColor"
                     android:textSize="17sp" />
 
                 <LinearLayout
@@ -87,8 +84,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:gravity="center_horizontal"
-                        android:textColor="@color/textColor" />
+                        android:gravity="center_horizontal" />
 
                     <TextView
                         android:id="@+id/userWebsiteTextView"
@@ -125,7 +121,6 @@
                         android:maxLines="2"
                         android:padding="4dp"
                         android:singleLine="false"
-                        android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
                     <TextView
@@ -138,7 +133,6 @@
                         android:maxLines="2"
                         android:padding="4dp"
                         android:singleLine="false"
-                        android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
                     <TextView
@@ -151,7 +145,6 @@
                         android:maxLines="2"
                         android:padding="4dp"
                         android:singleLine="false"
-                        android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
                 </LinearLayout>
