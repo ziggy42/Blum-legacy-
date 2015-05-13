@@ -22,7 +22,6 @@ public class HashtagActivity extends TimeLineActivity {
 
     private String hashtag;
     private Query mQuery;
-    private Twitter twitter;
 
     @Override
     @SuppressWarnings("unchecked")
