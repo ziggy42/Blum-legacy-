@@ -243,7 +243,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/rect_button"
+                    android:background="?rectButton"
                     android:text="@string/follow_user"
                     android:textColor="@color/white"
                     tools:ignore="ButtonStyle" />
@@ -255,7 +255,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/rect_button"
+                    android:background="?rectButton"
                     android:text="@string/tweet"
                     android:textColor="@color/white"
                     tools:ignore="ButtonStyle" />

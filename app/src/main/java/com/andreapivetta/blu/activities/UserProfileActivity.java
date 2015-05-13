@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -67,7 +66,7 @@ import twitter4j.TwitterException;
 import twitter4j.URLEntity;
 import twitter4j.User;
 
-public class UserProfileActivity extends AppCompatActivity {
+public class UserProfileActivity extends ThemedActivity {
 
     private final static String FOLLOWERS = "followers";
     private final static String FOLLOWING = "following";

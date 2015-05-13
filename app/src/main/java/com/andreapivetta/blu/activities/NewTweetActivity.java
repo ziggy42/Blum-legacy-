@@ -13,7 +13,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -45,7 +44,7 @@ import java.util.Date;
 
 import twitter4j.Twitter;
 
-public class NewTweetActivity extends AppCompatActivity {
+public class NewTweetActivity extends ThemedActivity {
 
     private static final int MAX_URL_LENGTH = 23; // it will change
 

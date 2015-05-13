@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="25dp"
     android:layout_marginRight="4dp"
-    android:background="@drawable/rect_background"
+    android:background="?rectBackground"
     android:gravity="center"
     android:includeFontPadding="false"
     android:minWidth="46dp"

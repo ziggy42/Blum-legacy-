@@ -150,6 +150,16 @@
         <item>7200</item>
     </string-array>
 
+    <string-array name="themes">
+        <item>Blue</item>
+        <item>Pink</item>
+    </string-array>
+
+    <string-array name="themes_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
     <!-- Activities titles -->
     <string name="title_empty" translatable="false"/>
     <string name="title_activity_tweet" translatable="false">Tweet</string>
@@ -193,5 +203,7 @@
     <string name="send_message_contentDescriptor" translatable="false">Send Message Button</string>
     <string name="profile_pic_contentDescriptor" translatable="false">Profile Picture</string>
     <string name="delete_photo_tweet_contentDescriptor" translatable="false">Delete Photo Buttom</string>
+    <string name="themes_pref_summary">Choose the UI Theme</string>
+    <string name="themes_pref_title">Themes</string>
 
 </resources>

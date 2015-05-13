@@ -11,8 +11,8 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
+import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -37,7 +37,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends ThemedActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +69,7 @@ public class SettingsActivity extends AppCompatActivity {
         private CheckBoxPreference animationsPreference, headsUpPreference;
         private SwitchPreference streamServicePreference;
         private ListPreference favoritesRetweetsListPreference, mentionsListPreference,
-                followersListPreference, messagesListPreference, frequencyListPreference;
+                followersListPreference, messagesListPreference, frequencyListPreference, themesListPreference;
 
         private ProgressDialog dialog;
         private WebView mWebView;
@@ -97,6 +97,7 @@ public class SettingsActivity extends AppCompatActivity {
             followersListPreference = (ListPreference) findPreference("pref_key_followers");
             messagesListPreference = (ListPreference) findPreference("pref_key_dms");
             licensesPreference = findPreference("pref_key_licenses");
+            themesListPreference = (ListPreference) findPreference("pref_key_themes");
 
             if (mSharedPreferences.getBoolean(Common.PREF_STREAM_ON, false)) {
                 frequencyListPreference.setEnabled(false);
@@ -370,6 +371,34 @@ public class SettingsActivity extends AppCompatActivity {
                             .setPositiveButton(getString(R.string.ok), null)
                             .create()
                             .show();
+
+                    return true;
+                }
+            });
+
+            switch (mSharedPreferences.getInt(Common.PREF_THEME, 0)) {
+                case 0:
+                    themesListPreference.setValueIndex(0);
+                    break;
+                case 1:
+                    themesListPreference.setValueIndex(1);
+                    break;
+                default:
+                    themesListPreference.setValueIndex(0);
+                    break;
+            }
+
+            themesListPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+                    mSharedPreferences.edit()
+                            .putInt(Common.PREF_THEME, Integer.parseInt(newValue.toString())).apply();
+
+                    getActivity().finish();
+                    final Intent intent = new Intent(getActivity(), HomeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+                    getActivity().startActivity(intent);
 
                     return true;
                 }

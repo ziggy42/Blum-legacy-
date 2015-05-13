@@ -12,6 +12,7 @@ import android.support.v4.app.NotificationCompat;
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.ConversationActivity;
 import com.andreapivetta.blu.utilities.Common;
+import com.andreapivetta.blu.utilities.ThemeUtils;
 
 import twitter4j.DirectMessage;
 
@@ -53,7 +54,7 @@ public class Message implements Comparable<Message> {
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(dm.getText()))
                 .setContentIntent(resultPendingIntent)
-                .setColor(context.getResources().getColor(R.color.colorPrimary))
+                .setColor(ThemeUtils.getResorceColorPrimary(context))
                 .setLargeIcon(Common.getBitmapFromURL(dm.getSender().getProfileImageURL()))
                 .setSmallIcon(R.drawable.ic_message_white_24dp)
                 .setLights(Color.BLUE, 500, 1000)

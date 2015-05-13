@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +20,7 @@ import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.SpaceTopItemDecoration;
 import com.andreapivetta.blu.adapters.TweetsListAdapter;
 import com.andreapivetta.blu.utilities.Common;
+import com.andreapivetta.blu.utilities.ThemeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
-public abstract class TimeLineActivity extends AppCompatActivity {
+public abstract class TimeLineActivity extends ThemedActivity {
 
     protected String TWEETS_LIST_TAG = "TWEET_LIST";
 
@@ -101,7 +101,8 @@ public abstract class TimeLineActivity extends AppCompatActivity {
         });
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
+        swipeRefreshLayout.setColorSchemeResources(ThemeUtils.getColorPrimaryDark(TimeLineActivity.this),
+                ThemeUtils.getColorPrimary(TimeLineActivity.this));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

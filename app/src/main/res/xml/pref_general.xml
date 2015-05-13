@@ -57,6 +57,13 @@
         android:key="pref_key_behavior"
         android:title="@string/prefcat_behavior_title">
 
+        <ListPreference
+            android:entries="@array/themes"
+            android:entryValues="@array/themes_values"
+            android:key="pref_key_themes"
+            android:summary="@string/themes_pref_summary"
+            android:title="@string/themes_pref_title" />
+
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="pref_key_animations"

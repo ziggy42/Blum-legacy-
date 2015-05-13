@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="appColorPrimary" format="color|reference" />
+    <attr name="appColorPrimaryDark" format="color|reference" />
+    <attr name="appColorAccent" format="color|reference" />
+
+    <attr name="circleButtonDrawable" format="reference" />
+    <attr name="circleDrawable" format="reference" />
+    <attr name="quoteBackground" format="reference" />
+    <attr name="rectBackground" format="reference" />
+    <attr name="rectButton" format="reference" />
+</resources>

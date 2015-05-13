@@ -4,7 +4,7 @@
     android:id="@+id/conversationContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:mrl_rippleColor="@color/colorAccent"
+    app:mrl_rippleColor="?appColorPrimaryDark"
     app:mrl_rippleOverlay="true">
 
     <RelativeLayout

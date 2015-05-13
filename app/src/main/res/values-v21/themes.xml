@@ -1,11 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="AppTheme.Base">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
         <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
         <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
+
+        <item name="colorPrimary">@color/blueThemeColorPrimary</item>
+        <item name="colorPrimaryDark">@color/blueThemeColorPrimaryDark</item>
+        <item name="colorAccent">@color/blueThemeColorAccent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="searchViewStyle">@style/CustomSearchViewStyle</item>
+
+        <item name="appColorPrimary">@color/blueThemeColorPrimary</item>
+        <item name="appColorPrimaryDark">@color/blueThemeColorPrimaryDark</item>
+        <item name="appColorAccent">@color/blueThemeColorAccent</item>
+        <item name="circleButtonDrawable">@drawable/circle_button_blue</item>
+        <item name="circleDrawable">@drawable/circle_darkblue</item>
+        <item name="quoteBackground">@drawable/quote_background_blue</item>
+        <item name="rectBackground">@drawable/rect_background_blue</item>
+        <item name="rectButton">@drawable/rect_button_blue</item>
     </style>
+
+    <!-- Pink Theme -->
+    <style name="PinkAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/pinkThemeColorPrimary</item>
+        <item name="colorPrimaryDark">@color/pinkThemeColorPrimaryDark</item>
+        <item name="colorAccent">@color/pinkThemeColorAccent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="searchViewStyle">@style/PinkSearchViewStyle</item>
+
+        <item name="appColorPrimary">@color/pinkThemeColorPrimary</item>
+        <item name="appColorPrimaryDark">@color/pinkThemeColorPrimaryDark</item>
+        <item name="appColorAccent">@color/pinkThemeColorAccent</item>
+        <item name="circleButtonDrawable">@drawable/circle_button_pink</item>
+        <item name="circleDrawable">@drawable/circle_darkpink</item>
+        <item name="quoteBackground">@drawable/quote_background_pink</item>
+        <item name="rectBackground">@drawable/rect_background_pink</item>
+        <item name="rectButton">@drawable/rect_button_pink</item>
+    </style>
+
 </resources>

@@ -15,6 +15,7 @@ import com.andreapivetta.blu.activities.TweetActivity;
 import com.andreapivetta.blu.activities.UserProfileActivity;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.utilities.Common;
+import com.andreapivetta.blu.utilities.ThemeUtils;
 
 import java.util.Calendar;
 
@@ -90,7 +91,7 @@ public class Notification implements Comparable<Notification> {
 
         mBuilder.setDefaults(android.app.Notification.DEFAULT_SOUND)
                 .setAutoCancel(true)
-                .setColor(context.getResources().getColor(R.color.colorPrimary))
+                .setColor(ThemeUtils.getResorceColorPrimary(context))
                 .setLargeIcon(Common.getBitmapFromURL(profilePicURL))
                 .setLights(Color.BLUE, 500, 1000);
 

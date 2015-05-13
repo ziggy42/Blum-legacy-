@@ -33,6 +33,7 @@ public class Common {
     public final static String PREF_MENTIONS_NOTS = "mentionsnots";
     public final static String PREF_FOLLOWERS_NOTS = "followersnots";
     public final static String PREF_DMS_NOTS = "dmsnots";
+    public final static String PREF_THEME = "theme";
 
     public final static String ALWAYS = "always";
     public final static String NEVER = "never";
