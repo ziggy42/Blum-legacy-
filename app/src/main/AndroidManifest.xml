@@ -145,7 +145,7 @@
             android:name=".activities.ConversationActivity"
             android:label="@string/title_empty"
             android:parentActivityName=".activities.ConversationsListActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize" >
+            android:windowSoftInputMode="adjustResize" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.andreapivetta.blu.activities.ConversationsListActivity" />
