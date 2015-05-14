@@ -1,7 +1,25 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:key="pref_key_notifications"
+        android:title="@string/prefcat_appearance_title">
+
+        <ListPreference
+            android:defaultValue="B"
+            android:entries="@array/themes"
+            android:entryValues="@array/themes_values"
+            android:key="@string/pref_key_themes"
+            android:summary="@string/themes_pref_summary"
+            android:title="@string/themes_pref_title" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/pref_key_animations"
+            android:summary="@string/animations_pref_summary"
+            android:title="@string/animations_pref_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/notifications">
 
         <ListPreference
@@ -59,33 +77,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="pref_key_behavior"
-        android:title="@string/prefcat_behavior_title">
-
-        <ListPreference
-            android:defaultValue="B"
-            android:entries="@array/themes"
-            android:entryValues="@array/themes_values"
-            android:key="@string/pref_key_themes"
-            android:summary="@string/themes_pref_summary"
-            android:title="@string/themes_pref_title" />
-
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="@string/pref_key_animations"
-            android:summary="@string/animations_pref_summary"
-            android:title="@string/animations_pref_title" />
-
-        <Preference
-            android:key="pref_key_logout"
-            android:summary="@string/logout_pref_summary"
-            android:title="@string/logout_pref_title" />
-
-    </PreferenceCategory>
-
-
-    <PreferenceCategory
-        android:key="pref_key_behavior"
         android:title="@string/prefcat_others_title">
 
         <Preference
@@ -107,6 +98,11 @@
             android:key="pref_key_about"
             android:summary="@string/about_pref_summary"
             android:title="@string/about_pref_title" />
+
+        <Preference
+            android:key="pref_key_logout"
+            android:summary="@string/logout_pref_summary"
+            android:title="@string/logout_pref_title" />
 
     </PreferenceCategory>
 

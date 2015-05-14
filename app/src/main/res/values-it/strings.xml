@@ -44,7 +44,6 @@
     <string name="new_tweet_hint">Twitta la tua vita in 140 caratteri</string>
     <string name="nothing_to_show">Niente da mostrare qui :(</string>
     <string name="notifications">Notifiche</string>
-    <string name="prefcat_behavior_title">Comportamento</string>
     <string name="prefcat_others_title">Altro</string>
     <string name="provide_valid_email">Inserisci un\' email valida</string>
     <string name="reached_twitter_user_limit">Hai raggiunto il limite di Twitter, riprova tra qualche minuto</string>
@@ -150,5 +149,6 @@
     <string name="too_many_images">Puoi mandare fino a 4 immagini</string>
     <string name="themes_pref_summary">Scegli il tema</string>
     <string name="themes_pref_title">Temi</string>
+    <string name="prefcat_appearance_title">Aspetto</string>
 
 </resources>
