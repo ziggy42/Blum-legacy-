@@ -4,11 +4,11 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.utilities.Common;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class UpdateTwitterStatus extends AsyncTask<String, String, Boolean> {
         this.twitter = twitter;
         this.context = context;
         this.inReplyTo = inReplyTo;
-        mSharedPreferences = context.getSharedPreferences(Common.PREF, 0);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     public UpdateTwitterStatus(Context context, Twitter twitter, long inReplyTo, ArrayList<File> imageFiles) {

@@ -6,7 +6,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
+import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.internet.ConnectionDetector;
 import com.andreapivetta.blu.receivers.AlarmReceiver;
 import com.andreapivetta.blu.utilities.Common;
@@ -20,7 +22,7 @@ public class BasicNotificationService extends IntentService {
     }
 
     public static void startService(Context context) {
-        int frequency = context.getSharedPreferences(Common.PREF, 0).getInt(Common.PREF_FREQ, 1200);
+        int frequency = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.pref_key_frequencies), "1200"));
         AlarmManager a = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
@@ -42,12 +44,12 @@ public class BasicNotificationService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        SharedPreferences mSharedPreferences = getApplicationContext().getSharedPreferences(Common.PREF, 0);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         ConnectionDetector detector = new ConnectionDetector(getApplicationContext());
 
         if (detector.isConnectingToInternet()) {
-            if (mSharedPreferences.getBoolean(Common.PREF_DATABASE_POPULATED, false)) {
-                String pref = mSharedPreferences.getString(Common.PREF_RET_FAV_NOTS, Common.WIFI_ONLY);
+            if (sharedPreferences.getBoolean(getString(R.string.pref_key_db_populated), false)) {
+                String pref = sharedPreferences.getString(getString(R.string.pref_key_fav_ret), Common.WIFI_ONLY);
                 if (pref.equals(Common.WIFI_ONLY) && detector.isConnectingToWiFi())
                     getApplicationContext()
                             .startService(new Intent(getApplicationContext(), CheckInteractionsService.class));
@@ -55,7 +57,7 @@ public class BasicNotificationService extends IntentService {
                     getApplicationContext()
                             .startService(new Intent(getApplicationContext(), CheckInteractionsService.class));
 
-                pref = mSharedPreferences.getString(Common.PREF_FOLLOWERS_NOTS, Common.WIFI_ONLY);
+                pref = sharedPreferences.getString(getString(R.string.pref_key_followers), Common.WIFI_ONLY);
                 if (pref.equals(Common.WIFI_ONLY) && detector.isConnectingToWiFi())
                     getApplicationContext()
                             .startService(new Intent(getApplicationContext(), CheckFollowersService.class));
@@ -63,7 +65,7 @@ public class BasicNotificationService extends IntentService {
                     getApplicationContext()
                             .startService(new Intent(getApplicationContext(), CheckFollowersService.class));
 
-                pref = mSharedPreferences.getString(Common.PREF_MENTIONS_NOTS, Common.ALWAYS);
+                pref = sharedPreferences.getString(getString(R.string.pref_key_mentions), Common.ALWAYS);
                 if (pref.equals(Common.WIFI_ONLY) && detector.isConnectingToWiFi())
                     getApplicationContext()
                             .startService(new Intent(getApplicationContext(), CheckMentionsService.class));
@@ -71,7 +73,7 @@ public class BasicNotificationService extends IntentService {
                     getApplicationContext()
                             .startService(new Intent(getApplicationContext(), CheckMentionsService.class));
 
-                pref = mSharedPreferences.getString(Common.PREF_DMS_NOTS, Common.ALWAYS);
+                pref = sharedPreferences.getString(getString(R.string.pref_key_dms), Common.ALWAYS);
                 if (pref.equals(Common.WIFI_ONLY) && detector.isConnectingToWiFi())
                     getApplicationContext()
                             .startService(new Intent(getApplicationContext(), CheckMessageService.class));

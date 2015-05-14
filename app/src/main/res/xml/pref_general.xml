@@ -5,49 +5,54 @@
         android:title="@string/notifications">
 
         <ListPreference
+            android:defaultValue="1200"
             android:entries="@array/frequencies"
             android:entryValues="@array/frequencies_values"
-            android:key="pref_key_frequencies"
+            android:key="@string/pref_key_frequencies"
             android:summary="@string/frequency_pref_summary"
             android:title="@string/frequency_pref_title" />
 
         <ListPreference
+            android:defaultValue="wifi"
             android:entries="@array/when_notifications"
-            android:entryValues="@array/when_notifications"
-            android:key="pref_key_fav_ret"
+            android:entryValues="@array/when_notifications_values"
+            android:key="@string/pref_key_fav_ret"
             android:summary="@string/when_fav_ret_pref_summary"
             android:title="@string/when_fav_ret_pref_title" />
 
         <ListPreference
+            android:defaultValue="always"
             android:entries="@array/when_notifications"
-            android:entryValues="@array/when_notifications"
-            android:key="pref_key_mentions"
+            android:entryValues="@array/when_notifications_values"
+            android:key="@string/pref_key_mentions"
             android:summary="@string/when_mentions_pref_summary"
             android:title="@string/when_mentions_pref_title" />
 
         <ListPreference
+            android:defaultValue="wifi"
             android:entries="@array/when_notifications"
-            android:entryValues="@array/when_notifications"
-            android:key="pref_key_followers"
+            android:entryValues="@array/when_notifications_values"
+            android:key="@string/pref_key_followers"
             android:summary="@string/when_followers_pref_summary"
             android:title="@string/when_followers_pref_title" />
 
         <ListPreference
+            android:defaultValue="always"
             android:entries="@array/when_notifications"
-            android:entryValues="@array/when_notifications"
-            android:key="pref_key_dms"
+            android:entryValues="@array/when_notifications_values"
+            android:key="@string/pref_key_dms"
             android:summary="@string/when_dms_pref_summary"
             android:title="@string/when_dms_pref_title" />
 
         <CheckBoxPreference
             android:defaultValue="true"
-            android:key="pref_key_heads_up_notifications"
+            android:key="@string/pref_key_heads_up_notifications"
             android:summary="@string/heads_up_notifications_pref_summary"
             android:title="@string/heads_up_notifications_pref_title" />
 
         <SwitchPreference
             android:defaultValue="false"
-            android:key="pref_key_stream_service"
+            android:key="@string/pref_key_stream_service"
             android:summary="@string/enable_stream_service_pref_summary"
             android:title="@string/enable_stream_service_pref_title" />
 
@@ -58,15 +63,16 @@
         android:title="@string/prefcat_behavior_title">
 
         <ListPreference
+            android:defaultValue="B"
             android:entries="@array/themes"
             android:entryValues="@array/themes_values"
-            android:key="pref_key_themes"
+            android:key="@string/pref_key_themes"
             android:summary="@string/themes_pref_summary"
             android:title="@string/themes_pref_title" />
 
         <CheckBoxPreference
             android:defaultValue="true"
-            android:key="pref_key_animations"
+            android:key="@string/pref_key_animations"
             android:summary="@string/animations_pref_summary"
             android:title="@string/animations_pref_title" />
 

@@ -2,6 +2,7 @@ package com.andreapivetta.blu.adapters;
 
 
 import android.content.Context;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.util.Linkify;
 import android.view.LayoutInflater;
@@ -11,7 +12,6 @@ import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.data.Message;
-import com.andreapivetta.blu.utilities.Common;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,7 +31,8 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     public ConversationAdapter(ArrayList<Message> mDataSet, Context context) {
         this.mDataSet = mDataSet;
         this.context = context;
-        this.loggedUserID = context.getSharedPreferences(Common.PREF, 0).getLong(Common.PREF_LOGGED_USER, 0L);
+        this.loggedUserID = PreferenceManager.getDefaultSharedPreferences(context)
+                .getLong(context.getString(R.string.pref_key_logged_user), 0L);
     }
 
     @Override

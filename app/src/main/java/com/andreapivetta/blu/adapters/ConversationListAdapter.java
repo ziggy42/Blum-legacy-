@@ -4,6 +4,7 @@ package com.andreapivetta.blu.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.preference.PreferenceManager;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,7 +18,6 @@ import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.ConversationActivity;
 import com.andreapivetta.blu.activities.UserProfileActivity;
 import com.andreapivetta.blu.data.Message;
-import com.andreapivetta.blu.utilities.Common;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -34,7 +34,8 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ConversationLi
     public ConversationListAdapter(Context context, ArrayList<Message> mDataSet) {
         this.context = context;
         this.mDataSet = mDataSet;
-        this.loggedUserID = context.getSharedPreferences(Common.PREF, 0).getLong(Common.PREF_LOGGED_USER, 0L);
+        this.loggedUserID = PreferenceManager.getDefaultSharedPreferences(context)
+                .getLong(context.getString(R.string.pref_key_logged_user), 0L);
     }
 
     @Override

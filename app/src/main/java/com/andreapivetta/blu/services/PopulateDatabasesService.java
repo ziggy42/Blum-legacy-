@@ -2,7 +2,9 @@ package com.andreapivetta.blu.services;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 
+import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.data.DirectMessagesDatabaseManager;
 import com.andreapivetta.blu.data.FavoritesDatabaseManager;
 import com.andreapivetta.blu.data.FollowersDatabaseManager;
@@ -88,8 +90,8 @@ public class PopulateDatabasesService extends IntentService {
                                 message.getRecipient().getBiggerProfileImageURL(), true);
             directMessagesDatabaseManager.close();
 
-            getApplicationContext().getSharedPreferences(Common.PREF, 0).edit()
-                    .putBoolean(Common.PREF_DATABASE_POPULATED, true).apply();
+            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit()
+                    .putBoolean(getString(R.string.pref_key_db_populated), true).apply();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,6 +1,7 @@
 package com.andreapivetta.blu.activities;
 
 import android.animation.ValueAnimator;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -59,7 +60,7 @@ public class ConversationsListActivity extends ThemedActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversations_list);
 
-        if (!getSharedPreferences(Common.PREF, 0).getBoolean(Common.PREF_DATABASE_POPULATED, false))
+        if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.pref_key_db_populated), false))
             showComeHereLaterDialog();
 
         t = TwitterUtils.getTwitter(ConversationsListActivity.this);

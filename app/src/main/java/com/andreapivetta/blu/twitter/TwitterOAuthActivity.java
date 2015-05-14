@@ -3,10 +3,10 @@ package com.andreapivetta.blu.twitter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.utilities.Common;
 
 import twitter4j.auth.AccessToken;
 
@@ -44,11 +44,11 @@ public class TwitterOAuthActivity extends Activity implements TwitterOAuthView.L
 
 
     public void onSuccess(TwitterOAuthView view, AccessToken accessToken) {
-        getSharedPreferences(Common.PREF, 0).edit().
+        PreferenceManager.getDefaultSharedPreferences(TwitterOAuthActivity.this).edit().
                 putString(TwitterUtils.PREF_KEY_OAUTH_TOKEN, accessToken.getToken()).
                 putString(TwitterUtils.PREF_KEY_OAUTH_SECRET, accessToken.getTokenSecret()).
-                putBoolean(TwitterUtils.PREF_KEY_TWITTER_LOGIN, true).
-                putLong(Common.PREF_LOGGED_USER, accessToken.getUserId()).
+                putBoolean(getString(R.string.pref_key_login), true).
+                putLong(getString(R.string.pref_key_logged_user), accessToken.getUserId()).
                 apply();
 
         showMessage(getString(R.string.authorized_by, accessToken.getScreenName()));

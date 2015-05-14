@@ -22,21 +22,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class Common {
 
-    public static final String PREF = "MyPref";
-    public static final String PREF_ANIMATIONS = "Anim";
-    public static final String PREF_HEADS_UP_NOTIFICATIONS = "headsup";
-    public static final String PREF_STREAM_ON = "twitterstream";
-    public static final String PREF_FREQ = "freq";
-    public static final String PREF_DATABASE_POPULATED = "db_populated";
-    public static final String PREF_LOGGED_USER = "user";
-    public final static String PREF_RET_FAV_NOTS = "retfavnots";
-    public final static String PREF_MENTIONS_NOTS = "mentionsnots";
-    public final static String PREF_FOLLOWERS_NOTS = "followersnots";
-    public final static String PREF_DMS_NOTS = "dmsnots";
-    public final static String PREF_THEME = "theme";
-
     public final static String ALWAYS = "always";
-    public final static String NEVER = "never";
     public final static String WIFI_ONLY = "wifi";
 
     public static final String USER_AGENT =

@@ -1,5 +1,6 @@
 package com.andreapivetta.blu.activities;
 
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
@@ -26,7 +28,6 @@ import com.andreapivetta.blu.services.BasicNotificationService;
 import com.andreapivetta.blu.services.PopulateDatabasesService;
 import com.andreapivetta.blu.services.StreamNotificationService;
 import com.andreapivetta.blu.twitter.TwitterUtils;
-import com.andreapivetta.blu.utilities.Common;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +51,9 @@ public class HomeActivity extends TimeLineActivity {
     @Override
     @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
-        mSharedPreferences = getSharedPreferences(Common.PREF, 0);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        portOldPreferences();
 
         if (!isTwitterLoggedInAlready()) {
             startActivityForResult(new Intent(HomeActivity.this, LoginActivity.class), REQUEST_LOGIN);
@@ -66,7 +69,7 @@ public class HomeActivity extends TimeLineActivity {
                 //new LoadFakeTweets().execute(null, null, null); // For Screenshots only
             }
 
-            if (mSharedPreferences.getBoolean(Common.PREF_STREAM_ON, false))
+             if (mSharedPreferences.getBoolean(getString(R.string.pref_key_stream_service), false))
                 startService(new Intent(HomeActivity.this, StreamNotificationService.class));
         }
 
@@ -107,7 +110,7 @@ public class HomeActivity extends TimeLineActivity {
     }
 
     private boolean isTwitterLoggedInAlready() {
-        return mSharedPreferences.getBoolean(TwitterUtils.PREF_KEY_TWITTER_LOGIN, false);
+        return mSharedPreferences.getBoolean(getString(R.string.pref_key_login), false);
     }
 
     @Override
@@ -135,7 +138,7 @@ public class HomeActivity extends TimeLineActivity {
         mNotificationsCount = notDatabaseManager.getCountUnreadNotifications();
         notDatabaseManager.close();
 
-        if (mSharedPreferences.getBoolean(Common.PREF_DATABASE_POPULATED, false)) {
+        if (mSharedPreferences.getBoolean(getString(R.string.pref_key_db_populated), false)) {
             DirectMessagesDatabaseManager mesDatabaseManager = new DirectMessagesDatabaseManager(HomeActivity.this);
             mesDatabaseManager.open();
             mMessageCount = mesDatabaseManager.getCountUnreadMessages();
@@ -161,7 +164,7 @@ public class HomeActivity extends TimeLineActivity {
             twitter = TwitterUtils.getTwitter(HomeActivity.this);
             new GetTimeLine().execute(null, null, null);
 
-            if (mSharedPreferences.getBoolean(Common.PREF_STREAM_ON, false)) {
+            if (mSharedPreferences.getBoolean(getString(R.string.pref_key_stream_service), false)) {
                 startService(new Intent(HomeActivity.this, StreamNotificationService.class));
             } else {
                 startService(new Intent(HomeActivity.this, PopulateDatabasesService.class));
@@ -279,6 +282,32 @@ public class HomeActivity extends TimeLineActivity {
                 invalidateOptionsMenu();
             }
         }
+    }
+
+    // Remove in future versions
+    @SuppressLint("CommitPrefEdits")
+    private void portOldPreferences() {
+        SharedPreferences oldSharedPreferences = getSharedPreferences("MyPref", 0);
+        if (oldSharedPreferences.getBoolean(TwitterUtils.PREF_KEY_TWITTER_LOGIN, false) &&
+                !mSharedPreferences.getBoolean("ALREADY_PORTED", false)) {
+
+            mSharedPreferences.edit()
+                    .putString(TwitterUtils.PREF_KEY_OAUTH_TOKEN,
+                            oldSharedPreferences.getString(TwitterUtils.PREF_KEY_OAUTH_TOKEN, ""))
+                    .putString(TwitterUtils.PREF_KEY_OAUTH_SECRET,
+                            oldSharedPreferences.getString(TwitterUtils.PREF_KEY_OAUTH_SECRET, ""))
+                    .putBoolean(getString(R.string.pref_key_login),
+                            oldSharedPreferences.getBoolean(TwitterUtils.PREF_KEY_TWITTER_LOGIN, false))
+                    .putBoolean(getString(R.string.pref_key_stream_service),
+                            oldSharedPreferences.getBoolean("twitterstream", false))
+                    .putBoolean(getString(R.string.pref_key_db_populated),
+                            oldSharedPreferences.getBoolean("db_populated", false))
+                    .putLong(getString(R.string.pref_key_logged_user),
+                        oldSharedPreferences.getLong("user", 0L))
+                    .commit();
+        }
+
+        mSharedPreferences.edit().putBoolean("ALREADY_PORTED", true).apply();
     }
 
     // For Screenshots only

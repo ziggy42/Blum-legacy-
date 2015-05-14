@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -25,7 +26,6 @@ import com.andreapivetta.blu.data.DirectMessagesDatabaseManager;
 import com.andreapivetta.blu.data.Message;
 import com.andreapivetta.blu.twitter.SendDirectMessage;
 import com.andreapivetta.blu.twitter.TwitterUtils;
-import com.andreapivetta.blu.utilities.Common;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -116,8 +116,8 @@ public class ConversationActivity extends ThemedActivity {
                             currentUser.getBiggerProfileImageURL()).execute(message, null, null);
 
                     mDataSet.add(
-                            new Message(0L, getSharedPreferences(Common.PREF, 0).getLong(Common.PREF_LOGGED_USER, 0L),
-                                    0L, message, Calendar.getInstance().getTime().getTime(), "", "", true));
+                            new Message(0L, PreferenceManager.getDefaultSharedPreferences(ConversationActivity.this)
+                                    .getLong(getString(R.string.pref_key_logged_user), 0L), 0L, message, Calendar.getInstance().getTime().getTime(), "", "", true));
 
                     mAdapter.notifyDataSetChanged();
 

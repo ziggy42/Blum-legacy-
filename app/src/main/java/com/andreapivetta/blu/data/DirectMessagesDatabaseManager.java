@@ -5,8 +5,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.preference.PreferenceManager;
 
-import com.andreapivetta.blu.utilities.Common;
+import com.andreapivetta.blu.R;
 
 import java.util.ArrayList;
 
@@ -31,7 +32,8 @@ public class DirectMessagesDatabaseManager {
 
     public DirectMessagesDatabaseManager(Context context) {
         this.myDBHelper = new DatabaseHelper(context, DB_NAME, DB_VERSION, TABLE_CREATE);
-        this.loggedUserID = context.getSharedPreferences(Common.PREF, 0).getLong(Common.PREF_LOGGED_USER, 0L);
+        this.loggedUserID = PreferenceManager.getDefaultSharedPreferences(context)
+                .getLong(context.getString(R.string.pref_key_logged_user), 0L);
     }
 
     public void open() {

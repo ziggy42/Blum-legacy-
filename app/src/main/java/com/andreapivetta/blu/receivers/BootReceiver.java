@@ -6,9 +6,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
+import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.services.StreamNotificationService;
-import com.andreapivetta.blu.utilities.Common;
 
 import java.util.Calendar;
 
@@ -16,11 +17,11 @@ public class BootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        SharedPreferences mPref = context.getSharedPreferences(Common.PREF, 0);
-        if (mPref.getBoolean(Common.PREF_STREAM_ON, false))
+        SharedPreferences mPref = PreferenceManager.getDefaultSharedPreferences(context);
+        if (mPref.getBoolean(context.getString(R.string.pref_key_stream_service), false))
             context.startService(new Intent(context, StreamNotificationService.class));
         else {
-            int frequency = mPref.getInt(Common.PREF_FREQ, 1200);
+            int frequency = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.pref_key_frequencies), "1200"));
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
                     new Intent(context, AlarmReceiver.class), 0);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

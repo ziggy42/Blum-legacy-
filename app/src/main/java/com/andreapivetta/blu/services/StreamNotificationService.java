@@ -3,7 +3,9 @@ package com.andreapivetta.blu.services;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 
+import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.data.DirectMessagesDatabaseManager;
 import com.andreapivetta.blu.data.FavoritesDatabaseManager;
 import com.andreapivetta.blu.data.FollowersDatabaseManager;
@@ -12,7 +14,6 @@ import com.andreapivetta.blu.data.Message;
 import com.andreapivetta.blu.data.Notification;
 import com.andreapivetta.blu.data.RetweetsDatabaseManager;
 import com.andreapivetta.blu.twitter.TwitterUtils;
-import com.andreapivetta.blu.utilities.Common;
 
 import java.util.ArrayList;
 
@@ -31,6 +32,8 @@ import twitter4j.UserStreamListener;
 public class StreamNotificationService extends Service {
 
     public final static String NEW_TWEETS_INTENT = "com.andreapivetta.blu.NEW_TWEETS_INTENT";
+    private TwitterStream twitterStream;
+    private Twitter twitter;
     private final UserStreamListener listener = new UserStreamListener() {
         @Override
         public void onDeletionNotice(long l, long l2) {
@@ -92,8 +95,8 @@ public class StreamNotificationService extends Service {
             DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(getApplicationContext());
             dbm.open();
 
-            if (getApplicationContext().getSharedPreferences(Common.PREF, 0).getLong(Common.PREF_LOGGED_USER, 0L)
-                    == directMessage.getSenderId()) {
+            if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                    .getLong(getApplicationContext().getString(R.string.pref_key_logged_user), 0L) == directMessage.getSenderId()) {
                 dbm.insertMessage(directMessage.getId(), directMessage.getSenderId(), directMessage.getRecipientId(),
                         directMessage.getText(), directMessage.getCreatedAt().getTime(), directMessage.getRecipientScreenName(),
                         directMessage.getRecipient().getBiggerProfileImageURL(), true);
@@ -238,8 +241,6 @@ public class StreamNotificationService extends Service {
 
         }
     };
-    private TwitterStream twitterStream;
-    private Twitter twitter;
 
     @Override
     public IBinder onBind(Intent intent) {

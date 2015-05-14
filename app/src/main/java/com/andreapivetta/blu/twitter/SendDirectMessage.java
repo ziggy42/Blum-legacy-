@@ -3,11 +3,11 @@ package com.andreapivetta.blu.twitter;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.data.DirectMessagesDatabaseManager;
-import com.andreapivetta.blu.utilities.Common;
 
 import java.util.Calendar;
 
@@ -38,7 +38,7 @@ public class SendDirectMessage extends AsyncTask<String, Void, Boolean> {
         try {
             DirectMessage message = twitter.sendDirectMessage(userID, params[0]);
 
-            if (!context.getSharedPreferences(Common.PREF, 0).getBoolean(Common.PREF_STREAM_ON, false)) {
+            if (!PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.pref_key_stream_service), false)) {
                 DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(context);
                 dbm.open();
                 dbm.insertMessage(message.getId(), twitter.getId(), userID, params[0],

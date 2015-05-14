@@ -2,10 +2,10 @@ package com.andreapivetta.blu.activities;
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -65,8 +65,8 @@ public abstract class TimeLineActivity extends ThemedActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
         mRecyclerView.addItemDecoration(new SpaceTopItemDecoration(Common.dpToPx(this, 10)));
 
-        SharedPreferences mSharedPreferences = getSharedPreferences(Common.PREF, 0);
-        if (mSharedPreferences.getBoolean(Common.PREF_ANIMATIONS, true)) {
+        if (PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean(getString(R.string.pref_key_animations), true)) {
             mRecyclerView.setItemAnimator(new ScaleInBottomAnimator());
             mRecyclerView.getItemAnimator().setAddDuration(300);
         }
