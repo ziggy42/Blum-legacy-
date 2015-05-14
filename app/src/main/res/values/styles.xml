@@ -4,6 +4,9 @@
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:textColorPrimary">@color/lightThemesTextColor</item>
+        <item name="appCardViewBackgroundColor">@color/lightThemesCardViewBackgroundColor</item>
+        <item name="appBackgroundColor">@color/lightThemesBackground</item>
+        <item name="appSeparationLineColor">@color/lightGrey</item>
     </style>
 
     <!-- Base application theme. -->
@@ -12,7 +15,6 @@
         <item name="colorPrimaryDark">@color/blueThemeColorPrimaryDark</item>
         <item name="colorAccent">@color/blueThemeColorAccent</item>
         <item name="searchViewStyle">@style/CustomSearchViewStyle</item>
-
         <item name="appColorPrimary">@color/blueThemeColorPrimary</item>
         <item name="appColorPrimaryDark">@color/blueThemeColorPrimaryDark</item>
         <item name="appColorAccent">@color/blueThemeColorAccent</item>
@@ -36,7 +38,6 @@
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="searchViewStyle">@style/PinkSearchViewStyle</item>
-
         <item name="appColorPrimary">@color/pinkThemeColorPrimary</item>
         <item name="appColorPrimaryDark">@color/pinkThemeColorPrimaryDark</item>
         <item name="appColorAccent">@color/pinkThemeColorAccent</item>
@@ -50,6 +51,25 @@
     <style name="PinkSearchViewStyle" parent="Widget.AppCompat.SearchView">
         <item name="queryBackground">@color/pinkThemeColorPrimary</item>
         <item name="submitBackground">@color/pinkThemeColorPrimary</item>
+    </style>
+
+    <!-- Dark Theme -->
+    <style name="DarkTheme" parent="Theme.AppCompat" >
+        <item name="colorPrimary">@color/darkThemeColorPrimary</item>
+        <item name="colorPrimaryDark">@color/darkThemeColorPrimaryDark</item>
+        <item name="colorAccent">@color/darkThemeColorAccent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:textColorPrimary">@color/darkThemesTextColor</item>
+        <item name="appColorPrimary">@color/primary_material_dark</item>
+        <item name="appCardViewBackgroundColor">@color/darkThemesCardViewBackgroundColor</item>
+        <item name="appBackgroundColor">@color/darkThemesBackground</item>
+        <item name="appSeparationLineColor">@color/darkThemeColorPrimary</item>
+        <item name="circleButtonDrawable">@drawable/circle_button_dark</item>
+        <item name="circleDrawable">@drawable/circle_darkdark</item>
+        <item name="quoteBackground">@drawable/quote_background_dark</item>
+        <item name="rectBackground">@drawable/rect_background_dark</item>
+        <item name="rectButton">@drawable/rect_button_dark</item>
     </style>
 
 </resources>

@@ -3,6 +3,13 @@
 
     <!-- Light Themes -->
     <color name="lightThemesTextColor">#616161</color>
+    <color name="lightThemesBackground">#DCDCDC</color>
+    <color name="lightThemesCardViewBackgroundColor">#ffffff</color>
+
+    <!-- Dark Themes -->
+    <color name="darkThemesTextColor">#9E9E9E</color>
+    <color name="darkThemesBackground">#212121</color>
+    <color name="darkThemesCardViewBackgroundColor">#363636</color>
 
     <!-- Blue Theme -->
     <color name="blueThemeColorPrimary">#3498db</color>
@@ -13,6 +20,11 @@
     <color name="pinkThemeColorPrimary">#E91E63</color>
     <color name="pinkThemeColorPrimaryDark">#C2185B</color>
     <color name="pinkThemeColorAccent">#C2185B</color>
+
+    <!-- Dark Theme -->
+    <color name="darkThemeColorPrimary">#37474F</color>
+    <color name="darkThemeColorPrimaryDark">#263238</color>
+    <color name="darkThemeColorAccent">#607D8B</color>
 
     <!-- General Colors -->
     <color name="background">#DCDCDC</color>

@@ -71,7 +71,7 @@
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:layout_marginTop="5dp"
-            android:background="@color/lightGrey" />
+            android:background="?appSeparationLineColor" />
 
     </RelativeLayout>
 </com.balysv.materialripple.MaterialRippleLayout>

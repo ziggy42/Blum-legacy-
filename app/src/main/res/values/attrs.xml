@@ -3,6 +3,9 @@
     <attr name="appColorPrimary" format="color|reference" />
     <attr name="appColorPrimaryDark" format="color|reference" />
     <attr name="appColorAccent" format="color|reference" />
+    <attr name="appBackgroundColor" format="color|reference" />
+    <attr name="appCardViewBackgroundColor" format="color|reference" />
+    <attr name="appSeparationLineColor" format="color|reference" />
 
     <attr name="circleButtonDrawable" format="reference" />
     <attr name="circleDrawable" format="reference" />

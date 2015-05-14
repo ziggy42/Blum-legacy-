@@ -36,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/transparentView"
-                android:background="@color/white">
+                android:background="?appCardViewBackgroundColor">
 
                 <TextView
                     android:id="@+id/userNickTextView"
@@ -102,7 +102,7 @@
                     android:layout_height="0.5dp"
                     android:layout_below="@+id/linearLayout"
                     android:layout_marginTop="10dp"
-                    android:background="@android:color/darker_gray" />
+                    android:background="?appSeparationLineColor" />
 
                 <LinearLayout
                     android:id="@+id/amountLinearLayout"
@@ -154,7 +154,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="0.5dp"
                     android:layout_below="@+id/amountLinearLayout"
-                    android:background="@android:color/darker_gray" />
+                    android:background="?appSeparationLineColor" />
 
             </RelativeLayout>
 
@@ -176,7 +176,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/containerRelativeLayout"
-                android:background="@color/background"
+                android:background="?appBackgroundColor"
                 android:minHeight="250dp"
                 android:orientation="vertical">
 

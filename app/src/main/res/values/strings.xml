@@ -130,7 +130,7 @@
         <item>Always</item>
     </string-array>
 
-    <string-array name="when_notifications_values">
+    <string-array name="when_notifications_values" translatable="false">
         <item>never</item>
         <item>wifi</item>
         <item>always</item>
@@ -159,11 +159,13 @@
     <string-array name="themes">
         <item>Blue</item>
         <item>Pink</item>
+        <item>Dark</item>
     </string-array>
 
-    <string-array name="themes_values">
+    <string-array name="themes_values" translatable="false">
         <item>B</item>
         <item>P</item>
+        <item>D</item>
     </string-array>
 
     <!-- Activities titles -->
@@ -174,7 +176,7 @@
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_conversations_list">Conversations</string>
 
-    <!-- Preferences -->
+    <!-- Preferences Titles and Summaries -->
     <string name="logout_pref_title" translatable="false">Logout</string>
     <string name="about_pref_title" translatable="false">About</string>
     <string name="logout_pref_summary">Logout and Exit</string>

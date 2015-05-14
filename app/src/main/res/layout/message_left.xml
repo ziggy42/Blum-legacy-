@@ -37,6 +37,7 @@
                     android:layout_marginRight="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="5dp"
+                    android:textColor="@color/lightThemesTextColor"
                     android:textSize="16sp" />
 
                 <TextView
@@ -50,6 +51,7 @@
                     android:layout_marginRight="5dp"
                     android:layout_marginStart="5dp"
                     android:fontFamily="sans-serif-thin"
+                    android:textColor="@color/lightThemesTextColor"
                     android:textSize="12sp" />
 
             </RelativeLayout>
