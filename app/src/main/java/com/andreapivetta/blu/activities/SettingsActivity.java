@@ -107,7 +107,7 @@ public class SettingsActivity extends ThemedActivity {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     BasicNotificationService.stopService(getActivity());
-                    BasicNotificationService.startService(getActivity());
+                    BasicNotificationService.startService(getActivity(), Integer.parseInt((String) newValue));
 
                     return true;
                 }
