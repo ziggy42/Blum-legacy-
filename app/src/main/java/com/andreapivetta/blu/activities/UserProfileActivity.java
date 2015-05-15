@@ -126,6 +126,7 @@ public class UserProfileActivity extends ThemedActivity {
 
         if (savedInstanceState != null) {
             user = (User) savedInstanceState.getSerializable("USER");
+            type = (TYPE) savedInstanceState.getSerializable("TYPE");
             setUpUI();
             statuses = (Status[]) savedInstanceState.getSerializable("ARRAY");
             setUpTweets();
@@ -632,7 +633,7 @@ public class UserProfileActivity extends ThemedActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putSerializable("USER", user);
-        outState.putSerializable("STATUS", type);
+        outState.putSerializable("TYPE", type);
         outState.putSerializable("ARRAY", statuses);
         super.onSaveInstanceState(outState);
     }
