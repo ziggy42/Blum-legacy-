@@ -127,18 +127,27 @@ public class UserProfileActivity extends ThemedActivity {
         if (savedInstanceState != null) {
             user = (User) savedInstanceState.getSerializable("USER");
             type = (TYPE) savedInstanceState.getSerializable("TYPE");
-            setUpUI();
             statuses = (Status[]) savedInstanceState.getSerializable("ARRAY");
-            setUpTweets();
-            invalidateOptionsMenu();
+
+            if (statuses != null && type != null && user != null) {
+                setUpUI();
+                setUpTweets();
+                invalidateOptionsMenu();
+            } else {
+                setUpUser();
+            }
         } else {
-            Uri uri = getIntent().getData();
-            if (uri != null)
-                new LoadUserByName().execute(uri.toString().substring(29));
-            else
-                new LoadUser().execute(getIntent().getLongExtra("ID", 0));
+            setUpUser();
         }
 
+    }
+
+    void setUpUser() {
+        Uri uri = getIntent().getData();
+        if (uri != null)
+            new LoadUserByName().execute(uri.toString().substring(29));
+        else
+            new LoadUser().execute(getIntent().getLongExtra("ID", 0));
     }
 
     void setUpUI() {
