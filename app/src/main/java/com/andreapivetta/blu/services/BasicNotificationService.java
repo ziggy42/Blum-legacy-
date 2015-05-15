@@ -90,7 +90,6 @@ public class BasicNotificationService extends IntentService {
                         .startService(new Intent(getApplicationContext(), PopulateDatabasesService.class));
             }
         }
-
     }
 
 }

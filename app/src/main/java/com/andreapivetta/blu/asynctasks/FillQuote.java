@@ -36,7 +36,8 @@ public class FillQuote extends AsyncTask<Void, Void, Boolean> {
         this.quotedUserNameTextView = quotedUserNameTextView;
         this.photoImageView = photoImageView;
         this.quotedStatusLinearLayout = quotedStatusLinearLayout;
-        this.statusID = Long.parseLong(status.substring(status.lastIndexOf('/') + 1));
+        this.statusID = Long.parseLong((status.contains("?")) ?
+                status.substring(status.lastIndexOf('/') + 1, status.indexOf('?')) : status.substring(status.lastIndexOf('/') + 1));
     }
 
     @Override
