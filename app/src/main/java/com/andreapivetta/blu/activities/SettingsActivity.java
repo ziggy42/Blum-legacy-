@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -64,10 +63,7 @@ public class SettingsActivity extends ThemedActivity {
     public static class SettingsFragment extends PreferenceFragment {
 
         private SharedPreferences mSharedPreferences;
-        private Preference logoutPreference, sharePreference, aboutPreference, feedbackPreference, licensesPreference;
         private SwitchPreference streamServicePreference;
-        private ListPreference favoritesRetweetsListPreference, mentionsListPreference,
-                followersListPreference, messagesListPreference, frequencyListPreference, themesListPreference;
 
         private ProgressDialog dialog;
         private WebView mWebView;
@@ -81,54 +77,33 @@ public class SettingsActivity extends ThemedActivity {
             addPreferencesFromResource(R.xml.pref_general);
 
             mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
-            logoutPreference = findPreference("pref_key_logout");
             streamServicePreference = (SwitchPreference) findPreference(getString(R.string.pref_key_stream_service));
-            frequencyListPreference = (ListPreference) findPreference(getString(R.string.pref_key_frequencies));
-            sharePreference = findPreference("pref_key_share");
-            aboutPreference = findPreference("pref_key_about");
-            feedbackPreference = findPreference("pref_key_feedback");
-            favoritesRetweetsListPreference = (ListPreference) findPreference(getString(R.string.pref_key_fav_ret));
-            mentionsListPreference = (ListPreference) findPreference(getString(R.string.pref_key_mentions));
-            followersListPreference = (ListPreference) findPreference(getString(R.string.pref_key_followers));
-            messagesListPreference = (ListPreference) findPreference(getString(R.string.pref_key_dms));
-            licensesPreference = findPreference("pref_key_licenses");
-            themesListPreference = (ListPreference) findPreference(getString(R.string.pref_key_themes));
 
             if (mSharedPreferences.getBoolean(getString(R.string.pref_key_stream_service), false)) {
-                frequencyListPreference.setEnabled(false);
-                favoritesRetweetsListPreference.setEnabled(false);
-                mentionsListPreference.setEnabled(false);
-                followersListPreference.setEnabled(false);
-                messagesListPreference.setEnabled(false);
+                findPreference(getString(R.string.pref_key_frequencies)).setEnabled(false);
+                findPreference(getString(R.string.pref_key_fav_ret)).setEnabled(false);
+                findPreference(getString(R.string.pref_key_mentions)).setEnabled(false);
+                findPreference(getString(R.string.pref_key_followers)).setEnabled(false);
+                findPreference(getString(R.string.pref_key_dms)).setEnabled(false);
             }
 
-            frequencyListPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            findPreference(getString(R.string.pref_key_themes)).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    BasicNotificationService.stopService(getActivity());
-                    BasicNotificationService.startService(getActivity(), Integer.parseInt((String) newValue));
+                    getActivity().finish();
+                    final Intent intent = new Intent(getActivity(), HomeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+                    getActivity().startActivity(intent);
 
                     return true;
                 }
             });
 
-            logoutPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            findPreference(getString(R.string.pref_key_frequencies)).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setTitle(getResources().getString(R.string.logout_title_dialog))
-                            .setPositiveButton(getResources().getString(R.string.yes),
-                                    new DialogInterface.OnClickListener() {
-
-                                        @Override
-                                        public void onClick(DialogInterface dialog,
-                                                            int which) {
-                                            dialog.dismiss();
-                                            performLogout();
-                                        }
-                                    }
-                            ).setNegativeButton(getString(R.string.cancel), null).create().show();
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    BasicNotificationService.stopService(getActivity());
+                    BasicNotificationService.startService(getActivity(), Integer.parseInt((String) newValue));
 
                     return true;
                 }
@@ -179,7 +154,7 @@ public class SettingsActivity extends ThemedActivity {
                 }
             });
 
-            feedbackPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            findPreference("pref_key_feedback").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     startActivity(new Intent(getActivity(), FeedbackActivity.class));
@@ -187,7 +162,7 @@ public class SettingsActivity extends ThemedActivity {
                 }
             });
 
-            sharePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            findPreference("pref_key_share").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     Intent intent = new Intent();
@@ -200,23 +175,7 @@ public class SettingsActivity extends ThemedActivity {
                 }
             });
 
-            aboutPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    View dialogView = View.inflate(getActivity(), R.layout.dialog_about, null);
-
-                    final TextView mTwitterTextView = (TextView) dialogView.findViewById(R.id.textView3);
-                    mTwitterTextView.setText(Html.fromHtml(getString(R.string.my_twitter)));
-                    mTwitterTextView.setMovementMethod(LinkMovementMethod.getInstance());
-
-                    builder.setView(dialogView).create().show();
-
-                    return true;
-                }
-            });
-
-            licensesPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            findPreference("pref_key_licenses").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     View content = View.inflate(getActivity(), R.layout.fragment_licenses, null);
@@ -234,13 +193,38 @@ public class SettingsActivity extends ThemedActivity {
                 }
             });
 
-            themesListPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            findPreference("pref_key_about").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    getActivity().finish();
-                    final Intent intent = new Intent(getActivity(), HomeActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
-                    getActivity().startActivity(intent);
+                public boolean onPreferenceClick(Preference preference) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    View dialogView = View.inflate(getActivity(), R.layout.dialog_about, null);
+
+                    final TextView mTwitterTextView = (TextView) dialogView.findViewById(R.id.textView3);
+                    mTwitterTextView.setText(Html.fromHtml(getString(R.string.my_twitter)));
+                    mTwitterTextView.setMovementMethod(LinkMovementMethod.getInstance());
+
+                    builder.setView(dialogView).create().show();
+
+                    return true;
+                }
+            });
+
+            findPreference("pref_key_logout").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle(getResources().getString(R.string.logout_title_dialog))
+                            .setPositiveButton(getResources().getString(R.string.yes),
+                                    new DialogInterface.OnClickListener() {
+
+                                        @Override
+                                        public void onClick(DialogInterface dialog,
+                                                            int which) {
+                                            dialog.dismiss();
+                                            performLogout();
+                                        }
+                                    }
+                            ).setNegativeButton(getString(R.string.cancel), null).create().show();
 
                     return true;
                 }
