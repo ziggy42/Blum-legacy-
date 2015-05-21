@@ -21,7 +21,7 @@ public class BootReceiver extends BroadcastReceiver {
         if (mPref.getBoolean(context.getString(R.string.pref_key_stream_service), false))
             context.startService(new Intent(context, StreamNotificationService.class));
         else {
-            int frequency = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString(context.getString(R.string.pref_key_frequencies), "1200"));
+            int frequency = Integer.parseInt(mPref.getString(context.getString(R.string.pref_key_frequencies), "1200"));
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
                     new Intent(context, AlarmReceiver.class), 0);
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

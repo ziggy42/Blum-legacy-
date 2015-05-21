@@ -277,7 +277,7 @@ public class SettingsActivity extends ThemedActivity {
                 else
                     BasicNotificationService.stopService(getActivity());
 
-                mSharedPreferences.edit().clear().apply();
+                mSharedPreferences.edit().clear().commit();
 
                 DirectMessagesDatabaseManager directMessagesDatabaseManager =
                         new DirectMessagesDatabaseManager(getActivity());

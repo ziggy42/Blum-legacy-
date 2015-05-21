@@ -49,10 +49,14 @@ public class Common {
                         usersIDs.add(Long.parseLong(element.attr("data-user-id")));
                 } catch (Exception e) {
                     e.printStackTrace();
+                    return null;
                 }
             }
+
+            return usersIDs;
         }
-        return usersIDs;
+
+        return null;
     }
 
     private static JSONObject getJson(long tweetId, String url) {
@@ -75,6 +79,7 @@ public class Common {
             connection.disconnect();
             return new JSONObject(sb.toString());
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
