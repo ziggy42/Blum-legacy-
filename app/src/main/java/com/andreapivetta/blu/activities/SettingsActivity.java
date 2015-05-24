@@ -1,5 +1,6 @@
 package com.andreapivetta.blu.activities;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -269,6 +270,7 @@ public class SettingsActivity extends ThemedActivity {
 
         private class PerformLogOut extends AsyncTask<Void, Void, Void> {
 
+            @SuppressLint("CommitPrefEdits")
             @Override
             protected Void doInBackground(Void... params) {
                 if (mSharedPreferences.getBoolean(getString(R.string.pref_key_stream_service), false))
@@ -322,10 +324,10 @@ public class SettingsActivity extends ThemedActivity {
             protected void onPostExecute(Void aVoidValue) {
                 Toast.makeText(getActivity(), getString(R.string.logout_done), Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
-                Intent i = new Intent(getActivity(), HomeActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                        .putExtra("exit", "exit");
-                startActivity(i);
+                getActivity().finish();
+                final Intent intent = new Intent(getActivity(), HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+                getActivity().startActivity(intent);
             }
         }
 

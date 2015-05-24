@@ -38,6 +38,13 @@ public abstract class InteractionsDatabaseManager {
         ArrayList<Long> existingUsersIDs = getCouplesFromTweet(tweetID);
 
         for (long userID : userIDs) {
+            if (!existingUsersIDs.contains(userID)) {
+                newUsersIDs.add(userID);
+                insertCouple(userID, tweetID);
+            }
+        }
+
+        /*for (long userID : userIDs) {
             if (existingUsersIDs.contains(userID)) {
                 existingUsersIDs.remove(userID);
             } else {
@@ -47,7 +54,7 @@ public abstract class InteractionsDatabaseManager {
         }
 
         for (long userID : existingUsersIDs)
-            deleteCouple(userID, tweetID);
+            deleteCouple(userID, tweetID);*/
 
         return newUsersIDs;
     }

@@ -122,44 +122,71 @@ public class DirectMessagesDatabaseManager {
         return conversation;
     }
 
-    private ArrayList<Long> getAllMessages() {
-        ArrayList<Long> messages = new ArrayList<>();
-        String query = "SELECT " + SetsMetaData.MESSAGE_ID + " FROM " + SetsMetaData.TABLE_NAME;
-        Cursor cursor = myDB.rawQuery(query, null);
+    private ArrayList<Long> getAllReceivedMessages() {
+        ArrayList<Long> receivedMessages = new ArrayList<>();
+        Cursor cursor = myDB.rawQuery("SELECT " + SetsMetaData.MESSAGE_ID + " FROM " + SetsMetaData.TABLE_NAME +
+                " WHERE " + SetsMetaData.SENDER_ID + " != " + loggedUserID, null);
 
         while (cursor.moveToNext())
-            messages.add(cursor.getLong(0));
+            receivedMessages.add(cursor.getLong(0));
 
         cursor.close();
-        return messages;
+        return receivedMessages;
     }
 
-    public ArrayList<DirectMessage> check(ArrayList<DirectMessage> messages) {
-        ArrayList<DirectMessage> newMessages = new ArrayList<>();
-        ArrayList<Long> existingMessages = getAllMessages();
+    private ArrayList<Long> getAllSentMessages() {
+        ArrayList<Long> sentMessages = new ArrayList<>();
+        Cursor cursor = myDB.rawQuery("SELECT " + SetsMetaData.MESSAGE_ID + " FROM " + SetsMetaData.TABLE_NAME +
+                " WHERE " + SetsMetaData.SENDER_ID + " = " + loggedUserID, null);
 
+        while (cursor.moveToNext())
+            sentMessages.add(cursor.getLong(0));
+
+        cursor.close();
+        return sentMessages;
+    }
+
+    public ArrayList<DirectMessage> checkReceived(ArrayList<DirectMessage> messages) {
+        ArrayList<DirectMessage> newMessages = new ArrayList<>();
+        ArrayList<Long> existingMessages = getAllReceivedMessages();
+
+        for (DirectMessage dm : messages) {
+            if (!existingMessages.contains(dm.getId())) {
+                insertMessage(dm.getId(), dm.getSenderId(), dm.getRecipientId(), dm.getText(), dm.getCreatedAt().getTime(),
+                        dm.getSenderScreenName(), dm.getSender().getBiggerProfileImageURL(), false);
+                newMessages.add(dm);
+            }
+        }
+
+        /*for (DirectMessage dm : messages) {
+            if (existingMessages.contains(dm.getId())) {
+                existingMessages.remove(dm.getId());
+            } else {
+                insertMessage(dm.getId(), dm.getSenderId(), dm.getRecipientId(), dm.getText(), dm.getCreatedAt().getTime(),
+                        dm.getSenderScreenName(), dm.getSender().getBiggerProfileImageURL(), false);
+                newMessages.add(dm);
+            }
+        }
+
+        for (Long message : existingMessages)
+            deleteMessage(message);*/
+
+        return newMessages;
+    }
+
+    public void checkSent(ArrayList<DirectMessage> messages) {
+        ArrayList<Long> existingMessages = getAllSentMessages();
         for (DirectMessage dm : messages) {
             if (existingMessages.contains(dm.getId())) {
                 existingMessages.remove(dm.getId());
             } else {
-                if (dm.getSenderId() == loggedUserID) {
-                    insertMessage(dm.getId(), dm.getSenderId(), dm.getRecipientId(), dm.getText(),
-                            dm.getCreatedAt().getTime(), dm.getRecipientScreenName(),
-                            dm.getRecipient().getBiggerProfileImageURL(), true);
-                }
-                else {
-                    insertMessage(dm.getId(), dm.getSenderId(), dm.getRecipientId(), dm.getText(),
-                            dm.getCreatedAt().getTime(), dm.getSenderScreenName(),
-                            dm.getSender().getBiggerProfileImageURL(), false);
-                    newMessages.add(dm);
-                }
+                insertMessage(dm.getId(), dm.getSenderId(), dm.getRecipientId(), dm.getText(), dm.getCreatedAt().getTime(),
+                        dm.getRecipientScreenName(), dm.getRecipient().getBiggerProfileImageURL(), true);
             }
         }
 
         for (Long message : existingMessages)
             deleteMessage(message);
-
-        return newMessages;
     }
 
     public int getCountUnreadMessages() {

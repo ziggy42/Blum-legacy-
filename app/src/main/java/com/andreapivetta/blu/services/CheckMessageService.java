@@ -3,7 +3,6 @@ package com.andreapivetta.blu.services;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.util.Log;
 
 import com.andreapivetta.blu.data.DirectMessagesDatabaseManager;
 import com.andreapivetta.blu.data.Message;
@@ -25,32 +24,40 @@ public class CheckMessageService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.i("MessageService", "MessageService START");
+        //Log.i("MessageService", "MessageService START");
 
         Twitter twitter = TwitterUtils.getTwitter(getApplicationContext());
         DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(getApplicationContext());
-        dbm.open();
+
         try {
-            ArrayList<DirectMessage> messages = new ArrayList<>();
             List<DirectMessage> receivedDirectMessages = twitter.getDirectMessages(new Paging(1, 200));
             List<DirectMessage> sentDirectMessages = twitter.getSentDirectMessages(new Paging(1, 200));
+            ArrayList<DirectMessage> messages = new ArrayList<>();
 
-            if (receivedDirectMessages.size() > 0 && sentDirectMessages.size() > 0) {
+            dbm.open();
+            if (receivedDirectMessages != null && receivedDirectMessages.size() > 0) {
                 for (DirectMessage message : receivedDirectMessages)
                     messages.add(message);
 
+                ArrayList<DirectMessage> newMessages = dbm.checkReceived(messages);
+                for (DirectMessage message : newMessages)
+                    Message.pushMessage(message, getApplicationContext());
+            }
+
+            messages.clear();
+
+            if (sentDirectMessages != null && sentDirectMessages.size() > 0) {
                 for (DirectMessage message : sentDirectMessages)
                     messages.add(message);
 
-                ArrayList<DirectMessage> newMessages = dbm.check(messages);
-                for (DirectMessage message : newMessages)
-                    Message.pushMessage(message, getApplicationContext());
+                dbm.checkSent(messages);
             }
         } catch (TwitterException e) {
             e.printStackTrace();
         }
+
         dbm.close();
 
-        Log.i("MessageService", "MessageService STOP");
+        //Log.i("MessageService", "MessageService STOP");
     }
 }

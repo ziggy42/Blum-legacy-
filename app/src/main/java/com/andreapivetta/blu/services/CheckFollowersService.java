@@ -2,7 +2,6 @@ package com.andreapivetta.blu.services;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.util.Log;
 
 import com.andreapivetta.blu.data.FollowersDatabaseManager;
 import com.andreapivetta.blu.data.Notification;
@@ -23,11 +22,11 @@ public class CheckFollowersService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.i("FollowersService", "FollowersService START");
+        //Log.i("FollowersService", "FollowersService START");
 
         Twitter twitter = TwitterUtils.getTwitter(getApplicationContext());
         FollowersDatabaseManager dbm = new FollowersDatabaseManager(getApplicationContext());
-        dbm.open();
+
         try {
             ArrayList<Long> usersIDs = new ArrayList<>();
             IDs ids = twitter.getFollowersIDs(-1);
@@ -37,6 +36,7 @@ public class CheckFollowersService extends IntentService {
                         usersIDs.add(userID);
                 } while (ids.hasNext());
 
+                dbm.open();
                 ArrayList<Long> newUsersIDs = dbm.check(usersIDs);
                 for (long userID : newUsersIDs)
                     Notification.pushNotification(-1L, userID, Notification.TYPE_FOLLOW, getApplicationContext());
@@ -46,6 +46,6 @@ public class CheckFollowersService extends IntentService {
         }
         dbm.close();
 
-        Log.i("FollowersService", "FollowersService STOP");
+        //Log.i("FollowersService", "FollowersService STOP");
     }
 }

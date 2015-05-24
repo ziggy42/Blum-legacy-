@@ -73,6 +73,13 @@ public class MentionsDatabaseManager {
         ArrayList<ArrayList<Long>> existingMentions = getTriples();
 
         for (ArrayList<Long> triple : triples) {
+            if (!existingMentions.contains(triple)) {
+                newMentions.add(triple);
+                insertTriple(triple.get(0), triple.get(1), triple.get(2));
+            }
+        }
+
+        /*for (ArrayList<Long> triple : triples) {
             if (existingMentions.contains(triple)) {
                 existingMentions.remove(triple);
             } else {
@@ -82,7 +89,7 @@ public class MentionsDatabaseManager {
         }
 
         for (ArrayList<Long> triple : existingMentions)
-            deleteTriple(triple.get(0), triple.get(1), triple.get(2));
+            deleteTriple(triple.get(0), triple.get(1), triple.get(2));*/
 
         return newMentions;
     }

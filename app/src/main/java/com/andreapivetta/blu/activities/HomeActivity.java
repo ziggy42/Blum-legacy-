@@ -1,6 +1,5 @@
 package com.andreapivetta.blu.activities;
 
-import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -52,8 +51,6 @@ public class HomeActivity extends TimeLineActivity {
     @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        portOldPreferences();
 
         if (!isTwitterLoggedInAlready()) {
             startActivityForResult(new Intent(HomeActivity.this, LoginActivity.class), REQUEST_LOGIN);
@@ -282,32 +279,6 @@ public class HomeActivity extends TimeLineActivity {
                 invalidateOptionsMenu();
             }
         }
-    }
-
-    // Remove in future versions
-    @SuppressLint("CommitPrefEdits")
-    private void portOldPreferences() {
-        SharedPreferences oldSharedPreferences = getSharedPreferences("MyPref", 0);
-        if (oldSharedPreferences.getBoolean(TwitterUtils.PREF_KEY_TWITTER_LOGIN, false) &&
-                !mSharedPreferences.getBoolean("ALREADY_PORTED", false)) {
-
-            mSharedPreferences.edit()
-                    .putString(TwitterUtils.PREF_KEY_OAUTH_TOKEN,
-                            oldSharedPreferences.getString(TwitterUtils.PREF_KEY_OAUTH_TOKEN, ""))
-                    .putString(TwitterUtils.PREF_KEY_OAUTH_SECRET,
-                            oldSharedPreferences.getString(TwitterUtils.PREF_KEY_OAUTH_SECRET, ""))
-                    .putBoolean(getString(R.string.pref_key_login),
-                            oldSharedPreferences.getBoolean(TwitterUtils.PREF_KEY_TWITTER_LOGIN, false))
-                    .putBoolean(getString(R.string.pref_key_stream_service),
-                            oldSharedPreferences.getBoolean("twitterstream", false))
-                    .putBoolean(getString(R.string.pref_key_db_populated),
-                            oldSharedPreferences.getBoolean("db_populated", false))
-                    .putLong(getString(R.string.pref_key_logged_user),
-                        oldSharedPreferences.getLong("user", 0L))
-                    .commit();
-        }
-
-        mSharedPreferences.edit().putBoolean("ALREADY_PORTED", true).apply();
     }
 
     // For Screenshots only

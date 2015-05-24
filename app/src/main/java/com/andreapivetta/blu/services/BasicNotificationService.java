@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.internet.ConnectionDetector;
@@ -49,7 +48,7 @@ public class BasicNotificationService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.i("NotificationService", "NotificationService START");
+        //Log.i("NotificationService", "NotificationService START");
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         ConnectionDetector detector = new ConnectionDetector(getApplicationContext());
@@ -94,7 +93,7 @@ public class BasicNotificationService extends IntentService {
             }
         }
 
-        Log.i("NotificationService", "NotificationService STOP");
+        //Log.i("NotificationService", "NotificationService STOP");
     }
 
 }
