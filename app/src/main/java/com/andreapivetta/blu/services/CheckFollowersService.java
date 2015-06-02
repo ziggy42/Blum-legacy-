@@ -22,8 +22,6 @@ public class CheckFollowersService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        //Log.i("FollowersService", "FollowersService START");
-
         Twitter twitter = TwitterUtils.getTwitter(getApplicationContext());
         FollowersDatabaseManager dbm = new FollowersDatabaseManager(getApplicationContext());
 
@@ -45,7 +43,5 @@ public class CheckFollowersService extends IntentService {
             e.printStackTrace();
         }
         dbm.close();
-
-        //Log.i("FollowersService", "FollowersService STOP");
     }
 }

@@ -23,8 +23,6 @@ public class CheckMentionsService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        //Log.i("MentionsService", "MentionsService START");
-
         Twitter twitter = TwitterUtils.getTwitter(getApplicationContext());
         MentionsDatabaseManager dbm = new MentionsDatabaseManager(getApplicationContext());
         try {
@@ -49,8 +47,6 @@ public class CheckMentionsService extends IntentService {
             e.printStackTrace();
         }
         dbm.close();
-
-        //Log.i("MentionsService", "MentionsService STOP");
     }
 
 }

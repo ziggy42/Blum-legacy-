@@ -24,8 +24,6 @@ public class CheckMessageService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        //Log.i("MessageService", "MessageService START");
-
         Twitter twitter = TwitterUtils.getTwitter(getApplicationContext());
         DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(getApplicationContext());
 
@@ -57,7 +55,5 @@ public class CheckMessageService extends IntentService {
         }
 
         dbm.close();
-
-        //Log.i("MessageService", "MessageService STOP");
     }
 }
