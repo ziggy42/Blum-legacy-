@@ -22,7 +22,6 @@
         <item name="circleDrawable">@drawable/circle_darkblue</item>
         <item name="quoteBackground">@drawable/quote_background_blue</item>
         <item name="rectBackground">@drawable/rect_background_blue</item>
-        <item name="rectButton">@drawable/rect_button_blue</item>
     </style>
 
     <style name="CustomSearchViewStyle" parent="Widget.AppCompat.SearchView">
@@ -45,7 +44,6 @@
         <item name="circleDrawable">@drawable/circle_darkpink</item>
         <item name="quoteBackground">@drawable/quote_background_pink</item>
         <item name="rectBackground">@drawable/rect_background_pink</item>
-        <item name="rectButton">@drawable/rect_button_pink</item>
     </style>
 
     <style name="PinkSearchViewStyle" parent="Widget.AppCompat.SearchView">
@@ -69,7 +67,6 @@
         <item name="circleDrawable">@drawable/circle_darkdark</item>
         <item name="quoteBackground">@drawable/quote_background_dark</item>
         <item name="rectBackground">@drawable/rect_background_dark</item>
-        <item name="rectButton">@drawable/rect_button_dark</item>
     </style>
 
 </resources>
