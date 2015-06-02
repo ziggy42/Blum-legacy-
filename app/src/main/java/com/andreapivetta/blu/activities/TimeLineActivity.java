@@ -6,13 +6,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -43,7 +43,7 @@ public abstract class TimeLineActivity extends ThemedActivity {
     protected Toolbar toolbar;
     protected RecyclerView mRecyclerView;
     protected SwipeRefreshLayout swipeRefreshLayout;
-    protected ImageButton newTweetImageButton;
+    protected FloatingActionButton newTweetFAB;
     protected ProgressBar loadingProgressBar;
     protected TweetsListAdapter mTweetsAdapter;
     protected ArrayList<Status> tweetList = new ArrayList<>();
@@ -115,13 +115,13 @@ public abstract class TimeLineActivity extends ThemedActivity {
             }
         });
 
-        newTweetImageButton = (ImageButton) findViewById(R.id.newTweetImageButton);
+        newTweetFAB = (FloatingActionButton) findViewById(R.id.newTweetFAB);
         loadingProgressBar = (ProgressBar) findViewById(R.id.loadingProgressBar);
 
         if (tweetList.size() > 0)
             loadingProgressBar.setVisibility(View.GONE);
 
-        this.newTweetImageButton.setOnClickListener(new View.OnClickListener() {
+        this.newTweetFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(TimeLineActivity.this, NewTweetActivity.class);
@@ -145,13 +145,13 @@ public abstract class TimeLineActivity extends ThemedActivity {
     abstract List<Status> getRefreshedTimeLine(Paging paging) throws TwitterException;
 
     void newTweetDown() {
-        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newTweetImageButton.getLayoutParams();
-        ValueAnimator downAnimator = ValueAnimator.ofInt(params.bottomMargin, -newTweetImageButton.getHeight());
+        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newTweetFAB.getLayoutParams();
+        ValueAnimator downAnimator = ValueAnimator.ofInt(params.bottomMargin, -newTweetFAB.getHeight());
         downAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 params.bottomMargin = (Integer) valueAnimator.getAnimatedValue();
-                newTweetImageButton.requestLayout();
+                newTweetFAB.requestLayout();
             }
         });
         downAnimator.setDuration(200)
@@ -161,13 +161,13 @@ public abstract class TimeLineActivity extends ThemedActivity {
     }
 
     void newTweetUp() {
-        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newTweetImageButton.getLayoutParams();
+        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newTweetFAB.getLayoutParams();
         ValueAnimator upAnimator = ValueAnimator.ofInt(params.bottomMargin, Common.dpToPx(this, 20));
         upAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 params.bottomMargin = (Integer) valueAnimator.getAnimatedValue();
-                newTweetImageButton.requestLayout();
+                newTweetFAB.requestLayout();
             }
         });
         upAnimator.setDuration(200)

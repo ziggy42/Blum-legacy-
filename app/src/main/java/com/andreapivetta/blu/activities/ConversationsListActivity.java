@@ -2,6 +2,7 @@ package com.andreapivetta.blu.activities;
 
 import android.animation.ValueAnimator;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,7 +20,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -53,7 +53,7 @@ public class ConversationsListActivity extends ThemedActivity {
     private boolean isUp = true;
 
     private RecyclerView mRecyclerView;
-    private ImageButton newMessageImageButton;
+    private FloatingActionButton newMessageFAB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +93,8 @@ public class ConversationsListActivity extends ThemedActivity {
             }
         });
 
-        newMessageImageButton = (ImageButton) findViewById(R.id.newMessageImageButton);
-        newMessageImageButton.setOnClickListener(new View.OnClickListener() {
+        newMessageFAB = (FloatingActionButton) findViewById(R.id.newMessageFAB);
+        newMessageFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showChooseUserDialog();
@@ -212,13 +212,13 @@ public class ConversationsListActivity extends ThemedActivity {
     }
 
     void newMessageDown() {
-        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newMessageImageButton.getLayoutParams();
-        ValueAnimator downAnimator = ValueAnimator.ofInt(params.bottomMargin, -newMessageImageButton.getHeight());
+        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newMessageFAB.getLayoutParams();
+        ValueAnimator downAnimator = ValueAnimator.ofInt(params.bottomMargin, -newMessageFAB.getHeight());
         downAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 params.bottomMargin = (Integer) valueAnimator.getAnimatedValue();
-                newMessageImageButton.requestLayout();
+                newMessageFAB.requestLayout();
             }
         });
         downAnimator.setDuration(200)
@@ -228,13 +228,13 @@ public class ConversationsListActivity extends ThemedActivity {
     }
 
     void newMessageUp() {
-        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newMessageImageButton.getLayoutParams();
+        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newMessageFAB.getLayoutParams();
         ValueAnimator upAnimator = ValueAnimator.ofInt(params.bottomMargin, Common.dpToPx(this, 20));
         upAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 params.bottomMargin = (Integer) valueAnimator.getAnimatedValue();
-                newMessageImageButton.requestLayout();
+                newMessageFAB.requestLayout();
             }
         });
         upAnimator.setDuration(200)

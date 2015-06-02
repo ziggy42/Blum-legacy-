@@ -18,8 +18,8 @@
             android:paddingRight="@dimen/homeMargins"
             android:scrollbars="vertical" />
 
-        <ImageButton
-            android:id="@+id/newMessageImageButton"
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/newMessageFAB"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_alignParentBottom="true"
@@ -28,9 +28,6 @@
             android:layout_marginBottom="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
-            android:background="?circleButtonDrawable"
-            android:contentDescription="@string/send_tweet_button_contentDescriptor"
-            android:elevation="4dp"
             android:src="@drawable/ic_message_white_24dp" />
 
     </RelativeLayout>
