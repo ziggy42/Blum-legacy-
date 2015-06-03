@@ -2,6 +2,7 @@ package com.andreapivetta.blu.activities;
 
 import android.app.SearchManager;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -11,7 +12,6 @@ import android.view.View;
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.fragments.SearchTweetsFragment;
 import com.andreapivetta.blu.fragments.SearchUserFragment;
-import com.andreapivetta.blu.fragments.tabs.SlidingTabLayout;
 
 public class SearchActivity extends ThemedActivity {
 
@@ -40,8 +40,8 @@ public class SearchActivity extends ThemedActivity {
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         SearchFragmentPagerAdapter myFragmentPagerAdapter = new SearchFragmentPagerAdapter();
         viewPager.setAdapter(myFragmentPagerAdapter);
-        SlidingTabLayout slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
-        slidingTabLayout.setViewPager(viewPager);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
 
     }
 

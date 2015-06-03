@@ -4,13 +4,13 @@ import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -40,7 +40,7 @@ public class TweetActivity extends ThemedActivity {
     private TweetsListAdapter mTweetsAdapter;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
-    private ImageButton replyImageButton;
+    private FloatingActionButton replyFAB;
     private ProgressBar loadingProgressBar;
 
     private int currentIndex = 0;
@@ -112,8 +112,8 @@ public class TweetActivity extends ThemedActivity {
             });
         }
 
-        replyImageButton = (ImageButton) findViewById(R.id.replyImageButton);
-        replyImageButton.setOnClickListener(new View.OnClickListener() {
+        replyFAB = (FloatingActionButton) findViewById(R.id.replyFAB);
+        replyFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(TweetActivity.this, NewTweetActivity.class);
@@ -129,13 +129,13 @@ public class TweetActivity extends ThemedActivity {
     }
 
     void newTweetDown() {
-        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) replyImageButton.getLayoutParams();
-        ValueAnimator downAnimator = ValueAnimator.ofInt(params.bottomMargin, -replyImageButton.getHeight());
+        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) replyFAB.getLayoutParams();
+        ValueAnimator downAnimator = ValueAnimator.ofInt(params.bottomMargin, -replyFAB.getHeight());
         downAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 params.bottomMargin = (Integer) valueAnimator.getAnimatedValue();
-                replyImageButton.requestLayout();
+                replyFAB.requestLayout();
             }
         });
         downAnimator.setDuration(200);
@@ -145,13 +145,13 @@ public class TweetActivity extends ThemedActivity {
     }
 
     void newTweetUp() {
-        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) replyImageButton.getLayoutParams();
+        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) replyFAB.getLayoutParams();
         ValueAnimator upAnimator = ValueAnimator.ofInt(params.bottomMargin, Common.dpToPx(this, 20));
         upAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 params.bottomMargin = (Integer) valueAnimator.getAnimatedValue();
-                replyImageButton.requestLayout();
+                replyFAB.requestLayout();
             }
         });
         upAnimator.setDuration(200);

@@ -3,6 +3,7 @@ package com.andreapivetta.blu.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -15,7 +16,6 @@ import android.view.View;
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.data.NotificationsDatabaseManager;
 import com.andreapivetta.blu.fragments.NotificationFragment;
-import com.andreapivetta.blu.fragments.tabs.SlidingTabLayout;
 
 public class NotificationsActivity extends ThemedActivity {
 
@@ -39,8 +39,8 @@ public class NotificationsActivity extends ThemedActivity {
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         MyFragmentPagerAdapter myFragmentPagerAdapter = new MyFragmentPagerAdapter();
         viewPager.setAdapter(myFragmentPagerAdapter);
-        SlidingTabLayout slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
-        slidingTabLayout.setViewPager(viewPager);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
 
