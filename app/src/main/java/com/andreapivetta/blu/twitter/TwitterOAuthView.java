@@ -25,7 +25,6 @@ public class TwitterOAuthView extends WebView {
     private static final boolean DEBUG = false;
     private boolean isDebugEnabled = DEBUG;
     private TwitterOAuthTask twitterOAuthTask;
-    private boolean cancelOnDetachedFromWindow = true;
 
     public TwitterOAuthView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -116,7 +115,7 @@ public class TwitterOAuthView extends WebView {
     }
 
     public boolean isCancelOnDetachedFromWindow() {
-        return cancelOnDetachedFromWindow;
+        return true;
     }
 
     @Override

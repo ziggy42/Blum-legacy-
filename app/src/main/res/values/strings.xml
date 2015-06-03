@@ -204,7 +204,6 @@
     <string name="tweet_photo_contentDescriptor" translatable="false">Tweet Photo</string>
     <string name="grab_image_contentDescriptor" translatable="false">Upload a Picture Image Button</string>
     <string name="take_photo_contentDescriptor" translatable="false">Take and Add a Photo Image Button</string>
-    <string name="send_tweet_button_contentDescriptor" translatable="false">Send Tweet image Button</string>
     <string name="notifications_contentDescription" translatable="false">Notifications</string>
     <string name="openTweet_imageButton_contentDescriptor" translatable="false">Open Tweet Image Button</string>
     <string name="send_message_contentDescriptor" translatable="false">Send Message Button</string>

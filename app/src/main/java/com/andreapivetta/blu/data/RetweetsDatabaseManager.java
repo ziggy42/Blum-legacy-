@@ -17,7 +17,6 @@ public class RetweetsDatabaseManager extends InteractionsDatabaseManager {
             + SetsMetaData.USER_ID + " INTEGER NOT NULL);";
 
     public RetweetsDatabaseManager(Context context) {
-        super(context);
         this.myDBHelper = new DatabaseHelper(context, DB_NAME, DB_VERSION);
     }
 
@@ -37,12 +36,6 @@ public class RetweetsDatabaseManager extends InteractionsDatabaseManager {
         contentValues.put(SetsMetaData.TWEET_ID, tweetID);
         contentValues.put(SetsMetaData.USER_ID, userID);
         myDB.insert(SetsMetaData.TABLE_NAME, null, contentValues);
-    }
-
-    @Override
-    void deleteCouple(long userID, long tweetID) {
-        myDB.execSQL("DELETE FROM " + SetsMetaData.TABLE_NAME + " WHERE " + SetsMetaData.USER_ID +
-                " = " + userID + " AND " + SetsMetaData.TWEET_ID + " = " + tweetID);
     }
 
     @Override

@@ -40,11 +40,6 @@ public class FollowersDatabaseManager {
         myDB.insert(SetsMetaData.TABLE_NAME, null, contentValues);
     }
 
-    private void deleteFollower(long followerID) {
-        myDB.execSQL("DELETE FROM " + SetsMetaData.TABLE_NAME + " WHERE " + SetsMetaData.FOLLOWER_ID +
-                " = " + followerID);
-    }
-
     private ArrayList<Long> getFollowersList() {
         ArrayList<Long> list = new ArrayList<>();
         String query = "SELECT " + SetsMetaData.FOLLOWER_ID + " FROM " + SetsMetaData.TABLE_NAME;
@@ -61,24 +56,11 @@ public class FollowersDatabaseManager {
         ArrayList<Long> newUsersIDs = new ArrayList<>();
         ArrayList<Long> existingUsersIDs = getFollowersList();
 
-
         for (long userID : userIDs)
             if (!existingUsersIDs.contains(userID)) {
                 newUsersIDs.add(userID);
                 insertFollower(userID);
             }
-
-        /*for (long userID : userIDs) {
-            if (existingUsersIDs.contains(userID)) {
-                existingUsersIDs.remove(userID);
-            } else {
-                newUsersIDs.add(userID);
-                insertFollower(userID);
-            }
-        }
-
-        for (long userID : existingUsersIDs)
-            deleteFollower(userID);*/
 
         return newUsersIDs;
     }

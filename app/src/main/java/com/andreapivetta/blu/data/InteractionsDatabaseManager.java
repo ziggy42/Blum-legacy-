@@ -11,11 +11,6 @@ public abstract class InteractionsDatabaseManager {
 
     protected DatabaseHelper myDBHelper;
     protected SQLiteDatabase myDB;
-    protected Context context;
-
-    public InteractionsDatabaseManager(Context context) {
-        this.context = context;
-    }
 
     protected abstract String getTableCreate();
 
@@ -29,8 +24,6 @@ public abstract class InteractionsDatabaseManager {
 
     public abstract void insertCouple(long userID, long tweetID);
 
-    abstract void deleteCouple(long userID, long tweetID);
-
     abstract ArrayList<Long> getCouplesFromTweet(long tweetID);
 
     public ArrayList<Long> check(ArrayList<Long> userIDs, long tweetID) {
@@ -43,18 +36,6 @@ public abstract class InteractionsDatabaseManager {
                 insertCouple(userID, tweetID);
             }
         }
-
-        /*for (long userID : userIDs) {
-            if (existingUsersIDs.contains(userID)) {
-                existingUsersIDs.remove(userID);
-            } else {
-                newUsersIDs.add(userID);
-                insertCouple(userID, tweetID);
-            }
-        }
-
-        for (long userID : existingUsersIDs)
-            deleteCouple(userID, tweetID);*/
 
         return newUsersIDs;
     }

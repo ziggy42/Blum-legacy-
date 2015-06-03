@@ -44,12 +44,6 @@ public class MentionsDatabaseManager {
         myDB.insert(SetsMetaData.TABLE_NAME, null, cv);
     }
 
-    private void deleteTriple(long tweetID, long userID, long timestamp) {
-        myDB.execSQL("DELETE FROM " + SetsMetaData.TABLE_NAME + " WHERE " + SetsMetaData.USER_ID +
-                " = " + userID + " AND " + SetsMetaData.TWEET_ID + " = " + tweetID + " AND " +
-                SetsMetaData.TIMESTAMP + " = " + timestamp);
-    }
-
     private ArrayList<ArrayList<Long>> getTriples() {
         ArrayList<ArrayList<Long>> list = new ArrayList<>();
         String query = "SELECT " + SetsMetaData.TWEET_ID + ", " + SetsMetaData.USER_ID +
@@ -78,18 +72,6 @@ public class MentionsDatabaseManager {
                 insertTriple(triple.get(0), triple.get(1), triple.get(2));
             }
         }
-
-        /*for (ArrayList<Long> triple : triples) {
-            if (existingMentions.contains(triple)) {
-                existingMentions.remove(triple);
-            } else {
-                newMentions.add(triple);
-                insertTriple(triple.get(0), triple.get(1), triple.get(2));
-            }
-        }
-
-        for (ArrayList<Long> triple : existingMentions)
-            deleteTriple(triple.get(0), triple.get(1), triple.get(2));*/
 
         return newMentions;
     }
