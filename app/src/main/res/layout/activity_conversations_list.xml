@@ -28,7 +28,9 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_margin="@dimen/fabMargin"
-            android:src="@drawable/ic_message_white_24dp" />
+            android:src="@drawable/ic_message_white_24dp"
+            app:pressedTranslationZ="12dp"
+            app:backgroundTint="?attr/colorPrimary"/>
 
     </RelativeLayout>
 
