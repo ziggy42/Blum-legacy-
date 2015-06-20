@@ -25,8 +25,6 @@ public class CheckInteractionsService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        //Log.i("InteractionsService", "InteractionsService START");
-
         Twitter twitter = TwitterUtils.getTwitter(getApplicationContext());
         FavoritesDatabaseManager fdbm = new FavoritesDatabaseManager(getApplicationContext());
         RetweetsDatabaseManager rdbm = new RetweetsDatabaseManager(getApplicationContext());
@@ -56,10 +54,19 @@ public class CheckInteractionsService extends IntentService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        rdbm.close();
-        fdbm.close();
+        finally {
+            try {
+                rdbm.close();
+            } catch (NullPointerException e) {
+                // ignore
+            }
 
-        //Log.i("InteractionsService", "InteractionsService STOP");
+            try {
+                fdbm.close();
+            } catch (NullPointerException e) {
+                //ignore
+            }
+        }
     }
 
 }

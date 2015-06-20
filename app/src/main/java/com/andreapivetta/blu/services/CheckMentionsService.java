@@ -45,8 +45,13 @@ public class CheckMentionsService extends IntentService {
             }
         } catch (TwitterException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                dbm.close();
+            } catch (NullPointerException e) {
+                // ignore
+            }
         }
-        dbm.close();
     }
 
 }
