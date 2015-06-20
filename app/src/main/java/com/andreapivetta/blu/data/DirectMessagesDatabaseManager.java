@@ -158,19 +158,6 @@ public class DirectMessagesDatabaseManager {
             }
         }
 
-        /*for (DirectMessage dm : messages) {
-            if (existingMessages.contains(dm.getId())) {
-                existingMessages.remove(dm.getId());
-            } else {
-                insertMessage(dm.getId(), dm.getSenderId(), dm.getRecipientId(), dm.getText(), dm.getCreatedAt().getTime(),
-                        dm.getSenderScreenName(), dm.getSender().getBiggerProfileImageURL(), false);
-                newMessages.add(dm);
-            }
-        }
-
-        for (Long message : existingMessages)
-            deleteMessage(message);*/
-
         return newMessages;
     }
 

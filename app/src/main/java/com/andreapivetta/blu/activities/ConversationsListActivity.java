@@ -229,7 +229,8 @@ public class ConversationsListActivity extends ThemedActivity {
 
     void newMessageUp() {
         final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newMessageFAB.getLayoutParams();
-        ValueAnimator upAnimator = ValueAnimator.ofInt(params.bottomMargin, Common.dpToPx(this, 20));
+        ValueAnimator upAnimator = ValueAnimator.ofInt(params.bottomMargin, Common.dpToPx(this,
+                (int) (getResources().getDimension(R.dimen.fabMargin)/ getResources().getDisplayMetrics().density)));
         upAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {

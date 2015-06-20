@@ -30,7 +30,7 @@ dependencies {
     compile 'org.twitter4j:twitter4j-core:4.0.3'
     compile 'org.twitter4j:twitter4j-stream:4.0.3'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.makeramen:roundedimageview:2.1.0'
+    compile 'com.makeramen:roundedimageview:2.1.1'
     compile 'com.github.chrisbanes.photoview:library:1.2.3'
     compile 'jp.wasabeef:recyclerview-animators:1.2.0'
     compile 'org.jsoup:jsoup:1.8.2'

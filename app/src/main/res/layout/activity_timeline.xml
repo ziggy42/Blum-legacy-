@@ -35,7 +35,9 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_margin="@dimen/fabMargin"
+            android:layout_marginRight="@dimen/fabMargin"
+            android:layout_marginEnd="@dimen/fabMargin"
+            android:layout_marginBottom="@dimen/fabMargin"
             app:pressedTranslationZ="12dp"
             app:backgroundTint="?attr/colorPrimary"/>
 
