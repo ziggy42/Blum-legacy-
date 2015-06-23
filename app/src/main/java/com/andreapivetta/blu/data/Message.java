@@ -66,7 +66,7 @@ public class Message implements Comparable<Message> {
             mBuilder.setPriority(android.app.Notification.PRIORITY_HIGH);
 
         ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE))
-                .notify((int) dm.getId(), mBuilder.build());
+                .notify((int) dm.getSenderId(), mBuilder.build());
 
         Intent i = new Intent();
         i.setAction(Message.NEW_MESSAGE_INTENT);

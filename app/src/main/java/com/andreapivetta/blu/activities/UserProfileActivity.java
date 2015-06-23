@@ -39,7 +39,6 @@ import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.ImagesAdapter;
 import com.andreapivetta.blu.adapters.SpaceLeftItemDecoration;
 import com.andreapivetta.blu.adapters.UserListSimpleAdapter;
-import com.andreapivetta.blu.asynctasks.FillQuote;
 import com.andreapivetta.blu.internet.ConnectionDetector;
 import com.andreapivetta.blu.twitter.FavoriteTweet;
 import com.andreapivetta.blu.twitter.FollowTwitterUser;
@@ -63,7 +62,6 @@ import twitter4j.ResponseList;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.URLEntity;
 import twitter4j.User;
 
 public class UserProfileActivity extends ThemedActivity {
@@ -318,10 +316,8 @@ public class UserProfileActivity extends ThemedActivity {
                 tweetType = TWEET_TYPE.TYPE_ITEM_PHOTO;
             else if (statuses[i].getExtendedMediaEntities().length > 1)
                 tweetType = TWEET_TYPE.TYPE_ITEM_MULTIPLEPHOTOS;
-            else
-                for (URLEntity entity : statuses[i].getURLEntities())
-                    if (entity.getExpandedURL().matches("(^https://twitter.com/)(.*)(/status/)(.*)"))
-                        tweetType = TWEET_TYPE.TYPE_ITEM_QUOTE;
+            else if (statuses[i].getQuotedStatusId() > 0)
+                tweetType = TWEET_TYPE.TYPE_ITEM_QUOTE;
 
             switch (tweetType) {
                 case TYPE_ITEM:
@@ -492,18 +488,32 @@ public class UserProfileActivity extends ThemedActivity {
                 mRecyclerView.setAdapter(new ImagesAdapter(statuses[i].getExtendedMediaEntities(), UserProfileActivity.this));
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(UserProfileActivity.this, LinearLayoutManager.HORIZONTAL, false));
             } else if (tweetType == TWEET_TYPE.TYPE_ITEM_QUOTE) {
-                String quotedStatusURL = "";
-                for (URLEntity entity : statuses[i].getURLEntities())
-                    if (entity.getExpandedURL().matches("(^https://twitter.com/)(.*)(/status/)(.*)")) {
-                        quotedStatusURL = entity.getExpandedURL();
-                        break;
-                    }
+                final Status quotedStatus = statuses[i].getQuotedStatus();
 
                 ImageView photoImageView = ((ImageView) tweetView.findViewById(R.id.photoImageView));
-                photoImageView.setVisibility(View.GONE);
-                new FillQuote((TextView) tweetView.findViewById(R.id.quotedUserNameTextView), (TextView) tweetView.findViewById(R.id.quotedStatusTextView),
-                        photoImageView, ((LinearLayout) tweetView.findViewById(R.id.quotedStatusLinearLayout)),
-                        quotedStatusURL, twitter, UserProfileActivity.this).execute();
+                ((TextView) tweetView.findViewById(R.id.quotedUserNameTextView)).setText(quotedStatus.getUser().getName());
+                ((TextView) tweetView.findViewById(R.id.quotedStatusTextView)).setText(quotedStatus.getText());
+
+                if (quotedStatus.getMediaEntities().length > 0) {
+                    photoImageView.setVisibility(View.VISIBLE);
+                    Picasso.with(UserProfileActivity.this)
+                            .load(quotedStatus.getMediaEntities()[0].getMediaURL())
+                            .placeholder(ResourcesCompat.getDrawable(getResources(), R.drawable.placeholder, null))
+                            .into(photoImageView);
+                } else
+                    photoImageView.setVisibility(View.GONE);
+
+                tweetView.findViewById(R.id.quotedStatus).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(UserProfileActivity.this, TweetActivity.class);
+                        Bundle b = new Bundle();
+                        b.putSerializable("TWEET", quotedStatus);
+                        i.putExtra("STATUS", b);
+                        startActivity(i);
+                    }
+                });
+
             }
 
             cardView.setOnClickListener(new View.OnClickListener() {

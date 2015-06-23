@@ -31,7 +31,6 @@ import com.andreapivetta.blu.activities.NewTweetActivity;
 import com.andreapivetta.blu.activities.NewTweetQuoteActivity;
 import com.andreapivetta.blu.activities.TweetActivity;
 import com.andreapivetta.blu.activities.UserProfileActivity;
-import com.andreapivetta.blu.asynctasks.FillQuote;
 import com.andreapivetta.blu.twitter.FavoriteTweet;
 import com.andreapivetta.blu.twitter.RetweetTweet;
 import com.squareup.picasso.Picasso;
@@ -45,7 +44,6 @@ import java.util.concurrent.TimeUnit;
 import twitter4j.MediaEntity;
 import twitter4j.Status;
 import twitter4j.Twitter;
-import twitter4j.URLEntity;
 import twitter4j.User;
 
 public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.ViewHolder> {
@@ -329,19 +327,36 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
             }
 
-            for (URLEntity entity : mDataSet.get(position).getURLEntities())
-                if (entity.getExpandedURL().matches("(^https://twitter.com/)(.*)(/status/)(.*)")) {
-                    ((VHHeader) holder).quotedTweetViewStub.setLayoutResource(R.layout.quoted_tweet);
-                    View tweetView = ((VHHeader) holder).quotedTweetViewStub.inflate();
+            if (currentStatus.getQuotedStatusId() > 0) {
+                ((VHHeader) holder).quotedTweetViewStub.setLayoutResource(R.layout.quoted_tweet);
+                View tweetView = ((VHHeader) holder).quotedTweetViewStub.inflate();
 
-                    ImageView photoImageView = ((ImageView) tweetView.findViewById(R.id.photoImageView));
+                final Status quotedStatus = currentStatus.getQuotedStatus();
+
+                ImageView photoImageView = ((ImageView) tweetView.findViewById(R.id.photoImageView));
+                ((TextView) tweetView.findViewById(R.id.quotedUserNameTextView)).setText(quotedStatus.getUser().getName());
+                ((TextView) tweetView.findViewById(R.id.quotedStatusTextView)).setText(quotedStatus.getText());
+
+                if (quotedStatus.getMediaEntities().length > 0) {
+                    photoImageView.setVisibility(View.VISIBLE);
+                    Picasso.with(context)
+                            .load(quotedStatus.getMediaEntities()[0].getMediaURL())
+                            .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
+                            .into(photoImageView);
+                } else
                     photoImageView.setVisibility(View.GONE);
-                    new FillQuote((TextView) tweetView.findViewById(R.id.quotedUserNameTextView), (TextView) tweetView.findViewById(R.id.quotedStatusTextView),
-                            photoImageView, ((LinearLayout) tweetView),
-                            entity.getExpandedURL(), twitter, context).execute();
-                    break;
-                }
 
+                tweetView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(context, TweetActivity.class);
+                        Bundle b = new Bundle();
+                        b.putSerializable("TWEET", quotedStatus);
+                        i.putExtra("STATUS", b);
+                        context.startActivity(i);
+                    }
+                });
+            }
         } else {
             holder.statusTextView.setText(currentStatus.getText());
             holder.interactionLinearLayout.setVisibility(View.GONE);
@@ -378,19 +393,31 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                 RecyclerView mRecyclerView = ((VHItemMultiplePhotos) holder).tweetPhotosRecyclerView;
                 mRecyclerView.setAdapter(new ImagesAdapter(currentStatus.getExtendedMediaEntities(), context));
             } else if (TYPE == TYPE_ITEM_QUOTE) {
-                String quotedStatusURL = "";
-                for (URLEntity entity : currentStatus.getURLEntities())
-                    if (entity.getExpandedURL().matches("(^https://twitter.com/)(.*)(/status/)(.*)")) {
-                        quotedStatusURL = entity.getExpandedURL();
-                        break;
-                    }
+                final Status quotedStatus = currentStatus.getQuotedStatus();
 
-                ((VHItemQuote) holder).photoImageView.setVisibility(View.GONE);
-                ((VHItemQuote) holder).quotedUserNameTextView.setText("");
-                ((VHItemQuote) holder).quotedStatusTextView.setText("");
-                new FillQuote(((VHItemQuote) holder).quotedUserNameTextView, ((VHItemQuote) holder).quotedStatusTextView,
-                        ((VHItemQuote) holder).photoImageView, ((VHItemQuote) holder).quotedStatusLinearLayout,
-                        quotedStatusURL, twitter, context).execute();
+                ImageView photo = ((VHItemQuote) holder).photoImageView;
+                ((VHItemQuote) holder).quotedUserNameTextView.setText(quotedStatus.getUser().getName());
+                ((VHItemQuote) holder).quotedStatusTextView.setText(quotedStatus.getText());
+
+                if (quotedStatus.getMediaEntities().length > 0) {
+                    photo.setVisibility(View.VISIBLE);
+                    Picasso.with(context)
+                            .load(quotedStatus.getMediaEntities()[0].getMediaURL())
+                            .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
+                            .into(photo);
+                } else
+                    photo.setVisibility(View.GONE);
+
+                ((VHItemQuote) holder).quotedStatusLinearLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(context, TweetActivity.class);
+                        Bundle b = new Bundle();
+                        b.putSerializable("TWEET", quotedStatus);
+                        i.putExtra("STATUS", b);
+                        context.startActivity(i);
+                    }
+                });
             }
 
             ((VHItem) holder).cardView.setOnClickListener(new View.OnClickListener() {
@@ -431,9 +458,8 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
         if(mDataSet.get(position).getExtendedMediaEntities().length > 1)
             return TYPE_ITEM_MULTIPLE_PHOTOS;
 
-        for (URLEntity entity : mDataSet.get(position).getURLEntities())
-            if (entity.getExpandedURL().matches("(^https://twitter.com/)(.*)(/status/)(.*)"))
-                return TYPE_ITEM_QUOTE;
+        if (mDataSet.get(position).getQuotedStatusId() > 0)
+            return TYPE_ITEM_QUOTE;
 
         return TYPE_ITEM;
     }

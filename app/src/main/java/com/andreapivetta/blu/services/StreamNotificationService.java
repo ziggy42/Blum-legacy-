@@ -171,6 +171,21 @@ public class StreamNotificationService extends Service {
         }
 
         @Override
+        public void onRetweetedRetweet(User source, User target, Status retweetedStatus) {
+
+        }
+
+        @Override
+        public void onFavoritedRetweet(User source, User target, Status favoritedRetweeet) {
+
+        }
+
+        @Override
+        public void onQuotedTweet(User source, User target, Status quotingTweet) {
+
+        }
+
+        @Override
         public void onStatus(Status status) {
             ArrayList<Long> names = new ArrayList<>();
             for (UserMentionEntity e : status.getUserMentionEntities())
