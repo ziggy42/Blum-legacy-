@@ -2,6 +2,7 @@ package com.andreapivetta.blu.services;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 
@@ -275,9 +276,18 @@ public class StreamNotificationService extends Service {
 
     @Override
     public void onDestroy() {
-        twitterStream.cleanUp();
-        twitterStream.shutdown();
 
-        super.onDestroy();
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                twitterStream.clearListeners();
+                twitterStream.cleanUp();
+                twitterStream.shutdown();
+
+                return null;
+            }
+        }.execute();
+
     }
 }

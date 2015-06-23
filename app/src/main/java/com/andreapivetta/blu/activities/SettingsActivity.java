@@ -91,11 +91,7 @@ public class SettingsActivity extends ThemedActivity {
             findPreference(getString(R.string.pref_key_themes)).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    getActivity().finish();
-                    final Intent intent = new Intent(getActivity(), HomeActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
-                    getActivity().startActivity(intent);
-
+                    restartApplication();
                     return true;
                 }
             });
@@ -126,10 +122,11 @@ public class SettingsActivity extends ThemedActivity {
 
                                                 BasicNotificationService.stopService(getActivity());
 
-                                                Intent i = new Intent(getActivity(), HomeActivity.class);
-                                                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                                                        .putExtra("exit", "exit");
-                                                startActivity(i);
+                                                //Intent i = new Intent(getActivity(), HomeActivity.class);
+                                                //i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                                                        //.putExtra("exit", "exit");
+                                                //startActivity(i);
+                                                restartApplication();
                                             }
                                         })
                                 .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -145,10 +142,11 @@ public class SettingsActivity extends ThemedActivity {
                         getActivity().stopService(new Intent(getActivity(), StreamNotificationService.class));
                         BasicNotificationService.startService(getActivity());
 
-                        Intent i = new Intent(getActivity(), HomeActivity.class);
-                        i.putExtra("exit", "exit")
-                                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        startActivity(i);
+                        //Intent i = new Intent(getActivity(), HomeActivity.class);
+                        //i.putExtra("exit", "exit")
+                                //.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        //startActivity(i);
+                        restartApplication();
                     }
 
                     return true;
@@ -268,6 +266,13 @@ public class SettingsActivity extends ThemedActivity {
             new PerformLogOut().execute(null, null, null);
         }
 
+        void restartApplication() {
+            getActivity().finish();
+            final Intent intent = new Intent(getActivity(), HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+            getActivity().startActivity(intent);
+        }
+
         private class PerformLogOut extends AsyncTask<Void, Void, Void> {
 
             @SuppressLint("CommitPrefEdits")
@@ -324,10 +329,7 @@ public class SettingsActivity extends ThemedActivity {
             protected void onPostExecute(Void aVoidValue) {
                 Toast.makeText(getActivity(), getString(R.string.logout_done), Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
-                getActivity().finish();
-                final Intent intent = new Intent(getActivity(), HomeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
-                getActivity().startActivity(intent);
+                restartApplication();
             }
         }
 
