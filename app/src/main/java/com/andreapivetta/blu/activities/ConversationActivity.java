@@ -11,14 +11,10 @@ import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.ConversationAdapter;
@@ -45,9 +41,6 @@ public class ConversationActivity extends ThemedActivity {
     private Toolbar toolbar;
     private EditText messageEditText;
     private RecyclerView mRecyclerView;
-    private TextView charsLeftTextView;
-
-    private int charsLeft = 140;
 
     private ConversationAdapter mAdapter;
     private DataUpdateReceiver dataUpdateReceiver;
@@ -75,29 +68,6 @@ public class ConversationActivity extends ThemedActivity {
         ImageButton sendMessageImageButton = (ImageButton) findViewById(R.id.sendMessageImageButton);
         loadingProgressBar = (ProgressBar) findViewById(R.id.loadingProgressBar);
         messageEditText = (EditText) findViewById(R.id.messageEditText);
-        messageEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                charsLeft = 140 - s.toString().length();
-                charsLeftTextView.setText(String.valueOf(charsLeft));
-
-                charsLeftTextView.setTextColor(
-                        getResources().getColor((charsLeft < 0) ? R.color.red : R.color.lightGrey));
-            }
-        });
-
-        charsLeftTextView = (TextView) findViewById(R.id.charsLeftTextView);
-        charsLeftTextView.setText(String.valueOf(charsLeft));
 
         mRecyclerView = (RecyclerView) findViewById(R.id.conversationRecyclerView);
         mAdapter = new ConversationAdapter(mDataSet, ConversationActivity.this);
@@ -111,7 +81,7 @@ public class ConversationActivity extends ThemedActivity {
             @Override
             public void onClick(View v) {
                 String message = messageEditText.getText().toString();
-                if (message.length() > 0 && message.length() <= 140) {
+                if (message.length() > 0) {
                     new SendDirectMessage(ConversationActivity.this, twitter, userID, currentUser.getName(),
                             currentUser.getBiggerProfileImageURL()).execute(message, null, null);
 
@@ -123,9 +93,6 @@ public class ConversationActivity extends ThemedActivity {
 
                     messageEditText.setText("");
                     mRecyclerView.scrollToPosition(mDataSet.size() - 1);
-                } else {
-                    Toast.makeText(ConversationActivity.this, getString(R.string.message_chars_warning), Toast.LENGTH_SHORT)
-                            .show();
                 }
             }
         });
