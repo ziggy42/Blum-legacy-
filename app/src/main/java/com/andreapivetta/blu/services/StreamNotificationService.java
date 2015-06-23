@@ -267,8 +267,8 @@ public class StreamNotificationService extends Service {
         super.onCreate();
 
         twitter = TwitterUtils.getTwitter(getApplicationContext());
-
         twitterStream = TwitterUtils.getTwitterStream(getApplicationContext());
+
         twitterStream.addListener(listener);
         twitterStream.user();
     }

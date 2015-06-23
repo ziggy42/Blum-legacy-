@@ -128,7 +128,6 @@
     <string name="you_message">Tu: %1$s</string>
     <string name="come_here_later_message">Sto ancora scaricando roba, torna più tardi :D</string>
     <string name="hint_user">Nome</string>
-    <string name="message_chars_warning">La lunghezza del messaggio deve essere in ]0, 140]</string>
     <string name="ops">Oops, questo è imbarazzante…</string>
     <string name="performing_logout">Sto facendo il Logout</string>
     <string name="please_wait">Aspetta qualche secondo</string>
