@@ -206,7 +206,9 @@ public abstract class TimeLineActivity extends ThemedActivity {
         @Override
         protected Boolean doInBackground(Void... uris) {
             try {
-                paging.setPage(currentPage);
+                if (currentPage > 1)
+                    paging.setMaxId(tweetList.get(tweetList.size() - 1).getId() - 1);
+
                 for (twitter4j.Status status : getCurrentTimeLine())
                     buffer.add(status);
             } catch (TwitterException e) {
