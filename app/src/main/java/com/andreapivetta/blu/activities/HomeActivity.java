@@ -86,9 +86,13 @@ public class HomeActivity extends TimeLineActivity {
             }
         });
 
-        if (newTweetsCount > 0)
-            getSupportActionBar().setTitle(
-                    getResources().getQuantityString(R.plurals.new_tweets, newTweetsCount, newTweetsCount));
+        if (mSharedPreferences.getBoolean(getString(R.string.pref_key_stream_service), false)) {
+            this.swipeRefreshLayout.setEnabled(false);
+
+            if (newTweetsCount > 0)
+                getSupportActionBar().setTitle(
+                        getResources().getQuantityString(R.plurals.new_tweets, newTweetsCount, newTweetsCount));
+        }
     }
 
     @Override
