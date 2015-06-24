@@ -243,21 +243,24 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                                 .append(word)
                                 .append("</a>");
                     } else if (word.length() > 1) {
-                        if (word.substring(0, 1).equals("@")) {
-                            for (int i = 1; i < word.length(); i++)
+                        if (word.charAt(0) == '@' || (word.charAt(0) == '.' && word.charAt(1) == '@' )) {
+                            int index = word.indexOf('@');
+                            int i;
+                            for (i = index + 1; i < word.length(); i++)
                                 if ("|/()=?'^[],;.:-\"\\".indexOf(word.charAt(i)) >= 0) {
                                     endString = word.substring(i);
-                                    word = word.substring(0, i);
                                     break;
                                 }
 
-                            iHateHtml.append("<a href=\"com.andreapivetta.blu.user://")
-                                    .append(word.substring(1))
+                            word = word.substring(index, i);
+                            iHateHtml.append(((index == 0) ? "" : "."))
+                                    .append("<a href=\"com.andreapivetta.blu.user://")
+                                    .append(word.substring(index + 1))
                                     .append("\">")
                                     .append(word)
                                     .append("</a>")
                                     .append(endString);
-                        } else if (word.substring(0, 1).equals("#")) {
+                        } else if (word.charAt(0) == '#') {
                             for (int i = 1; i < word.length(); i++)
                                 if ("|/()=?'^[],;.:-\"\\".indexOf(word.charAt(i)) >= 0) {
                                     endString = word.substring(i);

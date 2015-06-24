@@ -121,11 +121,6 @@ public class SettingsActivity extends ThemedActivity {
                                                         new Intent(getActivity(), StreamNotificationService.class));
 
                                                 BasicNotificationService.stopService(getActivity());
-
-                                                //Intent i = new Intent(getActivity(), HomeActivity.class);
-                                                //i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                                                        //.putExtra("exit", "exit");
-                                                //startActivity(i);
                                                 restartApplication();
                                             }
                                         })
@@ -141,11 +136,6 @@ public class SettingsActivity extends ThemedActivity {
                     else {
                         getActivity().stopService(new Intent(getActivity(), StreamNotificationService.class));
                         BasicNotificationService.startService(getActivity());
-
-                        //Intent i = new Intent(getActivity(), HomeActivity.class);
-                        //i.putExtra("exit", "exit")
-                                //.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        //startActivity(i);
                         restartApplication();
                     }
 
