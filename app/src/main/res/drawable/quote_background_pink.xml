@@ -3,7 +3,7 @@
     android:shape="rectangle">
 
     <corners android:radius="3dp" />
-
     <stroke android:width="2px" android:color="@color/pinkThemeColorPrimary"/>
+    <solid /><!-- Workaround for older, buggy android versions-->
 
 </shape>
