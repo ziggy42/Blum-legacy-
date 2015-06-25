@@ -32,8 +32,11 @@
             android:layout_alignTop="@+id/userProfilePicImageView"
             android:layout_marginLeft="5dp"
             android:layout_toEndOf="@+id/userProfilePicImageView"
+            android:layout_toLeftOf="@+id/timeTextView"
             android:layout_toRightOf="@+id/userProfilePicImageView"
+            android:layout_toStartOf="@+id/timeTextView"
             android:fontFamily="sans-serif-bold"
+            android:singleLine="true"
             android:textSize="18sp" />
 
         <TextView
