@@ -46,8 +46,7 @@ public class MentionsDatabaseManager {
 
     private ArrayList<ArrayList<Long>> getTriples() {
         ArrayList<ArrayList<Long>> list = new ArrayList<>();
-        String query = "SELECT " + SetsMetaData.TWEET_ID + ", " + SetsMetaData.USER_ID +
-                ", " + SetsMetaData.TIMESTAMP + " FROM " + SetsMetaData.TABLE_NAME;
+        String query = "SELECT * FROM " + SetsMetaData.TABLE_NAME;
         Cursor cursor = myDB.rawQuery(query, null);
 
         while (cursor.moveToNext()) {

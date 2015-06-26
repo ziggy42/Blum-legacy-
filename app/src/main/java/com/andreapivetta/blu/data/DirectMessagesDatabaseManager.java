@@ -4,6 +4,7 @@ package com.andreapivetta.blu.data;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 
@@ -106,18 +107,14 @@ public class DirectMessagesDatabaseManager {
 
     public ArrayList<Message> getConversation(long otherUser) {
         ArrayList<Message> conversation = new ArrayList<>();
-        String query = "SELECT " + SetsMetaData.MESSAGE_TEXT + "," + SetsMetaData.MESSAGE_ID + "," +
-                SetsMetaData.SENDER_ID + "," + SetsMetaData.RECIPIENT_ID + "," + SetsMetaData.TIMESTAMP + "," +
-                SetsMetaData.OTHER_NAME + "," + SetsMetaData.PROFILE_PIC_URL + "," + SetsMetaData.FLAG_READ +
-                " FROM " + SetsMetaData.TABLE_NAME +
-                " WHERE " + SetsMetaData.SENDER_ID + " = " + otherUser + " OR " +
-                SetsMetaData.RECIPIENT_ID + " = " + otherUser +
-                " ORDER BY " + SetsMetaData.TIMESTAMP;
+        String query = "SELECT * FROM " + SetsMetaData.TABLE_NAME + " WHERE " + SetsMetaData.SENDER_ID + " = " + otherUser +
+                " OR " + SetsMetaData.RECIPIENT_ID + " = " + otherUser + " ORDER BY " + SetsMetaData.TIMESTAMP;
+
         Cursor c = myDB.rawQuery(query, null);
         while (c.moveToNext())
             conversation.add(
-                    new Message(c.getLong(1), c.getLong(2), c.getLong(3), c.getString(0), c.getLong(4),
-                            c.getString(5), c.getString(6), c.getInt(7) == 1));
+                    new Message(c.getLong(0), c.getLong(1), c.getLong(2), c.getString(3), c.getLong(7),
+                            c.getString(4), c.getString(5), c.getInt(6) == 1));
         c.close();
         return conversation;
     }
@@ -177,12 +174,7 @@ public class DirectMessagesDatabaseManager {
     }
 
     public int getCountUnreadMessages() {
-        Cursor c = myDB.rawQuery(
-                "SELECT " + SetsMetaData.MESSAGE_ID + " FROM " + SetsMetaData.TABLE_NAME + " WHERE NOT " +
-                        SetsMetaData.FLAG_READ, null);
-        int count = c.getCount();
-        c.close();
-        return count;
+        return (int) DatabaseUtils.queryNumEntries(myDB, SetsMetaData.TABLE_NAME, "NOT " + SetsMetaData.FLAG_READ);
     }
 
     public void markAllAsRead() {
@@ -204,7 +196,7 @@ public class DirectMessagesDatabaseManager {
                 "SELECT " + SetsMetaData.MESSAGE_ID +
                 " FROM " + SetsMetaData.TABLE_NAME +
                 " WHERE " + SetsMetaData.OTHER_NAME + "=? AND NOT " + SetsMetaData.FLAG_READ +
-                ")", new String[] {otherName });
+                ")", new String[]{otherName});
 
     }
 

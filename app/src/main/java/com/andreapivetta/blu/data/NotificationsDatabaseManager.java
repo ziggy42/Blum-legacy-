@@ -4,6 +4,7 @@ package com.andreapivetta.blu.data;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
@@ -69,24 +70,13 @@ public class NotificationsDatabaseManager {
 
     private ArrayList<Notification> getAllNotifications(boolean unread) {
         ArrayList<Notification> notifications = new ArrayList<>();
-        String sqlQuery = "SELECT " + SetsMetaData.TYPE + "," + SetsMetaData.USER + "," +
-                SetsMetaData.STATUS + "," + SetsMetaData.PICURL + "," +
-                SetsMetaData.FLAG_READ + "," + SetsMetaData.DAY + "," +
-                SetsMetaData.MONTH + "," + SetsMetaData.YEAR + "," +
-                SetsMetaData.MINUTE + "," + SetsMetaData.HOUR + "," +
-                SetsMetaData.TARGET_TWEET + "," + SetsMetaData.USERID + ", id FROM " + SetsMetaData.TABLE_NAME;
-
-        if (unread) sqlQuery += " WHERE " + SetsMetaData.FLAG_READ;
-        else sqlQuery += " WHERE NOT " + SetsMetaData.FLAG_READ;
+        String sqlQuery = "SELECT * FROM " + SetsMetaData.TABLE_NAME + " WHERE " + ((unread) ? "" : "NOT ") + SetsMetaData.FLAG_READ;
 
         Cursor c = myDB.rawQuery(sqlQuery, null);
-
-        for (int i = 0; i < c.getCount(); i++) {
-            c.moveToNext();
-
-            notifications.add(new Notification(c.getInt(4) == 1, c.getLong(10),
-                    c.getString(1), c.getString(0), c.getString(2), c.getString(3),
-                    c.getInt(9), c.getInt(8), c.getInt(7), c.getInt(6), c.getInt(5), c.getLong(11), c.getInt(12)));
+        while (c.moveToNext()) {
+            notifications.add(new Notification(c.getInt(6) == 1, c.getLong(5),
+                    c.getString(4), c.getString(1), c.getString(2), c.getString(3),
+                    c.getInt(10), c.getInt(11), c.getInt(9), c.getInt(8), c.getInt(7), c.getLong(4), c.getInt(0)));
         }
 
         c.close();
@@ -108,11 +98,7 @@ public class NotificationsDatabaseManager {
     }
 
     public int getCountUnreadNotifications() {
-        Cursor c = myDB.rawQuery(
-                "SELECT * FROM " + SetsMetaData.TABLE_NAME + " WHERE NOT " + SetsMetaData.FLAG_READ, null);
-        int count = c.getCount();
-        c.close();
-        return count;
+        return (int) DatabaseUtils.queryNumEntries(myDB, SetsMetaData.TABLE_NAME, "NOT " + SetsMetaData.FLAG_READ);
     }
 
     static final class SetsMetaData {
