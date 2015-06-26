@@ -255,7 +255,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                             word = word.substring(index, i);
                             iHateHtml.append(((index == 0) ? "" : "."))
                                     .append("<a href=\"com.andreapivetta.blu.user://")
-                                    .append(word.substring(index + 1))
+                                    .append(word.substring(1))
                                     .append("\">")
                                     .append(word)
                                     .append("</a>")
