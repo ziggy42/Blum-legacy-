@@ -143,7 +143,7 @@
     <string name="licenses_pref_summary">Licenze per il software open source usato in questa app</string>
     <string name="licenses_pref_title">Licenze Open Source</string>
     <string name="action_mark_as_read">Segna come letti</string>
-    <string name="my_twitter"><![CDATA[Sviluppata con ♥ da <a href="https://twitter.com/Pivix00">\@Pivix00<a><br/>Icona creata da <a href="https://twitter.com/stefano_openlab">\@stefano_openlab<a>]]></string>
+    <string name="my_twitter"><![CDATA[Sviluppata con ♥ da <a href="com.andreapivetta.blu.user://Pivix00">\@Pivix00<a><br/>Icona creata da <a href="com.andreapivetta.blu.user://stefano_openlab">\@stefano_openlab<a>]]></string>
     <string name="operation_not_supported">Operazione non supportata</string>
     <string name="too_many_images">Puoi mandare fino a 4 immagini</string>
     <string name="themes_pref_summary">Scegli il tema</string>
