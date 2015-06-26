@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -133,12 +134,7 @@ public class ConversationActivity extends ThemedActivity {
                 for (Message message : dbm.getConversation(userID))
                     mDataSet.add(message);
 
-                for (int i = mDataSet.size() - 1; i >= 0; i--)
-                    if (!mDataSet.get(i).isRead())
-                        dbm.setRead(mDataSet.get(i).getMessageID());
-                    else
-                        break;
-
+                dbm.markConversationAsRead(currentUser.getScreenName());
                 dbm.close();
             } catch (TwitterException e) {
                 e.printStackTrace();
@@ -169,12 +165,7 @@ public class ConversationActivity extends ThemedActivity {
                     mDataSet.add(message);
                 mAdapter.notifyDataSetChanged();
 
-                for (int i = mDataSet.size() - 1; i >= 0; i--)
-                    if (!mDataSet.get(i).isRead())
-                        dbm.setRead(mDataSet.get(i).getMessageID());
-                    else
-                        break;
-
+                dbm.markConversationAsRead(currentUser.getScreenName());
                 dbm.close();
 
                 NotificationManager nMgr = (NotificationManager)

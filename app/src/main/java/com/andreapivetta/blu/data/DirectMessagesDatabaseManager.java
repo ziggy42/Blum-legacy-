@@ -185,20 +185,27 @@ public class DirectMessagesDatabaseManager {
         return count;
     }
 
-    public void setRead(long messageID) {
+    public void markAllAsRead() {
         ContentValues cv = new ContentValues();
         cv.put(SetsMetaData.FLAG_READ, true);
-        myDB.update(SetsMetaData.TABLE_NAME, cv, SetsMetaData.MESSAGE_ID + " =" + messageID, null);
+
+        myDB.update(SetsMetaData.TABLE_NAME, cv, SetsMetaData.MESSAGE_ID + " IN ( " +
+                "SELECT " + SetsMetaData.MESSAGE_ID +
+                " FROM " + SetsMetaData.TABLE_NAME +
+                " WHERE NOT " + SetsMetaData.FLAG_READ +
+                ")", null);
     }
 
-    public void markAllAsRead() {
-        Cursor c = myDB.rawQuery( "SELECT " + SetsMetaData.MESSAGE_ID + " FROM " +
-                SetsMetaData.TABLE_NAME + " WHERE NOT " + SetsMetaData.FLAG_READ, null);
+    public void markConversationAsRead(String otherName) {
+        ContentValues cv = new ContentValues();
+        cv.put(SetsMetaData.FLAG_READ, true);
 
-        while (c.moveToNext())
-            setRead(c.getLong(0));
+        myDB.update(SetsMetaData.TABLE_NAME, cv, SetsMetaData.MESSAGE_ID + " IN ( " +
+                "SELECT " + SetsMetaData.MESSAGE_ID +
+                " FROM " + SetsMetaData.TABLE_NAME +
+                " WHERE " + SetsMetaData.OTHER_NAME + "=? AND NOT " + SetsMetaData.FLAG_READ +
+                ")", new String[] {otherName });
 
-        c.close();
     }
 
     static final class SetsMetaData {
