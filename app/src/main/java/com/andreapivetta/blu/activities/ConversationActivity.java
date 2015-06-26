@@ -130,8 +130,7 @@ public class ConversationActivity extends ThemedActivity {
                 DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(ConversationActivity.this);
                 dbm.open();
 
-                for (Message message : dbm.getConversation(userID))
-                    mDataSet.add(message);
+                mDataSet.addAll(dbm.getConversation(userID));
 
                 dbm.markConversationAsRead(currentUser.getScreenName());
                 dbm.close();
@@ -160,8 +159,8 @@ public class ConversationActivity extends ThemedActivity {
                 mDataSet.clear();
                 DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(ConversationActivity.this);
                 dbm.open();
-                for (Message message : dbm.getConversation(userID))
-                    mDataSet.add(message);
+
+                mDataSet.addAll(dbm.getConversation(userID));
                 mAdapter.notifyDataSetChanged();
 
                 dbm.markConversationAsRead(currentUser.getScreenName());

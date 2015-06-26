@@ -46,7 +46,7 @@ public abstract class TimeLineActivity extends ThemedActivity {
     protected FloatingActionButton newTweetFAB;
     protected ProgressBar loadingProgressBar;
     protected TweetsListAdapter mTweetsAdapter;
-    protected ArrayList<Status> tweetList = new ArrayList<>();
+    protected ArrayList<Status> tweetList = new ArrayList<>(200);
     protected LinearLayoutManager mLinearLayoutManager;
 
     protected boolean isUp = true, loading = true;

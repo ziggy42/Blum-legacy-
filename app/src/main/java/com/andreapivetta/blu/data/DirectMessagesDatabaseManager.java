@@ -90,7 +90,7 @@ public class DirectMessagesDatabaseManager {
     }
 
     public Message getLastMessageForGivenUser(long otherUser) {
-        String query = "SELECT " + "MAX(" + SetsMetaData.TIMESTAMP + ")," +
+        String query = "SELECT MAX(" + SetsMetaData.TIMESTAMP + ")," +
                 SetsMetaData.MESSAGE_TEXT + "," + SetsMetaData.MESSAGE_ID + "," + SetsMetaData.SENDER_ID + "," +
                 SetsMetaData.RECIPIENT_ID + "," + SetsMetaData.OTHER_NAME + "," + SetsMetaData.PROFILE_PIC_URL +
                 "," + SetsMetaData.FLAG_READ + " FROM " + SetsMetaData.TABLE_NAME +
