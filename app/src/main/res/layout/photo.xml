@@ -5,4 +5,4 @@
     android:layout_height="match_parent"
     android:adjustViewBounds="true"
     android:contentDescription="@string/tweet_photo_contentDescriptor"
-    android:scaleType="fitCenter"/>
+    android:scaleType="fitCenter" />

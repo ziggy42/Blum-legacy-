@@ -1,7 +1,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
-        android:title="@string/prefcat_appearance_title">
+    <PreferenceCategory android:title="@string/prefcat_appearance_title">
 
         <ListPreference
             android:defaultValue="B"
@@ -19,8 +18,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/notifications">
+    <PreferenceCategory android:title="@string/notifications">
 
         <ListPreference
             android:defaultValue="1200"
@@ -76,8 +74,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/prefcat_others_title">
+    <PreferenceCategory android:title="@string/prefcat_others_title">
 
         <Preference
             android:key="pref_key_feedback"

@@ -3,6 +3,7 @@ package com.andreapivetta.blu.views;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -43,8 +44,7 @@ public class BorderedLinearLayout extends LinearLayout {
 
         strokePaint = new Paint();
         strokePaint.setStyle(Paint.Style.STROKE);
-        strokePaint.setColor(a.getColor(R.styleable.BorderedLinearLayout_borderColor,
-                getResources().getColor(R.color.blueThemeColorPrimary)));
+        strokePaint.setColor(a.getColor(R.styleable.BorderedLinearLayout_borderColor, Color.BLACK));
         strokePaint.setStrokeWidth(2);
     }
 

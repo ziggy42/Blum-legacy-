@@ -22,7 +22,6 @@
             android:scrollbars="none" />
 
         <android.support.design.widget.FloatingActionButton
-            app:borderWidth="0dp"
             android:id="@+id/replyFAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,8 +30,9 @@
             android:layout_alignParentRight="true"
             android:layout_margin="@dimen/fabMargin"
             android:src="@drawable/ic_create_white_24dp"
-            app:pressedTranslationZ="12dp"
-            app:backgroundTint="?attr/colorPrimary" />
+            app:backgroundTint="?attr/colorPrimary"
+            app:borderWidth="0dp"
+            app:pressedTranslationZ="12dp" />
 
         <ProgressBar
             android:id="@+id/loadingProgressBar"

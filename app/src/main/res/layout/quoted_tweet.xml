@@ -8,7 +8,7 @@
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
     android:paddingTop="4dp"
-    app:borderColor="?attr/colorPrimary" >
+    app:borderColor="?attr/colorPrimary">
 
     <TextView
         android:id="@+id/quotedUserNameTextView"

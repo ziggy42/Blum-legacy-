@@ -20,7 +20,6 @@
             android:scrollbars="vertical" />
 
         <android.support.design.widget.FloatingActionButton
-            app:borderWidth="0dp"
             android:id="@+id/newMessageFAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,8 +28,9 @@
             android:layout_alignParentRight="true"
             android:layout_margin="@dimen/fabMargin"
             android:src="@drawable/ic_message_white_24dp"
-            app:pressedTranslationZ="12dp"
-            app:backgroundTint="?attr/colorPrimary"/>
+            app:backgroundTint="?attr/colorPrimary"
+            app:borderWidth="0dp"
+            app:pressedTranslationZ="12dp" />
 
     </RelativeLayout>
 

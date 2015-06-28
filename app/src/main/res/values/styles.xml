@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="LightBaseTheme" parent="Theme.AppCompat.Light.NoActionBar" >
+    <style name="LightBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:textColorPrimary">@color/lightThemesTextColor</item>
@@ -50,7 +50,7 @@
     </style>
 
     <!-- Dark Theme -->
-    <style name="DarkTheme" parent="Theme.AppCompat" >
+    <style name="DarkTheme" parent="Theme.AppCompat">
         <item name="colorPrimary">@color/darkThemeColorPrimary</item>
         <item name="colorPrimaryDark">@color/darkThemeColorPrimaryDark</item>
         <item name="colorAccent">@color/darkThemeColorAccent</item>

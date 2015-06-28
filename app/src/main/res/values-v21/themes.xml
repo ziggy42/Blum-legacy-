@@ -44,7 +44,7 @@
     </style>
 
     <!-- Dark Theme -->
-    <style name="DarkTheme" parent="Theme.AppCompat" >
+    <style name="DarkTheme" parent="Theme.AppCompat">
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
