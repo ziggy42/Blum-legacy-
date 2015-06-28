@@ -1,13 +1,14 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.andreapivetta.blu.views.BorderedLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/quotedStatusLinearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?quoteBackground"
     android:orientation="vertical"
     android:paddingBottom="4dp"
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
-    android:paddingTop="4dp">
+    android:paddingTop="4dp"
+    app:borderColor="?attr/colorPrimary" >
 
     <TextView
         android:id="@+id/quotedUserNameTextView"
@@ -33,4 +34,4 @@
         android:scaleType="fitCenter"
         android:visibility="gone" />
 
-</LinearLayout>
+</com.andreapivetta.blu.views.BorderedLinearLayout>
