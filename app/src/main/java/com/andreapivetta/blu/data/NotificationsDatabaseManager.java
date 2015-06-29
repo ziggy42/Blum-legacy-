@@ -76,7 +76,7 @@ public class NotificationsDatabaseManager {
         while (c.moveToNext()) {
             notifications.add(new Notification(c.getInt(6) == 1, c.getLong(5),
                     c.getString(4), c.getString(1), c.getString(2), c.getString(3),
-                    c.getInt(10), c.getInt(11), c.getInt(9), c.getInt(8), c.getInt(7), c.getLong(4), c.getInt(0)));
+                    c.getInt(10), c.getInt(11), c.getInt(9), c.getInt(8), c.getInt(7), c.getLong(12), c.getInt(0)));
         }
 
         c.close();
