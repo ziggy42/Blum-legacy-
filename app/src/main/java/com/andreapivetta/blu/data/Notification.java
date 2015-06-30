@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 
 import com.andreapivetta.blu.R;
@@ -24,7 +23,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.User;
 
-public class Notification implements Comparable<Notification> {
+public class Notification {
 
     public final static String NEW_NOTIFICATION_INTENT = "com.andreapivetta.blu.NEW_NOTIFICATION_INTENT";
 
@@ -78,8 +77,7 @@ public class Notification implements Comparable<Notification> {
                                         String profilePicURL, long userID, Context context) {
         NotificationsDatabaseManager databaseManager = new NotificationsDatabaseManager(context);
         databaseManager.open();
-        long id = databaseManager.insertNotification(
-                new Notification(false, tweetID, user, type, status, profilePicURL, userID));
+        long id = databaseManager.insertNotification(new Notification(false, tweetID, user, type, status, profilePicURL, userID));
         databaseManager.close();
 
         Intent i = new Intent();
@@ -178,36 +176,5 @@ public class Notification implements Comparable<Notification> {
         pushNotification(tweetID, currentUser.getName(), type,
                 (tweetID > 0) ? twitter.showStatus(tweetID).getText() : "", currentUser.getProfileImageURL(),
                 currentUser.getId(), context);
-    }
-
-    @Override
-    public int compareTo(@NonNull Notification another) {
-
-        if (YY < another.YY) {
-            return -1;
-        } else {
-            if (YY > another.YY) return 1;
-            if (MM < another.MM) {
-                return -1;
-            } else {
-                if (MM > another.MM) return 1;
-                if (DD < another.DD) {
-                    return -1;
-                } else {
-                    if (DD > another.DD) return 1;
-                    if (hh < another.hh) {
-                        return -1;
-                    } else {
-                        if (hh > another.hh) return 1;
-                        if (mm < another.mm) {
-                            return -1;
-                        } else {
-                            if (mm > another.mm) return 1;
-                            return 0;
-                        }
-                    }
-                }
-            }
-        }
     }
 }

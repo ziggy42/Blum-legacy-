@@ -68,6 +68,8 @@ public class NotificationsDatabaseManager {
         return myDB.insert(SetsMetaData.TABLE_NAME, null, contentValues);
     }
 
+
+
     private ArrayList<Notification> getAllNotifications(boolean unread) {
         ArrayList<Notification> notifications = new ArrayList<>();
         String sqlQuery = "SELECT * FROM " + SetsMetaData.TABLE_NAME + " WHERE " + ((unread) ? "" : "NOT ") + SetsMetaData.FLAG_READ +

@@ -54,9 +54,6 @@ public class NotificationFragment extends Fragment {
         if (notificationList.size() == 0)
             rootView.findViewById(R.id.nothingToShowTextView).setVisibility(View.VISIBLE);
 
-        if (kind == 0)
-            databaseManager.setAllAsRead();
-
         databaseManager.close();
 
         RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.notificationsRecyclerView);
@@ -66,5 +63,17 @@ public class NotificationFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
+    }
+
+    @Override
+    public void onPause() {
+        if (kind == 0) {
+            NotificationsDatabaseManager databaseManager = new NotificationsDatabaseManager(getActivity());
+            databaseManager.open();
+            databaseManager.setAllAsRead();
+            databaseManager.close();
+        }
+
+        super.onDestroy();
     }
 }
