@@ -24,6 +24,7 @@ import com.andreapivetta.blu.utilities.ThemeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import jp.wasabeef.recyclerview.animators.ScaleInBottomAnimator;
 import twitter4j.Paging;
@@ -245,8 +246,11 @@ public abstract class TimeLineActivity extends ThemedActivity {
                 Paging currentPaging = new Paging(1, 200);
                 currentPaging.setSinceId(tweetList.get(0).getId());
 
-                for (twitter4j.Status status : getRefreshedTimeLine(currentPaging))
-                    tweetList.add(0, status);
+                List<twitter4j.Status> newTweets = getRefreshedTimeLine(currentPaging);
+                ListIterator<twitter4j.Status> it = newTweets.listIterator(newTweets.size());
+
+                while (it.hasPrevious())
+                    tweetList.add(0, it.previous());
 
             } catch (TwitterException e) {
                 e.printStackTrace();
