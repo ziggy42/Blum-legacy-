@@ -70,7 +70,9 @@ public class NotificationsDatabaseManager {
 
     private ArrayList<Notification> getAllNotifications(boolean unread) {
         ArrayList<Notification> notifications = new ArrayList<>();
-        String sqlQuery = "SELECT * FROM " + SetsMetaData.TABLE_NAME + " WHERE " + ((unread) ? "" : "NOT ") + SetsMetaData.FLAG_READ;
+        String sqlQuery = "SELECT * FROM " + SetsMetaData.TABLE_NAME + " WHERE " + ((unread) ? "" : "NOT ") + SetsMetaData.FLAG_READ +
+                " ORDER BY " + SetsMetaData.YEAR + " DESC, " + SetsMetaData.MONTH + " DESC, " + SetsMetaData.DAY + " DESC, " +
+                SetsMetaData.HOUR + " DESC, " + SetsMetaData.MINUTE + " DESC";
 
         Cursor c = myDB.rawQuery(sqlQuery, null);
         while (c.moveToNext()) {
@@ -91,10 +93,10 @@ public class NotificationsDatabaseManager {
         return getAllNotifications(true);
     }
 
-    public void setRead(Notification n) {
+    public void setAllAsRead() {
         ContentValues cv = new ContentValues();
         cv.put(SetsMetaData.FLAG_READ, true);
-        myDB.update(SetsMetaData.TABLE_NAME, cv, "id =" + n.notificationID, null);
+        myDB.update(SetsMetaData.TABLE_NAME, cv, "NOT " + SetsMetaData.FLAG_READ, null);
     }
 
     public int getCountUnreadNotifications() {
