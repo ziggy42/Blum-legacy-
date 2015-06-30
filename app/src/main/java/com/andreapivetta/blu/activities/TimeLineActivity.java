@@ -24,7 +24,6 @@ import com.andreapivetta.blu.utilities.ThemeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 import jp.wasabeef.recyclerview.animators.ScaleInBottomAnimator;
 import twitter4j.Paging;
@@ -67,8 +66,9 @@ public abstract class TimeLineActivity extends ThemedActivity {
 
         if (PreferenceManager.getDefaultSharedPreferences(this)
                 .getBoolean(getString(R.string.pref_key_animations), true)) {
-            mRecyclerView.setItemAnimator(new ScaleInBottomAnimator());
-            mRecyclerView.getItemAnimator().setAddDuration(300);
+            ScaleInBottomAnimator animator = new ScaleInBottomAnimator();
+            animator.setAddDuration(300);
+            mRecyclerView.setItemAnimator(animator);
         }
 
         mTweetsAdapter = new TweetsListAdapter(tweetList, this, twitter, -1);
@@ -106,12 +106,12 @@ public abstract class TimeLineActivity extends ThemedActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
+                new Handler().post(new Runnable() {
                     @Override
                     public void run() {
                         new RefreshTimeLine().execute(null, null, null);
                     }
-                }, 5000);
+                });
             }
         });
 
@@ -163,7 +163,7 @@ public abstract class TimeLineActivity extends ThemedActivity {
     void newTweetUp() {
         final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newTweetFAB.getLayoutParams();
         ValueAnimator upAnimator = ValueAnimator.ofInt(params.bottomMargin, Common.dpToPx(this,
-                (int) (getResources().getDimension(R.dimen.fabMargin)/ getResources().getDisplayMetrics().density)));
+                (int) (getResources().getDimension(R.dimen.fabMargin) / getResources().getDisplayMetrics().density)));
         upAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -201,7 +201,7 @@ public abstract class TimeLineActivity extends ThemedActivity {
 
     protected class GetTimeLine extends AsyncTask<Void, Void, Boolean> {
 
-        private ArrayList<twitter4j.Status> buffer = new ArrayList<>();
+        private ArrayList<twitter4j.Status> buffer = new ArrayList<>(200);
 
         @Override
         protected Boolean doInBackground(Void... uris) {
@@ -209,8 +209,7 @@ public abstract class TimeLineActivity extends ThemedActivity {
                 if (currentPage > 1)
                     paging.setMaxId(tweetList.get(tweetList.size() - 1).getId() - 1);
 
-                for (twitter4j.Status status : getCurrentTimeLine())
-                    buffer.add(status);
+                buffer.addAll(getCurrentTimeLine());
             } catch (TwitterException e) {
                 e.printStackTrace();
                 return false;
@@ -223,6 +222,7 @@ public abstract class TimeLineActivity extends ThemedActivity {
                 currentPage += 1;
                 loadingProgressBar.setVisibility(View.GONE);
 
+                // needed for a smooth animation
                 new Handler().post(new Runnable() {
                     @Override
                     public void run() {
@@ -244,11 +244,9 @@ public abstract class TimeLineActivity extends ThemedActivity {
             try {
                 Paging currentPaging = new Paging(1, 200);
                 currentPaging.setSinceId(tweetList.get(0).getId());
-                List<twitter4j.Status> newTweets = getRefreshedTimeLine(currentPaging);
-                ListIterator<twitter4j.Status> it = newTweets.listIterator(newTweets.size());
 
-                while (it.hasPrevious())
-                    tweetList.add(0, it.previous());
+                for (twitter4j.Status status : getRefreshedTimeLine(currentPaging))
+                    tweetList.add(0, status);
 
             } catch (TwitterException e) {
                 e.printStackTrace();
