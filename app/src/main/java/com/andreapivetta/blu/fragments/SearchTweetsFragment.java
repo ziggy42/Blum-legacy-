@@ -87,7 +87,7 @@ public class SearchTweetsFragment extends Fragment {
                 if (loading) {
                     if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
                         loading = false;
-                        new LoadTweets().execute(null, null, null);
+                        new TweetsLoaderAsyncTask().execute(null, null, null);
                     }
                 }
             }
@@ -96,21 +96,18 @@ public class SearchTweetsFragment extends Fragment {
         loadingProgressBar = (ProgressBar) rootView.findViewById(R.id.loadingProgressBar);
         nothingToShowTextView = (TextView) rootView.findViewById(R.id.nothingToShowTextView);
 
-        new LoadTweets().execute(null, null, null);
+        new TweetsLoaderAsyncTask().execute(null, null, null);
 
         return rootView;
     }
 
-    private class LoadTweets extends AsyncTask<Void, Void, Boolean> {
-
-        private ArrayList<twitter4j.Status> buffer = new ArrayList<>();
+    private class TweetsLoaderAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
                 QueryResult result = twitter.search(mQuery);
-                for (twitter4j.Status tmpStatus : result.getTweets())
-                    buffer.add(tmpStatus);
+                mDataSet.addAll(result.getTweets());
 
                 if (!result.hasNext()) {
                     loading = false;
@@ -130,11 +127,9 @@ public class SearchTweetsFragment extends Fragment {
             if (result) {
                 loadingProgressBar.setVisibility(View.GONE);
 
-                if (buffer.size() == 0)
+                if (mDataSet.size() == 0)
                     nothingToShowTextView.setVisibility(View.VISIBLE);
-                else
-                    for (twitter4j.Status tmp : buffer)
-                        mAdapter.add(tmp);
+                mAdapter.notifyDataSetChanged();
             }
         }
     }
