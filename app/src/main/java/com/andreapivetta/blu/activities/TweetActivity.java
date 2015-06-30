@@ -66,13 +66,7 @@ public class TweetActivity extends ThemedActivity {
 
         this.twitter = TwitterUtils.getTwitter(TweetActivity.this);
         mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
-
-        /*SharedPreferences mSharedPreferences = getSharedPreferences(Common.PREF, 0);
-        if (mSharedPreferences.getBoolean(Common.PREF_ANIMATIONS, true)) {
-            mRecyclerView.setItemAnimator(new ScaleInBottomAnimator());
-            mRecyclerView.getItemAnimator().setAddDuration(300);
-        }*/
-
+        mRecyclerView.setVisibility(View.GONE);
         mRecyclerView.addItemDecoration(new SpaceTopItemDecoration(Common.dpToPx(this, 10)));
         mTweetsAdapter = new TweetsListAdapter(mDataSet, this, twitter, currentIndex);
         mLinearLayoutManager = new LinearLayoutManager(this);
@@ -124,7 +118,7 @@ public class TweetActivity extends ThemedActivity {
         });
 
         if (mDataSet.isEmpty())
-            new LoadConversation().execute(null, null, null);
+            new LoadConversationAsyncTask().execute(null, null, null);
 
     }
 
@@ -186,8 +180,7 @@ public class TweetActivity extends ThemedActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class LoadConversation extends AsyncTask<Void, Void, Boolean> {
-        private ArrayList<twitter4j.Status> buffer = new ArrayList<>();
+    private class LoadConversationAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
         @Override
         protected Boolean doInBackground(Void... params) {
@@ -199,16 +192,16 @@ public class TweetActivity extends ThemedActivity {
                 long id;
                 while ((id = current.getInReplyToStatusId()) != -1) {
                     current = twitter.showStatus(id);
-                    buffer.add(0, current);
+                    mDataSet.add(0, current);
                 }
 
-                currentIndex = buffer.size();
-                buffer.add(status);
+                currentIndex = mDataSet.size();
+                mDataSet.add(status);
 
                 QueryResult result = twitter.search(new Query("to:" + status.getUser().getScreenName()));
                 for (twitter4j.Status tmpStatus : result.getTweets())
                     if (status.getId() == tmpStatus.getInReplyToStatusId())
-                        buffer.add(tmpStatus);
+                        mDataSet.add((tmpStatus));
 
             } catch (TwitterException e) {
                 e.printStackTrace();
@@ -222,9 +215,9 @@ public class TweetActivity extends ThemedActivity {
             if (result) {
                 mTweetsAdapter.setHeaderPosition(currentIndex);
                 loadingProgressBar.setVisibility(View.GONE);
-                for (int i = 0; i < buffer.size(); i++)
-                    mTweetsAdapter.add(buffer.get(i));
+                mTweetsAdapter.notifyDataSetChanged();
                 mRecyclerView.scrollToPosition(currentIndex);
+                mRecyclerView.setVisibility(View.VISIBLE);
             }
         }
     }

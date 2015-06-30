@@ -482,7 +482,7 @@ public class UserProfileActivity extends ThemedActivity {
                         }
                     });
                 }
-            } else if(tweetType == TWEET_TYPE.TYPE_ITEM_MULTIPLEPHOTOS) {
+            } else if (tweetType == TWEET_TYPE.TYPE_ITEM_MULTIPLEPHOTOS) {
                 RecyclerView mRecyclerView = (RecyclerView) tweetView.findViewById(R.id.tweetPhotosRecyclerView);
                 mRecyclerView.addItemDecoration(new SpaceLeftItemDecoration(5));
                 mRecyclerView.setAdapter(new ImagesAdapter(statuses[i].getExtendedMediaEntities(), UserProfileActivity.this));
