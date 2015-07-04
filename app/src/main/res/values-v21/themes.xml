@@ -13,6 +13,7 @@
         <item name="appCardViewBackgroundColor">@color/lightThemesCardViewBackgroundColor</item>
         <item name="appBackgroundColor">@color/lightThemesBackground</item>
         <item name="appSeparationLineColor">@color/lightGrey</item>
+        <item name="android:windowBackground">@color/background</item>
     </style>
 
     <!-- Blue Theme -->
@@ -56,6 +57,7 @@
         <item name="colorPrimaryDark">@color/darkThemeColorPrimaryDark</item>
         <item name="colorAccent">@color/darkThemeColorAccent</item>
         <item name="android:textColorPrimary">@color/darkThemesTextColor</item>
+        <item name="android:windowBackground">@color/darkThemesBackground</item>
         <item name="appColorPrimary">@color/darkThemeColorPrimary</item>
         <item name="appCardViewBackgroundColor">@color/darkThemesCardViewBackgroundColor</item>
         <item name="appBackgroundColor">@color/darkThemesBackground</item>
