@@ -26,13 +26,11 @@ public class CheckInteractionsService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Twitter twitter = TwitterUtils.getTwitter(getApplicationContext());
-        FavoritesDatabaseManager fdbm = new FavoritesDatabaseManager(getApplicationContext());
-        RetweetsDatabaseManager rdbm = new RetweetsDatabaseManager(getApplicationContext());
+        FavoritesDatabaseManager fdbm = FavoritesDatabaseManager.getInstance(getApplicationContext());
+        RetweetsDatabaseManager rdbm = RetweetsDatabaseManager.getInstance(getApplicationContext());
 
         try {
             List<Status> userTimeLine = twitter.getUserTimeline(new Paging(1, 200));
-            fdbm.open();
-            rdbm.open();
             if (userTimeLine.size() > 0) {
                 for (Status tmp : userTimeLine) {
                     ArrayList<Long> newUsersIDs;
@@ -53,19 +51,6 @@ public class CheckInteractionsService extends IntentService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
-            try {
-                rdbm.close();
-            } catch (NullPointerException e) {
-                // ignore
-            }
-
-            try {
-                fdbm.close();
-            } catch (NullPointerException e) {
-                //ignore
-            }
         }
     }
 

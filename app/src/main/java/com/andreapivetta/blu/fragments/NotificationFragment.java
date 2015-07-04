@@ -25,6 +25,8 @@ public class NotificationFragment extends Fragment {
 
     private int kind;
 
+    private NotificationsDatabaseManager databaseManager = NotificationsDatabaseManager.getInstance(getActivity());
+
     public static NotificationFragment newInstance(int mode) {
         NotificationFragment f = new NotificationFragment();
         Bundle args = new Bundle();
@@ -45,16 +47,11 @@ public class NotificationFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_notifications, container, false);
 
-        NotificationsDatabaseManager databaseManager = new NotificationsDatabaseManager(getActivity());
-        databaseManager.open();
-
         notificationList.addAll((kind == 0) ? databaseManager.getAllUnreadNotifications() :
                 databaseManager.getAllReadNotifications());
 
         if (notificationList.size() == 0)
             rootView.findViewById(R.id.nothingToShowTextView).setVisibility(View.VISIBLE);
-
-        databaseManager.close();
 
         RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.notificationsRecyclerView);
         mRecyclerView.addItemDecoration(new SpaceTopItemDecoration(Common.dpToPx(getActivity(), 10)));
@@ -67,12 +64,8 @@ public class NotificationFragment extends Fragment {
 
     @Override
     public void onPause() {
-        if (kind == 0) {
-            NotificationsDatabaseManager databaseManager = new NotificationsDatabaseManager(getActivity());
-            databaseManager.open();
+        if (kind == 0)
             databaseManager.setAllAsRead();
-            databaseManager.close();
-        }
 
         super.onDestroy();
     }

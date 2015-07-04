@@ -55,6 +55,8 @@ public class ConversationsListActivity extends ThemedActivity {
     private RecyclerView mRecyclerView;
     private FloatingActionButton newMessageFAB;
 
+    private DirectMessagesDatabaseManager dbm = DirectMessagesDatabaseManager.getInstance(ConversationsListActivity.this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,11 +67,8 @@ public class ConversationsListActivity extends ThemedActivity {
 
         t = TwitterUtils.getTwitter(ConversationsListActivity.this);
 
-        DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(ConversationsListActivity.this);
-        dbm.open();
         for (long id : dbm.getInterlocutors())
             mDataSet.add(dbm.getLastMessageForGivenUser(id));
-        dbm.close();
         Collections.sort(mDataSet);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.conversationRecyclerView);
@@ -202,11 +201,8 @@ public class ConversationsListActivity extends ThemedActivity {
         super.onRestart();
 
         mDataSet.clear();
-        DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(ConversationsListActivity.this);
-        dbm.open();
         for (long id : dbm.getInterlocutors())
             mDataSet.add(dbm.getLastMessageForGivenUser(id));
-        dbm.close();
         Collections.sort(mDataSet);
         conversationListAdapter.notifyDataSetChanged();
     }
@@ -253,14 +249,10 @@ public class ConversationsListActivity extends ThemedActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_mark_as_read) {
-            DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(ConversationsListActivity.this);
-            dbm.open();
             dbm.markAllAsRead();
-
             mDataSet.clear();
             for (long id : dbm.getInterlocutors())
                 mDataSet.add(dbm.getLastMessageForGivenUser(id));
-            dbm.close();
             Collections.sort(mDataSet);
             conversationListAdapter.notifyDataSetChanged();
         }
@@ -274,11 +266,8 @@ public class ConversationsListActivity extends ThemedActivity {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Message.NEW_MESSAGE_INTENT)) {
                 mDataSet.clear();
-                DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(ConversationsListActivity.this);
-                dbm.open();
                 for (long id : dbm.getInterlocutors())
                     mDataSet.add(dbm.getLastMessageForGivenUser(id));
-                dbm.close();
                 Collections.sort(mDataSet);
                 conversationListAdapter.notifyDataSetChanged();
             }

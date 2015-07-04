@@ -14,14 +14,6 @@ public abstract class InteractionsDatabaseManager {
 
     protected abstract String getTableCreate();
 
-    public void open() {
-        this.myDB = myDBHelper.getWritableDatabase();
-    }
-
-    public void close() {
-        this.myDB.close();
-    }
-
     public abstract void insertCouple(long userID, long tweetID);
 
     abstract ArrayList<Long> getCouplesFromTweet(long tweetID);

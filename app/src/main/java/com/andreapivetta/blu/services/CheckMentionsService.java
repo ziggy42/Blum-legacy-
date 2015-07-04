@@ -24,7 +24,7 @@ public class CheckMentionsService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Twitter twitter = TwitterUtils.getTwitter(getApplicationContext());
-        MentionsDatabaseManager dbm = new MentionsDatabaseManager(getApplicationContext());
+        MentionsDatabaseManager dbm = MentionsDatabaseManager.getInstance(getApplicationContext());
         try {
             List<Status> mentions = twitter.getMentionsTimeline(new Paging(1, 200));
             if (mentions.size() > 0) {
@@ -37,7 +37,6 @@ public class CheckMentionsService extends IntentService {
                     triples.add(tmp);
                 }
 
-                dbm.open();
                 ArrayList<ArrayList<Long>> newMentions = dbm.check(triples);
                 for (ArrayList<Long> triple : newMentions)
                     Notification.pushNotification(
@@ -45,12 +44,6 @@ public class CheckMentionsService extends IntentService {
             }
         } catch (TwitterException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                dbm.close();
-            } catch (NullPointerException e) {
-                // ignore
-            }
         }
     }
 

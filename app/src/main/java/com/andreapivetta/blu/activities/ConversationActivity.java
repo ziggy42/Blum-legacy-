@@ -45,6 +45,9 @@ public class ConversationActivity extends ThemedActivity {
     private ConversationAdapter mAdapter;
     private DataUpdateReceiver dataUpdateReceiver;
 
+    private DirectMessagesDatabaseManager dbm = DirectMessagesDatabaseManager.getInstance(ConversationActivity.this);
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,13 +130,10 @@ public class ConversationActivity extends ThemedActivity {
         protected Boolean doInBackground(Void... params) {
             try {
                 currentUser = twitter.showUser(userID);
-                DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(ConversationActivity.this);
-                dbm.open();
 
                 mDataSet.addAll(dbm.getConversation(userID));
 
                 dbm.markConversationAsRead(currentUser.getScreenName());
-                dbm.close();
             } catch (TwitterException e) {
                 e.printStackTrace();
                 return false;
@@ -157,14 +157,11 @@ public class ConversationActivity extends ThemedActivity {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Message.NEW_MESSAGE_INTENT)) {
                 mDataSet.clear();
-                DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(ConversationActivity.this);
-                dbm.open();
 
                 mDataSet.addAll(dbm.getConversation(userID));
                 mAdapter.notifyDataSetChanged();
 
                 dbm.markConversationAsRead(currentUser.getScreenName());
-                dbm.close();
 
                 NotificationManager nMgr = (NotificationManager)
                         getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);

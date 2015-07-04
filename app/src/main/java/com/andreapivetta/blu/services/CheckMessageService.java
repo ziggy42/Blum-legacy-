@@ -25,14 +25,14 @@ public class CheckMessageService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Twitter twitter = TwitterUtils.getTwitter(getApplicationContext());
-        DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(getApplicationContext());
+        DirectMessagesDatabaseManager dbm = DirectMessagesDatabaseManager.getInstance(getApplicationContext());
+
 
         try {
             List<DirectMessage> receivedDirectMessages = twitter.getDirectMessages(new Paging(1, 200));
             List<DirectMessage> sentDirectMessages = twitter.getSentDirectMessages(new Paging(1, 200));
             ArrayList<DirectMessage> messages = new ArrayList<>();
 
-            dbm.open();
             if (receivedDirectMessages != null && receivedDirectMessages.size() > 0) {
                 for (DirectMessage message : receivedDirectMessages)
                     messages.add(message);
@@ -52,12 +52,6 @@ public class CheckMessageService extends IntentService {
             }
         } catch (TwitterException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                dbm.close();
-            } catch (NullPointerException e) {
-                // ignore
-            }
         }
     }
 }

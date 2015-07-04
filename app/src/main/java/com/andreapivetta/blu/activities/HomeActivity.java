@@ -66,7 +66,7 @@ public class HomeActivity extends TimeLineActivity {
                 //new LoadFakeTweets().execute(null, null, null); // For Screenshots only
             }
 
-             if (mSharedPreferences.getBoolean(getString(R.string.pref_key_stream_service), false))
+            if (mSharedPreferences.getBoolean(getString(R.string.pref_key_stream_service), false))
                 startService(new Intent(HomeActivity.this, StreamNotificationService.class));
         }
 
@@ -134,16 +134,10 @@ public class HomeActivity extends TimeLineActivity {
         registerReceiver(dataUpdateReceiver, new IntentFilter(Notification.NEW_NOTIFICATION_INTENT));
         registerReceiver(dataUpdateReceiver, new IntentFilter(Message.NEW_MESSAGE_INTENT));
 
-        NotificationsDatabaseManager notDatabaseManager = new NotificationsDatabaseManager(HomeActivity.this);
-        notDatabaseManager.open();
-        mNotificationsCount = notDatabaseManager.getCountUnreadNotifications();
-        notDatabaseManager.close();
+        mNotificationsCount = NotificationsDatabaseManager.getInstance(HomeActivity.this).getCountUnreadNotifications();
 
         if (mSharedPreferences.getBoolean(getString(R.string.pref_key_db_populated), false)) {
-            DirectMessagesDatabaseManager mesDatabaseManager = new DirectMessagesDatabaseManager(HomeActivity.this);
-            mesDatabaseManager.open();
-            mMessageCount = mesDatabaseManager.getCountUnreadMessages();
-            mesDatabaseManager.close();
+            mMessageCount = DirectMessagesDatabaseManager.getInstance(HomeActivity.this).getCountUnreadMessages();
         }
 
         invalidateOptionsMenu();
@@ -304,7 +298,7 @@ public class HomeActivity extends TimeLineActivity {
                 buffer.add(twitter.showStatus(592827745522028544L));
                 buffer.add(twitter.showStatus(592827745522028544L));
                 buffer.add(twitter.showStatus(592827745522028544L));
-            } catch(TwitterException e) {
+            } catch (TwitterException e) {
                 e.printStackTrace();
             }
 

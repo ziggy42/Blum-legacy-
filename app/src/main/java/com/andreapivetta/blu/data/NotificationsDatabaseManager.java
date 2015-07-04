@@ -27,19 +27,27 @@ public class NotificationsDatabaseManager {
             + SetsMetaData.HOUR + " INTEGER NOT NULL,"
             + SetsMetaData.MINUTE + " INTEGER NOT NULL,"
             + SetsMetaData.USERID + " INTEGER NOT NULL);";
-    private DatabaseHelper myDBhelper;
     private SQLiteDatabase myDB;
 
-    public NotificationsDatabaseManager(Context context) {
-        this.myDBhelper = new DatabaseHelper(context, DB_NAME, DB_VERSION, TABLE_CREATE);
+    private static NotificationsDatabaseManager notificationsDatabaseManager;
+
+    public static NotificationsDatabaseManager getInstance(Context context) {
+        NotificationsDatabaseManager r = notificationsDatabaseManager;
+        if (r == null) {
+            synchronized (NotificationsDatabaseManager.class) {
+                r = notificationsDatabaseManager;
+                if (r == null) {
+                    r = new NotificationsDatabaseManager(context.getApplicationContext());
+                    notificationsDatabaseManager = r;
+                }
+            }
+        }
+        return r;
     }
 
-    public void open() {
+    private NotificationsDatabaseManager(Context context) {
+        DatabaseHelper myDBhelper = new DatabaseHelper(context, DB_NAME, DB_VERSION, TABLE_CREATE);
         this.myDB = myDBhelper.getWritableDatabase();
-    }
-
-    public void close() {
-        this.myDB.close();
     }
 
     public void clearDatabase() {
@@ -67,8 +75,6 @@ public class NotificationsDatabaseManager {
 
         return myDB.insert(SetsMetaData.TABLE_NAME, null, contentValues);
     }
-
-
 
     private ArrayList<Notification> getAllNotifications(boolean unread) {
         ArrayList<Notification> notifications = new ArrayList<>();

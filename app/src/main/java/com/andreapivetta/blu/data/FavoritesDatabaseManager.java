@@ -16,8 +16,25 @@ public class FavoritesDatabaseManager extends InteractionsDatabaseManager {
             + SetsMetaData.TWEET_ID + " INTEGER NOT NULL, "
             + SetsMetaData.USER_ID + " INTEGER NOT NULL);";
 
-    public FavoritesDatabaseManager(Context context) {
+    private static FavoritesDatabaseManager favoritesDatabaseManager;
+
+    public static FavoritesDatabaseManager getInstance(Context context) {
+        FavoritesDatabaseManager r = favoritesDatabaseManager;
+        if (r == null) {
+            synchronized (FavoritesDatabaseManager.class) {
+                r = favoritesDatabaseManager;
+                if (r == null) {
+                    r = new FavoritesDatabaseManager(context.getApplicationContext());
+                    favoritesDatabaseManager = r;
+                }
+            }
+        }
+        return r;
+    }
+
+    private FavoritesDatabaseManager(Context context) {
         this.myDBHelper = new DatabaseHelper(context, DB_NAME, DB_VERSION);
+        this.myDB = myDBHelper.getWritableDatabase();
     }
 
     @Override

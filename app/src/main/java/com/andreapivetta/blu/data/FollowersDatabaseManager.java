@@ -14,19 +14,27 @@ public class FollowersDatabaseManager {
     private static final int DB_VERSION = 1;
     private static final String TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
             + SetsMetaData.TABLE_NAME + " (" + SetsMetaData.FOLLOWER_ID + " INTEGER NOT NULL);";
-    private DatabaseHelper myDBHelper;
     private SQLiteDatabase myDB;
 
-    public FollowersDatabaseManager(Context context) {
-        this.myDBHelper = new DatabaseHelper(context, DB_NAME, DB_VERSION, TABLE_CREATE);
+    private static FollowersDatabaseManager followersDatabaseManager;
+
+    public static FollowersDatabaseManager getInstance(Context context) {
+        FollowersDatabaseManager r = followersDatabaseManager;
+        if (r == null) {
+            synchronized (FollowersDatabaseManager.class) {
+                r = followersDatabaseManager;
+                if (r == null) {
+                    r = new FollowersDatabaseManager(context.getApplicationContext());
+                    followersDatabaseManager = r;
+                }
+            }
+        }
+        return r;
     }
 
-    public void open() {
+    private FollowersDatabaseManager(Context context) {
+        DatabaseHelper myDBHelper = new DatabaseHelper(context, DB_NAME, DB_VERSION, TABLE_CREATE);
         this.myDB = myDBHelper.getWritableDatabase();
-    }
-
-    public void close() {
-        this.myDB.close();
     }
 
     public void clearDatabase() {

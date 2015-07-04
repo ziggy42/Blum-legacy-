@@ -276,41 +276,12 @@ public class SettingsActivity extends ThemedActivity {
 
                 mSharedPreferences.edit().clear().commit();
 
-                DirectMessagesDatabaseManager directMessagesDatabaseManager =
-                        new DirectMessagesDatabaseManager(getActivity());
-                directMessagesDatabaseManager.open();
-                directMessagesDatabaseManager.clearDatabase();
-                directMessagesDatabaseManager.close();
-
-                FavoritesDatabaseManager favoritesDatabaseManager =
-                        new FavoritesDatabaseManager(getActivity());
-                favoritesDatabaseManager.open();
-                favoritesDatabaseManager.clearDatabase();
-                favoritesDatabaseManager.close();
-
-                RetweetsDatabaseManager retweetsDatabaseManager =
-                        new RetweetsDatabaseManager(getActivity());
-                retweetsDatabaseManager.open();
-                retweetsDatabaseManager.clearDatabase();
-                retweetsDatabaseManager.close();
-
-                FollowersDatabaseManager followersDatabaseManager =
-                        new FollowersDatabaseManager(getActivity());
-                followersDatabaseManager.open();
-                followersDatabaseManager.clearDatabase();
-                followersDatabaseManager.close();
-
-                MentionsDatabaseManager mentionsDatabaseManager =
-                        new MentionsDatabaseManager(getActivity());
-                mentionsDatabaseManager.open();
-                mentionsDatabaseManager.clearDatabase();
-                mentionsDatabaseManager.close();
-
-                NotificationsDatabaseManager notificationsDatabaseManager =
-                        new NotificationsDatabaseManager(getActivity());
-                notificationsDatabaseManager.open();
-                notificationsDatabaseManager.clearDatabase();
-                notificationsDatabaseManager.close();
+                DirectMessagesDatabaseManager.getInstance(getActivity()).clearDatabase();
+                FavoritesDatabaseManager.getInstance(getActivity()).clearDatabase();
+                RetweetsDatabaseManager.getInstance(getActivity()).clearDatabase();
+                FollowersDatabaseManager.getInstance(getActivity()).clearDatabase();
+                MentionsDatabaseManager.getInstance(getActivity()).clearDatabase();
+                NotificationsDatabaseManager.getInstance(getActivity()).clearDatabase();
 
                 return null;
             }

@@ -23,7 +23,7 @@ public class CheckFollowersService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Twitter twitter = TwitterUtils.getTwitter(getApplicationContext());
-        FollowersDatabaseManager dbm = new FollowersDatabaseManager(getApplicationContext());
+        FollowersDatabaseManager dbm = FollowersDatabaseManager.getInstance(getApplicationContext());
 
         try {
             ArrayList<Long> usersIDs = new ArrayList<>();
@@ -34,19 +34,12 @@ public class CheckFollowersService extends IntentService {
                         usersIDs.add(userID);
                 } while (ids.hasNext());
 
-                dbm.open();
                 ArrayList<Long> newUsersIDs = dbm.check(usersIDs);
                 for (long userID : newUsersIDs)
                     Notification.pushNotification(-1L, userID, Notification.TYPE_FOLLOW, getApplicationContext());
             }
         } catch (TwitterException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                dbm.close();
-            } catch (NullPointerException e) {
-                // ignore
-            }
         }
     }
 }

@@ -456,7 +456,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             return TYPE_HEADER;
 
         if (mDataSet.get(position).getExtendedMediaEntities().length == 1)
-            return TYPE_ITEM_PHOTO;
+                return TYPE_ITEM_PHOTO;
 
         if(mDataSet.get(position).getExtendedMediaEntities().length > 1)
             return TYPE_ITEM_MULTIPLE_PHOTOS;

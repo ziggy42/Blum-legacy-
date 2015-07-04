@@ -16,19 +16,27 @@ public class MentionsDatabaseManager {
             + SetsMetaData.TWEET_ID + " INTEGER NOT NULL, "
             + SetsMetaData.USER_ID + " INTEGER NOT NULL, "
             + SetsMetaData.TIMESTAMP + " INTEGER NOT NULL);";
-    private DatabaseHelper myDBHelper;
     private SQLiteDatabase myDB;
 
-    public MentionsDatabaseManager(Context context) {
-        this.myDBHelper = new com.andreapivetta.blu.data.DatabaseHelper(context, DB_NAME, DB_VERSION, TABLE_CREATE);
+    private static MentionsDatabaseManager mentionsDatabaseManager;
+
+    public static MentionsDatabaseManager getInstance(Context context) {
+        MentionsDatabaseManager r = mentionsDatabaseManager;
+        if (r == null) {
+            synchronized (MentionsDatabaseManager.class) {
+                r = mentionsDatabaseManager;
+                if (r == null) {
+                    r = new MentionsDatabaseManager(context.getApplicationContext());
+                    mentionsDatabaseManager = r;
+                }
+            }
+        }
+        return r;
     }
 
-    public void open() {
+    private MentionsDatabaseManager(Context context) {
+        DatabaseHelper myDBHelper = new DatabaseHelper(context, DB_NAME, DB_VERSION, TABLE_CREATE);
         this.myDB = myDBHelper.getWritableDatabase();
-    }
-
-    public void close() {
-        this.myDB.close();
     }
 
     public void clearDatabase() {

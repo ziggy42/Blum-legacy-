@@ -27,22 +27,30 @@ public class DirectMessagesDatabaseManager {
             + SetsMetaData.PROFILE_PIC_URL + " PM_TEXT,"
             + SetsMetaData.FLAG_READ + " BOOLEAN NOT NULL,"
             + SetsMetaData.TIMESTAMP + " INTEGER NOT NULL);";
-    private DatabaseHelper myDBHelper;
     private SQLiteDatabase myDB;
     private long loggedUserID;
 
-    public DirectMessagesDatabaseManager(Context context) {
-        this.myDBHelper = new DatabaseHelper(context, DB_NAME, DB_VERSION, TABLE_CREATE);
+    private static DirectMessagesDatabaseManager directMessagesDatabaseManager;
+
+    public static DirectMessagesDatabaseManager getInstance(Context context) {
+        DirectMessagesDatabaseManager r = directMessagesDatabaseManager;
+        if (r == null) {
+            synchronized (DirectMessagesDatabaseManager.class) {
+                r = directMessagesDatabaseManager;
+                if (r == null) {
+                    r = new DirectMessagesDatabaseManager(context.getApplicationContext());
+                    directMessagesDatabaseManager = r;
+                }
+            }
+        }
+        return r;
+    }
+
+    private DirectMessagesDatabaseManager(Context context) {
+        DatabaseHelper myDBHelper = new DatabaseHelper(context, DB_NAME, DB_VERSION, TABLE_CREATE);
         this.loggedUserID = PreferenceManager.getDefaultSharedPreferences(context)
                 .getLong(context.getString(R.string.pref_key_logged_user), 0L);
-    }
-
-    public void open() {
         this.myDB = myDBHelper.getWritableDatabase();
-    }
-
-    public void close() {
-        this.myDB.close();
     }
 
     public void clearDatabase() {

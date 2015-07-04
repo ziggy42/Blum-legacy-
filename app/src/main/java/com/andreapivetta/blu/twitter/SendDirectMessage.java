@@ -39,11 +39,10 @@ public class SendDirectMessage extends AsyncTask<String, Void, Boolean> {
             DirectMessage message = twitter.sendDirectMessage(userID, params[0]);
 
             if (!PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.pref_key_stream_service), false)) {
-                DirectMessagesDatabaseManager dbm = new DirectMessagesDatabaseManager(context);
-                dbm.open();
-                dbm.insertMessage(message.getId(), twitter.getId(), userID, params[0],
+
+                DirectMessagesDatabaseManager.getInstance(context).insertMessage(message.getId(), twitter.getId(), userID, params[0],
                         Calendar.getInstance().getTime().getTime(), otherUserName, otherUserProfilePic, true);
-                dbm.close();
+
             }
         } catch (TwitterException e) {
             e.printStackTrace();

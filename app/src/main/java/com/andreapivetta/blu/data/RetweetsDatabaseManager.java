@@ -16,8 +16,25 @@ public class RetweetsDatabaseManager extends InteractionsDatabaseManager {
             + SetsMetaData.TWEET_ID + " INTEGER NOT NULL,"
             + SetsMetaData.USER_ID + " INTEGER NOT NULL);";
 
-    public RetweetsDatabaseManager(Context context) {
+    private static RetweetsDatabaseManager retweetsDatabaseManager;
+
+    public static RetweetsDatabaseManager getInstance(Context context) {
+        RetweetsDatabaseManager r = retweetsDatabaseManager;
+        if (r == null) {
+            synchronized (RetweetsDatabaseManager.class) {
+                r = retweetsDatabaseManager;
+                if (r == null) {
+                    r = new RetweetsDatabaseManager(context.getApplicationContext());
+                    retweetsDatabaseManager = r;
+                }
+            }
+        }
+        return r;
+    }
+
+    private RetweetsDatabaseManager(Context context) {
         this.myDBHelper = new DatabaseHelper(context, DB_NAME, DB_VERSION);
+        this.myDB = myDBHelper.getWritableDatabase();
     }
 
     @Override

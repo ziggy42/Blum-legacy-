@@ -75,10 +75,9 @@ public class Notification {
 
     public static void pushNotification(long tweetID, String user, String type, String status,
                                         String profilePicURL, long userID, Context context) {
-        NotificationsDatabaseManager databaseManager = new NotificationsDatabaseManager(context);
-        databaseManager.open();
-        long id = databaseManager.insertNotification(new Notification(false, tweetID, user, type, status, profilePicURL, userID));
-        databaseManager.close();
+
+        long id = NotificationsDatabaseManager.getInstance(context)
+                .insertNotification(new Notification(false, tweetID, user, type, status, profilePicURL, userID));
 
         Intent i = new Intent();
         i.setAction(NEW_NOTIFICATION_INTENT);
