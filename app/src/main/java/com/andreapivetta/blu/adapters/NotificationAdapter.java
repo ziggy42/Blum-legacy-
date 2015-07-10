@@ -62,19 +62,16 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         });
 
         Calendar c = Calendar.getInstance(), current = Calendar.getInstance();
-        if (c.get(Calendar.YEAR) == notification.YY && c.get(Calendar.MONTH) == notification.MM
-                && c.get(Calendar.DAY_OF_MONTH) == notification.DD) {
-
-            current.set(Calendar.HOUR_OF_DAY, notification.hh);
-            current.set(Calendar.MINUTE, notification.mm);
+        current.setTimeInMillis(notification.timestamp);
+        if (c.get(Calendar.YEAR) == current.get(Calendar.YEAR) && c.get(Calendar.MONTH) == current.get(Calendar.MONTH)
+                && c.get(Calendar.DAY_OF_MONTH) == current.get(Calendar.DAY_OF_MONTH)) {
 
             holder.timeTextView.setText(
                     android.text.format.DateFormat.getTimeFormat(context).format(current.getTime()));
         } else {
-            if (c.get(Calendar.YEAR) != notification.YY)
-                current.set(Calendar.YEAR, notification.YY);
-            current.set(Calendar.DAY_OF_MONTH, notification.DD);
-            current.set(Calendar.MONTH, notification.MM);
+            if (c.get(Calendar.YEAR) != current.get(Calendar.YEAR))
+                holder.timeTextView.setText(
+                        android.text.format.DateFormat.getDateFormat(context).format(current.getTime()));
 
             holder.timeTextView.setText(
                     android.text.format.DateFormat.getDateFormat(context).format(current.getTime()));

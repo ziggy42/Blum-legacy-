@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.SpaceTopItemDecoration;
 import com.andreapivetta.blu.adapters.NotificationAdapter;
+import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.data.Notification;
 import com.andreapivetta.blu.data.NotificationsDatabaseManager;
 import com.andreapivetta.blu.utilities.Common;
@@ -25,7 +26,7 @@ public class NotificationFragment extends Fragment {
 
     private int kind;
 
-    private NotificationsDatabaseManager databaseManager = NotificationsDatabaseManager.getInstance(getActivity());
+    private DatabaseManager databaseManager = DatabaseManager.getInstance(getActivity());
 
     public static NotificationFragment newInstance(int mode) {
         NotificationFragment f = new NotificationFragment();

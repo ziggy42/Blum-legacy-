@@ -22,12 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.data.DirectMessagesDatabaseManager;
-import com.andreapivetta.blu.data.FavoritesDatabaseManager;
-import com.andreapivetta.blu.data.FollowersDatabaseManager;
-import com.andreapivetta.blu.data.MentionsDatabaseManager;
-import com.andreapivetta.blu.data.NotificationsDatabaseManager;
-import com.andreapivetta.blu.data.RetweetsDatabaseManager;
+import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.services.BasicNotificationService;
 import com.andreapivetta.blu.services.StreamNotificationService;
 
@@ -275,13 +270,7 @@ public class SettingsActivity extends ThemedActivity {
                     BasicNotificationService.stopService(getActivity());
 
                 mSharedPreferences.edit().clear().commit();
-
-                DirectMessagesDatabaseManager.getInstance(getActivity()).clearDatabase();
-                FavoritesDatabaseManager.getInstance(getActivity()).clearDatabase();
-                RetweetsDatabaseManager.getInstance(getActivity()).clearDatabase();
-                FollowersDatabaseManager.getInstance(getActivity()).clearDatabase();
-                MentionsDatabaseManager.getInstance(getActivity()).clearDatabase();
-                NotificationsDatabaseManager.getInstance(getActivity()).clearDatabase();
+                DatabaseManager.getInstance(getActivity()).clearDatabase();
 
                 return null;
             }

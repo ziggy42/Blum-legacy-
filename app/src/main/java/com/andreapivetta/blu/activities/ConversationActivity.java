@@ -18,7 +18,7 @@ import android.widget.ProgressBar;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.ConversationAdapter;
-import com.andreapivetta.blu.data.DirectMessagesDatabaseManager;
+import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.data.Message;
 import com.andreapivetta.blu.twitter.SendDirectMessage;
 import com.andreapivetta.blu.twitter.TwitterUtils;
@@ -44,8 +44,7 @@ public class ConversationActivity extends ThemedActivity {
 
     private ConversationAdapter mAdapter;
     private DataUpdateReceiver dataUpdateReceiver;
-
-    private DirectMessagesDatabaseManager dbm = DirectMessagesDatabaseManager.getInstance(ConversationActivity.this);
+    private DatabaseManager databaseManager = DatabaseManager.getInstance(ConversationActivity.this);
 
 
     @Override
@@ -85,8 +84,7 @@ public class ConversationActivity extends ThemedActivity {
             public void onClick(View v) {
                 String message = messageEditText.getText().toString();
                 if (message.length() > 0) {
-                    new SendDirectMessage(ConversationActivity.this, twitter, userID, currentUser.getName(),
-                            currentUser.getBiggerProfileImageURL()).execute(message, null, null);
+                    new SendDirectMessage(ConversationActivity.this, twitter, userID).execute(message, null, null);
 
                     mDataSet.add(
                             new Message(0L, PreferenceManager.getDefaultSharedPreferences(ConversationActivity.this)
@@ -131,9 +129,8 @@ public class ConversationActivity extends ThemedActivity {
             try {
                 currentUser = twitter.showUser(userID);
 
-                mDataSet.addAll(dbm.getConversation(userID));
-
-                dbm.markConversationAsRead(currentUser.getScreenName());
+                mDataSet.addAll(databaseManager.getConversation(userID));
+                databaseManager.markConversationAsRead(currentUser.getId());
             } catch (TwitterException e) {
                 e.printStackTrace();
                 return false;
@@ -157,11 +154,10 @@ public class ConversationActivity extends ThemedActivity {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Message.NEW_MESSAGE_INTENT)) {
                 mDataSet.clear();
-
-                mDataSet.addAll(dbm.getConversation(userID));
+                mDataSet.addAll(databaseManager.getConversation(userID));
                 mAdapter.notifyDataSetChanged();
 
-                dbm.markConversationAsRead(currentUser.getScreenName());
+                databaseManager.markConversationAsRead(currentUser.getId());
 
                 NotificationManager nMgr = (NotificationManager)
                         getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);

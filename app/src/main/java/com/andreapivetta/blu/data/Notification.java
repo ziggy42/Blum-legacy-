@@ -38,6 +38,9 @@ public class Notification {
     public String user, type, status, profilePicURL;
     public int hh, mm, YY, MM, DD, notificationID;
 
+    // EXP
+    public long timestamp;
+
     public Notification(boolean read, long tweet, String user, String type, String status, String profilePicURL,
                         long userID) {
         this.read = read;
@@ -54,6 +57,22 @@ public class Notification {
         this.DD = c.get(Calendar.DAY_OF_MONTH);
         this.hh = c.get(Calendar.HOUR_OF_DAY);
         this.mm = c.get(Calendar.MINUTE);
+
+        // EXP
+        this.timestamp = c.getTimeInMillis();
+    }
+
+    public Notification(int notificationID, String type, String userName, long userID, long tweetID, String status,
+                        String profilePicURL, boolean read, long timestamp) {
+        this.read = read;
+        this.tweetID = tweetID;
+        this.user = userName;
+        this.type = type;
+        this.status = status;
+        this.profilePicURL = profilePicURL;
+        this.timestamp = timestamp;
+        this.userID = userID;
+        this.notificationID = notificationID;
     }
 
     public Notification(boolean read, long tweet, String user, String type, String status, String profilePicURL,
@@ -76,8 +95,7 @@ public class Notification {
     public static void pushNotification(long tweetID, String user, String type, String status,
                                         String profilePicURL, long userID, Context context) {
 
-        long id = NotificationsDatabaseManager.getInstance(context)
-                .insertNotification(new Notification(false, tweetID, user, type, status, profilePicURL, userID));
+        long id = DatabaseManager.getInstance(context).insertNotification(new Notification(false, tweetID, user, type, status, profilePicURL, userID));
 
         Intent i = new Intent();
         i.setAction(NEW_NOTIFICATION_INTENT);

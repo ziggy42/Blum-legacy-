@@ -19,10 +19,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.data.DirectMessagesDatabaseManager;
+import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.data.Message;
 import com.andreapivetta.blu.data.Notification;
-import com.andreapivetta.blu.data.NotificationsDatabaseManager;
 import com.andreapivetta.blu.services.BasicNotificationService;
 import com.andreapivetta.blu.services.PopulateDatabasesService;
 import com.andreapivetta.blu.services.StreamNotificationService;
@@ -51,6 +50,19 @@ public class HomeActivity extends TimeLineActivity {
     @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if(mSharedPreferences.getBoolean("stillthere", true)) {
+
+            deleteDatabase("messages_db");
+            deleteDatabase("favorites_db");
+            deleteDatabase("followers_db");
+            deleteDatabase("mentions_db");
+            deleteDatabase("notifications_db");
+            deleteDatabase("retweets_db");
+
+            mSharedPreferences.edit().clear().commit();
+            mSharedPreferences.edit().putBoolean("stillthere", false).commit();
+        }
 
         if (!isTwitterLoggedInAlready()) {
             startActivityForResult(new Intent(HomeActivity.this, LoginActivity.class), REQUEST_LOGIN);
@@ -134,10 +146,11 @@ public class HomeActivity extends TimeLineActivity {
         registerReceiver(dataUpdateReceiver, new IntentFilter(Notification.NEW_NOTIFICATION_INTENT));
         registerReceiver(dataUpdateReceiver, new IntentFilter(Message.NEW_MESSAGE_INTENT));
 
-        mNotificationsCount = NotificationsDatabaseManager.getInstance(HomeActivity.this).getCountUnreadNotifications();
+        DatabaseManager databaseManager = DatabaseManager.getInstance(HomeActivity.this);
+        mNotificationsCount = databaseManager.getCountUnreadNotifications();
 
         if (mSharedPreferences.getBoolean(getString(R.string.pref_key_db_populated), false)) {
-            mMessageCount = DirectMessagesDatabaseManager.getInstance(HomeActivity.this).getCountUnreadMessages();
+            mMessageCount = databaseManager.getCountUnreadDirectMessages();
         }
 
         invalidateOptionsMenu();

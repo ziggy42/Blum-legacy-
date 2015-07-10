@@ -7,13 +7,9 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.data.DirectMessagesDatabaseManager;
-import com.andreapivetta.blu.data.FavoritesDatabaseManager;
-import com.andreapivetta.blu.data.FollowersDatabaseManager;
-import com.andreapivetta.blu.data.MentionsDatabaseManager;
+import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.data.Message;
 import com.andreapivetta.blu.data.Notification;
-import com.andreapivetta.blu.data.RetweetsDatabaseManager;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 
 import java.util.ArrayList;
@@ -53,7 +49,7 @@ public class StreamNotificationService extends Service {
                     Notification.pushNotification(status.getId(), user.getName(), Notification.TYPE_FAVOURITE,
                             status.getText(), user.getBiggerProfileImageURL(), user.getId(), getApplicationContext());
 
-                    FavoritesDatabaseManager.getInstance(getApplicationContext()).insertCouple(user.getId(), status.getId());
+                    DatabaseManager.getInstance(getApplicationContext()).insertFavorite(user.getId(), status.getId());
                 }
             } catch (TwitterException e) {
                 e.printStackTrace();
@@ -73,7 +69,7 @@ public class StreamNotificationService extends Service {
                     Notification.pushNotification((long) -1, user.getName(), Notification.TYPE_FOLLOW,
                             "", user.getBiggerProfileImageURL(), user.getId(), getApplicationContext());
 
-                    FollowersDatabaseManager.getInstance(getApplicationContext()).insertFollower(user.getId());
+                    DatabaseManager.getInstance(getApplicationContext()).insertFollower(user.getId());
                 }
             } catch (TwitterException e) {
                 e.printStackTrace();
@@ -86,20 +82,20 @@ public class StreamNotificationService extends Service {
         }
 
         @Override
-        public void onDirectMessage(DirectMessage directMessage) {
-            DirectMessagesDatabaseManager dbm = DirectMessagesDatabaseManager.getInstance(getApplicationContext());
+        public void onDirectMessage(DirectMessage message) {
+            DatabaseManager databaseManager = DatabaseManager.getInstance(getApplicationContext());
 
             if (PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                    .getLong(getApplicationContext().getString(R.string.pref_key_logged_user), 0L) == directMessage.getSenderId()) {
-                dbm.insertMessage(directMessage.getId(), directMessage.getSenderId(), directMessage.getRecipientId(),
-                        directMessage.getText(), directMessage.getCreatedAt().getTime(), directMessage.getRecipientScreenName(),
-                        directMessage.getRecipient().getBiggerProfileImageURL(), true);
+                    .getLong(getApplicationContext().getString(R.string.pref_key_logged_user), 0L) == message.getSenderId()) {
+                databaseManager.insertDirectMessage(message.getId(), message.getSenderId(), message.getRecipientId(),
+                        message.getText(), message.getCreatedAt().getTime(), message.getRecipient().getName(), message.getRecipientId(),
+                        message.getRecipient().getBiggerProfileImageURL(), true);
             } else {
-                dbm.insertMessage(directMessage.getId(), directMessage.getSenderId(), directMessage.getRecipientId(),
-                        directMessage.getText(), directMessage.getCreatedAt().getTime(), directMessage.getSenderScreenName(),
-                        directMessage.getSender().getBiggerProfileImageURL(), false);
+                databaseManager.insertDirectMessage(message.getId(), message.getSenderId(), message.getRecipientId(),
+                        message.getText(), message.getCreatedAt().getTime(), message.getSender().getName(), message.getSenderId(),
+                        message.getSender().getBiggerProfileImageURL(), false);
 
-                Message.pushMessage(directMessage, getApplicationContext());
+                Message.pushMessage(message, getApplicationContext());
             }
         }
 
@@ -193,7 +189,7 @@ public class StreamNotificationService extends Service {
                                     status.getUser().getBiggerProfileImageURL(), status.getUser().getId(),
                                     getApplicationContext());
 
-                            RetweetsDatabaseManager.getInstance(getApplicationContext()).insertCouple(status.getUser().getId(), status.getId());
+                            DatabaseManager.getInstance(getApplicationContext()).insertRetweet(status.getUser().getId(), status.getId());
                         } else
                             Notification.pushNotification(status.getId(), status.getUser().getName(),
                                     Notification.TYPE_RETWEET_MENTIONED, status.getRetweetedStatus().getText(),
@@ -204,8 +200,7 @@ public class StreamNotificationService extends Service {
                                 status.getText(), status.getUser().getBiggerProfileImageURL(), status.getUser().getId(),
                                 getApplicationContext());
 
-                        MentionsDatabaseManager.getInstance(getApplicationContext())
-                                .insertTriple(status.getId(), status.getUser().getId(), status.getCreatedAt().getTime());
+                        DatabaseManager.getInstance(getApplicationContext()).insertMention(status.getId(), status.getUser().getId(), status.getCreatedAt().getTime());
                     }
                 }
             } catch (TwitterException e) {

@@ -29,6 +29,22 @@ public class Message implements Comparable<Message> {
     private String otherUserProfilePicUrl;
     private boolean isRead;
 
+    // EXP
+    private long otherID;
+
+    public Message(long messageID, long senderID, long recipientID, long otherID, String otherName,
+                   String messageText, String otherUserProfilePicUrl, boolean isRead, long timeStamp) {
+        this.messageID = messageID;
+        this.senderID = senderID;
+        this.recipientID = recipientID;
+        this.otherID = otherID;
+        this.otherUserName = otherName;
+        this.messageText = messageText;
+        this.otherUserProfilePicUrl = otherUserProfilePicUrl;
+        this.isRead = isRead;
+        this.timeStamp = timeStamp;
+    }
+
     public Message(long messageID, long senderID, long recipientID, String messageText, long timeStamp,
                    String otherUserName, String otherUserProfilePicUrl, boolean isRead) {
         this.messageID = messageID;

@@ -26,13 +26,12 @@ import android.widget.RelativeLayout;
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.ConversationListAdapter;
 import com.andreapivetta.blu.adapters.UserListMessageAdapter;
-import com.andreapivetta.blu.data.DirectMessagesDatabaseManager;
+import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.data.Message;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.utilities.Common;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import twitter4j.PagableResponseList;
 import twitter4j.Twitter;
@@ -54,8 +53,7 @@ public class ConversationsListActivity extends ThemedActivity {
 
     private RecyclerView mRecyclerView;
     private FloatingActionButton newMessageFAB;
-
-    private DirectMessagesDatabaseManager dbm = DirectMessagesDatabaseManager.getInstance(ConversationsListActivity.this);
+    private DatabaseManager databaseManager = DatabaseManager.getInstance(ConversationsListActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +65,7 @@ public class ConversationsListActivity extends ThemedActivity {
 
         t = TwitterUtils.getTwitter(ConversationsListActivity.this);
 
-        for (long id : dbm.getInterlocutors())
-            mDataSet.add(dbm.getLastMessageForGivenUser(id));
-        Collections.sort(mDataSet);
+        mDataSet.addAll(databaseManager.getLastMessages());
 
         mRecyclerView = (RecyclerView) findViewById(R.id.conversationRecyclerView);
         conversationListAdapter = new ConversationListAdapter(ConversationsListActivity.this, mDataSet);
@@ -201,9 +197,7 @@ public class ConversationsListActivity extends ThemedActivity {
         super.onRestart();
 
         mDataSet.clear();
-        for (long id : dbm.getInterlocutors())
-            mDataSet.add(dbm.getLastMessageForGivenUser(id));
-        Collections.sort(mDataSet);
+        mDataSet.addAll(databaseManager.getLastMessages());
         conversationListAdapter.notifyDataSetChanged();
     }
 
@@ -249,11 +243,10 @@ public class ConversationsListActivity extends ThemedActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_mark_as_read) {
-            dbm.markAllAsRead();
+            databaseManager.markAllDirectMessagesAsRead();
+
             mDataSet.clear();
-            for (long id : dbm.getInterlocutors())
-                mDataSet.add(dbm.getLastMessageForGivenUser(id));
-            Collections.sort(mDataSet);
+            mDataSet.addAll(databaseManager.getLastMessages());
             conversationListAdapter.notifyDataSetChanged();
         }
 
@@ -266,9 +259,7 @@ public class ConversationsListActivity extends ThemedActivity {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Message.NEW_MESSAGE_INTENT)) {
                 mDataSet.clear();
-                for (long id : dbm.getInterlocutors())
-                    mDataSet.add(dbm.getLastMessageForGivenUser(id));
-                Collections.sort(mDataSet);
+                mDataSet.addAll(databaseManager.getLastMessages());
                 conversationListAdapter.notifyDataSetChanged();
             }
         }

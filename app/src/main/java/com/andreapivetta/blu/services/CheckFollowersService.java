@@ -3,7 +3,7 @@ package com.andreapivetta.blu.services;
 import android.app.IntentService;
 import android.content.Intent;
 
-import com.andreapivetta.blu.data.FollowersDatabaseManager;
+import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.data.Notification;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 
@@ -23,7 +23,7 @@ public class CheckFollowersService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Twitter twitter = TwitterUtils.getTwitter(getApplicationContext());
-        FollowersDatabaseManager dbm = FollowersDatabaseManager.getInstance(getApplicationContext());
+        DatabaseManager databaseManager = DatabaseManager.getInstance(getApplicationContext());
 
         try {
             ArrayList<Long> usersIDs = new ArrayList<>();
@@ -34,7 +34,7 @@ public class CheckFollowersService extends IntentService {
                         usersIDs.add(userID);
                 } while (ids.hasNext());
 
-                ArrayList<Long> newUsersIDs = dbm.check(usersIDs);
+                ArrayList<Long> newUsersIDs = databaseManager.checkFollowers(usersIDs);
                 for (long userID : newUsersIDs)
                     Notification.pushNotification(-1L, userID, Notification.TYPE_FOLLOW, getApplicationContext());
             }

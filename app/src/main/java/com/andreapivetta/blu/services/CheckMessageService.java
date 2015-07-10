@@ -4,7 +4,7 @@ package com.andreapivetta.blu.services;
 import android.app.IntentService;
 import android.content.Intent;
 
-import com.andreapivetta.blu.data.DirectMessagesDatabaseManager;
+import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.data.Message;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 
@@ -25,8 +25,7 @@ public class CheckMessageService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Twitter twitter = TwitterUtils.getTwitter(getApplicationContext());
-        DirectMessagesDatabaseManager dbm = DirectMessagesDatabaseManager.getInstance(getApplicationContext());
-
+        DatabaseManager databaseManager = DatabaseManager.getInstance(getApplicationContext());
 
         try {
             List<DirectMessage> receivedDirectMessages = twitter.getDirectMessages(new Paging(1, 200));
@@ -37,7 +36,7 @@ public class CheckMessageService extends IntentService {
                 for (DirectMessage message : receivedDirectMessages)
                     messages.add(message);
 
-                ArrayList<DirectMessage> newMessages = dbm.checkReceived(messages);
+                ArrayList<DirectMessage> newMessages = databaseManager.checkReceivedDirectMessages(messages);
                 for (DirectMessage message : newMessages)
                     Message.pushMessage(message, getApplicationContext());
             }
@@ -48,7 +47,7 @@ public class CheckMessageService extends IntentService {
                 for (DirectMessage message : sentDirectMessages)
                     messages.add(message);
 
-                dbm.checkSent(messages);
+                databaseManager.checkSentDirectMessages(messages);
             }
         } catch (TwitterException e) {
             e.printStackTrace();

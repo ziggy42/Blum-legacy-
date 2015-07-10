@@ -3,9 +3,8 @@ package com.andreapivetta.blu.services;
 import android.app.IntentService;
 import android.content.Intent;
 
-import com.andreapivetta.blu.data.FavoritesDatabaseManager;
+import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.data.Notification;
-import com.andreapivetta.blu.data.RetweetsDatabaseManager;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.utilities.Common;
 
@@ -26,8 +25,7 @@ public class CheckInteractionsService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Twitter twitter = TwitterUtils.getTwitter(getApplicationContext());
-        FavoritesDatabaseManager fdbm = FavoritesDatabaseManager.getInstance(getApplicationContext());
-        RetweetsDatabaseManager rdbm = RetweetsDatabaseManager.getInstance(getApplicationContext());
+        DatabaseManager databaseManager = DatabaseManager.getInstance(getApplicationContext());
 
         try {
             List<Status> userTimeLine = twitter.getUserTimeline(new Paging(1, 200));
@@ -36,14 +34,14 @@ public class CheckInteractionsService extends IntentService {
                     ArrayList<Long> newUsersIDs;
                     ArrayList<Long> existingUserIDs = Common.getFavoriters(tmp.getId());
                     if (existingUserIDs != null) {
-                        newUsersIDs = fdbm.check(existingUserIDs, tmp.getId());
+                        newUsersIDs = databaseManager.checkFavorites(existingUserIDs, tmp.getId());
                         for (long userID : newUsersIDs)
                             Notification.pushNotification(tmp.getId(), userID, Notification.TYPE_FAVOURITE, getApplicationContext());
                     }
 
                     existingUserIDs = Common.getRetweeters(tmp.getId());
                     if (existingUserIDs != null) {
-                        newUsersIDs = rdbm.check(existingUserIDs, tmp.getId());
+                        newUsersIDs = databaseManager.checkRetweets(existingUserIDs, tmp.getId());
                         for (long userID : newUsersIDs)
                             Notification.pushNotification(tmp.getId(), userID, Notification.TYPE_RETWEET, getApplicationContext());
                     }

@@ -3,7 +3,7 @@ package com.andreapivetta.blu.services;
 import android.app.IntentService;
 import android.content.Intent;
 
-import com.andreapivetta.blu.data.MentionsDatabaseManager;
+import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.data.Notification;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 
@@ -24,7 +24,8 @@ public class CheckMentionsService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Twitter twitter = TwitterUtils.getTwitter(getApplicationContext());
-        MentionsDatabaseManager dbm = MentionsDatabaseManager.getInstance(getApplicationContext());
+        DatabaseManager databaseManager = DatabaseManager.getInstance(getApplicationContext());
+
         try {
             List<Status> mentions = twitter.getMentionsTimeline(new Paging(1, 200));
             if (mentions.size() > 0) {
@@ -37,7 +38,7 @@ public class CheckMentionsService extends IntentService {
                     triples.add(tmp);
                 }
 
-                ArrayList<ArrayList<Long>> newMentions = dbm.check(triples);
+                ArrayList<ArrayList<Long>> newMentions = databaseManager.checkMentions(triples);
                 for (ArrayList<Long> triple : newMentions)
                     Notification.pushNotification(
                             triple.get(0), triple.get(1), Notification.TYPE_MENTION, getApplicationContext());

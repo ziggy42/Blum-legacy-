@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.data.NotificationsDatabaseManager;
+import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.fragments.NotificationFragment;
 
 public class NotificationsActivity extends ThemedActivity {
@@ -63,7 +63,7 @@ public class NotificationsActivity extends ThemedActivity {
                     .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            NotificationsDatabaseManager.getInstance(NotificationsActivity.this).clearDatabase();
+                            DatabaseManager.getInstance(NotificationsActivity.this).deleteAllNotifications();
                             finish();
                         }
                     })
