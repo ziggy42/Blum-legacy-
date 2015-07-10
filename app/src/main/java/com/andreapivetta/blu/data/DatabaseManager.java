@@ -456,7 +456,7 @@ public class DatabaseManager {
                 " ORDER BY " + TIMESTAMP + " DESC";
     }
 
-    public class DatabaseHelper extends SQLiteOpenHelper {
+    private class DatabaseHelper extends SQLiteOpenHelper {
 
         public DatabaseHelper(Context context, String DB_NAME, int DB_VERSION) {
             super(context, DB_NAME, null, DB_VERSION);
