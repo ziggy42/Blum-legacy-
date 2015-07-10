@@ -51,17 +51,17 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ConversationLi
         final Message current = mDataSet.get(position);
 
         Picasso.with(context)
-                .load(current.getOtherUserProfilePicUrl())
+                .load(current.otherUserProfilePicUrl)
                 .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
                 .into(holder.userProfilePicImageView);
 
-        holder.messageTextView.setTypeface(null, (current.isRead()) ? Typeface.NORMAL : Typeface.BOLD_ITALIC);
-        holder.userNameTextView.setText(current.getOtherUserName());
-        holder.messageTextView.setText((loggedUserID == current.getSenderID()) ?
-                context.getString(R.string.you_message, current.getMessageText()) : current.getMessageText());
+        holder.messageTextView.setTypeface(null, (current.isRead) ? Typeface.NORMAL : Typeface.BOLD_ITALIC);
+        holder.userNameTextView.setText(current.otherUserName);
+        holder.messageTextView.setText((loggedUserID == current.senderID) ?
+                context.getString(R.string.you_message, current.messageText) : current.messageText);
 
         Calendar c = Calendar.getInstance(), c2 = Calendar.getInstance();
-        c2.setTimeInMillis(current.getTimeStamp());
+        c2.setTimeInMillis(current.timeStamp);
 
         long diff = c.getTimeInMillis() - c2.getTimeInMillis();
         long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
@@ -83,14 +83,11 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ConversationLi
                 holder.timeTextView.setText(context.getString(R.string.mini_minutes, (int) minutes));
         } else holder.timeTextView.setText(context.getString(R.string.mini_seconds, (int) seconds));
 
-        final long otherUserID = (loggedUserID == current.getSenderID()) ?
-                current.getRecipientID() : current.getSenderID();
-
         holder.userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, UserProfileActivity.class);
-                i.putExtra("ID", otherUserID);
+                i.putExtra("ID", current.otherID);
                 context.startActivity(i);
             }
         });
@@ -99,7 +96,7 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ConversationLi
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, ConversationActivity.class);
-                i.putExtra("ID", otherUserID);
+                i.putExtra("ID", current.otherID);
                 context.startActivity(i);
             }
         });

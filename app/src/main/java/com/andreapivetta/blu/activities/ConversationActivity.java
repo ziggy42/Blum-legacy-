@@ -161,7 +161,7 @@ public class ConversationActivity extends ThemedActivity {
 
                 NotificationManager nMgr = (NotificationManager)
                         getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-                nMgr.cancel((int) mDataSet.get(mDataSet.size() - 1).getMessageID());
+                nMgr.cancel((int) mDataSet.get(mDataSet.size() - 1).messageID);
 
                 mRecyclerView.scrollToPosition(mDataSet.size() - 1);
             }

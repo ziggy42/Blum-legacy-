@@ -14,7 +14,6 @@ import com.andreapivetta.blu.adapters.SpaceTopItemDecoration;
 import com.andreapivetta.blu.adapters.NotificationAdapter;
 import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.data.Notification;
-import com.andreapivetta.blu.data.NotificationsDatabaseManager;
 import com.andreapivetta.blu.utilities.Common;
 
 import java.util.ArrayList;

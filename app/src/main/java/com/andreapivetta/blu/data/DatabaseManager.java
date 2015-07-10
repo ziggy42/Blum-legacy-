@@ -13,14 +13,6 @@ import java.util.Arrays;
 
 public class DatabaseManager {
 
-    /*
-    Check if row is in table
-    public boolean Exists(String _id) {
-        return DatabaseUtils.longForQuery(db, "select count(*) from " + TABLENAME() +
-         " where _ID=? limit 1", new String[] {"1"}) > 0;
-    }
-     */
-
     private static final String DB_NAME = "blumdb";
     private static final int DB_VERSION = 1;
 
@@ -46,8 +38,6 @@ public class DatabaseManager {
         DatabaseHelper databaseHelper = new DatabaseHelper(context, DB_NAME, DB_VERSION);
         this.sqLiteDatabase = databaseHelper.getWritableDatabase();
     }
-
-    // DM----------------------------------------------------------------------------------------------------------------------
 
     public void insertDirectMessage(long messageID, long senderID, long recipientID, String message, long timestamp,
                                     String otherUserName, long otherUserID, String otherUserProfilePic, boolean read) {
@@ -164,8 +154,6 @@ public class DatabaseManager {
                 ")", null);
     }
 
-    // FAVORITES---------------------------------------------------------------------------------------------------------------
-
     public void insertFavorite(long userID, long tweetID) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(Favorite.TWEET_ID, tweetID);
@@ -195,8 +183,6 @@ public class DatabaseManager {
 
         return newUsersIDs;
     }
-
-    // RETWEETS----------------------------------------------------------------------------------------------------------------
 
     public void insertRetweet(long userID, long tweetID) {
         ContentValues contentValues = new ContentValues();
@@ -228,8 +214,6 @@ public class DatabaseManager {
         return newUsersIDs;
     }
 
-    // FOLLOWERS---------------------------------------------------------------------------------------------------------------
-
     public void insertFollower(long followerID) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(Follower.FOLLOWER_ID, followerID);
@@ -257,8 +241,6 @@ public class DatabaseManager {
 
         return newUsersIDs;
     }
-
-    // MENTIIONS---------------------------------------------------------------------------------------------------------------
 
     public void insertMention(long tweetID, long userID, long timestamp) {
         ContentValues cv = new ContentValues();
@@ -295,8 +277,6 @@ public class DatabaseManager {
 
         return newMentions;
     }
-
-    // NOTIFICATIONS ----------------------------------------------------------------------------------------------------------
 
     public long insertNotification(com.andreapivetta.blu.data.Notification notification) {
         ContentValues contentValues = new ContentValues();
@@ -349,8 +329,6 @@ public class DatabaseManager {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Notification.TABLE_NAME);
         sqLiteDatabase.execSQL(Notification.CREATE_TABLE);
     }
-
-    //-------------------------------------------------------------------------------------------------------------------------
 
     public void clearDatabase() {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DirectMessage.TABLE_NAME);

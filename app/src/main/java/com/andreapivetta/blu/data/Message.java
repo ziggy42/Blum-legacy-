@@ -20,17 +20,15 @@ import twitter4j.DirectMessage;
 public class Message implements Comparable<Message> {
 
     public final static String NEW_MESSAGE_INTENT = "com.andreapivetta.blu.NEW_MESSAGE_INTENT";
-    private long messageID;
-    private long senderID;
-    private long recipientID;
-    private long timeStamp;
-    private String messageText;
-    private String otherUserName;
-    private String otherUserProfilePicUrl;
-    private boolean isRead;
-
-    // EXP
-    private long otherID;
+    public long messageID;
+    public long senderID;
+    public long recipientID;
+    public long otherID;
+    public  long timeStamp;
+    public String messageText;
+    public String otherUserName;
+    public String otherUserProfilePicUrl;
+    public boolean isRead;
 
     public Message(long messageID, long senderID, long recipientID, long otherID, String otherName,
                    String messageText, String otherUserProfilePicUrl, boolean isRead, long timeStamp) {
@@ -89,40 +87,8 @@ public class Message implements Comparable<Message> {
         context.sendBroadcast(i);
     }
 
-    public boolean isRead() {
-        return isRead;
-    }
-
-    public long getMessageID() {
-        return messageID;
-    }
-
-    public String getOtherUserName() {
-        return otherUserName;
-    }
-
-    public String getOtherUserProfilePicUrl() {
-        return otherUserProfilePicUrl;
-    }
-
-    public long getSenderID() {
-        return senderID;
-    }
-
-    public long getRecipientID() {
-        return recipientID;
-    }
-
-    public String getMessageText() {
-        return messageText;
-    }
-
-    public long getTimeStamp() {
-        return timeStamp;
-    }
-
     @Override
     public int compareTo(@NonNull Message another) {
-        return (another.getTimeStamp() - this.timeStamp > 0) ? 1 : -1;
+        return (another.timeStamp - this.timeStamp > 0) ? 1 : -1;
     }
 }

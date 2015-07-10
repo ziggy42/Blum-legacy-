@@ -44,18 +44,18 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
     @Override
     public int getItemViewType(int position) {
-        return (mDataSet.get(position).getSenderID() == loggedUserID) ? TYPE_ME : TYPE_OTHER;
+        return (mDataSet.get(position).senderID == loggedUserID) ? TYPE_ME : TYPE_OTHER;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Message currentMessage = mDataSet.get(position);
 
-        holder.messageTextView.setText(currentMessage.getMessageText());
+        holder.messageTextView.setText(currentMessage.messageText);
         Linkify.addLinks(holder.messageTextView, Linkify.ALL);
 
         Calendar c = Calendar.getInstance(), c2 = Calendar.getInstance();
-        c2.setTimeInMillis(currentMessage.getTimeStamp());
+        c2.setTimeInMillis(currentMessage.timeStamp);
 
         long diff = c.getTimeInMillis() - c2.getTimeInMillis();
         long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
