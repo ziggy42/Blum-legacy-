@@ -207,7 +207,7 @@ public class DatabaseManager {
         for (long userID : userIDs) {
             if (!existingUsersIDs.contains(userID)) {
                 newUsersIDs.add(userID);
-                insertFavorite(userID, tweetID);
+                insertRetweet(userID, tweetID);
             }
         }
 

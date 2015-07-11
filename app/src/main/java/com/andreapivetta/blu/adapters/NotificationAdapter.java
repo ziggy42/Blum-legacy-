@@ -69,10 +69,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             holder.timeTextView.setText(
                     android.text.format.DateFormat.getTimeFormat(context).format(current.getTime()));
         } else {
-            if (c.get(Calendar.YEAR) != current.get(Calendar.YEAR))
-                holder.timeTextView.setText(
-                        android.text.format.DateFormat.getDateFormat(context).format(current.getTime()));
-
             holder.timeTextView.setText(
                     android.text.format.DateFormat.getDateFormat(context).format(current.getTime()));
         }
