@@ -7,49 +7,42 @@
 
     <include layout="@layout/toolbar" />
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/emailEditText"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="@null"
+        android:hint="@string/email_form_hint"
+        android:inputType="textEmailAddress"
+        android:textColorHint="@color/lightGrey" />
 
-        <EditText
-            android:id="@+id/emailEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:background="@null"
-            android:hint="@string/email_form_hint"
-            android:inputType="textEmailAddress"
-            android:textColorHint="@color/lightGrey" />
+    <View
+        android:id="@+id/firstDivider"
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:background="?appColorPrimaryDark" />
 
-        <View
-            android:id="@+id/firstDivider"
-            android:layout_width="match_parent"
-            android:layout_height="0.2dp"
-            android:background="?appColorPrimaryDark" />
+    <EditText
+        android:id="@+id/subjectEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="@null"
+        android:hint="@string/subject_form_hint"
+        android:inputType="textCapSentences"
+        android:textColorHint="@color/lightGrey"
+        android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/subjectEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:background="@null"
-            android:hint="@string/subject_form_hint"
-            android:inputType="textCapSentences"
-            android:textColorHint="@color/lightGrey"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/contentEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:background="@null"
-            android:gravity="top"
-            android:hint="@string/content_form"
-            android:inputType="textMultiLine"
-            android:textColorHint="@color/lightGrey" />
-
-    </LinearLayout>
+    <EditText
+        android:id="@+id/contentEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="@null"
+        android:gravity="top"
+        android:hint="@string/content_form"
+        android:inputType="textMultiLine"
+        android:textColorHint="@color/lightGrey" />
 
 </LinearLayout>
