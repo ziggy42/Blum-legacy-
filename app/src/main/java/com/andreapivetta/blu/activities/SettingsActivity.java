@@ -183,7 +183,7 @@ public class SettingsActivity extends ThemedActivity {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     View dialogView = View.inflate(getActivity(), R.layout.dialog_about, null);
 
-                    final TextView mTwitterTextView = (TextView) dialogView.findViewById(R.id.textView3);
+                    final TextView mTwitterTextView = (TextView) dialogView.findViewById(R.id.aboutTextView);
                     mTwitterTextView.setText(Html.fromHtml(getString(R.string.my_twitter)));
                     mTwitterTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
