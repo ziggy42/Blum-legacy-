@@ -28,6 +28,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     private ArrayList<Notification> mDataSet;
     private Context context;
+    private StyleSpan b = new StyleSpan(android.graphics.Typeface.BOLD);
 
     public NotificationAdapter(ArrayList<Notification> mDataSet, Context context) {
         this.mDataSet = mDataSet;
@@ -74,7 +75,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         }
 
         String screenName = notification.user;
-        StyleSpan b = new StyleSpan(android.graphics.Typeface.BOLD);
 
         if (notification.type.equals(Notification.TYPE_FAVOURITE)
                 || notification.type.equals(Notification.TYPE_RETWEET)

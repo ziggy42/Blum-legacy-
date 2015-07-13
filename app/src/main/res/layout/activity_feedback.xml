@@ -7,15 +7,16 @@
 
     <include layout="@layout/toolbar" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="15dp"
             android:background="@null"
             android:hint="@string/email_form_hint"
             android:inputType="textEmailAddress"
@@ -25,42 +26,30 @@
             android:id="@+id/firstDivider"
             android:layout_width="match_parent"
             android:layout_height="0.2dp"
-            android:layout_below="@id/emailEditText"
             android:background="?appColorPrimaryDark" />
 
         <EditText
             android:id="@+id/subjectEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/emailEditText"
-            android:layout_margin="10dp"
+            android:layout_margin="15dp"
             android:background="@null"
             android:hint="@string/subject_form_hint"
-            android:textColorHint="@color/lightGrey" />
-
-        <View
-            android:id="@+id/secondDivider"
-            android:layout_width="match_parent"
-            android:layout_height="0.2dp"
-            android:layout_below="@id/subjectEditText"
-            android:background="?appColorPrimaryDark" />
+            android:inputType="textCapSentences"
+            android:textColorHint="@color/lightGrey"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/contentEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_below="@+id/secondDivider"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_margin="15dp"
             android:background="@null"
             android:gravity="top"
             android:hint="@string/content_form"
             android:inputType="textMultiLine"
-            android:textColorHint="@color/lightGrey"
-            android:textSize="20sp" />
+            android:textColorHint="@color/lightGrey" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>
