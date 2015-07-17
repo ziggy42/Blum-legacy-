@@ -31,7 +31,7 @@ public class BasicNotificationService extends IntentService {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.add(Calendar.SECOND, frequency);
-        a.setRepeating(
+        a.setInexactRepeating(
                 AlarmManager.RTC_WAKEUP,
                 calendar.getTimeInMillis(),
                 frequency * 1000,
