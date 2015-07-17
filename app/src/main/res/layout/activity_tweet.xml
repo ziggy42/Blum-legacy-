@@ -18,7 +18,8 @@
             android:layout_marginRight="10dp"
             android:paddingLeft="@dimen/homeMargins"
             android:paddingRight="@dimen/homeMargins"
-            android:scrollbars="none" />
+            android:scrollbars="none"
+            android:visibility="gone" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/replyFAB"

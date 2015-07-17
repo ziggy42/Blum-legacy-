@@ -52,6 +52,7 @@ public class TweetActivity extends ThemedActivity {
         setContentView(R.layout.activity_tweet);
 
         loadingProgressBar = (ProgressBar) findViewById(R.id.loadingProgressBar);
+        mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
 
         if (savedInstanceState == null) {
             Bundle bundle = getIntent().getBundleExtra("STATUS");
@@ -62,11 +63,10 @@ public class TweetActivity extends ThemedActivity {
             this.currentIndex = savedInstanceState.getInt(CURRENT_TWEET_TAG);
             this.status = mDataSet.get(currentIndex);
             loadingProgressBar.setVisibility(View.GONE);
+            mRecyclerView.setVisibility(View.VISIBLE);
         }
 
         this.twitter = TwitterUtils.getTwitter(TweetActivity.this);
-        mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
-        mRecyclerView.setVisibility(View.GONE);
         mRecyclerView.addItemDecoration(new SpaceTopItemDecoration(Common.dpToPx(this, 10)));
         mTweetsAdapter = new TweetsListAdapter(mDataSet, this, twitter, currentIndex);
         mLinearLayoutManager = new LinearLayoutManager(this);
