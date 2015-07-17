@@ -62,6 +62,9 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
     private ArrayList<Long> favorites = new ArrayList<>();
     private ArrayList<Long> retweets = new ArrayList<>();
 
+    private java.text.SimpleDateFormat shortDateFormat = new java.text.SimpleDateFormat("MMM dd", Locale.getDefault());
+    private java.text.SimpleDateFormat longDateFormat = new java.text.SimpleDateFormat("MMM dd yyyy", Locale.getDefault());
+
     public TweetsListAdapter(ArrayList<Status> mDataSet, Context context, Twitter twitter, int headerPosition) {
         this.mDataSet = mDataSet;
         this.context = context;
@@ -128,11 +131,9 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                 long hours = TimeUnit.MILLISECONDS.toHours(diff);
                 if (hours > 24) {
                     if (c.get(Calendar.YEAR) == c2.get(Calendar.YEAR))
-                        holder.timeTextView.setText(
-                                (new java.text.SimpleDateFormat("MMM dd", Locale.getDefault())).format(d));
+                        holder.timeTextView.setText(shortDateFormat.format(d));
                     else
-                        holder.timeTextView.setText(
-                                (new java.text.SimpleDateFormat("MMM dd yyyy", Locale.getDefault())).format(d));
+                        holder.timeTextView.setText(longDateFormat.format(d));
                 } else
                     holder.timeTextView.setText(context.getString(R.string.mini_hours, (int) hours));
             } else

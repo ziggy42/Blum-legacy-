@@ -31,6 +31,9 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ConversationLi
     private ArrayList<Message> mDataSet;
     private long loggedUserID;
 
+    private java.text.SimpleDateFormat shortDateFormat = new java.text.SimpleDateFormat("MMM dd", Locale.getDefault());
+    private java.text.SimpleDateFormat longDateFormat = new java.text.SimpleDateFormat("MMM dd yyyy", Locale.getDefault());
+
     public ConversationListAdapter(Context context, ArrayList<Message> mDataSet) {
         this.context = context;
         this.mDataSet = mDataSet;
@@ -71,12 +74,9 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ConversationLi
                 long hours = TimeUnit.MILLISECONDS.toHours(diff);
                 if (hours > 24) {
                     if (c.get(Calendar.YEAR) == c2.get(Calendar.YEAR))
-                        holder.timeTextView.setText((new java.text.SimpleDateFormat("MMM dd", Locale.getDefault()))
-                                .format(c2.getTimeInMillis()));
+                        holder.timeTextView.setText(shortDateFormat.format(c2.getTimeInMillis()));
                     else
-                        holder.timeTextView.setText(
-                                (new java.text.SimpleDateFormat("MMM dd yyyy", Locale.getDefault()))
-                                        .format(c2.getTimeInMillis()));
+                        holder.timeTextView.setText(longDateFormat.format(c2.getTimeInMillis()));
                 } else
                     holder.timeTextView.setText(context.getString(R.string.mini_hours, (int) hours));
             } else
