@@ -87,7 +87,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                 vhItemMultiplePhotos.tweetPhotosRecyclerView.addItemDecoration(new SpaceLeftItemDecoration(5));
                 vhItemMultiplePhotos.tweetPhotosRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
                 vhItemMultiplePhotos.tweetPhotosRecyclerView.setHasFixedSize(true);
-                return  vhItemMultiplePhotos;
+                return vhItemMultiplePhotos;
             case TYPE_HEADER:
                 return new VHHeader(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_expanded, parent, false));
@@ -243,7 +243,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                                 .append(word)
                                 .append("</a>");
                     } else if (word.length() > 1) {
-                        if (word.charAt(0) == '@' || (word.charAt(0) == '.' && word.charAt(1) == '@' )) {
+                        if (word.charAt(0) == '@' || (word.charAt(0) == '.' && word.charAt(1) == '@')) {
                             int index = word.indexOf('@');
                             int i;
                             for (i = index + 1; i < word.length(); i++)
@@ -392,7 +392,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                         }
                     });
                 }
-            } else if(TYPE == TYPE_ITEM_MULTIPLE_PHOTOS) {
+            } else if (TYPE == TYPE_ITEM_MULTIPLE_PHOTOS) {
                 RecyclerView mRecyclerView = ((VHItemMultiplePhotos) holder).tweetPhotosRecyclerView;
                 mRecyclerView.setAdapter(new ImagesAdapter(currentStatus.getExtendedMediaEntities(), context));
             } else if (TYPE == TYPE_ITEM_QUOTE) {
@@ -456,9 +456,9 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             return TYPE_HEADER;
 
         if (mDataSet.get(position).getExtendedMediaEntities().length == 1)
-                return TYPE_ITEM_PHOTO;
+            return TYPE_ITEM_PHOTO;
 
-        if(mDataSet.get(position).getExtendedMediaEntities().length > 1)
+        if (mDataSet.get(position).getExtendedMediaEntities().length > 1)
             return TYPE_ITEM_MULTIPLE_PHOTOS;
 
         if (mDataSet.get(position).getQuotedStatusId() > 0)

@@ -11,18 +11,17 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 import android.text.util.Linkify;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.ViewTreeObserver;
@@ -628,25 +627,23 @@ public class UserProfileActivity extends ThemedActivity {
                 .create().show();
     }
 
-    private Intent getDefaultIntent() {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_TEXT,
-                getString(R.string.check_out, user.getName(), user.getScreenName()))
-                .setType("text/plain");
-        return intent;
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_share, menu);
+        return true;
+    }
 
-        if (user != null) {
-            ShareActionProvider mShareActionProvider = (ShareActionProvider)
-                    MenuItemCompat.getActionProvider(menu.findItem(R.id.action_share));
-            mShareActionProvider.setShareIntent(getDefaultIntent());
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_share) {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_TEXT,
+                    getString(R.string.check_out, user.getName(), user.getScreenName()))
+                    .setType("text/plain");
+            startActivity(intent);
         }
 
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

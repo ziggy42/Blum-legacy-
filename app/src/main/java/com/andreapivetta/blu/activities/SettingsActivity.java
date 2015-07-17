@@ -149,9 +149,8 @@ public class SettingsActivity extends ThemedActivity {
             findPreference("pref_key_share").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_SEND)
-                            .putExtra(Intent.EXTRA_TEXT, getString(R.string.share_this_app))
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_this_app))
                             .setType("text/plain");
                     startActivity(intent);
 
