@@ -341,6 +341,7 @@ public class UserProfileActivity extends ThemedActivity {
             ImageView userProfilePicImageView = (ImageView) tweetView.findViewById(R.id.userProfilePicImageView);
             final ImageButton favouriteImageButton = (ImageButton) tweetView.findViewById(R.id.favouriteImageButton);
             final ImageButton retweetImageButton = (ImageButton) tweetView.findViewById(R.id.retweetImageButton);
+            ImageButton quoteImageButton = (ImageButton) tweetView.findViewById(R.id.quoteImageButton);
             ImageButton respondImageButton = (ImageButton) tweetView.findViewById(R.id.respondImageButton);
             ImageButton shareImageButton = (ImageButton) tweetView.findViewById(R.id.shareImageButton);
             ImageButton openTweetImageButton = (ImageButton) tweetView.findViewById(R.id.openTweetImageButton);
@@ -424,6 +425,19 @@ public class UserProfileActivity extends ThemedActivity {
                                 }
                             })
                             .setNegativeButton(R.string.cancel, null).create().show();
+                }
+            });
+
+            quoteImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(UserProfileActivity.this, NewTweetQuoteActivity.class);
+
+                    Bundle b = new Bundle();
+                    b.putSerializable(NewTweetQuoteActivity.PAR_CURRENT_STATUS, statuses[index]);
+                    i.putExtra(NewTweetQuoteActivity.PAR_BUNDLE, b);
+
+                    startActivity(i);
                 }
             });
 
