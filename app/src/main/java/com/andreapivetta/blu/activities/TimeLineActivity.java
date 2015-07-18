@@ -35,9 +35,10 @@ import twitter4j.TwitterException;
 public abstract class TimeLineActivity extends ThemedActivity {
 
     protected String TWEETS_LIST_TAG = "TWEET_LIST";
+    protected String CURRENTPAGE_TAG = "CURRENTPAGE";
 
     protected Twitter twitter;
-    protected Paging paging = new Paging(1, 200);
+    protected Paging paging = new Paging(1, 50);
     protected int currentPage = 1;
 
     protected Toolbar toolbar;
@@ -46,7 +47,7 @@ public abstract class TimeLineActivity extends ThemedActivity {
     protected FloatingActionButton newTweetFAB;
     protected ProgressBar loadingProgressBar;
     protected TweetsListAdapter mTweetsAdapter;
-    protected ArrayList<Status> tweetList = new ArrayList<>(200);
+    protected ArrayList<Status> tweetList = new ArrayList<>(50);
     protected LinearLayoutManager mLinearLayoutManager;
 
     protected boolean isUp = true, loading = true;
@@ -86,7 +87,7 @@ public abstract class TimeLineActivity extends ThemedActivity {
                 totalItemCount = mLinearLayoutManager.getItemCount();
                 pastVisibleItems = mLinearLayoutManager.findFirstVisibleItemPosition() + 1;
 
-                if (loading && ((visibleItemCount + pastVisibleItems) >= totalItemCount)) {
+                if (loading && ((visibleItemCount + pastVisibleItems) >= totalItemCount - 10)) {
                     loading = false;
                     new GetTimeLine().execute(null, null, null);
                 }
@@ -181,6 +182,7 @@ public abstract class TimeLineActivity extends ThemedActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putSerializable(TWEETS_LIST_TAG, tweetList);
+        outState.putInt(CURRENTPAGE_TAG, currentPage);
         super.onSaveInstanceState(outState);
     }
 
@@ -202,7 +204,7 @@ public abstract class TimeLineActivity extends ThemedActivity {
 
     protected class GetTimeLine extends AsyncTask<Void, Void, Boolean> {
 
-        private ArrayList<twitter4j.Status> buffer = new ArrayList<>(200);
+        private ArrayList<twitter4j.Status> buffer = new ArrayList<>(50);
 
         @Override
         protected Boolean doInBackground(Void... uris) {

@@ -30,7 +30,8 @@ public class UserTimeLineActivity extends TimeLineActivity {
 
         if (savedInstanceState != null) {
             user = (User) savedInstanceState.getSerializable("USER");
-            tweetList = (ArrayList<Status>) savedInstanceState.getSerializable("TWEET_LIST");
+            tweetList = (ArrayList<Status>) savedInstanceState.getSerializable(TWEETS_LIST_TAG);
+            currentPage = savedInstanceState.getInt(CURRENTPAGE_TAG);
         } else {
             new LoadUser().execute(getIntent().getLongExtra("ID", 0));
         }

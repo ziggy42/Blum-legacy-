@@ -72,6 +72,7 @@ public class HomeActivity extends TimeLineActivity {
             if (savedInstanceState != null) {
                 tweetList = (ArrayList<Status>) savedInstanceState.getSerializable(TWEETS_LIST_TAG);
                 upComingTweets = (ArrayList<Status>) savedInstanceState.getSerializable(UPCOMING_TWEETS_LIST_TAG);
+                currentPage = savedInstanceState.getInt(CURRENTPAGE_TAG);
                 newTweetsCount = savedInstanceState.getInt(UPCOMING_TWEET_COUNT_TAG);
             } else {
                 new GetTimeLine().execute(null, null, null);
