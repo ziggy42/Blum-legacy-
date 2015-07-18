@@ -1,6 +1,7 @@
 package com.andreapivetta.blu.adapters;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -98,6 +99,7 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ConversationLi
                 Intent i = new Intent(context, ConversationActivity.class);
                 i.putExtra("ID", current.otherID);
                 context.startActivity(i);
+                ((Activity) context).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
     }
