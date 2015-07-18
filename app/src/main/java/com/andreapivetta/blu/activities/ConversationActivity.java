@@ -46,7 +46,6 @@ public class ConversationActivity extends ThemedActivity {
     private DataUpdateReceiver dataUpdateReceiver;
     private DatabaseManager databaseManager = DatabaseManager.getInstance(ConversationActivity.this);
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
