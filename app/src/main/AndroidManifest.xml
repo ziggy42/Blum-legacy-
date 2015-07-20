@@ -88,7 +88,9 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEND_MULTIPLE" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
@@ -109,10 +111,11 @@
         </activity>
         <activity
             android:name=".activities.ImageActivity"
-            android:label="@string/title_empty" />
+            android:label="@string/title_empty"
+            android:theme="@style/ImageActivityTheme"/>
         <activity
             android:name=".activities.UserProfileActivity"
-            android:label="@string/title_empty" >
+            android:label="@string/title_empty">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.HomeActivity" />
