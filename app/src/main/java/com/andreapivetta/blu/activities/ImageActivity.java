@@ -3,13 +3,20 @@ package com.andreapivetta.blu.activities;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.andreapivetta.blu.R;
 import com.squareup.picasso.Picasso;
 
+import uk.co.senab.photoview.PhotoViewAttacher;
+
 public class ImageActivity extends AppCompatActivity {
+
+    public static final String TAG_IMAGE = "IMAGE";
+
+    private PhotoViewAttacher attacher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +35,20 @@ public class ImageActivity extends AppCompatActivity {
             });
         }
 
-        ImageView zoomedImageView = (ImageView) findViewById(R.id.zoomedImageView);
+        final ImageView tweetImageView = (ImageView) findViewById(R.id.tweetImageView);
         Picasso.with(this)
-                .load(getIntent().getStringExtra("IMAGE"))
-                .into(zoomedImageView);
+                .load(getIntent().getStringExtra(TAG_IMAGE))
+                .into(tweetImageView);
+
+        tweetImageView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (attacher == null)
+                    attacher = new PhotoViewAttacher(tweetImageView);
+
+                return true;
+            }
+        });
+
     }
 }

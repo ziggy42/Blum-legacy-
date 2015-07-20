@@ -225,5 +225,6 @@
     <string name="pref_key_logged_user" translatable="false">user</string>
     <string name="pref_key_db_populated" translatable="false">popdb</string>
     <string name="prefcat_appearance_title">Appearance</string>
+    <string name="image_transition">imageTransition</string>
 
 </resources>

@@ -1,8 +1,12 @@
 package com.andreapivetta.blu.adapters;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
@@ -101,6 +105,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
     }
 
     @Override
+    @SuppressLint("NewApi")
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Status currentStatus;
         final int TYPE = getItemViewType(position);
@@ -318,8 +323,15 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                         @Override
                         public void onClick(View v) {
                             Intent i = new Intent(context, ImageActivity.class);
-                            i.putExtra("IMAGE", mediaEntity.getMediaURL());
-                            context.startActivity(i);
+                            i.putExtra(ImageActivity.TAG_IMAGE, mediaEntity.getMediaURL());
+                            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                                ActivityOptions options = ActivityOptions
+                                        .makeSceneTransitionAnimation((Activity) context, ((VHHeader) holder).tweetPhotoImageView,
+                                                context.getString(R.string.image_transition));
+                                context.startActivity(i, options.toBundle());
+                            } else {
+                                context.startActivity(i);
+                            }
                         }
                     });
                 }
@@ -385,11 +397,19 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                             .into(((VHItemPhoto) holder).tweetPhotoImageView);
 
                     ((VHItemPhoto) holder).tweetPhotoImageView.setOnClickListener(new View.OnClickListener() {
+
                         @Override
                         public void onClick(View v) {
                             Intent i = new Intent(context, ImageActivity.class);
-                            i.putExtra("IMAGE", mediaEntity.getMediaURL());
-                            context.startActivity(i);
+                            i.putExtra(ImageActivity.TAG_IMAGE, mediaEntity.getMediaURL());
+                            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                                ActivityOptions options = ActivityOptions
+                                        .makeSceneTransitionAnimation((Activity) context, ((VHItemPhoto) holder).tweetPhotoImageView,
+                                                context.getString(R.string.image_transition));
+                                context.startActivity(i, options.toBundle());
+                            } else {
+                                context.startActivity(i);
+                            }
                         }
                     });
                 }
