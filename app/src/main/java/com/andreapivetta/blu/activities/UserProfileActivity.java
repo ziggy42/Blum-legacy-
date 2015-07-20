@@ -1,11 +1,15 @@
 package com.andreapivetta.blu.activities;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -263,6 +267,24 @@ public class UserProfileActivity extends ThemedActivity {
             public void onClick(View v) {
                 createUsersDialog(FOLLOWERS);
                 new LoadFollowersOrFollowing().execute(FOLLOWERS, null, null);
+            }
+        });
+
+        profilePictureImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            @SuppressLint("NewApi")
+            public void onClick(View v) {
+                Intent i = new Intent(UserProfileActivity.this, ImageActivity.class);
+                i.putExtra(ImageActivity.TAG_TITLE, user.getName());
+                i.putExtra(ImageActivity.TAG_IMAGE, user.getOriginalProfileImageURL());
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    ActivityOptions options = ActivityOptions
+                            .makeSceneTransitionAnimation(UserProfileActivity.this, profilePictureImageView,
+                                    getString(R.string.image_transition));
+                    startActivity(i, options.toBundle());
+                } else {
+                    startActivity(i);
+                }
             }
         });
 

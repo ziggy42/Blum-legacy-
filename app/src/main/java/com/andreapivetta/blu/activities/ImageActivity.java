@@ -18,17 +18,24 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 public class ImageActivity extends AppCompatActivity {
 
     public static final String TAG_IMAGE = "IMAGE";
+    public static final String TAG_TITLE = "title";
 
     private PhotoViewAttacher attacher;
-    private String imageURL;
+    private String imageURL, toolbarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image);
 
+        imageURL = getIntent().getStringExtra(TAG_IMAGE);
+        toolbarTitle = getIntent().getStringExtra(TAG_TITLE);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
+            if(toolbarTitle != null)
+                toolbar.setTitle(toolbarTitle);
+
             setSupportActionBar(toolbar);
             toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -38,8 +45,6 @@ public class ImageActivity extends AppCompatActivity {
                 }
             });
         }
-
-        imageURL = getIntent().getStringExtra(TAG_IMAGE);
 
         final ImageView tweetImageView = (ImageView) findViewById(R.id.tweetImageView);
         Picasso.with(this)
