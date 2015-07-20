@@ -1,8 +1,11 @@
 package com.andreapivetta.blu.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,6 +20,7 @@ public class ImageActivity extends AppCompatActivity {
     public static final String TAG_IMAGE = "IMAGE";
 
     private PhotoViewAttacher attacher;
+    private String imageURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +39,11 @@ public class ImageActivity extends AppCompatActivity {
             });
         }
 
+        imageURL = getIntent().getStringExtra(TAG_IMAGE);
+
         final ImageView tweetImageView = (ImageView) findViewById(R.id.tweetImageView);
         Picasso.with(this)
-                .load(getIntent().getStringExtra(TAG_IMAGE))
+                .load(imageURL)
                 .into(tweetImageView);
 
         tweetImageView.setOnTouchListener(new View.OnTouchListener() {
@@ -50,5 +56,23 @@ public class ImageActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_share, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_share) {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_TEXT,
+                    getString(R.string.check_out_photo, imageURL))
+                    .setType("text/plain");
+            startActivity(intent);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

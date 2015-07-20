@@ -226,5 +226,6 @@
     <string name="pref_key_db_populated" translatable="false">popdb</string>
     <string name="prefcat_appearance_title">Appearance</string>
     <string name="image_transition">imageTransition</string>
+    <string name="check_out_photo">I\'ve found this photo on Twitter %1$s</string>
 
 </resources>
