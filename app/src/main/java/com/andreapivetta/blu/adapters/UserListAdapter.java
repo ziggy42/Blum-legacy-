@@ -3,6 +3,7 @@ package com.andreapivetta.blu.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -58,8 +59,11 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, UserProfileActivity.class);
-                i.putExtra("ID", user.getId())
-                        .putExtra("Twitter", twitter);
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(UserProfileActivity.TAG_USER, user);
+                i.putExtras(bundle);
+
                 context.startActivity(i);
             }
         });

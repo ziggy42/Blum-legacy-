@@ -57,7 +57,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, UserProfileActivity.class);
-                i.putExtra("ID", notification.userID);
+                i.putExtra(UserProfileActivity.TAG_ID, notification.userID);
                 context.startActivity(i);
             }
         });
@@ -120,7 +120,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(context, UserProfileActivity.class);
-                    i.putExtra("ID", notification.userID);
+                    i.putExtra(UserProfileActivity.TAG_ID, notification.userID);
                     context.startActivity(i);
                 }
             });

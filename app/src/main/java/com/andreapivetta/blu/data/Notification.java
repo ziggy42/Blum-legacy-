@@ -118,7 +118,7 @@ public class Notification {
                 break;
             case TYPE_FOLLOW:
                 resultIntent = new Intent(context, UserProfileActivity.class);
-                resultIntent.putExtra("ID", userID);
+                resultIntent.putExtra(UserProfileActivity.TAG_ID, userID);
                 resultPendingIntent = PendingIntent.getActivity(
                         context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 

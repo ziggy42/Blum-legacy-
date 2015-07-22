@@ -67,8 +67,14 @@ import twitter4j.User;
 
 public class UserProfileActivity extends ThemedActivity {
 
+    public final static String TAG_USER = "user";
+    public final static String TAG_TYPE = "type";
+    public final static String TAG_ARRAY = "array";
+    public final static String TAG_ID = "id";
+
     private final static String FOLLOWERS = "followers";
     private final static String FOLLOWING = "following";
+
     private TYPE type;
     private Twitter twitter;
     private User user;
@@ -81,9 +87,8 @@ public class UserProfileActivity extends ThemedActivity {
     private Toolbar toolbar;
     private ScrollView profileScrollView;
     private ImageView profileBackgroundImageView, profilePictureImageView;
-    private TextView userNickTextView, userNameTextView, descriptionTextView, userLocationTextView,
-            userWebsiteTextView, tweetAmountTextView, followingAmountTextView,
-            followersAmountTextView, isHeFollowingTextView;
+    private TextView userNickTextView, userNameTextView, descriptionTextView, userLocationTextView, userWebsiteTextView,
+            tweetAmountTextView, followingAmountTextView, followersAmountTextView, isHeFollowingTextView;
     private Button tweetButton, followButton;
     private ViewStub[] stubs = new ViewStub[3];
 
@@ -124,12 +129,13 @@ public class UserProfileActivity extends ThemedActivity {
         stubs[2] = (ViewStub) findViewById(R.id.thirdViewStub);
 
         if (savedInstanceState != null) {
-            user = (User) savedInstanceState.getSerializable("USER");
-            type = (TYPE) savedInstanceState.getSerializable("TYPE");
-            statuses = (Status[]) savedInstanceState.getSerializable("ARRAY");
+            user = (User) savedInstanceState.getSerializable(TAG_USER);
+            type = (TYPE) savedInstanceState.getSerializable(TAG_TYPE);
+            statuses = (Status[]) savedInstanceState.getSerializable(TAG_ARRAY);
 
             if (statuses != null && type != null && user != null) {
                 setUpUI();
+                setUpRelationControls();
                 setUpTweets();
                 invalidateOptionsMenu();
             } else {
@@ -142,11 +148,18 @@ public class UserProfileActivity extends ThemedActivity {
     }
 
     void setUpUser() {
-        Uri uri = getIntent().getData();
-        if (uri != null)
-            new LoadUserByName().execute(uri.toString().substring(29));
-        else
-            new LoadUser().execute(getIntent().getLongExtra("ID", 0));
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+
+        if (bundle != null && bundle.containsKey(TAG_USER)) {
+            user = (User) bundle.getSerializable(TAG_USER);
+            setUpUI();
+            new LoadRelationship().execute(null, null, null);
+        } else {
+            Uri uri = intent.getData();
+            new LoadUser().execute(
+                    (uri != null) ? Long.parseLong(uri.toString().substring(29)) : intent.getLongExtra(TAG_ID, 0));
+        }
     }
 
     void setUpUI() {
@@ -285,7 +298,9 @@ public class UserProfileActivity extends ThemedActivity {
                 }
             }
         });
+    }
 
+    void setUpRelationControls() {
         switch (type) {
             case I_FOLLOW_HIM:
                 followButton.setText(getString(R.string.unfollow));
@@ -427,7 +442,11 @@ public class UserProfileActivity extends ThemedActivity {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(UserProfileActivity.this, UserProfileActivity.class);
-                    i.putExtra("ID", statuses[index].getUser().getId());
+
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(UserProfileActivity.TAG_USER, statuses[index].getUser());
+                    i.putExtras(bundle);
+
                     startActivity(i);
                 }
             });
@@ -682,9 +701,9 @@ public class UserProfileActivity extends ThemedActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable("USER", user);
-        outState.putSerializable("TYPE", type);
-        outState.putSerializable("ARRAY", statuses);
+        outState.putSerializable(TAG_USER, user);
+        outState.putSerializable(TAG_TYPE, type);
+        outState.putSerializable(TAG_ARRAY, statuses);
         super.onSaveInstanceState(outState);
     }
 
@@ -733,6 +752,7 @@ public class UserProfileActivity extends ThemedActivity {
         protected void onPostExecute(Boolean status) {
             if (status) {
                 setUpUI();
+                setUpRelationControls();
                 invalidateOptionsMenu();
                 new LoadTweets().execute(null, null, null);
             } else {
@@ -747,49 +767,37 @@ public class UserProfileActivity extends ThemedActivity {
         }
     }
 
-    private class LoadUserByName extends AsyncTask<String, Void, Boolean> {
+    private class LoadRelationship extends AsyncTask<Void, Void, Void> {
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Void doInBackground(Void... params) {
             try {
-                if (!params[0].equals(twitter.getScreenName())) {
-                    user = twitter.showUser(params[0]);
-
+                if (user.getId() == twitter.getId()) {
+                    type = TYPE.THIS_IS_ME;
+                } else {
                     Relationship rel = twitter.showFriendship(twitter.getId(), user.getId());
                     if (rel.isSourceFollowingTarget() && rel.isTargetFollowingSource()) {
                         type = TYPE.WE_FOLLOW_EACH_OTHER;
+                    } else if (rel.isTargetFollowingSource()) {
+                        type = TYPE.HE_FOLLOWS_ME;
                     } else if (rel.isSourceFollowingTarget()) {
                         type = TYPE.I_FOLLOW_HIM;
                     } else {
                         type = TYPE.I_DONT_KNOW_WHO_YOU_ARE;
                     }
-                } else {
-                    user = twitter.showUser(twitter.getId());
-                    type = TYPE.THIS_IS_ME;
                 }
-
             } catch (TwitterException e) {
                 e.printStackTrace();
-                return false;
             }
 
-            return true;
+            return null;
         }
 
-        protected void onPostExecute(Boolean status) {
-            if (status) {
-                setUpUI();
-                invalidateOptionsMenu();
-                new LoadTweets().execute(null, null, null);
-            } else {
-                if (!new ConnectionDetector(UserProfileActivity.this).isConnectingToInternet())
-                    Toast.makeText(UserProfileActivity.this,
-                            getString(R.string.cant_find_user), Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(UserProfileActivity.this,
-                            getString(R.string.reached_twitter_user_limit), Toast.LENGTH_LONG).show();
-                finish();
-            }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            setUpRelationControls();
+            invalidateOptionsMenu();
+            new LoadTweets().execute(null, null, null);
         }
     }
 

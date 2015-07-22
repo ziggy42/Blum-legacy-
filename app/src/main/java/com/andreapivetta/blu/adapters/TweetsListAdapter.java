@@ -164,7 +164,11 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, UserProfileActivity.class);
-                i.putExtra("ID", currentUser.getId());
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(UserProfileActivity.TAG_USER, currentUser);
+                i.putExtras(bundle);
+
                 context.startActivity(i);
             }
         });

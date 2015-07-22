@@ -104,7 +104,7 @@
     <string name="licenses_pref_title">Open Source Licenses</string>
     <string name="licenses_pref_summary">Licenses for open source software used in this app</string>
     <string name="action_mark_as_read">Mark all as read</string>
-    <string name="my_twitter"><![CDATA[Developed with ♥ by <a href="com.andreapivetta.blu.user://Pivix00">\@Pivix00<a><br/>Icon from <a href="com.andreapivetta.blu.user://stefano_openlab">\@stefano_openlab<a>]]></string>
+    <string name="my_twitter"><![CDATA[Developed with ♥ by <a href="com.andreapivetta.blu.user://290695594">\@Pivix00<a><br/>Icon from <a href="com.andreapivetta.blu.user://1869322772">\@stefano_openlab<a>]]></string>
     <string name="too_many_images">You can send at most 4 images</string>
     <string name="operation_not_supported">Operation not supported</string>
     <string name="check_out_photo">I\'ve found this photo on Twitter %1$s</string>
