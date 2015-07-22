@@ -59,7 +59,6 @@ public class ConversationActivity extends ThemedActivity {
                 @Override
                 public void onClick(View v) {
                     finish();
-                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 }
             });
         }
@@ -120,12 +119,6 @@ public class ConversationActivity extends ThemedActivity {
 
         if (dataUpdateReceiver != null)
             unregisterReceiver(dataUpdateReceiver);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
     private class Loader extends AsyncTask<Void, Void, Boolean> {

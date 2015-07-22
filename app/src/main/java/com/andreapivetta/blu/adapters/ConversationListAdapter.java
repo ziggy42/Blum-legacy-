@@ -99,7 +99,6 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ConversationLi
                 Intent i = new Intent(context, ConversationActivity.class);
                 i.putExtra("ID", current.otherID);
                 context.startActivity(i);
-                ((Activity) context).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
     }
