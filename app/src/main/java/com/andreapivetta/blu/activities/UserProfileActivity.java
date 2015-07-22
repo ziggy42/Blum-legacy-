@@ -188,7 +188,7 @@ public class UserProfileActivity extends ThemedActivity {
 
         Picasso.with(this)
                 .load(user.getProfileBannerURL())
-                .placeholder(ResourcesCompat.getDrawable(getResources(), R.drawable.placeholder_banner, null))
+                .placeholder(R.drawable.placeholder)
                 .into(profileBackgroundImageView, new Callback() {
                     @Override
                     @TargetApi(21)

@@ -19,19 +19,16 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import twitter4j.Twitter;
 import twitter4j.User;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
 
     private ArrayList<User> mDataSet;
     private Context context;
-    private Twitter twitter;
 
-    public UserListAdapter(ArrayList<User> mDataSet, Context context, Twitter twitter) {
+    public UserListAdapter(ArrayList<User> mDataSet, Context context) {
         this.mDataSet = mDataSet;
         this.context = context;
-        this.twitter = twitter;
     }
 
     @Override

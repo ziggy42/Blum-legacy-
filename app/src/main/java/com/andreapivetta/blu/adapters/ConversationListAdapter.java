@@ -1,7 +1,6 @@
 package com.andreapivetta.blu.adapters;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;

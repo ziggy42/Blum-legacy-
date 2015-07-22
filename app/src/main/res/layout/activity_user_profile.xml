@@ -12,8 +12,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:contentDescription="@string/profile_background_contentDescriptor"
-        android:scaleType="centerCrop"
-        android:src="@drawable/placeholder" />
+        android:scaleType="centerCrop" />
 
     <ScrollView
         android:id="@+id/profileScrollView"
