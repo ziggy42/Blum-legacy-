@@ -2,14 +2,12 @@ package com.andreapivetta.blu.activities;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -276,7 +274,7 @@ public class UserProfileActivity extends ThemedActivity {
             public void onClick(View v) {
                 Intent i = new Intent(UserProfileActivity.this, ImageActivity.class);
                 i.putExtra(ImageActivity.TAG_TITLE, user.getName());
-                i.putExtra(ImageActivity.TAG_IMAGE, user.getOriginalProfileImageURL());
+                i.putExtra(ImageActivity.TAG_IMAGES, new String[]{user.getOriginalProfileImageURL()});
                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     ActivityOptions options = ActivityOptions
                             .makeSceneTransitionAnimation(UserProfileActivity.this, profilePictureImageView,
@@ -512,7 +510,7 @@ public class UserProfileActivity extends ThemedActivity {
                         @Override
                         public void onClick(View v) {
                             Intent i = new Intent(UserProfileActivity.this, ImageActivity.class);
-                            i.putExtra("IMAGE", mediaEntity.getMediaURL());
+                            i.putExtra(ImageActivity.TAG_IMAGES, new String[]{mediaEntity.getMediaURL()});
                             startActivity(i);
                         }
                     });

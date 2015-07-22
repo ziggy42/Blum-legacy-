@@ -6,11 +6,10 @@
     android:orientation="vertical"
     tools:context="com.andreapivetta.blu.activities.ImageActivity">
 
-    <ImageView
-        android:id="@+id/tweetImageView"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/photosViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@string/tweet_photo_contentDescriptor"
         android:transitionName="@string/image_transition" />
 
     <android.support.v7.widget.Toolbar

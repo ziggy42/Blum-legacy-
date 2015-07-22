@@ -149,5 +149,7 @@
     <string name="themes_pref_summary">Scegli il tema</string>
     <string name="themes_pref_title">Temi</string>
     <string name="prefcat_appearance_title">Aspetto</string>
+    <string name="check_out_photo">Ho trovato questa foto su Twitter %1$s</string>
+    <string name="m_of_n">%1$d di %2$d</string>
 
 </resources>

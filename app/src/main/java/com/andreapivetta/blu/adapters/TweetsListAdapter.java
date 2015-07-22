@@ -323,7 +323,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                         @Override
                         public void onClick(View v) {
                             Intent i = new Intent(context, ImageActivity.class);
-                            i.putExtra(ImageActivity.TAG_IMAGE, mediaEntity.getMediaURL());
+                            i.putExtra(ImageActivity.TAG_IMAGES, new String[]{mediaEntity.getMediaURL()});
                             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                                 ActivityOptions options = ActivityOptions
                                         .makeSceneTransitionAnimation((Activity) context, ((VHHeader) holder).tweetPhotoImageView,
@@ -401,7 +401,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                         @Override
                         public void onClick(View v) {
                             Intent i = new Intent(context, ImageActivity.class);
-                            i.putExtra(ImageActivity.TAG_IMAGE, mediaEntity.getMediaURL());
+                            i.putExtra(ImageActivity.TAG_IMAGES, new String[]{mediaEntity.getMediaURL()});
                             context.startActivity(i);
                         }
                     });

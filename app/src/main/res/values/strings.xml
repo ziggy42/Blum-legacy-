@@ -107,6 +107,8 @@
     <string name="my_twitter"><![CDATA[Developed with ♥ by <a href="com.andreapivetta.blu.user://Pivix00">\@Pivix00<a><br/>Icon from <a href="com.andreapivetta.blu.user://stefano_openlab">\@stefano_openlab<a>]]></string>
     <string name="too_many_images">You can send at most 4 images</string>
     <string name="operation_not_supported">Operation not supported</string>
+    <string name="check_out_photo">I\'ve found this photo on Twitter %1$s</string>
+    <string name="m_of_n">%1$d of %2$d</string>
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>
@@ -208,8 +210,7 @@
     <string name="send_message_contentDescriptor" translatable="false">Send Message Button</string>
     <string name="profile_pic_contentDescriptor" translatable="false">Profile Picture</string>
     <string name="delete_photo_tweet_contentDescriptor" translatable="false">Delete Photo Buttom</string>
-    <string name="themes_pref_summary">Choose the UI Theme</string>
-    <string name="themes_pref_title">Themes</string>
+    <string name="image_transition" translatable="false">imageTransition</string>
 
     <!-- Prefs -->
     <string name="pref_key_themes" translatable="false">themes</string>
@@ -225,7 +226,7 @@
     <string name="pref_key_logged_user" translatable="false">user</string>
     <string name="pref_key_db_populated" translatable="false">popdb</string>
     <string name="prefcat_appearance_title">Appearance</string>
-    <string name="image_transition">imageTransition</string>
-    <string name="check_out_photo">I\'ve found this photo on Twitter %1$s</string>
+    <string name="themes_pref_summary">Choose the UI Theme</string>
+    <string name="themes_pref_title">Themes</string>
 
 </resources>

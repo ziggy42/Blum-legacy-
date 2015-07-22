@@ -44,8 +44,13 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.VHItem> {
         holder.tweetPhotoImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String images[] = new String[mediaEntities.length];
+                for (int i = 0; i < mediaEntities.length; i++)
+                    images[i] = mediaEntities[i].getMediaURL();
+
                 Intent i = new Intent(context, ImageActivity.class);
-                i.putExtra("IMAGE", mediaEntities[position].getMediaURL());
+                i.putExtra(ImageActivity.TAG_IMAGES, images);
+                i.putExtra(ImageActivity.TAG_CURRENT_ITEM, position);
                 context.startActivity(i);
             }
         });
