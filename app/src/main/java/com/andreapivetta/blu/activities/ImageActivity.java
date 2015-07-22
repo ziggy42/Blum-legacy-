@@ -108,7 +108,7 @@ public class ImageActivity extends AppCompatActivity {
         });
     }
 
-    public class ImageFragmentPagerAdapter extends FragmentPagerAdapter {
+    private class ImageFragmentPagerAdapter extends FragmentPagerAdapter {
 
         public ImageFragmentPagerAdapter() {
             super(getSupportFragmentManager());
@@ -170,6 +170,12 @@ public class ImageActivity extends AppCompatActivity {
             });
 
             return rootView;
+        }
+
+        @Override
+        public void onDestroyView() {
+            attacher = null;
+            super.onDestroyView();
         }
 
         @Override
