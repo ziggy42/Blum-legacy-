@@ -113,6 +113,7 @@
     <string-array name="themes">
         <item>Blu</item>
         <item>Rosa</item>
+        <item>Verde</item>
         <item>Scuro</item>
     </string-array>
     <string name="favorite_added">Tweet Preferito!</string>

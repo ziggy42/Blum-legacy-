@@ -160,12 +160,14 @@
     <string-array name="themes">
         <item>Blue</item>
         <item>Pink</item>
+        <item>Green</item>
         <item>Dark</item>
     </string-array>
 
     <string-array name="themes_values" translatable="false">
         <item>B</item>
         <item>P</item>
+        <item>G</item>
         <item>D</item>
     </string-array>
 

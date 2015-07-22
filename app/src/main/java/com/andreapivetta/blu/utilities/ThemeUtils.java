@@ -14,6 +14,8 @@ public class ThemeUtils {
                 return context.getResources().getColor(R.color.blueThemeColorPrimary);
             case "P":
                 return context.getResources().getColor(R.color.pinkThemeColorPrimary);
+            case "G":
+                return context.getResources().getColor(R.color.greenThemeColorPrimary);
             case "D":
                 return context.getResources().getColor(R.color.darkThemeColorPrimary);
             default:
@@ -28,6 +30,8 @@ public class ThemeUtils {
                 return R.color.blueThemeColorPrimary;
             case "P":
                 return R.color.pinkThemeColorPrimary;
+            case "G":
+                return R.color.greenThemeColorPrimary;
             case "D":
                 return R.color.darkThemeColorPrimary;
             default:
@@ -42,6 +46,8 @@ public class ThemeUtils {
                 return R.color.blueThemeColorPrimaryDark;
             case "P":
                 return R.color.pinkThemeColorPrimaryDark;
+            case "G":
+                return R.color.greenThemeColorPrimaryDark;
             case "D":
                 return R.color.darkThemeColorPrimaryDark;
             default:

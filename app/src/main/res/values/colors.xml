@@ -21,6 +21,11 @@
     <color name="pinkThemeColorPrimaryDark">#C2185B</color>
     <color name="pinkThemeColorAccent">#C2185B</color>
 
+    <!-- Green Theme -->
+    <color name="greenThemeColorPrimary">#009688</color>
+    <color name="greenThemeColorPrimaryDark">#00796B</color>
+    <color name="greenThemeColorAccent">#00796B</color>
+
     <!-- Dark Theme -->
     <color name="darkThemeColorPrimary">#37474F</color>
     <color name="darkThemeColorPrimaryDark">#263238</color>

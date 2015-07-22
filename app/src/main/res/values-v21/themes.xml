@@ -56,6 +56,20 @@
         <item name="rectButton">@drawable/rect_button_pink</item>
     </style>
 
+    <!-- Green Theme -->
+    <style name="GreenAppTheme" parent="LightBaseTheme">
+        <item name="colorPrimary">@color/greenThemeColorPrimary</item>
+        <item name="colorPrimaryDark">@color/greenThemeColorPrimaryDark</item>
+        <item name="colorAccent">@color/greenThemeColorAccent</item>
+        <item name="searchViewStyle">@style/GreenSearchViewStyle</item>
+        <item name="appColorPrimary">@color/greenThemeColorPrimary</item>
+        <item name="appColorPrimaryDark">@color/greenThemeColorPrimaryDark</item>
+        <item name="appColorAccent">@color/greenThemeColorAccent</item>
+        <item name="circleDrawable">@drawable/circle_darkgreen</item>
+        <item name="rectBackground">@drawable/rect_background_green</item>
+        <item name="rectButton">@drawable/rect_button_green</item>
+    </style>
+
     <!-- Dark Theme -->
     <style name="DarkTheme" parent="Theme.AppCompat">
         <item name="android:windowContentTransitions">true</item>

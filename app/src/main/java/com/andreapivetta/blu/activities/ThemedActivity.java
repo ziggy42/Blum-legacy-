@@ -17,6 +17,9 @@ public abstract class ThemedActivity extends AppCompatActivity {
             case "P":
                 setTheme(R.style.PinkAppTheme);
                 break;
+            case "G":
+                setTheme(R.style.GreenAppTheme);
+                break;
             case "D":
                 setTheme(R.style.DarkTheme);
                 break;
