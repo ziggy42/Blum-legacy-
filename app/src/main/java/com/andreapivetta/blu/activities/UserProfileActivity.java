@@ -157,8 +157,10 @@ public class UserProfileActivity extends ThemedActivity {
             new LoadRelationship().execute(null, null, null);
         } else {
             Uri uri = intent.getData();
-            new LoadUser().execute(
-                    (uri != null) ? Long.parseLong(uri.toString().substring(29)) : intent.getLongExtra(TAG_ID, 0));
+            if (uri != null)
+                new LoadUserByName().execute(uri.toString().substring(29));
+            else
+                new LoadUser().execute(intent.getLongExtra(TAG_ID, 0));
         }
     }
 
@@ -749,6 +751,52 @@ public class UserProfileActivity extends ThemedActivity {
             return true;
         }
 
+        protected void onPostExecute(Boolean status) {
+            if (status) {
+                setUpUI();
+                setUpRelationControls();
+                invalidateOptionsMenu();
+                new LoadTweets().execute(null, null, null);
+            } else {
+                if (!new ConnectionDetector(UserProfileActivity.this).isConnectingToInternet())
+                    Toast.makeText(UserProfileActivity.this,
+                            getString(R.string.cant_find_user), Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(UserProfileActivity.this,
+                            getString(R.string.reached_twitter_user_limit), Toast.LENGTH_LONG).show();
+                finish();
+            }
+        }
+    }
+
+    private class LoadUserByName extends AsyncTask<String, Void, Boolean> {
+
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+
+            try {
+                user = twitter.showUser(params[0]);
+
+                Relationship rel = twitter.showFriendship(twitter.getId(), user.getId());
+                if (rel.isSourceFollowingTarget() && rel.isTargetFollowingSource()) {
+                    type = TYPE.WE_FOLLOW_EACH_OTHER;
+                } else if (rel.isTargetFollowingSource()) {
+                    type = TYPE.HE_FOLLOWS_ME;
+                } else if (rel.isSourceFollowingTarget()) {
+                    type = TYPE.I_FOLLOW_HIM;
+                } else {
+                    type = TYPE.I_DONT_KNOW_WHO_YOU_ARE;
+                }
+            } catch (TwitterException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            return true;
+        }
+
+        @Override
         protected void onPostExecute(Boolean status) {
             if (status) {
                 setUpUI();
