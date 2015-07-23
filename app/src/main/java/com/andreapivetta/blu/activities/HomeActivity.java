@@ -292,47 +292,4 @@ public class HomeActivity extends TimeLineActivity {
             }
         }
     }
-
-    // For Screenshots only
-    private class LoadFakeTweets extends AsyncTask<Void, Void, Void> {
-
-        private ArrayList<twitter4j.Status> buffer = new ArrayList<>();
-
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            try {
-
-                buffer.add(twitter.showStatus(597193109559214080L));
-                buffer.add(twitter.showStatus(597189846889791489L));
-                buffer.add(twitter.showStatus(597189846889791489L));
-
-                buffer.add(twitter.showStatus(597189094209363968L));
-
-                buffer.add(twitter.showStatus(592827745522028544L));
-                buffer.add(twitter.showStatus(592827745522028544L));
-                buffer.add(twitter.showStatus(592827745522028544L));
-            } catch (TwitterException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            currentPage += 1;
-            loadingProgressBar.setVisibility(View.GONE);
-
-            new Handler().post(new Runnable() {
-                @Override
-                public void run() {
-                    for (twitter4j.Status tmp : buffer)
-                        mTweetsAdapter.add(tmp);
-                }
-            });
-
-            getTimeLineCallBack();
-        }
-    }
 }
