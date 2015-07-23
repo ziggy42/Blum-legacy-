@@ -183,8 +183,6 @@
     <string name="logout_pref_title" translatable="false">Logout</string>
     <string name="about_pref_title" translatable="false">About</string>
     <string name="logout_pref_summary">Logout and Exit</string>
-    <string name="animations_pref_title">Animations</string>
-    <string name="animations_pref_summary">You\'ll need to restart the app</string>
     <string name="heads_up_notifications_pref_summary">Allow heads-up notifications</string>
     <string name="heads_up_notifications_pref_title">Heads-Up Notifications</string>
     <string name="frequency_pref_summary">How often check for notifications</string>
@@ -218,7 +216,6 @@
     <string name="pref_key_themes" translatable="false">themes</string>
     <string name="pref_key_stream_service" translatable="false">stream</string>
     <string name="pref_key_heads_up_notifications" translatable="false">headsup</string>
-    <string name="pref_key_animations" translatable="false">animations</string>
     <string name="pref_key_dms" translatable="false">dms</string>
     <string name="pref_key_followers" translatable="false">followers</string>
     <string name="pref_key_mentions" translatable="false">mentions</string>

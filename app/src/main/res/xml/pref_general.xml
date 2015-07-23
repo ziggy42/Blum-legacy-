@@ -10,12 +10,6 @@
             android:summary="@string/themes_pref_summary"
             android:title="@string/themes_pref_title" />
 
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="@string/pref_key_animations"
-            android:summary="@string/animations_pref_summary"
-            android:title="@string/animations_pref_title" />
-
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/notifications">

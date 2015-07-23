@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -63,16 +62,12 @@ public abstract class TimeLineActivity extends ThemedActivity {
             setSupportActionBar(toolbar);
         }
 
+        ScaleInBottomAnimator animator = new ScaleInBottomAnimator();
+        animator.setAddDuration(300);
+
         mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
         mRecyclerView.addItemDecoration(new SpaceTopItemDecoration(Common.dpToPx(this, 10)));
-
-        if (PreferenceManager.getDefaultSharedPreferences(this)
-                .getBoolean(getString(R.string.pref_key_animations), true)) {
-            ScaleInBottomAnimator animator = new ScaleInBottomAnimator();
-            animator.setAddDuration(300);
-            mRecyclerView.setItemAnimator(animator);
-        }
-
+        mRecyclerView.setItemAnimator(animator);
         mTweetsAdapter = new TweetsListAdapter(tweetList, this, twitter, -1);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);

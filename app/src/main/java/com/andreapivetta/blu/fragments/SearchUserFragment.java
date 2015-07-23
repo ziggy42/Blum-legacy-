@@ -2,7 +2,6 @@ package com.andreapivetta.blu.fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -65,14 +64,12 @@ public class SearchUserFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
 
         twitter = TwitterUtils.getTwitter(getActivity());
+
+        ScaleInBottomAnimator scaleInBottomAnimator = new ScaleInBottomAnimator();
+        scaleInBottomAnimator.setAddDuration(300);
+
         RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.notificationsRecyclerView);
-
-        if (PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .getBoolean(getString(R.string.pref_key_animations), true)) {
-            mRecyclerView.setItemAnimator(new ScaleInBottomAnimator());
-            mRecyclerView.getItemAnimator().setAddDuration(300);
-        }
-
+        mRecyclerView.setItemAnimator(scaleInBottomAnimator);
         mRecyclerView.addItemDecoration(new SpaceTopItemDecoration(Common.dpToPx(getActivity(), 10)));
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);

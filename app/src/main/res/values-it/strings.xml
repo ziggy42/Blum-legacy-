@@ -9,8 +9,6 @@
     <string name="amount_followers">%1$s\nFollower</string>
     <string name="amount_following">%1$s\nSeguiti</string>
     <string name="amount_tweets">%1$s\nTweet</string>
-    <string name="animations_pref_summary">Dovrai riavviare l\'app</string>
-    <string name="animations_pref_title">Animazioni</string>
     <string name="are_following_ea">Tu e %1$s vi seguite a vicenda</string>
     <string name="authorized_by">Autorizzato da %1$s</string>
     <string name="cancel">Annulla</string>
