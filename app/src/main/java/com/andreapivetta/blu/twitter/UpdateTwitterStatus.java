@@ -4,11 +4,13 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
-import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.utilities.ThemeUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -69,7 +71,8 @@ public class UpdateTwitterStatus extends AsyncTask<String, String, Boolean> {
     void pushNotification() {
         mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(context);
-        mBuilder.setContentTitle(context.getString(R.string.sending_tweet_title))
+        mBuilder.setColor(ThemeUtils.getResourceColorPrimary(context))
+                .setContentTitle(context.getString(R.string.sending_tweet_title))
                 .setContentText(context.getString(R.string.sending_tweet_content))
                 .setSmallIcon(R.drawable.ic_stat_notification_sync)
                 .setProgress(0, 0, true);
@@ -78,16 +81,37 @@ public class UpdateTwitterStatus extends AsyncTask<String, String, Boolean> {
     }
 
     protected void onPostExecute(Boolean status) {
-        if (status) {
-            int i = mSharedPreferences.getInt("LAST", 1);
-            mBuilder.setContentText(context.getString(R.string.tweet_sent_message))
-                    .setProgress(0, 0, false)
-                    .setSmallIcon(R.drawable.ic_stat_navigation_check);
-            mNotifyManager.notify(i, mBuilder.build());
-            mSharedPreferences.edit().putInt("LAST", i + 1).apply();
-        } else {
-            Toast.makeText(context, context.getString(R.string.action_not_performed), Toast.LENGTH_SHORT).show();
+        final int i = mSharedPreferences.getInt("LAST", 1);
+        mNotifyManager.cancel(i);
+
+        mBuilder = new NotificationCompat.Builder(context);
+        mBuilder.setColor(ThemeUtils.getResourceColorPrimary(context));
+
+        if (mSharedPreferences.getBoolean(context.getString(R.string.pref_key_heads_up_notifications), true)
+                && (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)) {
+            mBuilder.setPriority(android.app.Notification.PRIORITY_HIGH)
+                    .setVibrate(new long[0]);
         }
+
+        if (status) {
+            mBuilder.setContentTitle(context.getString(R.string.done))
+                    .setContentText(context.getString(R.string.tweet_sent_message))
+                    .setSmallIcon(R.drawable.ic_stat_navigation_check);
+        } else {
+            mBuilder.setContentTitle(context.getString(R.string.ops))
+                    .setContentText(context.getString(R.string.tweet_not_sent))
+                    .setSmallIcon(R.drawable.abc_ic_clear_mtrl_alpha);
+        }
+
+        mNotifyManager.notify(i, mBuilder.build());
+
+        mSharedPreferences.edit().putInt("LAST", i + 1).apply();
+
+        (new Handler()).postDelayed(new Runnable() {
+            public void run() {
+                mNotifyManager.cancel(i);
+            }
+        }, 2000);
     }
 
 }
