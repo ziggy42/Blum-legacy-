@@ -6,9 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
@@ -76,7 +74,6 @@ public class HomeActivity extends TimeLineActivity {
                 newTweetsCount = savedInstanceState.getInt(UPCOMING_TWEET_COUNT_TAG);
             } else {
                 new GetTimeLine().execute(null, null, null);
-                //new LoadFakeTweets().execute(null, null, null); // For Screenshots only
             }
 
             if (mSharedPreferences.getBoolean(getString(R.string.pref_key_stream_service), false))
