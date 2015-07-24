@@ -246,8 +246,10 @@ public abstract class TimeLineActivity extends ThemedActivity {
                 List<twitter4j.Status> newTweets = getRefreshedTimeLine(currentPaging);
                 ListIterator<twitter4j.Status> it = newTweets.listIterator(newTweets.size());
 
-                while (it.hasPrevious())
+                while (it.hasPrevious()) {
                     tweetList.add(0, it.previous());
+                    tweetList.remove(tweetList.size() - 1);
+                }
 
             } catch (TwitterException e) {
                 e.printStackTrace();
