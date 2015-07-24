@@ -60,6 +60,12 @@
             android:summary="@string/heads_up_notifications_pref_summary"
             android:title="@string/heads_up_notifications_pref_title" />
 
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="@string/pref_key_mute_notifications"
+            android:summary="@string/mute_notifications_pref_summary"
+            android:title="@string/mute_notifications_pref_title" />
+
         <SwitchPreference
             android:defaultValue="false"
             android:key="@string/pref_key_stream_service"

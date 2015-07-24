@@ -24,7 +24,7 @@ public class Message implements Comparable<Message> {
     public long senderID;
     public long recipientID;
     public long otherID;
-    public  long timeStamp;
+    public long timeStamp;
     public String messageText;
     public String otherUserName;
     public String otherUserProfilePicUrl;
@@ -56,35 +56,37 @@ public class Message implements Comparable<Message> {
     }
 
     public static void pushMessage(DirectMessage dm, Context context) {
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
-        Intent resultIntent = new Intent(context, ConversationActivity.class);
-        resultIntent.putExtra("ID", dm.getSenderId());
-        PendingIntent resultPendingIntent = PendingIntent.getActivity(
-                context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        if (!PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.pref_key_mute_notifications), false)) {
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
+            Intent resultIntent = new Intent(context, ConversationActivity.class);
+            resultIntent.putExtra("ID", dm.getSenderId());
+            PendingIntent resultPendingIntent = PendingIntent.getActivity(
+                    context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        mBuilder.setDefaults(android.app.Notification.DEFAULT_SOUND)
-                .setAutoCancel(true)
-                .setContentTitle(context.getString(R.string.message_not_title, dm.getSender().getName()))
-                .setContentText(dm.getText())
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText(dm.getText()))
-                .setContentIntent(resultPendingIntent)
-                .setColor(ThemeUtils.getResourceColorPrimary(context))
-                .setLargeIcon(Common.getBitmapFromURL(dm.getSender().getProfileImageURL()))
-                .setSmallIcon(R.drawable.ic_message_white_24dp)
-                .setLights(Color.BLUE, 500, 1000)
-                .setContentIntent(resultPendingIntent);
+            mBuilder.setDefaults(android.app.Notification.DEFAULT_SOUND)
+                    .setAutoCancel(true)
+                    .setContentTitle(context.getString(R.string.message_not_title, dm.getSender().getName()))
+                    .setContentText(dm.getText())
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(dm.getText()))
+                    .setContentIntent(resultPendingIntent)
+                    .setColor(ThemeUtils.getResourceColorPrimary(context))
+                    .setLargeIcon(Common.getBitmapFromURL(dm.getSender().getProfileImageURL()))
+                    .setSmallIcon(R.drawable.ic_message_white_24dp)
+                    .setLights(Color.BLUE, 500, 1000)
+                    .setContentIntent(resultPendingIntent);
 
-        if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.pref_key_heads_up_notifications), true)
-                && (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1))
-            mBuilder.setPriority(android.app.Notification.PRIORITY_HIGH);
+            if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.pref_key_heads_up_notifications), true)
+                    && (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1))
+                mBuilder.setPriority(android.app.Notification.PRIORITY_HIGH);
 
-        ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE))
-                .notify((int) dm.getId(), mBuilder.build());
+            ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE))
+                    .notify((int) dm.getId(), mBuilder.build());
 
-        Intent i = new Intent();
-        i.setAction(Message.NEW_MESSAGE_INTENT);
-        context.sendBroadcast(i);
+            Intent i = new Intent();
+            i.setAction(Message.NEW_MESSAGE_INTENT);
+            context.sendBroadcast(i);
+        }
     }
 
     @Override

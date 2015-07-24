@@ -123,7 +123,7 @@
     <string name="hint_message">Messaggio</string>
     <string name="message_not_title">%1$s ti ha mandato un Messaggio!</string>
     <string name="messages_notifications">Notifiche dei Messaggi</string>
-    <string name="title_activity_conversations_list">Conversazioni</string>
+    <string name="title_activity_conversations_list">Messaggi Diretti</string>
     <string name="you_message">Tu: %1$s</string>
     <string name="come_here_later_message">Sto ancora scaricando roba, torna più tardi :D</string>
     <string name="hint_user">Nome</string>
@@ -152,5 +152,7 @@
     <string name="m_of_n">%1$d di %2$d</string>
     <string name="done">Fatto!</string>
     <string name="tweet_not_sent">Tweet non inviato</string>
+    <string name="mute_notifications_pref_summary">Non riceverai notifiche</string>
+    <string name="mute_notifications_pref_title">Silenzia Notifiche</string>
 
 </resources>
