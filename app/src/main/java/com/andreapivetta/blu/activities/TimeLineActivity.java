@@ -1,6 +1,5 @@
 package com.andreapivetta.blu.activities;
 
-import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.SpaceTopItemDecoration;
@@ -142,35 +140,13 @@ public abstract class TimeLineActivity extends ThemedActivity {
     abstract List<Status> getRefreshedTimeLine(Paging paging) throws TwitterException;
 
     void newTweetDown() {
-        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newTweetFAB.getLayoutParams();
-        ValueAnimator downAnimator = ValueAnimator.ofInt(params.bottomMargin, -newTweetFAB.getHeight());
-        downAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                params.bottomMargin = (Integer) valueAnimator.getAnimatedValue();
-                newTweetFAB.requestLayout();
-            }
-        });
-        downAnimator.setDuration(200)
+        newTweetFAB.animate().translationY(newTweetFAB.getHeight() + (int) (getResources().getDimension(R.dimen.fabMargin)))
                 .start();
-
         isUp = false;
     }
 
     void newTweetUp() {
-        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newTweetFAB.getLayoutParams();
-        ValueAnimator upAnimator = ValueAnimator.ofInt(params.bottomMargin, Common.dpToPx(this,
-                (int) (getResources().getDimension(R.dimen.fabMargin) / getResources().getDisplayMetrics().density)));
-        upAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                params.bottomMargin = (Integer) valueAnimator.getAnimatedValue();
-                newTweetFAB.requestLayout();
-            }
-        });
-        upAnimator.setDuration(200)
-                .start();
-
+        newTweetFAB.animate().translationY(0).start();
         isUp = true;
     }
 

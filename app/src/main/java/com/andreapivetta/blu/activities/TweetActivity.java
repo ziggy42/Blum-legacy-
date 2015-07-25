@@ -126,35 +126,13 @@ public class TweetActivity extends ThemedActivity {
     }
 
     void newTweetDown() {
-        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) replyFAB.getLayoutParams();
-        ValueAnimator downAnimator = ValueAnimator.ofInt(params.bottomMargin, -replyFAB.getHeight());
-        downAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                params.bottomMargin = (Integer) valueAnimator.getAnimatedValue();
-                replyFAB.requestLayout();
-            }
-        });
-        downAnimator.setDuration(200);
-        downAnimator.start();
-
+        replyFAB.animate().translationY(replyFAB.getHeight() + (int) (getResources().getDimension(R.dimen.fabMargin)))
+                .start();
         isUp = false;
     }
 
     void newTweetUp() {
-        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) replyFAB.getLayoutParams();
-        ValueAnimator upAnimator = ValueAnimator.ofInt(params.bottomMargin, Common.dpToPx(this,
-                (int) (getResources().getDimension(R.dimen.fabMargin) / getResources().getDisplayMetrics().density)));
-        upAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                params.bottomMargin = (Integer) valueAnimator.getAnimatedValue();
-                replyFAB.requestLayout();
-            }
-        });
-        upAnimator.setDuration(200);
-        upAnimator.start();
-
+        replyFAB.animate().translationY(0).start();
         isUp = true;
     }
 

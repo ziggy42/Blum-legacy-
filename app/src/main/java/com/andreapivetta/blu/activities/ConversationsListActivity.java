@@ -1,6 +1,5 @@
 package com.andreapivetta.blu.activities;
 
-import android.animation.ValueAnimator;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -21,7 +20,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.ConversationListAdapter;
@@ -29,7 +27,6 @@ import com.andreapivetta.blu.adapters.UserListMessageAdapter;
 import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.data.Message;
 import com.andreapivetta.blu.twitter.TwitterUtils;
-import com.andreapivetta.blu.utilities.Common;
 
 import java.util.ArrayList;
 
@@ -202,35 +199,13 @@ public class ConversationsListActivity extends ThemedActivity {
     }
 
     void newMessageDown() {
-        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newMessageFAB.getLayoutParams();
-        ValueAnimator downAnimator = ValueAnimator.ofInt(params.bottomMargin, -newMessageFAB.getHeight());
-        downAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                params.bottomMargin = (Integer) valueAnimator.getAnimatedValue();
-                newMessageFAB.requestLayout();
-            }
-        });
-        downAnimator.setDuration(200)
+        newMessageFAB.animate().translationY(newMessageFAB.getHeight() + (int) (getResources().getDimension(R.dimen.fabMargin)))
                 .start();
-
         isUp = false;
     }
 
     void newMessageUp() {
-        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) newMessageFAB.getLayoutParams();
-        ValueAnimator upAnimator = ValueAnimator.ofInt(params.bottomMargin, Common.dpToPx(this,
-                (int) (getResources().getDimension(R.dimen.fabMargin)/ getResources().getDisplayMetrics().density)));
-        upAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                params.bottomMargin = (Integer) valueAnimator.getAnimatedValue();
-                newMessageFAB.requestLayout();
-            }
-        });
-        upAnimator.setDuration(200)
-                .start();
-
+        newMessageFAB.animate().translationY(0).start();
         isUp = true;
     }
 
