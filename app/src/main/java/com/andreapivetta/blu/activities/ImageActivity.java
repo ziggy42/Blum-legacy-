@@ -2,6 +2,7 @@ package com.andreapivetta.blu.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -15,6 +16,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 
 import com.andreapivetta.blu.R;
@@ -33,6 +36,18 @@ public class ImageActivity extends AppCompatActivity {
 
     private List<String> images;
 
+    private boolean isToolbarVisible = true;
+    private Handler handler = new Handler();
+
+    private Runnable hideToolbarRunnable = new Runnable() {
+        @Override
+        public void run() {
+            hideToolbar();
+        }
+    };
+
+    private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +59,7 @@ public class ImageActivity extends AppCompatActivity {
         if (images.size() > 1)
             toolbarTitle = getString(R.string.m_of_n, currentItem + 1, images.size());
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             if (toolbarTitle != null)
                 toolbar.setTitle(toolbarTitle);
@@ -97,8 +112,12 @@ public class ImageActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                if (images.size() > 1)
+                if (images.size() > 1) {
                     getSupportActionBar().setTitle(getString(R.string.m_of_n, position + 1, images.size()));
+
+                    showToolbar();
+                    hideToolbarDelay();
+                }
             }
 
             @Override
@@ -106,6 +125,27 @@ public class ImageActivity extends AppCompatActivity {
 
             }
         });
+
+        hideToolbarDelay();
+    }
+
+    void hideToolbarDelay() {
+        handler.removeCallbacks(hideToolbarRunnable);
+        handler.postDelayed(hideToolbarRunnable, 2000);
+    }
+
+    void hideToolbar() {
+        if (isToolbarVisible) {
+            toolbar.animate().translationY(-toolbar.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
+            isToolbarVisible = false;
+        }
+    }
+
+    void showToolbar() {
+        if (!isToolbarVisible) {
+            toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator()).start();
+            isToolbarVisible = true;
+        }
     }
 
     private class ImageFragmentPagerAdapter extends FragmentPagerAdapter {
@@ -126,13 +166,12 @@ public class ImageActivity extends AppCompatActivity {
 
     }
 
-
     public static class ImageFragment extends Fragment {
 
         private static final String TAG_IMAGE = "image";
 
         private String imageURL;
-        private PhotoViewAttacher attacher;
+        private PhotoViewAttacher photoViewAttacher;
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -162,8 +201,19 @@ public class ImageActivity extends AppCompatActivity {
             tweetImageView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    if (attacher == null)
-                        attacher = new PhotoViewAttacher(tweetImageView);
+                    if (photoViewAttacher == null) {
+                        photoViewAttacher = new PhotoViewAttacher(tweetImageView);
+                        photoViewAttacher.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+                            @Override
+                            public void onPhotoTap(View view, float v, float v1) {
+                                ((ImageActivity) getActivity()).showToolbar();
+                                ((ImageActivity) getActivity()).hideToolbarDelay();
+                            }
+                        });
+
+                        ((ImageActivity) getActivity()).showToolbar();
+                        ((ImageActivity) getActivity()).hideToolbarDelay();
+                    }
 
                     return true;
                 }
@@ -174,7 +224,7 @@ public class ImageActivity extends AppCompatActivity {
 
         @Override
         public void onDestroyView() {
-            attacher = null;
+            photoViewAttacher = null;
             super.onDestroyView();
         }
 
@@ -197,4 +247,5 @@ public class ImageActivity extends AppCompatActivity {
             return super.onOptionsItemSelected(item);
         }
     }
+
 }
