@@ -223,7 +223,7 @@ public class NewTweetActivity extends ThemedActivity {
                     if (imageReturnedIntent.getData() != null) {
                         imageFiles.add(new File(FileUtils.getPath(NewTweetActivity.this, imageReturnedIntent.getData())));
                         mAdapter.notifyItemInserted(imageFiles.size() - 1);
-                    } else if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2
+                    } else if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2
                             && imageReturnedIntent.getClipData() != null) {
                         ClipData mClipData = imageReturnedIntent.getClipData();
                         for (int i = 0; i < mClipData.getItemCount() && i < 4; i++)
@@ -300,7 +300,7 @@ public class NewTweetActivity extends ThemedActivity {
     }
 
     private class DeletableImageAdapter extends RecyclerView.Adapter<DeletableImageAdapter.VHItem> {
-        
+
         @Override
         public VHItem onCreateViewHolder(ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext())
@@ -326,7 +326,7 @@ public class NewTweetActivity extends ThemedActivity {
             public ImageView photoImageView;
             public ImageButton deleteButton;
 
-            public  VHItem(View container) {
+            public VHItem(View container) {
                 super(container);
 
                 this.photoImageView = (ImageView) container.findViewById(R.id.tweetPhotoImageView);

@@ -1,6 +1,5 @@
 package com.andreapivetta.blu.activities;
 
-import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.SpaceTopItemDecoration;

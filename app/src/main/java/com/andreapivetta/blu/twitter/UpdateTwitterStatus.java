@@ -1,5 +1,6 @@
 package com.andreapivetta.blu.twitter;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -88,7 +89,7 @@ public class UpdateTwitterStatus extends AsyncTask<String, String, Boolean> {
         mBuilder.setColor(ThemeUtils.getResourceColorPrimary(context));
 
         if (mSharedPreferences.getBoolean(context.getString(R.string.pref_key_heads_up_notifications), true)
-                && (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)) {
+                && (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT)) {
             mBuilder.setPriority(android.app.Notification.PRIORITY_HIGH)
                     .setVibrate(new long[0]);
         }
