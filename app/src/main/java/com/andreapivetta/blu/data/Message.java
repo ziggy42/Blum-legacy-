@@ -59,7 +59,7 @@ public class Message implements Comparable<Message> {
         if (!PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.pref_key_mute_notifications), false)) {
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
             Intent resultIntent = new Intent(context, ConversationActivity.class);
-            resultIntent.putExtra("ID", dm.getSenderId());
+            resultIntent.putExtra(ConversationActivity.TAG_ID, dm.getSenderId());
             PendingIntent resultPendingIntent = PendingIntent.getActivity(
                     context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 

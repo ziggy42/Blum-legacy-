@@ -50,7 +50,7 @@ public class UserListSimpleAdapter extends RecyclerView.Adapter<UserListMessageA
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, UserProfileActivity.class);
-                i.putExtra("ID", user.getId());
+                i.putExtra(UserProfileActivity.TAG_ID, user.getId());
                 context.startActivity(i);
             }
         });

@@ -21,6 +21,9 @@ import twitter4j.User;
 
 public class UserTimeLineActivity extends TimeLineActivity {
 
+    private static final String TAG_USER = "user";
+    public  static final String TAG_USER_ID = "id";
+
     private User user;
 
     @Override
@@ -29,11 +32,11 @@ public class UserTimeLineActivity extends TimeLineActivity {
         twitter = TwitterUtils.getTwitter(UserTimeLineActivity.this);
 
         if (savedInstanceState != null) {
-            user = (User) savedInstanceState.getSerializable("USER");
-            tweetList = (ArrayList<Status>) savedInstanceState.getSerializable(TWEETS_LIST_TAG);
-            currentPage = savedInstanceState.getInt(CURRENTPAGE_TAG);
+            user = (User) savedInstanceState.getSerializable(TAG_USER);
+            tweetList = (ArrayList<Status>) savedInstanceState.getSerializable(TAG_TWEET_LIST);
+            currentPage = savedInstanceState.getInt(TAG_CURRENT_PAGE);
         } else {
-            new LoadUser().execute(getIntent().getLongExtra("ID", 0));
+            new LoadUser().execute(getIntent().getLongExtra(TAG_USER_ID, 0));
         }
 
         super.onCreate(savedInstanceState);
@@ -74,7 +77,7 @@ public class UserTimeLineActivity extends TimeLineActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable("USER", user);
+        outState.putSerializable(TAG_USER, user);
         super.onSaveInstanceState(outState);
     }
 

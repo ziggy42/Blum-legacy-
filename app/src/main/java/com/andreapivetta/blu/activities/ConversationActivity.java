@@ -32,6 +32,8 @@ import twitter4j.User;
 
 public class ConversationActivity extends ThemedActivity {
 
+    public static String TAG_ID = "id";
+
     private User currentUser;
     private Twitter twitter;
     private long userID;
@@ -63,7 +65,7 @@ public class ConversationActivity extends ThemedActivity {
             });
         }
 
-        userID = getIntent().getLongExtra("ID", 0L);
+        userID = getIntent().getLongExtra(TAG_ID, 0L);
 
         twitter = TwitterUtils.getTwitter(ConversationActivity.this);
         ImageButton sendMessageImageButton = (ImageButton) findViewById(R.id.sendMessageImageButton);

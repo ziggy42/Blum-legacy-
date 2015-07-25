@@ -69,8 +69,8 @@ public class NewTweetQuoteActivity extends ThemedActivity {
             public void onClick(View v) {
                 Intent i = new Intent(NewTweetQuoteActivity.this, TweetActivity.class);
                 Bundle b = new Bundle();
-                b.putSerializable("TWEET", currentStatus);
-                i.putExtra("STATUS", b);
+                b.putSerializable(TweetActivity.TAG_TWEET, currentStatus);
+                i.putExtra(TweetActivity.TAG_STATUS_BUNDLE, b);
                 NewTweetQuoteActivity.this.startActivity(i);
             }
         });

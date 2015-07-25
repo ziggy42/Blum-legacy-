@@ -222,8 +222,8 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, NewTweetActivity.class);
-                i.putExtra("USER_PREFIX", "@" + currentUser.getScreenName())
-                        .putExtra("REPLY_ID", currentStatus.getId());
+                i.putExtra(NewTweetActivity.TAG_USER_PREFIX, "@" + currentUser.getScreenName())
+                        .putExtra(NewTweetActivity.TAG_REPLY_ID, currentStatus.getId());
                 context.startActivity(i);
             }
         });
@@ -371,8 +371,8 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                     public void onClick(View v) {
                         Intent i = new Intent(context, TweetActivity.class);
                         Bundle b = new Bundle();
-                        b.putSerializable("TWEET", quotedStatus);
-                        i.putExtra("STATUS", b);
+                        b.putSerializable(TweetActivity.TAG_TWEET, quotedStatus);
+                        i.putExtra(TweetActivity.TAG_STATUS_BUNDLE, b);
                         context.startActivity(i);
                     }
                 });
@@ -434,8 +434,8 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                     public void onClick(View v) {
                         Intent i = new Intent(context, TweetActivity.class);
                         Bundle b = new Bundle();
-                        b.putSerializable("TWEET", quotedStatus);
-                        i.putExtra("STATUS", b);
+                        b.putSerializable(TweetActivity.TAG_TWEET, quotedStatus);
+                        i.putExtra(TweetActivity.TAG_STATUS_BUNDLE, b);
                         context.startActivity(i);
                     }
                 });
@@ -454,8 +454,8 @@ public class TweetsListAdapter extends RecyclerView.Adapter<TweetsListAdapter.Vi
                 public void onClick(View v) {
                     Intent i = new Intent(context, TweetActivity.class);
                     Bundle b = new Bundle();
-                    b.putSerializable("TWEET", currentStatus);
-                    i.putExtra("STATUS", b);
+                    b.putSerializable(TweetActivity.TAG_TWEET, currentStatus);
+                    i.putExtra(TweetActivity.TAG_STATUS_BUNDLE, b);
                     context.startActivity(i);
                 }
             });

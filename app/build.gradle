@@ -8,8 +8,8 @@ android {
         applicationId "com.andreapivetta.blu"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 30
-        versionName "0.3.14"
+        versionCode 31
+        versionName "0.3.15"
 
         resConfigs "en", "it"
         resConfigs "nodpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"

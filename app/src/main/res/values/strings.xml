@@ -174,7 +174,7 @@
     </string-array>
 
     <!-- Activities titles -->
-    <string name="title_empty" translatable="false"/>
+    <string name="title_empty" translatable="false" />
     <string name="title_activity_tweet" translatable="false">Tweet</string>
     <string name="title_activity_feedback">Send Feedback</string>
     <string name="title_activity_new_tweet">New Tweet</string>
@@ -232,5 +232,6 @@
     <string name="pref_key_logged_user" translatable="false">user</string>
     <string name="pref_key_db_populated" translatable="false">popdb</string>
     <string name="pref_key_mute_notifications" translatable="false">muteNot</string>
+    <string name="select_picture">Select Picture</string>
 
 </resources>

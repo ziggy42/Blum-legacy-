@@ -21,6 +21,8 @@ import java.util.ArrayList;
 
 public class NotificationFragment extends Fragment {
 
+    private static final String TAG_KIND = "kind";
+
     private ArrayList<Notification> notificationList = new ArrayList<>();
 
     private int kind;
@@ -30,7 +32,7 @@ public class NotificationFragment extends Fragment {
     public static NotificationFragment newInstance(int mode) {
         NotificationFragment f = new NotificationFragment();
         Bundle args = new Bundle();
-        args.putInt("KIND", mode);
+        args.putInt(TAG_KIND, mode);
         f.setArguments(args);
         return f;
     }
@@ -39,7 +41,7 @@ public class NotificationFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        kind = getArguments().getInt("KIND");
+        kind = getArguments().getInt(TAG_KIND);
     }
 
     @Override

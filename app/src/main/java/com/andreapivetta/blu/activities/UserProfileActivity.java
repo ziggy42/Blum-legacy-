@@ -261,7 +261,7 @@ public class UserProfileActivity extends ThemedActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(UserProfileActivity.this, UserTimeLineActivity.class);
-                i.putExtra("ID", user.getId());
+                i.putExtra(UserTimeLineActivity.TAG_USER_ID, user.getId());
                 startActivity(i);
             }
         });
@@ -322,7 +322,7 @@ public class UserProfileActivity extends ThemedActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(UserProfileActivity.this, NewTweetActivity.class);
-                i.putExtra("USER_PREFIX", "@" + user.getScreenName());
+                i.putExtra(NewTweetActivity.TAG_USER_PREFIX, "@" + user.getScreenName());
                 startActivity(i);
             }
         });
@@ -478,8 +478,8 @@ public class UserProfileActivity extends ThemedActivity {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(UserProfileActivity.this, NewTweetActivity.class);
-                    i.putExtra("USER_PREFIX", "@" + statuses[index].getUser().getScreenName())
-                            .putExtra("REPLY_ID", statuses[index].getId());
+                    i.putExtra(NewTweetActivity.TAG_USER_PREFIX, "@" + statuses[index].getUser().getScreenName())
+                            .putExtra(NewTweetActivity.TAG_REPLY_ID, statuses[index].getId());
                     startActivity(i);
                 }
             });
@@ -554,8 +554,8 @@ public class UserProfileActivity extends ThemedActivity {
                     public void onClick(View v) {
                         Intent i = new Intent(UserProfileActivity.this, TweetActivity.class);
                         Bundle b = new Bundle();
-                        b.putSerializable("TWEET", quotedStatus);
-                        i.putExtra("STATUS", b);
+                        b.putSerializable(TweetActivity.TAG_TWEET, quotedStatus);
+                        i.putExtra(TweetActivity.TAG_STATUS_BUNDLE, b);
                         startActivity(i);
                     }
                 });
@@ -575,8 +575,8 @@ public class UserProfileActivity extends ThemedActivity {
                 public void onClick(View v) {
                     Intent i = new Intent(UserProfileActivity.this, TweetActivity.class);
                     Bundle b = new Bundle();
-                    b.putSerializable("TWEET", statuses[index]);
-                    i.putExtra("STATUS", b);
+                    b.putSerializable(TweetActivity.TAG_TWEET, statuses[index]);
+                    i.putExtra(TweetActivity.TAG_STATUS_BUNDLE, b);
                     startActivity(i);
                 }
             });
@@ -762,7 +762,6 @@ public class UserProfileActivity extends ThemedActivity {
     }
 
     private class LoadUserByName extends AsyncTask<String, Void, Boolean> {
-
 
         @Override
         protected Boolean doInBackground(String... params) {

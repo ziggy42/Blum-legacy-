@@ -96,7 +96,7 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ConversationLi
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, ConversationActivity.class);
-                i.putExtra("ID", current.otherID);
+                i.putExtra(ConversationActivity.TAG_ID, current.otherID);
                 context.startActivity(i);
             }
         });

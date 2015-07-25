@@ -154,5 +154,6 @@
     <string name="tweet_not_sent">Tweet non inviato</string>
     <string name="mute_notifications_pref_summary">Non riceverai notifiche</string>
     <string name="mute_notifications_pref_title">Silenzia Notifiche</string>
+    <string name="select_picture">Scegli Foto</string>
 
 </resources>

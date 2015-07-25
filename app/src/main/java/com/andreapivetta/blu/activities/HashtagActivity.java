@@ -30,7 +30,7 @@ public class HashtagActivity extends TimeLineActivity {
         hashtag = getIntent().getData().toString().substring(32);
         mQuery = new Query("#" + hashtag);
         if (savedInstanceState != null)
-            tweetList = (ArrayList<Status>) savedInstanceState.getSerializable("TWEET_LIST");
+            tweetList = (ArrayList<Status>) savedInstanceState.getSerializable(TAG_TWEET_LIST);
         else
             new GetTimeLine().execute(null, null, null);
 

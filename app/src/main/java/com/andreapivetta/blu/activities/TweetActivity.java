@@ -30,8 +30,11 @@ import twitter4j.TwitterException;
 
 public class TweetActivity extends ThemedActivity {
 
-    private static final String TWEETS_LIST_TAG = "tweetlist";
-    private static final String CURRENT_TWEET_TAG = "header";
+    private static final String TAG_TWEET_LIST = "tweetlist";
+    private static final String TAG_CURRENT_TWEET = "header";
+    public static final String TAG_STATUS_BUNDLE = "status";
+    public static final String TAG_TWEET = "tweet";
+    public static final String TAG_TWEET_ID = "id";
 
     private boolean isUp = true;
     private Twitter twitter;
@@ -55,12 +58,12 @@ public class TweetActivity extends ThemedActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.tweetsRecyclerView);
 
         if (savedInstanceState == null) {
-            Bundle bundle = getIntent().getBundleExtra("STATUS");
+            Bundle bundle = getIntent().getBundleExtra(TAG_STATUS_BUNDLE);
             if (bundle != null)
-                this.status = (Status) bundle.getSerializable("TWEET");
+                this.status = (Status) bundle.getSerializable(TAG_TWEET);
         } else {
-            mDataSet = (ArrayList<Status>) savedInstanceState.getSerializable(TWEETS_LIST_TAG);
-            this.currentIndex = savedInstanceState.getInt(CURRENT_TWEET_TAG);
+            mDataSet = (ArrayList<Status>) savedInstanceState.getSerializable(TAG_TWEET_LIST);
+            this.currentIndex = savedInstanceState.getInt(TAG_CURRENT_TWEET);
             this.status = mDataSet.get(currentIndex);
             loadingProgressBar.setVisibility(View.GONE);
             mRecyclerView.setVisibility(View.VISIBLE);
@@ -111,8 +114,8 @@ public class TweetActivity extends ThemedActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(TweetActivity.this, NewTweetActivity.class);
-                i.putExtra("USER_PREFIX", "@" + status.getUser().getScreenName())
-                        .putExtra("REPLY_ID", status.getId());
+                i.putExtra(NewTweetActivity.TAG_USER_PREFIX, "@" + status.getUser().getScreenName())
+                        .putExtra(NewTweetActivity.TAG_REPLY_ID, status.getId());
                 startActivity(i);
             }
         });
@@ -141,7 +144,7 @@ public class TweetActivity extends ThemedActivity {
     void newTweetUp() {
         final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) replyFAB.getLayoutParams();
         ValueAnimator upAnimator = ValueAnimator.ofInt(params.bottomMargin, Common.dpToPx(this,
-                (int) (getResources().getDimension(R.dimen.fabMargin)/ getResources().getDisplayMetrics().density)));
+                (int) (getResources().getDimension(R.dimen.fabMargin) / getResources().getDisplayMetrics().density)));
         upAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -157,8 +160,8 @@ public class TweetActivity extends ThemedActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable(TWEETS_LIST_TAG, mDataSet);
-        outState.putInt(CURRENT_TWEET_TAG, currentIndex);
+        outState.putSerializable(TAG_TWEET_LIST, mDataSet);
+        outState.putInt(TAG_CURRENT_TWEET, currentIndex);
         super.onSaveInstanceState(outState);
     }
 
@@ -186,7 +189,7 @@ public class TweetActivity extends ThemedActivity {
         protected Boolean doInBackground(Void... params) {
             try {
                 if (status == null)
-                    status = twitter.showStatus(getIntent().getLongExtra("STATUS_ID", 0));
+                    status = twitter.showStatus(getIntent().getLongExtra(TAG_TWEET_ID, 0));
 
                 twitter4j.Status current = status;
                 long id;

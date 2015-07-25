@@ -105,7 +105,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(context, TweetActivity.class);
-                    i.putExtra("STATUS_ID", notification.tweetID);
+                    i.putExtra(TweetActivity.TAG_TWEET_ID, notification.tweetID);
                     context.startActivity(i);
                 }
             });

@@ -68,9 +68,9 @@ public class HomeActivity extends TimeLineActivity {
             twitter = TwitterUtils.getTwitter(HomeActivity.this);
 
             if (savedInstanceState != null) {
-                tweetList = (ArrayList<Status>) savedInstanceState.getSerializable(TWEETS_LIST_TAG);
+                tweetList = (ArrayList<Status>) savedInstanceState.getSerializable(TAG_TWEET_LIST);
                 upComingTweets = (ArrayList<Status>) savedInstanceState.getSerializable(UPCOMING_TWEETS_LIST_TAG);
-                currentPage = savedInstanceState.getInt(CURRENTPAGE_TAG);
+                currentPage = savedInstanceState.getInt(TAG_CURRENT_PAGE);
                 newTweetsCount = savedInstanceState.getInt(UPCOMING_TWEET_COUNT_TAG);
             } else {
                 new GetTimeLine().execute(null, null, null);
@@ -274,7 +274,7 @@ public class HomeActivity extends TimeLineActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(StreamNotificationService.NEW_TWEETS_INTENT)) {
-                Status newStatus = (Status) intent.getSerializableExtra("PARCEL_STATUS");
+                Status newStatus = (Status) intent.getSerializableExtra(StreamNotificationService.TAG_PARCEL_STATUS);
                 upComingTweets.add(newStatus);
                 newTweetsCount++;
                 if (loading)

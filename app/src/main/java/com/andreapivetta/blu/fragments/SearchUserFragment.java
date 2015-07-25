@@ -29,6 +29,8 @@ import twitter4j.User;
 
 public class SearchUserFragment extends Fragment {
 
+    private static final String TAG_QUERY = "query";
+
     private ArrayList<User> mDataSet = new ArrayList<>();
     private Twitter twitter;
     private UserListAdapter mAdapter;
@@ -45,7 +47,7 @@ public class SearchUserFragment extends Fragment {
     public static SearchUserFragment newInstance(String query) {
         SearchUserFragment f = new SearchUserFragment();
         Bundle args = new Bundle();
-        args.putString("QUERY", query);
+        args.putString(TAG_QUERY, query);
         f.setArguments(args);
 
         return f;
@@ -55,7 +57,7 @@ public class SearchUserFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        query = getArguments().getString("QUERY");
+        query = getArguments().getString(TAG_QUERY);
     }
 
     @Override

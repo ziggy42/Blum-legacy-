@@ -93,7 +93,7 @@ public class Notification {
             switch (type) {
                 case TYPE_FAVOURITE:
                     resultIntent = new Intent(context, TweetActivity.class);
-                    resultIntent.putExtra("STATUS_ID", tweetID);
+                    resultIntent.putExtra(TweetActivity.TAG_TWEET_ID, tweetID);
                     resultPendingIntent = PendingIntent.getActivity(
                             context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -106,7 +106,7 @@ public class Notification {
                     break;
                 case TYPE_RETWEET:
                     resultIntent = new Intent(context, TweetActivity.class);
-                    resultIntent.putExtra("STATUS_ID", tweetID);
+                    resultIntent.putExtra(TweetActivity.TAG_TWEET_ID, tweetID);
                     resultPendingIntent = PendingIntent.getActivity(
                             context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -130,7 +130,7 @@ public class Notification {
                     break;
                 case TYPE_MENTION:
                     resultIntent = new Intent(context, TweetActivity.class);
-                    resultIntent.putExtra("STATUS_ID", tweetID);
+                    resultIntent.putExtra(TweetActivity.TAG_TWEET_ID, tweetID);
                     resultPendingIntent = PendingIntent.getActivity(
                             context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -143,7 +143,7 @@ public class Notification {
                     break;
                 case TYPE_RETWEET_MENTIONED:
                     resultIntent = new Intent(context, TweetActivity.class);
-                    resultIntent.putExtra("STATUS_ID", tweetID);
+                    resultIntent.putExtra(TweetActivity.TAG_TWEET_ID, tweetID);
                     resultPendingIntent = PendingIntent.getActivity(
                             context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 

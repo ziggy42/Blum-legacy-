@@ -29,6 +29,8 @@ import twitter4j.TwitterException;
 
 public class SearchTweetsFragment extends Fragment {
 
+    private static final String TAG_QUERY = "query";
+
     private ArrayList<Status> mDataSet = new ArrayList<>();
     private Twitter twitter;
     private TweetsListAdapter mAdapter;
@@ -42,7 +44,7 @@ public class SearchTweetsFragment extends Fragment {
     public static SearchTweetsFragment newInstance(String query) {
         SearchTweetsFragment f = new SearchTweetsFragment();
         Bundle args = new Bundle();
-        args.putString("QUERY", query);
+        args.putString(TAG_QUERY, query);
         f.setArguments(args);
 
         return f;
@@ -52,7 +54,7 @@ public class SearchTweetsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mQuery = new Query(getArguments().getString("QUERY"));
+        mQuery = new Query(getArguments().getString(TAG_QUERY));
     }
 
     @Override

@@ -48,6 +48,9 @@ public class NewTweetActivity extends ThemedActivity {
 
     private static final int MAX_URL_LENGTH = 23; // it will change
 
+    public static final String TAG_USER_PREFIX = "userPref";
+    public static final String TAG_REPLY_ID = "replyId";
+
     private static final int REQUEST_GRAB_IMAGE = 3;
     private static final int REQUEST_TAKE_PHOTO = 1;
     private static final String FILES = "file";
@@ -116,9 +119,9 @@ public class NewTweetActivity extends ThemedActivity {
             }
         }
 
-        if (intent.getStringExtra("USER_PREFIX") != null &&
-                intent.getStringExtra("USER_PREFIX").length() > 0)
-            newTweetEditText.setText(intent.getStringExtra("USER_PREFIX") + " ");
+        if (intent.getStringExtra(TAG_USER_PREFIX) != null &&
+                intent.getStringExtra(TAG_USER_PREFIX).length() > 0)
+            newTweetEditText.setText(intent.getStringExtra(TAG_USER_PREFIX) + " ");
 
         newTweetEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -176,7 +179,7 @@ public class NewTweetActivity extends ThemedActivity {
                     if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
                         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
 
-                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_GRAB_IMAGE);
+                    startActivityForResult(Intent.createChooser(intent, getString(R.string.select_picture)), REQUEST_GRAB_IMAGE);
                 } else {
                     showTooMuchImagesToast();
                 }
@@ -274,11 +277,11 @@ public class NewTweetActivity extends ThemedActivity {
             } else {
                 if (imageFiles.size() > 0) {
                     new UpdateTwitterStatus(NewTweetActivity.this, twitter,
-                            intent.getLongExtra("REPLY_ID", -1L), imageFiles)
+                            intent.getLongExtra(TAG_REPLY_ID, -1L), imageFiles)
                             .execute(newTweetEditText.getText().toString());
                 } else {
                     new UpdateTwitterStatus(NewTweetActivity.this, twitter,
-                            intent.getLongExtra("REPLY_ID", -1L))
+                            intent.getLongExtra(TAG_REPLY_ID, -1L))
                             .execute(newTweetEditText.getText().toString());
                 }
 

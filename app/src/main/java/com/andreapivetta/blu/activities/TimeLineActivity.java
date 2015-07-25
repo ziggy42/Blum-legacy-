@@ -33,8 +33,8 @@ import twitter4j.TwitterException;
 
 public abstract class TimeLineActivity extends ThemedActivity {
 
-    protected String TWEETS_LIST_TAG = "TWEET_LIST";
-    protected String CURRENTPAGE_TAG = "CURRENTPAGE";
+    protected String TAG_TWEET_LIST = "TWEET_LIST";
+    protected String TAG_CURRENT_PAGE = "CURRENTPAGE";
 
     protected Twitter twitter;
     protected Paging paging = new Paging(1, 50);
@@ -122,7 +122,7 @@ public abstract class TimeLineActivity extends ThemedActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(TimeLineActivity.this, NewTweetActivity.class);
-                i.putExtra("USER_PREFIX", getInitialText());
+                i.putExtra(NewTweetActivity.TAG_USER_PREFIX, getInitialText());
                 startActivity(i);
             }
         });
@@ -176,8 +176,8 @@ public abstract class TimeLineActivity extends ThemedActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable(TWEETS_LIST_TAG, tweetList);
-        outState.putInt(CURRENTPAGE_TAG, currentPage);
+        outState.putSerializable(TAG_TWEET_LIST, tweetList);
+        outState.putInt(TAG_CURRENT_PAGE, currentPage);
         super.onSaveInstanceState(outState);
     }
 

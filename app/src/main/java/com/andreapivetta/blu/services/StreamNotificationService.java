@@ -28,7 +28,9 @@ import twitter4j.UserStreamListener;
 
 public class StreamNotificationService extends Service {
 
-    public final static String NEW_TWEETS_INTENT = "com.andreapivetta.blu.NEW_TWEETS_INTENT";
+    public static final String NEW_TWEETS_INTENT = "com.andreapivetta.blu.NEW_TWEETS_INTENT";
+    public static final String TAG_PARCEL_STATUS = "parcel";
+
     private TwitterStream twitterStream;
     private Twitter twitter;
     private final UserStreamListener listener = new UserStreamListener() {
@@ -209,7 +211,7 @@ public class StreamNotificationService extends Service {
 
             Intent i = new Intent();
             i.setAction(NEW_TWEETS_INTENT)
-                    .putExtra("PARCEL_STATUS", status);
+                    .putExtra(TAG_PARCEL_STATUS, status);
             sendBroadcast(i);
         }
 
