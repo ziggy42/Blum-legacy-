@@ -110,7 +110,7 @@ public class DatabaseManager {
         for (twitter4j.DirectMessage dm : messages) {
             if (!existingMessages.contains(dm.getId())) {
                 insertDirectMessage(dm.getId(), dm.getSenderId(), dm.getRecipientId(), dm.getText(), dm.getCreatedAt().getTime(),
-                        dm.getSenderScreenName(), dm.getSenderId(), dm.getSender().getBiggerProfileImageURL(), false);
+                        dm.getSender().getName(), dm.getSenderId(), dm.getSender().getBiggerProfileImageURL(), false);
                 newMessages.add(dm);
             }
         }
@@ -125,7 +125,7 @@ public class DatabaseManager {
                 existingMessages.remove(dm.getId());
             } else {
                 insertDirectMessage(dm.getId(), dm.getSenderId(), dm.getRecipientId(), dm.getText(), dm.getCreatedAt().getTime(),
-                        dm.getRecipientScreenName(), dm.getRecipientId(), dm.getRecipient().getBiggerProfileImageURL(), true);
+                        dm.getRecipient().getName(), dm.getRecipientId(), dm.getRecipient().getBiggerProfileImageURL(), true);
             }
         }
 
