@@ -1,6 +1,5 @@
 package com.andreapivetta.blu.twitter;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
