@@ -3,7 +3,9 @@ package com.andreapivetta.blu.activities;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -26,7 +28,7 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
-public class TweetActivity extends ThemedActivity {
+public class TweetActivity extends ThemedActivity implements SnackbarContainer {
 
     private static final String TAG_TWEET_LIST = "tweetlist";
     private static final String TAG_CURRENT_TWEET = "header";
@@ -34,7 +36,7 @@ public class TweetActivity extends ThemedActivity {
     public static final String TAG_TWEET = "tweet";
     public static final String TAG_TWEET_ID = "id";
 
-    private boolean isUp = true;
+    private boolean isUp = true, isBlocked = false;
     private Twitter twitter;
     private Status status;
     private ArrayList<Status> mDataSet = new ArrayList<>();
@@ -157,6 +159,20 @@ public class TweetActivity extends ThemedActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void showSnackBar(String content) {
+        Snackbar.make(getWindow().getDecorView().findViewById(R.id.coordinatorLayout), content, Snackbar.LENGTH_SHORT).show();
+        isUp = true;
+        isBlocked = true;
+
+        (new Handler()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isBlocked = false;
+            }
+        }, 1800);
     }
 
     private class LoadConversationAsyncTask extends AsyncTask<Void, Void, Boolean> {
