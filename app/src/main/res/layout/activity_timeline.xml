@@ -6,7 +6,8 @@
 
     <include layout="@layout/toolbar" />
 
-    <RelativeLayout
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -25,26 +26,23 @@
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
+        <ProgressBar
+            android:id="@+id/loadingProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true" />
+
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/newTweetFAB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
+            android:layout_gravity="end|bottom"
             android:layout_margin="@dimen/fabMargin"
             android:src="@drawable/ic_create_white_24dp"
             app:backgroundTint="?attr/colorPrimary"
             app:pressedTranslationZ="12dp" />
 
-        <ProgressBar
-            android:id="@+id/loadingProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:indeterminate="true" />
-
-    </RelativeLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
 </LinearLayout>

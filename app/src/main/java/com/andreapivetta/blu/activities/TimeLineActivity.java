@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,7 +30,7 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
-public abstract class TimeLineActivity extends ThemedActivity {
+public abstract class TimeLineActivity extends ThemedActivity implements SnackbarContainer {
 
     protected String TAG_TWEET_LIST = "TWEET_LIST";
     protected String TAG_CURRENT_PAGE = "CURRENTPAGE";
@@ -47,7 +48,7 @@ public abstract class TimeLineActivity extends ThemedActivity {
     protected ArrayList<Status> tweetList = new ArrayList<>(50);
     protected LinearLayoutManager mLinearLayoutManager;
 
-    protected boolean isUp = true, loading = true;
+    protected boolean isUp = true, loading = true, isBlocked = false;
     protected int pastVisibleItems, visibleItemCount, totalItemCount;
 
     @Override
@@ -140,14 +141,17 @@ public abstract class TimeLineActivity extends ThemedActivity {
     abstract List<Status> getRefreshedTimeLine(Paging paging) throws TwitterException;
 
     void newTweetDown() {
-        newTweetFAB.animate().translationY(newTweetFAB.getHeight() + (int) (getResources().getDimension(R.dimen.fabMargin)))
-                .start();
-        isUp = false;
+        if (!isBlocked) {
+            newTweetFAB.animate().translationY(newTweetFAB.getHeight() + (int) (getResources().getDimension(R.dimen.fabMargin))).start();
+            isUp = false;
+        }
     }
 
     void newTweetUp() {
-        newTweetFAB.animate().translationY(0).start();
-        isUp = true;
+        if (!isBlocked) {
+            newTweetFAB.animate().translationY(0).start();
+            isUp = true;
+        }
     }
 
     @Override
@@ -171,6 +175,19 @@ public abstract class TimeLineActivity extends ThemedActivity {
 
     protected void getTimeLineCallBack() {
 
+    }
+
+    public void showSnackBar(String content) {
+        Snackbar.make(getWindow().getDecorView().findViewById(R.id.coordinatorLayout), content, Snackbar.LENGTH_SHORT).show();
+        isUp = true;
+        isBlocked = true;
+
+        (new Handler()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isBlocked = false;
+            }
+        }, 1800);
     }
 
     protected class GetTimeLine extends AsyncTask<Void, Void, Boolean> {
@@ -242,5 +259,4 @@ public abstract class TimeLineActivity extends ThemedActivity {
             swipeRefreshLayout.setRefreshing(false);
         }
     }
-
 }

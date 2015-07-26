@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.graphics.Palette;
@@ -64,7 +65,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.User;
 
-public class UserProfileActivity extends ThemedActivity {
+public class UserProfileActivity extends ThemedActivity implements SnackbarContainer {
 
     public final static String TAG_USER = "user";
     public final static String TAG_TYPE = "type";
@@ -699,6 +700,11 @@ public class UserProfileActivity extends ThemedActivity {
         outState.putSerializable(TAG_TYPE, type);
         outState.putSerializable(TAG_ARRAY, statuses);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void showSnackBar(String content) {
+        Snackbar.make(profileScrollView, content, Snackbar.LENGTH_SHORT).show();
     }
 
     private enum TWEET_TYPE {TYPE_ITEM, TYPE_ITEM_PHOTO, TYPE_ITEM_MULTIPLEPHOTOS, TYPE_ITEM_QUOTE}

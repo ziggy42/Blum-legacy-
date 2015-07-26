@@ -2,6 +2,7 @@ package com.andreapivetta.blu.activities;
 
 import android.app.SearchManager;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -13,9 +14,10 @@ import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.fragments.SearchTweetsFragment;
 import com.andreapivetta.blu.fragments.SearchUserFragment;
 
-public class SearchActivity extends ThemedActivity {
+public class SearchActivity extends ThemedActivity implements SnackbarContainer {
 
     private String query;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +39,17 @@ public class SearchActivity extends ThemedActivity {
             });
         }
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+        viewPager = (ViewPager) findViewById(R.id.view_pager);
         SearchFragmentPagerAdapter myFragmentPagerAdapter = new SearchFragmentPagerAdapter();
         viewPager.setAdapter(myFragmentPagerAdapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
+    }
+
+    @Override
+    public void showSnackBar(String content) {
+        Snackbar.make(viewPager, content, Snackbar.LENGTH_SHORT).show();
     }
 
     public class SearchFragmentPagerAdapter extends FragmentPagerAdapter {
