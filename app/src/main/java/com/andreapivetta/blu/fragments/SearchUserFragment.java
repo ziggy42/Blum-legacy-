@@ -12,7 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.adapters.SpaceTopItemDecoration;
+import com.andreapivetta.blu.adapters.decorators.SpaceTopItemDecoration;
 import com.andreapivetta.blu.adapters.UserListAdapter;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.utilities.Common;

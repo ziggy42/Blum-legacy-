@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.ImagesAdapter;
-import com.andreapivetta.blu.adapters.SpaceLeftItemDecoration;
+import com.andreapivetta.blu.adapters.decorators.SpaceLeftItemDecoration;
 
 import java.util.ArrayList;
 
@@ -24,12 +24,14 @@ public class VHItemMultiplePhotos extends VHItem {
 
         this.tweetPhotosRecyclerView = (RecyclerView) container.findViewById(R.id.tweetPhotosRecyclerView);
         this.tweetPhotosRecyclerView.addItemDecoration(new SpaceLeftItemDecoration(5));
-        this.tweetPhotosRecyclerView.setLayoutManager(new LinearLayoutManager(container.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        this.tweetPhotosRecyclerView.setLayoutManager(
+                new LinearLayoutManager(container.getContext(), LinearLayoutManager.HORIZONTAL, false));
         this.tweetPhotosRecyclerView.setHasFixedSize(true);
     }
 
     @Override
-    public void setup(Status status, Context context, ArrayList<Long> favorites, ArrayList<Long> retweets, Twitter twitter) {
+    public void setup(Status status, Context context, ArrayList<Long> favorites,
+                      ArrayList<Long> retweets, Twitter twitter) {
         super.setup(status, context, favorites, retweets, twitter);
 
         tweetPhotosRecyclerView.setAdapter(new ImagesAdapter(status.getExtendedMediaEntities(), context));

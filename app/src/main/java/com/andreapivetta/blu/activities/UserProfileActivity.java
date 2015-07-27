@@ -38,7 +38,7 @@ import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.ImagesAdapter;
-import com.andreapivetta.blu.adapters.SpaceLeftItemDecoration;
+import com.andreapivetta.blu.adapters.decorators.SpaceLeftItemDecoration;
 import com.andreapivetta.blu.adapters.UserListSimpleAdapter;
 import com.andreapivetta.blu.internet.ConnectionDetector;
 import com.andreapivetta.blu.twitter.FavoriteTweet;

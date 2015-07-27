@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.adapters.SpaceTopItemDecoration;
+import com.andreapivetta.blu.adapters.decorators.SpaceTopItemDecoration;
 import com.andreapivetta.blu.adapters.NotificationAdapter;
 import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.data.Notification;

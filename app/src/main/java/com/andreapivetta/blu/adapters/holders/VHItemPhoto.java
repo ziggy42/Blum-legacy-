@@ -27,7 +27,8 @@ public class VHItemPhoto extends VHItem {
     }
 
     @Override
-    public void setup(Status status, final Context context, ArrayList<Long> favorites, ArrayList<Long> retweets, Twitter twitter) {
+    public void setup(Status status, final Context context, ArrayList<Long> favorites,
+                      ArrayList<Long> retweets, Twitter twitter) {
         super.setup(status, context, favorites, retweets, twitter);
 
         final MediaEntity mediaEntity = status.getMediaEntities()[0];

@@ -31,7 +31,7 @@ import com.andreapivetta.blu.activities.NewTweetQuoteActivity;
 import com.andreapivetta.blu.activities.TweetActivity;
 import com.andreapivetta.blu.activities.UserProfileActivity;
 import com.andreapivetta.blu.adapters.ImagesAdapter;
-import com.andreapivetta.blu.adapters.SpaceLeftItemDecoration;
+import com.andreapivetta.blu.adapters.decorators.SpaceLeftItemDecoration;
 import com.andreapivetta.blu.twitter.FavoriteTweet;
 import com.andreapivetta.blu.twitter.RetweetTweet;
 import com.squareup.picasso.Picasso;
@@ -69,7 +69,8 @@ public class VHHeader extends ViewHolder {
 
     @Override
     @SuppressLint("NewApi")
-    public void setup(Status status, final Context context, final ArrayList<Long> favorites, final ArrayList<Long> retweets, final Twitter twitter) {
+    public void setup(Status status, final Context context, final ArrayList<Long> favorites,
+                      final ArrayList<Long> retweets, final Twitter twitter) {
         final Status currentStatus;
 
         if (status.isRetweet()) {

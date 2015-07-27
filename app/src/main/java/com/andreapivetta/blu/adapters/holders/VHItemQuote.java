@@ -34,7 +34,8 @@ public class VHItemQuote extends VHItem {
     }
 
     @Override
-    public void setup(Status status, final Context context, ArrayList<Long> favorites, ArrayList<Long> retweets, Twitter twitter) {
+    public void setup(Status status, final Context context, ArrayList<Long> favorites,
+                      ArrayList<Long> retweets, Twitter twitter) {
         super.setup(status, context, favorites, retweets, twitter);
 
         final Status quotedStatus = status.getQuotedStatus();

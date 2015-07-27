@@ -1,4 +1,4 @@
-package com.andreapivetta.blu.adapters;
+package com.andreapivetta.blu.adapters.decorators;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;

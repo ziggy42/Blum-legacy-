@@ -44,7 +44,8 @@ public class VHItem extends ViewHolder {
     }
 
     @Override
-    public void setup(Status status, final Context context, final ArrayList<Long> favorites, final ArrayList<Long> retweets, final Twitter twitter) {
+    public void setup(Status status, final Context context, final ArrayList<Long> favorites,
+                      final ArrayList<Long> retweets, final Twitter twitter) {
         final Status currentStatus;
 
         if (status.isRetweet()) {

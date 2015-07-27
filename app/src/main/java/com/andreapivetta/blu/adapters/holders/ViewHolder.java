@@ -39,6 +39,7 @@ public abstract class ViewHolder extends RecyclerView.ViewHolder {
         this.quoteImageButton = (ImageButton) container.findViewById(R.id.quoteImageButton);
     }
 
-    public abstract void setup(Status status, final Context context, final ArrayList<Long> favorites, ArrayList<Long> retweets, Twitter twitter);
+    public abstract void setup(Status status, final Context context, final ArrayList<Long> favorites,
+                               ArrayList<Long> retweets, Twitter twitter);
 
 }
