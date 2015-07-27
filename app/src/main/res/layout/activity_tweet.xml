@@ -34,7 +34,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
-            android:layout_margin="@dimen/fabMargin"
+            android:layout_marginBottom="@dimen/fabMargin"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:src="@drawable/ic_create_white_24dp"
             app:backgroundTint="?attr/colorPrimary"
             app:pressedTranslationZ="12dp" />
