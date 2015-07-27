@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.RecursiveAction;
 
 import twitter4j.Twitter;
 
@@ -56,6 +57,7 @@ public class NewTweetActivity extends ThemedActivity {
     private static final String FILES = "file";
 
     private ArrayList<File> imageFiles = new ArrayList<>();
+    private RecyclerView mRecyclerView;
     private DeletableImageAdapter mAdapter;
     private Twitter twitter;
     private Intent intent;
@@ -91,7 +93,7 @@ public class NewTweetActivity extends ThemedActivity {
         newTweetEditText = (EditText) findViewById(R.id.newTweetEditText);
         ImageButton takePhotoImageButton = (ImageButton) findViewById(R.id.takePhotoImageButton);
         ImageButton grabImageImageButton = (ImageButton) findViewById(R.id.grabImageImageButton);
-        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.photosRecyclerView);
+        mRecyclerView = (RecyclerView) findViewById(R.id.photosRecyclerView);
         mRecyclerView.setLayoutManager(new GridLayoutManager(NewTweetActivity.this, 2));
         mAdapter = new DeletableImageAdapter();
         mRecyclerView.setAdapter(mAdapter);
@@ -220,6 +222,7 @@ public class NewTweetActivity extends ThemedActivity {
         switch (requestCode) {
             case REQUEST_GRAB_IMAGE:
                 if (resultCode == RESULT_OK) {
+                    mRecyclerView.setVisibility(View.VISIBLE);
                     if (imageReturnedIntent.getData() != null) {
                         imageFiles.add(new File(FileUtils.getPath(NewTweetActivity.this, imageReturnedIntent.getData())));
                         mAdapter.notifyItemInserted(imageFiles.size() - 1);
