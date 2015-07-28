@@ -40,7 +40,7 @@ public class UserListSimpleAdapter extends RecyclerView.Adapter<UserListMessageA
         final User user = mDataSet.get(position);
 
         Picasso.with(context)
-                .load(user.getOriginalProfileImageURL())
+                .load(user.getProfileImageURL())
                 .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
                 .into(holder.userProfilePicImageView);
 

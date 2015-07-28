@@ -23,7 +23,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -62,9 +61,8 @@ public class VHItem extends ViewHolder {
 
         userNameTextView.setText(currentUser.getName());
 
-        Date d = currentStatus.getCreatedAt();
         Calendar c = Calendar.getInstance(), c2 = Calendar.getInstance();
-        c2.setTime(d);
+        c2.setTime(currentStatus.getCreatedAt());
 
         long diff = c.getTimeInMillis() - c2.getTimeInMillis();
         long seconds = TimeUnit.MILLISECONDS.toSeconds(diff);
@@ -74,9 +72,9 @@ public class VHItem extends ViewHolder {
                 long hours = TimeUnit.MILLISECONDS.toHours(diff);
                 if (hours > 24) {
                     if (c.get(Calendar.YEAR) == c2.get(Calendar.YEAR))
-                        timeTextView.setText((new java.text.SimpleDateFormat("MMM dd", Locale.getDefault())).format(d));
+                        timeTextView.setText((new java.text.SimpleDateFormat("MMM dd", Locale.getDefault())).format(currentStatus.getCreatedAt()));
                     else
-                        timeTextView.setText((new java.text.SimpleDateFormat("MMM dd yyyy", Locale.getDefault())).format(d));
+                        timeTextView.setText((new java.text.SimpleDateFormat("MMM dd yyyy", Locale.getDefault())).format(currentStatus.getCreatedAt()));
                 } else
                     timeTextView.setText(context.getString(R.string.mini_hours, (int) hours));
             } else
@@ -102,11 +100,9 @@ public class VHItem extends ViewHolder {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, UserProfileActivity.class);
-
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(UserProfileActivity.TAG_USER, currentUser);
                 i.putExtras(bundle);
-
                 context.startActivity(i);
             }
         });
@@ -147,11 +143,9 @@ public class VHItem extends ViewHolder {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, NewTweetQuoteActivity.class);
-
                 Bundle b = new Bundle();
                 b.putSerializable(NewTweetQuoteActivity.PAR_CURRENT_STATUS, currentStatus);
                 i.putExtra(NewTweetQuoteActivity.PAR_BUNDLE, b);
-
                 context.startActivity(i);
             }
         });
