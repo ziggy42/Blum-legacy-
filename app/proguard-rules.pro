@@ -1,0 +1,4 @@
+-dontwarn twitter4j.**
+-keep class twitter4j.** { *; }
+-keep class android.support.** { *; }
+-keep interface android.support.** { *; }
