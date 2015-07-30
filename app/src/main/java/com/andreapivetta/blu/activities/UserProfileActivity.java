@@ -135,20 +135,15 @@ public class UserProfileActivity extends ThemedActivity implements SnackbarConta
 
             if (statuses != null && type != null && user != null) {
                 setUpUI();
-                setUpRelationControls();
                 setUpTweets();
                 invalidateOptionsMenu();
             } else {
-                setUpUser();
+                new LoadUser().execute();
             }
         } else {
-            setUpUser();
+            new LoadUser().execute();
         }
 
-    }
-
-    void setUpUser() {
-        new LoadUser().execute();
     }
 
     void setUpUI() {
@@ -274,9 +269,7 @@ public class UserProfileActivity extends ThemedActivity implements SnackbarConta
                 startActivity(i);
             }
         });
-    }
 
-    void setUpRelationControls() {
         switch (type) {
             case I_FOLLOW_HIM:
                 followButton.setText(getString(R.string.unfollow));
@@ -745,7 +738,6 @@ public class UserProfileActivity extends ThemedActivity implements SnackbarConta
         protected void onPostExecute(Boolean status) {
             if (status) {
                 setUpUI();
-                setUpRelationControls();
                 invalidateOptionsMenu();
                 new LoadTweets().execute(null, null, null);
             } else {
