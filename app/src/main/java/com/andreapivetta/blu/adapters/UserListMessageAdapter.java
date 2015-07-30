@@ -66,7 +66,7 @@ public class UserListMessageAdapter extends RecyclerView.Adapter<UserSimpleViewH
             public void onClick(View v) {
                 Intent i = new Intent(context, ConversationActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(UserProfileActivity.TAG_USER, user);
+                bundle.putSerializable(ConversationActivity.TAG_ID, user.getId());
                 i.putExtras(bundle);
                 context.startActivity(i);
             }
