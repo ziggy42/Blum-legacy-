@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="5dp">
 
-        <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <ImageView
             android:id="@+id/userProfilePicImageView"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -24,8 +24,7 @@
             android:layout_marginTop="5dp"
             android:contentDescription="@string/profile_pic_contentDescriptor"
             android:scaleType="centerCrop"
-            android:src="@drawable/placeholder"
-            app:riv_oval="true" />
+            android:src="@drawable/placeholder" />
 
         <TextView
             android:id="@+id/userNameTextView"

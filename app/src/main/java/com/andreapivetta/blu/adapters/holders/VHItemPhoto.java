@@ -2,13 +2,12 @@ package com.andreapivetta.blu.adapters.holders;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.res.ResourcesCompat;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.ImageActivity;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -33,10 +32,9 @@ public class VHItemPhoto extends VHItem {
 
         final MediaEntity mediaEntity = status.getMediaEntities()[0];
         if (mediaEntity.getType().equals("photo")) {
-            Picasso.with(context)
+            Glide.with(context)
                     .load(mediaEntity.getMediaURL())
-                    .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
-                    .fit()
+                    .placeholder(R.drawable.placeholder)
                     .centerCrop()
                     .into(tweetPhotoImageView);
 

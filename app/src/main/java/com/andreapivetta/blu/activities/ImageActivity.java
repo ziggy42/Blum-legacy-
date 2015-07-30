@@ -21,7 +21,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 
 import com.andreapivetta.blu.R;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.Arrays;
 import java.util.List;
@@ -194,7 +194,7 @@ public class ImageActivity extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.fragment_image, container, false);
 
             final ImageView tweetImageView = (ImageView) rootView.findViewById(R.id.tweetImageView);
-            Picasso.with(getActivity())
+            Glide.with(getActivity())
                     .load(imageURL)
                     .into(tweetImageView);
 

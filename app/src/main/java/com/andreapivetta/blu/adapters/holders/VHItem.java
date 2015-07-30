@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.util.Linkify;
 import android.view.View;
@@ -19,7 +18,7 @@ import com.andreapivetta.blu.activities.TweetActivity;
 import com.andreapivetta.blu.activities.UserProfileActivity;
 import com.andreapivetta.blu.twitter.FavoriteTweet;
 import com.andreapivetta.blu.twitter.RetweetTweet;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -81,9 +80,9 @@ public class VHItem extends ViewHolder {
                 timeTextView.setText(context.getString(R.string.mini_minutes, (int) minutes));
         } else timeTextView.setText(context.getString(R.string.mini_seconds, (int) seconds));
 
-        Picasso.with(context)
+        Glide.with(context)
                 .load(currentUser.getBiggerProfileImageURL())
-                .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
+                .placeholder(R.drawable.placeholder)
                 .into(userProfilePicImageView);
 
         if (currentStatus.isFavorited() || favorites.contains(currentStatus.getId()))

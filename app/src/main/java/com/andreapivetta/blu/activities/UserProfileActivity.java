@@ -6,13 +6,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
@@ -45,9 +43,11 @@ import com.andreapivetta.blu.twitter.FavoriteTweet;
 import com.andreapivetta.blu.twitter.FollowTwitterUser;
 import com.andreapivetta.blu.twitter.RetweetTweet;
 import com.andreapivetta.blu.twitter.TwitterUtils;
+import com.andreapivetta.blu.utilities.CircleTransform;
 import com.andreapivetta.blu.utilities.Common;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -188,44 +188,38 @@ public class UserProfileActivity extends ThemedActivity implements SnackbarConta
             }
         });
 
-        Picasso.with(this)
+        Glide.with(this)
                 .load(user.getProfileBannerURL())
-                .placeholder(R.drawable.placeholder)
-                .into(profileBackgroundImageView, new Callback() {
+                .asBitmap()
+                .into(new BitmapImageViewTarget(profileBackgroundImageView) {
                     @Override
                     @TargetApi(21)
-                    public void onSuccess() {
+                    public void onResourceReady(final Bitmap bitmap, GlideAnimation anim) {
+                        super.onResourceReady(bitmap, anim);
                         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            new Palette.Builder(((BitmapDrawable) profileBackgroundImageView.getDrawable()).getBitmap())
-                                    .generate(new Palette.PaletteAsyncListener() {
-                                        @Override
-                                        public void onGenerated(Palette palette) {
-                                            Palette.Swatch swatch = palette.getLightVibrantSwatch();
-                                            if (swatch != null) {
-                                                getWindow().setStatusBarColor(swatch.getRgb());
-                                            } else {
-                                                Bitmap onePixelBitmap = Bitmap.createScaledBitmap(
-                                                        ((BitmapDrawable) profileBackgroundImageView
-                                                                .getDrawable()).getBitmap(), 1, 1, true);
-                                                int pixel = onePixelBitmap.getPixel(0, 0);
-                                                getWindow().setStatusBarColor(
-                                                        Color.rgb(Color.red(pixel),
-                                                                Color.green(pixel), Color.blue(pixel)));
-                                            }
-                                        }
-                                    });
+                            new Palette.Builder(bitmap).generate(new Palette.PaletteAsyncListener() {
+                                @Override
+                                public void onGenerated(Palette palette) {
+                                    Palette.Swatch swatch = palette.getLightVibrantSwatch();
+                                    if (swatch != null) {
+                                        getWindow().setStatusBarColor(swatch.getRgb());
+                                    } else {
+                                        Bitmap onePixelBitmap = Bitmap.createScaledBitmap(bitmap, 1, 1, true);
+                                        int pixel = onePixelBitmap.getPixel(0, 0);
+                                        getWindow().setStatusBarColor(
+                                                Color.rgb(Color.red(pixel),
+                                                        Color.green(pixel), Color.blue(pixel)));
+                                    }
+                                }
+                            });
                         }
-                    }
-
-                    @Override
-                    public void onError() {
-
                     }
                 });
 
-        Picasso.with(this)
+        Glide.with(this)
                 .load(user.getOriginalProfileImageURL())
-                .placeholder(R.drawable.placeholder)
+                .transform(new CircleTransform(this))
+                .placeholder(R.drawable.placeholder_circular)
                 .into(profilePictureImageView);
 
         userNameTextView.setText(user.getName());
@@ -409,9 +403,9 @@ public class UserProfileActivity extends ThemedActivity implements SnackbarConta
                 } else timeTextView.setText(getString(R.string.mini_minutes, (int) minutes));
             } else timeTextView.setText(getString(R.string.mini_seconds, (int) seconds));
 
-            Picasso.with(this)
+            Glide.with(this)
                     .load(statuses[i].getUser().getBiggerProfileImageURL())
-                    .placeholder(ResourcesCompat.getDrawable(getResources(), R.drawable.placeholder, null))
+                    .placeholder(R.drawable.placeholder)
                     .into(userProfilePicImageView);
 
             favouriteImageButton.setImageResource((statuses[i].isFavorited()) ?
@@ -513,10 +507,9 @@ public class UserProfileActivity extends ThemedActivity implements SnackbarConta
                 ImageView tweetPhotoImageView = (ImageView) tweetView.findViewById(R.id.tweetPhotoImageView);
                 final MediaEntity mediaEntity = statuses[i].getMediaEntities()[0];
                 if (mediaEntity.getType().equals("photo")) {
-                    Picasso.with(this)
+                    Glide.with(this)
                             .load(mediaEntity.getMediaURL())
-                            .placeholder(ResourcesCompat.getDrawable(getResources(), R.drawable.placeholder, null))
-                            .fit()
+                            .placeholder(R.drawable.placeholder)
                             .centerCrop()
                             .into(tweetPhotoImageView);
 
@@ -543,9 +536,9 @@ public class UserProfileActivity extends ThemedActivity implements SnackbarConta
 
                 if (quotedStatus.getMediaEntities().length > 0) {
                     photoImageView.setVisibility(View.VISIBLE);
-                    Picasso.with(UserProfileActivity.this)
+                    Glide.with(UserProfileActivity.this)
                             .load(quotedStatus.getMediaEntities()[0].getMediaURL())
-                            .placeholder(ResourcesCompat.getDrawable(getResources(), R.drawable.placeholder, null))
+                            .placeholder(R.drawable.placeholder)
                             .into(photoImageView);
                 } else
                     photoImageView.setVisibility(View.GONE);

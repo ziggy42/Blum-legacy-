@@ -3,7 +3,6 @@ package com.andreapivetta.blu.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -19,7 +18,7 @@ import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.TweetActivity;
 import com.andreapivetta.blu.activities.UserProfileActivity;
 import com.andreapivetta.blu.data.Notification;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,9 +47,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Notification notification = mDataSet.get(position);
 
-        Picasso.with(context)
+        Glide.with(context)
                 .load(notification.profilePicURL)
-                .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
+                .placeholder(R.drawable.placeholder)
                 .into(holder.userProfilePicImageView);
 
         holder.userProfilePicImageView.setOnClickListener(new View.OnClickListener() {

@@ -3,7 +3,6 @@ package com.andreapivetta.blu.adapters.holders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.res.ResourcesCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -11,7 +10,7 @@ import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.TweetActivity;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -45,9 +44,9 @@ public class VHItemQuote extends VHItem {
 
         if (quotedStatus.getMediaEntities().length > 0) {
             photoImageView.setVisibility(View.VISIBLE);
-            Picasso.with(context)
+            Glide.with(context)
                     .load(quotedStatus.getMediaEntities()[0].getMediaURL())
-                    .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
+                    .placeholder(R.drawable.placeholder)
                     .into(photoImageView);
         } else
             photoImageView.setVisibility(View.GONE);

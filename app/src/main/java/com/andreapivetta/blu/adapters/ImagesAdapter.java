@@ -2,7 +2,6 @@ package com.andreapivetta.blu.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,7 @@ import android.widget.ImageView;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.ImageActivity;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import twitter4j.MediaEntity;
 
@@ -36,9 +35,9 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.VHItem> {
 
     @Override
     public void onBindViewHolder(VHItem holder, final int position) {
-        Picasso.with(context)
+        Glide.with(context)
                 .load(mediaEntities[position].getMediaURL())
-                .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
+                .placeholder(R.drawable.placeholder)
                 .into(holder.tweetPhotoImageView);
 
         holder.tweetPhotoImageView.setOnClickListener(new View.OnClickListener() {

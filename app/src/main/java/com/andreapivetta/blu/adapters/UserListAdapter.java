@@ -4,7 +4,6 @@ package com.andreapivetta.blu.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,7 @@ import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.UserProfileActivity;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -44,9 +43,9 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final User user = mDataSet.get(position);
 
-        Picasso.with(context)
+        Glide.with(context)
                 .load(user.getOriginalProfileImageURL())
-                .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
+                .placeholder(R.drawable.placeholder)
                 .into(holder.userProfilePicImageView);
 
         holder.userNameTextView.setText(user.getName());

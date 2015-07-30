@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,8 @@ import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.ConversationActivity;
 import com.andreapivetta.blu.activities.UserProfileActivity;
 import com.andreapivetta.blu.data.Message;
-import com.squareup.picasso.Picasso;
+import com.andreapivetta.blu.utilities.CircleTransform;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -53,9 +53,10 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ConversationLi
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Message current = mDataSet.get(position);
 
-        Picasso.with(context)
+        Glide.with(context)
                 .load(current.otherUserProfilePicUrl)
-                .placeholder(ResourcesCompat.getDrawable(context.getResources(), R.drawable.placeholder, null))
+                .placeholder(R.drawable.placeholder_circular)
+                .transform(new CircleTransform(context))
                 .into(holder.userProfilePicImageView);
 
         holder.messageTextView.setTypeface(null, (current.isRead) ? Typeface.NORMAL : Typeface.BOLD_ITALIC);

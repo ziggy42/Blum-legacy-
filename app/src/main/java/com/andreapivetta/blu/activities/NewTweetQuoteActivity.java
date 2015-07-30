@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.twitter.UpdateTwitterStatus;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -97,9 +97,9 @@ public class NewTweetQuoteActivity extends ThemedActivity {
             ImageView photoImageView = (ImageView) findViewById(R.id.photoImageView);
             photoImageView.setVisibility(View.VISIBLE);
 
-            Picasso.with(NewTweetQuoteActivity.this)
+            Glide.with(NewTweetQuoteActivity.this)
                     .load(currentStatus.getMediaEntities()[0].getMediaURL())
-                    .placeholder(ResourcesCompat.getDrawable(getResources(), R.drawable.placeholder, null))
+                    .placeholder(R.drawable.placeholder)
                     .into(photoImageView);
         }
     }
