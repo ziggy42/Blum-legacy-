@@ -126,14 +126,18 @@ public class TweetActivity extends ThemedActivity implements SnackbarContainer {
     }
 
     void newTweetDown() {
-        replyFAB.animate().translationY(replyFAB.getHeight() + (int) (getResources().getDimension(R.dimen.fabMargin)))
-                .start();
-        isUp = false;
+        if (!isBlocked) {
+            replyFAB.animate().translationY(replyFAB.getHeight() + (int) (getResources().getDimension(R.dimen.fabMargin)))
+                    .start();
+            isUp = false;
+        }
     }
 
     void newTweetUp() {
-        replyFAB.animate().translationY(0).start();
-        isUp = true;
+        if (!isBlocked) {
+            replyFAB.animate().translationY(0).start();
+            isUp = true;
+        }
     }
 
     @Override

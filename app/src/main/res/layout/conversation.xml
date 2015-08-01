@@ -21,6 +21,7 @@
             android:layout_marginLeft="12dp"
             android:layout_marginStart="12dp"
             android:layout_marginTop="10dp"
+            android:contentDescription="@string/profile_pic_contentDescriptor"
             android:scaleType="centerCrop"
             android:src="@drawable/placeholder" />
 

@@ -3,7 +3,6 @@ package com.andreapivetta.blu.twitter;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.SnackbarContainer;

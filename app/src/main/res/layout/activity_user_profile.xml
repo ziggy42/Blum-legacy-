@@ -167,6 +167,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="-80dp"
+                android:contentDescription="@string/profile_pic_contentDescriptor"
                 android:scaleType="centerCrop" />
 
             <LinearLayout
