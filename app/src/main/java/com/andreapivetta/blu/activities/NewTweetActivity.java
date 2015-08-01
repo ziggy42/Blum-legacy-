@@ -277,7 +277,7 @@ public class NewTweetActivity extends ThemedActivity {
                         .setPositiveButton(R.string.ok, null)
                         .create()
                         .show();
-            } else {
+            } else if (charsLeft != 140) {
                 if (imageFiles.size() > 0) {
                     new UpdateTwitterStatus(NewTweetActivity.this, twitter,
                             intent.getLongExtra(TAG_REPLY_ID, -1L), imageFiles)

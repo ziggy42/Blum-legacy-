@@ -17,7 +17,6 @@ import twitter4j.Twitter;
 
 public class CheckInteractionsService extends IntentService {
 
-
     public CheckInteractionsService() {
         super("CheckInteractionsService");
     }
