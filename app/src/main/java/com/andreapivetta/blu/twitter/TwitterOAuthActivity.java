@@ -15,19 +15,16 @@ public class TwitterOAuthActivity extends Activity implements TwitterOAuthView.L
     private TwitterOAuthView view;
     private boolean oauthStarted;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         view = new TwitterOAuthView(this);
-        view.setDebugEnabled(true);
 
         setContentView(view);
 
         oauthStarted = false;
     }
-
 
     @Override
     protected void onResume() {
@@ -41,7 +38,6 @@ public class TwitterOAuthActivity extends Activity implements TwitterOAuthView.L
         view.start(TwitterUtils.TWITTER_CONSUMER_KEY, TwitterUtils.TWITTER_CONSUMER_SECRET,
                 TwitterUtils.CALLBACK_URL, TwitterUtils.DUMMY_CALLBACK_URL, this);
     }
-
 
     public void onSuccess(TwitterOAuthView view, AccessToken accessToken) {
         PreferenceManager.getDefaultSharedPreferences(TwitterOAuthActivity.this).edit().

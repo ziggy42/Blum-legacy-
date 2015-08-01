@@ -1,12 +1,12 @@
 package com.andreapivetta.blu.twitter;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.AsyncTask;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -18,12 +18,8 @@ import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
-
 public class TwitterOAuthView extends WebView {
 
-    private static final String TAG = "TwitterOAuthView";
-    private static final boolean DEBUG = false;
-    private boolean isDebugEnabled = DEBUG;
     private TwitterOAuthTask twitterOAuthTask;
 
     public TwitterOAuthView(Context context, AttributeSet attrs, int defStyle) {
@@ -44,6 +40,7 @@ public class TwitterOAuthView extends WebView {
         init();
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void init() {
         WebSettings settings = getSettings();
 
@@ -54,13 +51,8 @@ public class TwitterOAuthView extends WebView {
         setScrollBarStyle(WebView.SCROLLBARS_INSIDE_OVERLAY);
     }
 
-    public void start(String consumerKey, String consumerSecret,
-                      String callbackUrl, boolean dummyCallbackUrl,
+    public void start(String consumerKey, String consumerSecret, String callbackUrl, boolean dummyCallbackUrl,
                       Listener listener) {
-
-        if (consumerKey == null || consumerSecret == null || callbackUrl == null || listener == null) {
-            throw new IllegalArgumentException();
-        }
 
         TwitterOAuthTask oldTask;
         TwitterOAuthTask newTask;
@@ -91,27 +83,12 @@ public class TwitterOAuthView extends WebView {
         if (task == null)
             return;
 
-        if (!task.isCancelled()) {
-            if (isDebugEnabled())
-                Log.d(TAG, "Cancelling a task.");
-
+        if (!task.isCancelled())
             task.cancel(true);
-        }
 
         synchronized (task) {
-            if (isDebugEnabled())
-                Log.d(TAG, "Notifying a task of cancellation.");
-
             task.notify();
         }
-    }
-
-    public boolean isDebugEnabled() {
-        return isDebugEnabled;
-    }
-
-    public void setDebugEnabled(boolean enabled) {
-        isDebugEnabled = enabled;
     }
 
     public boolean isCancelOnDetachedFromWindow() {
@@ -126,7 +103,6 @@ public class TwitterOAuthView extends WebView {
             cancel();
         }
     }
-
 
     public enum Result {
         SUCCESS,
@@ -153,28 +129,14 @@ public class TwitterOAuthView extends WebView {
         private volatile String verifier;
         private AccessToken accessToken;
 
-        private boolean checkCancellation(String context) {
-            if (!isCancelled()) {
-                return false;
-            }
-
-            if (isDebugEnabled()) {
-                Log.d(TAG, "Cancellation was detected in the context of " + context);
-            }
-
-            return true;
-        }
-
-
         @Override
         protected void onPreExecute() {
             TwitterOAuthView.this.setWebViewClient(new LocalWebViewClient());
         }
 
-
         @Override
         protected Result doInBackground(Object... args) {
-            if (checkCancellation("doInBackground() [on entry]")) {
+            if (isCancelled()) {
                 return Result.CANCELLATION;
             }
 
@@ -184,16 +146,11 @@ public class TwitterOAuthView extends WebView {
             dummyCallbackUrl = (Boolean) args[3];
             listener = (Listener) args[4];
 
-            if (isDebugEnabled()) {
-                debugDoInBackground(args);
-            }
-
             twitter = new TwitterFactory().getInstance();
             twitter.setOAuthConsumer(consumerKey, consumerSecret);
 
             requestToken = getRequestToken();
             if (requestToken == null) {
-                // Failed to get a request token.
                 return Result.REQUEST_TOKEN_ERROR;
             }
 
@@ -208,7 +165,7 @@ public class TwitterOAuthView extends WebView {
                 return Result.AUTHORIZATION_ERROR;
             }
 
-            if (checkCancellation("doInBackground() [before getAccessToken()]")) {
+            if (isCancelled()) {
                 return Result.CANCELLATION;
             }
 
@@ -220,38 +177,16 @@ public class TwitterOAuthView extends WebView {
             return Result.SUCCESS;
         }
 
-
-        private void debugDoInBackground(Object... args) {
-            Log.d(TAG, "CONSUMER KEY = " + args[0]);
-            Log.d(TAG, "CONSUMER SECRET = " + args[1]);
-            Log.d(TAG, "CALLBACK URL = " + args[2]);
-            Log.d(TAG, "DUMMY CALLBACK URL = " + args[3]);
-
-            System.setProperty("twitter4j.debug", "true");
-        }
-
-
         @Override
         protected void onProgressUpdate(Void... values) {
-            if (checkCancellation("onProgressUpdate()")) {
+            if (isCancelled())
                 return;
-            }
 
-            String url = requestToken.getAuthorizationURL();
-
-            if (isDebugEnabled()) {
-                Log.d(TAG, "Loading the authorization URL: " + url);
-            }
-
-            TwitterOAuthView.this.loadUrl(url);
+            TwitterOAuthView.this.loadUrl(requestToken.getAuthorizationURL());
         }
-
 
         @Override
         protected void onPostExecute(Result result) {
-            if (isDebugEnabled()) {
-                Log.d(TAG, "onPostExecute: result = " + result);
-            }
 
             if (result == null) {
                 result = Result.CANCELLATION;
@@ -266,7 +201,6 @@ public class TwitterOAuthView extends WebView {
             clearTaskReference();
         }
 
-
         @Override
         protected void onCancelled() {
             super.onCancelled();
@@ -276,24 +210,13 @@ public class TwitterOAuthView extends WebView {
             clearTaskReference();
         }
 
-
         private void fireOnSuccess() {
-            if (isDebugEnabled()) {
-                Log.d(TAG, "Calling Listener.onSuccess");
-            }
-
             listener.onSuccess(TwitterOAuthView.this, accessToken);
         }
 
-
         private void fireOnFailure(Result result) {
-            if (isDebugEnabled()) {
-                Log.d(TAG, "Calling Listener.onFailure, result = " + result);
-            }
-
             listener.onFailure(TwitterOAuthView.this, result);
         }
-
 
         private void clearTaskReference() {
             synchronized (TwitterOAuthView.this) {
@@ -303,84 +226,49 @@ public class TwitterOAuthView extends WebView {
             }
         }
 
-
         private RequestToken getRequestToken() {
             try {
-                RequestToken token = twitter.getOAuthRequestToken();
-
-                if (isDebugEnabled()) {
-                    Log.d(TAG, "Got a request token.");
-                }
-
-                return token;
+                return twitter.getOAuthRequestToken();
             } catch (TwitterException e) {
                 e.printStackTrace();
-                Log.e(TAG, "Failed to get a request token.", e);
-
                 return null;
             }
         }
-
 
         private void authorize() {
             publishProgress();
         }
 
-
         private boolean waitForAuthorization() {
             while (!authorizationDone) {
-                if (checkCancellation("waitForAuthorization()")) {
+                if (isCancelled())
                     return true;
-                }
 
                 synchronized (this) {
                     try {
-                        if (isDebugEnabled()) {
-                            Log.d(TAG, "Waiting for the authorization step to be done.");
-                        }
-
                         this.wait();
                     } catch (InterruptedException e) {
-                        if (isDebugEnabled()) {
-                            Log.d(TAG, "Interrupted while waiting for the authorization step to be done.");
-                        }
+                        e.printStackTrace();
                     }
                 }
-            }
-
-            if (isDebugEnabled()) {
-                Log.d(TAG, "Finished waiting for the authorization step to be done.");
             }
 
             return false;
         }
 
-
         private void notifyAuthorization() {
             authorizationDone = true;
 
             synchronized (this) {
-                if (isDebugEnabled()) {
-                    Log.d(TAG, "Notifying that the authorization step was done.");
-                }
-
                 this.notify();
             }
         }
 
         private AccessToken getAccessToken() {
             try {
-                AccessToken token = twitter.getOAuthAccessToken(requestToken, verifier);
-
-                if (isDebugEnabled()) {
-                    Log.d(TAG, "Got an access token for " + token.getScreenName());
-                }
-
-                return token;
+                return twitter.getOAuthAccessToken(requestToken, verifier);
             } catch (TwitterException e) {
                 e.printStackTrace();
-                Log.e(TAG, "Failed to get an access token.", e);
-
                 return null;
             }
         }
@@ -389,11 +277,8 @@ public class TwitterOAuthView extends WebView {
 
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                Log.e(TAG, "onReceivedError: [" + errorCode + "] " + description);
-
                 notifyAuthorization();
             }
-
 
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
@@ -402,21 +287,10 @@ public class TwitterOAuthView extends WebView {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                if (!url.startsWith(callbackUrl)) {
+                if (!url.startsWith(callbackUrl))
                     return false;
-                }
 
-                if (isDebugEnabled()) {
-                    Log.d(TAG, "Detected the callback URL: " + url);
-                }
-
-                Uri uri = Uri.parse(url);
-
-                verifier = uri.getQueryParameter("oauth_verifier");
-
-                if (isDebugEnabled()) {
-                    Log.d(TAG, "oauth_verifier = " + verifier);
-                }
+                verifier = Uri.parse(url).getQueryParameter("oauth_verifier");
 
                 notifyAuthorization();
 
