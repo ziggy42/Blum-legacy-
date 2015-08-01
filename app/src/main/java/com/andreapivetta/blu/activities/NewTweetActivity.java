@@ -238,6 +238,7 @@ public class NewTweetActivity extends ThemedActivity {
                 break;
             case REQUEST_TAKE_PHOTO:
                 if (resultCode == RESULT_OK) {
+                    mRecyclerView.setVisibility(View.VISIBLE);
                     imageFiles.add(imageFile);
                     mAdapter.notifyItemInserted(imageFiles.size() - 1);
                 }
