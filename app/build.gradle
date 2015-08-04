@@ -19,13 +19,6 @@ android {
         exclude('META-INF/LICENSE.txt')
     }
 
-    buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'),
-                    'proguard-rules.pro'
-        }
-    }
 }
 
 dependencies {
