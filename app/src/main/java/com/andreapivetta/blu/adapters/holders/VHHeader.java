@@ -35,6 +35,7 @@ import com.andreapivetta.blu.twitter.FavoriteTweet;
 import com.andreapivetta.blu.twitter.RetweetTweet;
 import com.andreapivetta.blu.utilities.CircleTransform;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -281,6 +282,9 @@ public class VHHeader extends ViewHolder {
                 tweetPhotoImageView.setVisibility(View.VISIBLE);
                 Glide.with(context)
                         .load(mediaEntity.getMediaURL())
+                        .asBitmap()
+                        .dontTransform()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .placeholder(R.drawable.placeholder)
                         .into(tweetPhotoImageView);
 

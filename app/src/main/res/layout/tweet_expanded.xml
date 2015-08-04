@@ -87,6 +87,7 @@
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/tweet_photo_contentDescriptor"
                 android:scaleType="fitCenter"
+                android:transitionName="@string/image_transition"
                 android:visibility="gone" />
 
             <android.support.v7.widget.RecyclerView

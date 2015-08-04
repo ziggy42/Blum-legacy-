@@ -22,6 +22,7 @@ import android.widget.ImageView;
 
 import com.andreapivetta.blu.R;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.Arrays;
 import java.util.List;
@@ -196,6 +197,9 @@ public class ImageActivity extends AppCompatActivity {
             final ImageView tweetImageView = (ImageView) rootView.findViewById(R.id.tweetImageView);
             Glide.with(getActivity())
                     .load(imageURL)
+                    .asBitmap()
+                    .dontTransform()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(tweetImageView);
 
             tweetImageView.setOnTouchListener(new View.OnTouchListener() {
