@@ -26,10 +26,6 @@ import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.services.BasicNotificationService;
 import com.andreapivetta.blu.services.StreamNotificationService;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 
 public class SettingsActivity extends ThemedActivity {
 
@@ -62,7 +58,6 @@ public class SettingsActivity extends ThemedActivity {
         private SwitchPreference streamServicePreference;
 
         private ProgressDialog dialog;
-        private WebView mWebView;
 
         public SettingsFragment() {
         }
@@ -162,8 +157,8 @@ public class SettingsActivity extends ThemedActivity {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     View content = View.inflate(getActivity(), R.layout.fragment_licenses, null);
-                    mWebView = (WebView) content.findViewById(R.id.licensesFragmentWebView);
-                    loadWebView();
+                    WebView mWebView = (WebView) content.findViewById(R.id.licensesFragmentWebView);
+                    mWebView.loadUrl("http://andreapivetta.altervista.org/Blum/licenses.html");
 
                     new AlertDialog.Builder(getActivity())
                             .setTitle(getString(R.string.licenses_pref_title))
@@ -212,34 +207,6 @@ public class SettingsActivity extends ThemedActivity {
                     return true;
                 }
             });
-
-        }
-
-        void loadWebView() {
-            new AsyncTask<Void, Void, String>() {
-                @Override
-                protected String doInBackground(Void... params) {
-                    BufferedReader bufferedReader = new BufferedReader(
-                            new InputStreamReader(getActivity().getResources().openRawResource(R.raw.licenses)));
-
-                    String line;
-                    StringBuilder sb = new StringBuilder();
-                    try {
-                        while ((line = bufferedReader.readLine()) != null)
-                            sb.append(line).append("\n");
-                        bufferedReader.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    return sb.toString();
-                }
-
-                @Override
-                protected void onPostExecute(String licensesBody) {
-                    mWebView.loadDataWithBaseURL(null, licensesBody, "text/html", "utf-8", null);
-                }
-            }.execute();
         }
 
         void performLogout() {
