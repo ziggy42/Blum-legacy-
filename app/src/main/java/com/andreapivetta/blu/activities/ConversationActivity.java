@@ -46,12 +46,14 @@ public class ConversationActivity extends ThemedActivity {
 
     private ConversationAdapter mAdapter;
     private DataUpdateReceiver dataUpdateReceiver;
-    private DatabaseManager databaseManager = DatabaseManager.getInstance(ConversationActivity.this);
+    private DatabaseManager databaseManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversation);
+
+        databaseManager = DatabaseManager.getInstance(ConversationActivity.this);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {

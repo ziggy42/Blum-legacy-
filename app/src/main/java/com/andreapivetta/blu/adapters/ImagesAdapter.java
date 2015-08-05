@@ -48,8 +48,8 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.VHItem> {
                     images[i] = mediaEntities[i].getMediaURL();
 
                 Intent i = new Intent(context, ImageActivity.class);
-                i.putExtra(ImageActivity.TAG_IMAGES, images);
-                i.putExtra(ImageActivity.TAG_CURRENT_ITEM, position);
+                i.putExtra(ImageActivity.TAG_IMAGES, images)
+                        .putExtra(ImageActivity.TAG_CURRENT_ITEM, position);
                 context.startActivity(i);
             }
         });
