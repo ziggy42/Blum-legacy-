@@ -6,14 +6,9 @@
     <string name="action_search">Cerca</string>
     <string name="action_settings">Impostazioni</string>
     <string name="all_fields_needed">Tutti i campi sono necessari</string>
-    <string name="amount_followers">%1$s\nFollower</string>
-    <string name="amount_following">%1$s\nSeguiti</string>
-    <string name="amount_tweets">%1$s\nTweet</string>
-    <string name="are_following_ea">Tu e %1$s vi seguite a vicenda</string>
     <string name="authorized_by">Autorizzato da %1$s</string>
     <string name="cancel">Annulla</string>
     <string name="cant_find_user">Non riesco a caricare questo utente, controlla la tua connessione</string>
-    <string name="cant_load_user">Non riesco a caricare gli utenti</string>
     <string name="chars_left">Caratteri rimasti</string>
     <string name="check_out">Guarda  %1$s su Twitter http://twitter.com/%2$s</string>
     <string name="clear_database">Eliminare tutte le notifiche?</string>
@@ -57,10 +52,7 @@
     <string name="sending_tweet_title">Mandando Il Tweet</string>
     <string name="share">Condividi</string>
     <string name="share_pref_summary">Suggerisci questa app ad un amico</string>
-    <string name="you_are_not_following">Non stai seguendo %1$s</string>
     <string name="you_are_following">Stai seguendo %1$s</string>
-    <string name="you_are_followed">%1$s ti segue</string>
-    <string name="you_are_awesome">Sei una meraviglia</string>
     <string name="yes">Si</string>
     <string name="welcome">Benvenuto</string>
     <string name="too_many_characters">Troppi caratteri</string>
@@ -155,5 +147,6 @@
     <string name="mute_notifications_pref_summary">Non riceverai notifiche</string>
     <string name="mute_notifications_pref_title">Silenzia Notifiche</string>
     <string name="select_picture">Scegli Foto</string>
+    <string name="follow_simple">Segui</string>
 
 </resources>

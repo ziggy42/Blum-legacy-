@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import twitter4j.Status;
 import twitter4j.Twitter;
 
-public abstract class ViewHolder extends RecyclerView.ViewHolder {
+public abstract class BaseViewHolder extends RecyclerView.ViewHolder {
 
     protected LinearLayout interactionLinearLayout;
     protected TextView userNameTextView, statusTextView, timeTextView, retweetTextView;
@@ -23,7 +23,7 @@ public abstract class ViewHolder extends RecyclerView.ViewHolder {
     protected ImageButton favouriteImageButton, retweetImageButton, respondImageButton,
             shareImageButton, quoteImageButton;
 
-    public ViewHolder(View container) {
+    public BaseViewHolder(View container) {
         super(container);
 
         this.interactionLinearLayout = (LinearLayout) container.findViewById(R.id.interactionLinearLayout);

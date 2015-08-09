@@ -5,8 +5,6 @@
     <string name="retweet_title" translatable="false">Retweet?</string>
     <string name="retweet" translatable="false">Retweet</string>
     <string name="ok" translatable="false">OK</string>
-    <string name="tweet" translatable="false">TWEET</string>
-    <string name="follow_user" translatable="false">FOLLOW</string>
     <string name="unfollow" translatable="false">UNFOLLOW</string>
     <string name="email_form_hint" translatable="false">Email</string>
     <string name="mini_seconds" translatable="false">%1$ds</string>
@@ -22,7 +20,6 @@
     <string name="sending_tweet_content">Sending in Progress</string>
     <string name="share_tweet">Share this Tweet!</string>
     <string name="stop_following">Stop following %1$s?</string>
-    <string name="are_following_ea">You and %1$s are following each other</string>
     <string name="follow">Follow %1$s?</string>
     <string name="check_out">Check out %1$s on Twitter http://twitter.com/%2$s</string>
     <string name="share">Share</string>
@@ -45,19 +42,12 @@
     <string name="follow_not_title">%1$s is now following you</string>
     <string name="reply_not_title">%1$s tweeted</string>
     <string name="retw_ment_not_title">%1$s retweeted a Tweet you were mentioned in</string>
-    <string name="amount_tweets">%1$s\nTweets</string>
-    <string name="amount_followers">%1$s\n Followers</string>
-    <string name="amount_following">%1$s\nFollowing</string>
     <string name="cant_find_user">Can\'t load this user, check your internet connection</string>
-    <string name="cant_load_user">Can\'t load users</string>
     <string name="action_profile">My Profile</string>
     <string name="send_tweet">Send Tweet</string>
     <string name="too_many_characters">Too many characters</string>
     <string name="chars_left">Chars Left</string>
-    <string name="you_are_followed">%1$s follows you</string>
-    <string name="you_are_not_following">You aren\'t following %1$s</string>
     <string name="you_are_following">You\'re following %1$s</string>
-    <string name="you_are_awesome">You are awesome</string>
     <string name="reached_twitter_user_limit">Reached Twitter limit, please try again in a few minutes</string>
     <string name="streamDialogTitle">Use Stream Notification Service</string>
     <string name="streamContinue">Continue</string>
@@ -111,6 +101,9 @@
     <string name="m_of_n">%1$d of %2$d</string>
     <string name="done">Done!</string>
     <string name="tweet_not_sent">Tweet not sent</string>
+    <string name="follow_simple">Follow</string>
+    <string name="amount_followers" translatable="false">&lt;b>%1$s&lt;/b> followers</string>
+    <string name="amount_following" translatable="false">&lt;b>%1$s&lt;/b> following</string>
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>

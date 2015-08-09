@@ -12,7 +12,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.TweetActivity;
-import com.andreapivetta.blu.activities.UserProfileActivity;
+import com.andreapivetta.blu.activities.UserActivity;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.utilities.Common;
 import com.andreapivetta.blu.utilities.ThemeUtils;
@@ -118,8 +118,8 @@ public class Notification {
                             .setContentIntent(resultPendingIntent);
                     break;
                 case TYPE_FOLLOW:
-                    resultIntent = new Intent(context, UserProfileActivity.class);
-                    resultIntent.putExtra(UserProfileActivity.TAG_ID, userID);
+                    resultIntent = new Intent(context, UserActivity.class);
+                    resultIntent.putExtra(UserActivity.TAG_ID, userID);
                     resultPendingIntent = PendingIntent.getActivity(
                             context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 

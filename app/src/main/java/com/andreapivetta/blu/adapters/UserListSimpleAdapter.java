@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.activities.UserProfileActivity;
+import com.andreapivetta.blu.activities.UserActivity;
 import com.andreapivetta.blu.adapters.holders.UserSimpleViewHolder;
 import com.andreapivetta.blu.utilities.CircleTransform;
 import com.bumptech.glide.Glide;
@@ -51,8 +51,8 @@ public class UserListSimpleAdapter extends RecyclerView.Adapter<UserSimpleViewHo
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, UserProfileActivity.class);
-                i.putExtra(UserProfileActivity.TAG_ID, user.getId());
+                Intent i = new Intent(context, UserActivity.class);
+                i.putExtra(UserActivity.TAG_ID, user.getId());
                 context.startActivity(i);
             }
         });

@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.ConversationActivity;
-import com.andreapivetta.blu.activities.UserProfileActivity;
+import com.andreapivetta.blu.activities.UserActivity;
 import com.andreapivetta.blu.adapters.holders.UserSimpleViewHolder;
 import com.andreapivetta.blu.utilities.CircleTransform;
 import com.bumptech.glide.Glide;
@@ -51,9 +51,9 @@ public class UserListMessageAdapter extends RecyclerView.Adapter<UserSimpleViewH
         holder.userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, UserProfileActivity.class);
+                Intent i = new Intent(context, UserActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(UserProfileActivity.TAG_USER, user);
+                bundle.putSerializable(UserActivity.TAG_USER, user);
                 i.putExtras(bundle);
                 context.startActivity(i);
             }

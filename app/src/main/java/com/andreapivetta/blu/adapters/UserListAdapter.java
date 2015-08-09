@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.activities.UserProfileActivity;
+import com.andreapivetta.blu.activities.UserActivity;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -54,12 +54,10 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
         holder.containerRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, UserProfileActivity.class);
-
+                Intent i = new Intent(context, UserActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(UserProfileActivity.TAG_USER, user);
+                bundle.putSerializable(UserActivity.TAG_USER, user);
                 i.putExtras(bundle);
-
                 context.startActivity(i);
             }
         });

@@ -28,7 +28,7 @@ import com.andreapivetta.blu.activities.ImageActivity;
 import com.andreapivetta.blu.activities.NewTweetActivity;
 import com.andreapivetta.blu.activities.NewTweetQuoteActivity;
 import com.andreapivetta.blu.activities.TweetActivity;
-import com.andreapivetta.blu.activities.UserProfileActivity;
+import com.andreapivetta.blu.activities.UserActivity;
 import com.andreapivetta.blu.adapters.ImagesAdapter;
 import com.andreapivetta.blu.adapters.decorators.SpaceLeftItemDecoration;
 import com.andreapivetta.blu.twitter.FavoriteTweet;
@@ -48,7 +48,7 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.User;
 
-public class VHHeader extends ViewHolder {
+public class VHHeader extends BaseViewHolder {
 
     public TextView screenNameTextView, retweetsStatsTextView, favouritesStatsTextView;
     public ImageView tweetPhotoImageView;
@@ -128,9 +128,9 @@ public class VHHeader extends ViewHolder {
         userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, UserProfileActivity.class);
+                Intent i = new Intent(context, UserActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(UserProfileActivity.TAG_USER, currentUser);
+                bundle.putSerializable(UserActivity.TAG_USER, currentUser);
                 i.putExtras(bundle);
                 context.startActivity(i);
             }

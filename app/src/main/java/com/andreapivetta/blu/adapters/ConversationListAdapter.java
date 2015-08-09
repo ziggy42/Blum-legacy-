@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.ConversationActivity;
-import com.andreapivetta.blu.activities.UserProfileActivity;
+import com.andreapivetta.blu.activities.UserActivity;
 import com.andreapivetta.blu.data.Message;
 import com.andreapivetta.blu.utilities.CircleTransform;
 import com.bumptech.glide.Glide;
@@ -87,8 +87,8 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ConversationLi
         holder.userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, UserProfileActivity.class);
-                i.putExtra(UserProfileActivity.TAG_ID, current.otherID);
+                Intent i = new Intent(context, UserActivity.class);
+                i.putExtra(UserActivity.TAG_ID, current.otherID);
                 context.startActivity(i);
             }
         });

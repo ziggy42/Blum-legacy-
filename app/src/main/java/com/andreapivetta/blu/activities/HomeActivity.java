@@ -49,7 +49,7 @@ public class HomeActivity extends TimeLineActivity {
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if(mSharedPreferences.getBoolean("stillthere", true)) {
+        if (mSharedPreferences.getBoolean("stillthere", true)) {
 
             deleteDatabase("messages_db");
             deleteDatabase("favorites_db");
@@ -253,7 +253,7 @@ public class HomeActivity extends TimeLineActivity {
         if (item.getItemId() == R.id.action_search) {
             onSearchRequested();
         } else if (item.getItemId() == R.id.action_profile) {
-            startActivity(new Intent(HomeActivity.this, UserProfileActivity.class));
+            startActivity(new Intent(HomeActivity.this, UserActivity.class));
         }
 
         return super.onOptionsItemSelected(item);

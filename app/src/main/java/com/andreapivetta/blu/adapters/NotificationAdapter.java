@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.TweetActivity;
-import com.andreapivetta.blu.activities.UserProfileActivity;
+import com.andreapivetta.blu.activities.UserActivity;
 import com.andreapivetta.blu.data.Notification;
 import com.bumptech.glide.Glide;
 
@@ -55,8 +55,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         holder.userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, UserProfileActivity.class);
-                i.putExtra(UserProfileActivity.TAG_ID, notification.userID);
+                Intent i = new Intent(context, UserActivity.class);
+                i.putExtra(UserActivity.TAG_ID, notification.userID);
                 context.startActivity(i);
             }
         });
@@ -118,8 +118,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(context, UserProfileActivity.class);
-                    i.putExtra(UserProfileActivity.TAG_ID, notification.userID);
+                    Intent i = new Intent(context, UserActivity.class);
+                    i.putExtra(UserActivity.TAG_ID, notification.userID);
                     context.startActivity(i);
                 }
             });

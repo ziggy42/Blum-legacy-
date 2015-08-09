@@ -2,7 +2,5 @@
 <resources>
     <dimen name="homeMargins">0dp</dimen>
     <dimen name="picHeight">200dp</dimen>
-    <dimen name="profileTweetsMargins">12dp</dimen>
-    <dimen name="profileBackgroundHeight">200dp</dimen>
     <dimen name="fabMargin">0dp</dimen>
 </resources>

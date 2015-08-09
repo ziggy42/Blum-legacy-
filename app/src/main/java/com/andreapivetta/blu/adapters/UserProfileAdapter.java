@@ -1,24 +1,26 @@
 package com.andreapivetta.blu.adapters;
 
+
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.adapters.holders.VHHeader;
+import com.andreapivetta.blu.adapters.holders.BaseViewHolder;
+import com.andreapivetta.blu.adapters.holders.UserHeaderViewHolder;
 import com.andreapivetta.blu.adapters.holders.VHItem;
 import com.andreapivetta.blu.adapters.holders.VHItemMultiplePhotos;
 import com.andreapivetta.blu.adapters.holders.VHItemPhoto;
 import com.andreapivetta.blu.adapters.holders.VHItemQuote;
-import com.andreapivetta.blu.adapters.holders.BaseViewHolder;
 
 import java.util.ArrayList;
 
 import twitter4j.Status;
 import twitter4j.Twitter;
+import twitter4j.User;
 
-public class TweetsListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
+public class UserProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
@@ -26,23 +28,21 @@ public class TweetsListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int TYPE_ITEM_QUOTE = 3;
     private static final int TYPE_ITEM_MULTIPLE_PHOTOS = 4;
 
-    private ArrayList<Status> mDataSet;
+    private ArrayList<Object> mDataSet;
     private Context context;
     private Twitter twitter;
-    private int headerPosition;
 
     private ArrayList<Long> favorites = new ArrayList<>();
     private ArrayList<Long> retweets = new ArrayList<>();
 
-    public TweetsListAdapter(ArrayList<Status> mDataSet, Context context, Twitter twitter, int headerPosition) {
+    public UserProfileAdapter(ArrayList<Object> mDataSet, Context context, Twitter twitter) {
         this.mDataSet = mDataSet;
         this.context = context;
         this.twitter = twitter;
-        this.headerPosition = headerPosition;
     }
 
     @Override
-    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case TYPE_ITEM:
                 return new VHItem(
@@ -57,8 +57,8 @@ public class TweetsListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 return new VHItemMultiplePhotos(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_multiplephotos, parent, false));
             case TYPE_HEADER:
-                return new VHHeader(
-                        LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_expanded, parent, false));
+                return new UserHeaderViewHolder(
+                        LayoutInflater.from(parent.getContext()).inflate(R.layout.user_header, parent, false));
             default:
                 return new VHItem(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_basic, parent, false));
@@ -66,8 +66,11 @@ public class TweetsListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position) {
-        holder.setup(mDataSet.get(position), context, favorites, retweets, twitter);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (position == 0)
+            ((UserHeaderViewHolder) holder).setup((User) mDataSet.get(position), context, twitter);
+        else
+            ((BaseViewHolder) holder).setup((Status) mDataSet.get(position), context, favorites, retweets, twitter);
     }
 
     @Override
@@ -78,32 +81,20 @@ public class TweetsListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     @Override
     public int getItemViewType(int position) {
 
-        if (isPositionHeader(position))
+        if (position == 0)
             return TYPE_HEADER;
+        else {
+            Status status = (Status) mDataSet.get(position);
+            if (status.getExtendedMediaEntities().length == 1)
+                return TYPE_ITEM_PHOTO;
 
-        if (mDataSet.get(position).getExtendedMediaEntities().length == 1)
-            return TYPE_ITEM_PHOTO;
+            if (status.getExtendedMediaEntities().length > 1)
+                return TYPE_ITEM_MULTIPLE_PHOTOS;
 
-        if (mDataSet.get(position).getExtendedMediaEntities().length > 1)
-            return TYPE_ITEM_MULTIPLE_PHOTOS;
+            if (status.getQuotedStatusId() > 0)
+                return TYPE_ITEM_QUOTE;
 
-        if (mDataSet.get(position).getQuotedStatusId() > 0)
-            return TYPE_ITEM_QUOTE;
-
-        return TYPE_ITEM;
+            return TYPE_ITEM;
+        }
     }
-
-    public void setHeaderPosition(int position) {
-        this.headerPosition = position;
-    }
-
-    private boolean isPositionHeader(int position) {
-        return position == headerPosition;
-    }
-
-    public void add(Status status) {
-        mDataSet.add(status);
-        notifyItemInserted(mDataSet.size() - 1);
-    }
-
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
 import android.support.v7.app.AlertDialog;
 import android.text.util.Linkify;
 import android.view.View;
@@ -15,7 +16,7 @@ import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.NewTweetActivity;
 import com.andreapivetta.blu.activities.NewTweetQuoteActivity;
 import com.andreapivetta.blu.activities.TweetActivity;
-import com.andreapivetta.blu.activities.UserProfileActivity;
+import com.andreapivetta.blu.activities.UserActivity;
 import com.andreapivetta.blu.twitter.FavoriteTweet;
 import com.andreapivetta.blu.twitter.RetweetTweet;
 import com.bumptech.glide.Glide;
@@ -29,7 +30,7 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.User;
 
-public class VHItem extends ViewHolder {
+public class VHItem extends BaseViewHolder {
 
     protected FrameLayout cardView;
     protected ImageButton openTweetImageButton;
@@ -42,6 +43,7 @@ public class VHItem extends ViewHolder {
     }
 
     @Override
+    @CallSuper
     public void setup(Status status, final Context context, final ArrayList<Long> favorites,
                       final ArrayList<Long> retweets, final Twitter twitter) {
         final Status currentStatus;
@@ -98,9 +100,9 @@ public class VHItem extends ViewHolder {
         userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, UserProfileActivity.class);
+                Intent i = new Intent(context, UserActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(UserProfileActivity.TAG_USER, currentUser);
+                bundle.putSerializable(UserActivity.TAG_USER, currentUser);
                 i.putExtras(bundle);
                 context.startActivity(i);
             }

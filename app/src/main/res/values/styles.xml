@@ -1,12 +1,5 @@
 <resources>
 
-    <style name="ImageActivityTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:windowBackground">@color/black</item>
-    </style>
-
     <style name="LightBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
@@ -31,6 +24,8 @@
         <item name="rectButton">@drawable/rect_button_blue</item>
     </style>
 
+    <style name="BlueUserTheme" parent="BlueAppTheme" />
+
     <style name="CustomSearchViewStyle" parent="Widget.AppCompat.SearchView">
         <item name="queryBackground">@color/blueThemeColorPrimary</item>
         <item name="submitBackground">@color/blueThemeColorPrimary</item>
@@ -51,6 +46,8 @@
         <item name="rectBackground">@drawable/rect_background_pink</item>
         <item name="rectButton">@drawable/rect_button_pink</item>
     </style>
+
+    <style name="PinkUserTheme" parent="PinkAppTheme" />
 
     <style name="PinkSearchViewStyle" parent="Widget.AppCompat.SearchView">
         <item name="queryBackground">@color/pinkThemeColorPrimary</item>
@@ -73,6 +70,8 @@
         <item name="rectButton">@drawable/rect_button_green</item>
     </style>
 
+    <style name="GreenUserTheme" parent="GreenAppTheme" />
+
     <style name="GreenSearchViewStyle" parent="Widget.AppCompat.SearchView">
         <item name="queryBackground">@color/greenThemeColorPrimary</item>
         <item name="submitBackground">@color/greenThemeColorPrimary</item>
@@ -94,6 +93,15 @@
         <item name="circleDrawable">@drawable/circle_darkdark</item>
         <item name="rectBackground">@drawable/rect_background_dark</item>
         <item name="rectButton">@drawable/rect_button_dark</item>
+    </style>
+
+    <style name="DarkUserTheme" parent="DarkTheme" />
+
+    <style name="ImageActivityTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:windowBackground">@color/black</item>
     </style>
 
 </resources>
