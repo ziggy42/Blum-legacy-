@@ -88,12 +88,12 @@ public class VHItem extends BaseViewHolder {
                 .into(userProfilePicImageView);
 
         if (currentStatus.isFavorited() || favorites.contains(currentStatus.getId()))
-            favouriteImageButton.setImageResource(R.drawable.ic_star_outline_black_36dp);
+            favouriteImageButton.setImageResource(R.drawable.ic_star_yellow_a700_36dp);
         else
             favouriteImageButton.setImageResource(R.drawable.ic_star_grey600_36dp);
 
         if (currentStatus.isRetweeted() || retweets.contains(currentStatus.getId()))
-            retweetImageButton.setImageResource(R.drawable.ic_repeat_black_36dp);
+            retweetImageButton.setImageResource(R.drawable.ic_repeat_green_a700_36dp);
         else
             retweetImageButton.setImageResource(R.drawable.ic_repeat_grey600_36dp);
 
@@ -118,7 +118,7 @@ public class VHItem extends BaseViewHolder {
                 } else {
                     new FavoriteTweet(context, twitter).execute(currentStatus.getId(), 1L);
                     favorites.add(currentStatus.getId());
-                    favouriteImageButton.setImageResource(R.drawable.ic_star_outline_black_36dp);
+                    favouriteImageButton.setImageResource(R.drawable.ic_star_yellow_a700_36dp);
                 }
             }
         });
@@ -133,7 +133,7 @@ public class VHItem extends BaseViewHolder {
                             public void onClick(DialogInterface dialog, int which) {
                                 new RetweetTweet(context, twitter).execute(currentStatus.getId());
                                 retweets.add(currentStatus.getId());
-                                retweetImageButton.setImageResource(R.drawable.ic_repeat_black_36dp);
+                                retweetImageButton.setImageResource(R.drawable.ic_repeat_green_a700_36dp);
                             }
                         })
                         .setNegativeButton(R.string.cancel, null).create().show();
