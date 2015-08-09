@@ -38,7 +38,6 @@ public class SearchTweetsFragment extends Fragment {
     private ProgressBar loadingProgressBar;
     private TextView nothingToShowTextView;
     private boolean loading = true;
-    private int pastVisibleItems, visibleItemCount, totalItemCount;
     private Query mQuery;
 
     public static SearchTweetsFragment newInstance(String query) {
@@ -79,15 +78,10 @@ public class SearchTweetsFragment extends Fragment {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                visibleItemCount = mLinearLayoutManager.getChildCount();
-                totalItemCount = mLinearLayoutManager.getItemCount();
-                pastVisibleItems = mLinearLayoutManager.findFirstVisibleItemPosition() + 1;
-
-                if (loading) {
-                    if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
-                        loading = false;
-                        new TweetsLoaderAsyncTask().execute(null, null, null);
-                    }
+                if (loading && ((mLinearLayoutManager.getChildCount() + (mLinearLayoutManager.findFirstVisibleItemPosition() + 1))
+                        >= mLinearLayoutManager.getItemCount())) {
+                    loading = false;
+                    new TweetsLoaderAsyncTask().execute(null, null, null);
                 }
             }
         });

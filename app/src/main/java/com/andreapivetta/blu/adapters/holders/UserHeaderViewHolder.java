@@ -219,12 +219,10 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                if (dialogLoading) {
-                    if ((mDialogLinearLayoutManager.getChildCount() + (mDialogLinearLayoutManager.findFirstVisibleItemPosition() + 1))
-                            >= mDialogLinearLayoutManager.getItemCount() - 5) {
-                        dialogLoading = false;
-                        new LoadFollowersOrFollowing().execute(mode, null, null);
-                    }
+                if (dialogLoading && ((mDialogLinearLayoutManager.getChildCount() + (mDialogLinearLayoutManager.findFirstVisibleItemPosition() + 1))
+                        >= mDialogLinearLayoutManager.getItemCount() - 5)) {
+                    dialogLoading = false;
+                    new LoadFollowersOrFollowing().execute(mode, null, null);
                 }
             }
         });

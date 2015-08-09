@@ -49,7 +49,6 @@ public abstract class TimeLineActivity extends ThemedActivity implements Snackba
     protected LinearLayoutManager mLinearLayoutManager;
 
     protected boolean isUp = true, loading = true, isBlocked = false;
-    protected int pastVisibleItems, visibleItemCount, totalItemCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,11 +76,8 @@ public abstract class TimeLineActivity extends ThemedActivity implements Snackba
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                visibleItemCount = mLinearLayoutManager.getChildCount();
-                totalItemCount = mLinearLayoutManager.getItemCount();
-                pastVisibleItems = mLinearLayoutManager.findFirstVisibleItemPosition() + 1;
-
-                if (loading && ((visibleItemCount + pastVisibleItems) >= totalItemCount - 10)) {
+                if (loading && ((mLinearLayoutManager.getChildCount() + (mLinearLayoutManager.findFirstVisibleItemPosition() + 1))
+                        >= mLinearLayoutManager.getItemCount() - 10)) {
                     loading = false;
                     new GetTimeLine().execute(null, null, null);
                 }
