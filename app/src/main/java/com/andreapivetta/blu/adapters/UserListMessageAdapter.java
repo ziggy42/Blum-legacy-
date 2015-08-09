@@ -43,7 +43,7 @@ public class UserListMessageAdapter extends RecyclerView.Adapter<UserSimpleViewH
         final User user = mDataSet.get(position);
 
         Glide.with(context)
-                .load(user.getProfileImageURL())
+                .load(user.getBiggerProfileImageURL())
                 .placeholder(R.drawable.placeholder_circular)
                 .transform(new CircleTransform(context))
                 .into(holder.userProfilePicImageView);

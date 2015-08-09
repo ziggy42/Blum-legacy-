@@ -34,8 +34,8 @@ import twitter4j.User;
 
 public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
 
-    private final static String FOLLOWERS = "followers";
-    private final static String FOLLOWING = "following";
+    private final static String FOLLOWERS = "Followers";
+    private final static String FOLLOWING = "Following";
 
     private ArrayList<User> followers = new ArrayList<>(), following = new ArrayList<>();
     private UserListSimpleAdapter mUsersSimpleAdapter;
@@ -188,10 +188,15 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
     }
 
     void createUsersDialog(final String mode, Context context, final Twitter twitter, final User user) {
-        mUsersSimpleAdapter = new UserListSimpleAdapter(
-                (mode.equals(FOLLOWERS)) ? followers : following, context);
-
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        if (mode.equals(FOLLOWERS)) {
+            mUsersSimpleAdapter = new UserListSimpleAdapter(followers, context);
+            builder.setTitle(context.getString(R.string.followers));
+        } else {
+            mUsersSimpleAdapter = new UserListSimpleAdapter(following, context);
+            builder.setTitle(context.getString(R.string.following));
+        }
+
         View dialogView = View.inflate(context, R.layout.dialog_users, null);
         RecyclerView mRecyclerView = (RecyclerView) dialogView.findViewById(R.id.usersRecyclerView);
 
@@ -207,7 +212,7 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
 
                 if (dialogLoading) {
                     if ((mDialogLinearLayoutManager.getChildCount() + (mDialogLinearLayoutManager.findFirstVisibleItemPosition() + 1))
-                            >= mDialogLinearLayoutManager.getItemCount()) {
+                            >= mDialogLinearLayoutManager.getItemCount() - 5) {
                         dialogLoading = false;
                         new LoadFollowersOrFollowing(twitter, user).execute(mode, null, null);
                     }

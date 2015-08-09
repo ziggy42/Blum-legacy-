@@ -101,9 +101,12 @@
     <string name="m_of_n">%1$d of %2$d</string>
     <string name="done">Done!</string>
     <string name="tweet_not_sent">Tweet not sent</string>
+    <string name="select_picture">Select Picture</string>
     <string name="follow_simple">Follow</string>
     <string name="amount_followers" translatable="false">&lt;b>%1$s&lt;/b> followers</string>
     <string name="amount_following" translatable="false">&lt;b>%1$s&lt;/b> following</string>
+    <string name="following" translatable="false">Following</string>
+    <string name="followers" translatable="false">Followers</string>
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>
@@ -225,6 +228,5 @@
     <string name="pref_key_logged_user" translatable="false">user</string>
     <string name="pref_key_db_populated" translatable="false">popdb</string>
     <string name="pref_key_mute_notifications" translatable="false">muteNot</string>
-    <string name="select_picture">Select Picture</string>
 
 </resources>

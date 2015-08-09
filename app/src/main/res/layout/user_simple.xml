@@ -14,14 +14,14 @@
 
         <ImageView
             android:id="@+id/userProfilePicImageView"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="8dp"
             android:contentDescription="@string/profile_pic_contentDescriptor"
             android:scaleType="centerCrop"
             android:src="@drawable/placeholder" />
@@ -35,7 +35,7 @@
             android:layout_toEndOf="@+id/userProfilePicImageView"
             android:layout_toRightOf="@+id/userProfilePicImageView"
             android:fontFamily="sans-serif-bold"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/screenNameTextView"
@@ -46,7 +46,7 @@
             android:layout_alignStart="@+id/userNameTextView"
             android:layout_marginBottom="2dp"
             android:fontFamily="sans-serif-thin"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
     </RelativeLayout>
 </com.balysv.materialripple.MaterialRippleLayout>
