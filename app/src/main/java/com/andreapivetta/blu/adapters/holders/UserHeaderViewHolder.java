@@ -36,15 +36,18 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
 
     private final static int FOLLOWERS = 0;
     private final static int FOLLOWING = 1;
+    private static final int FOLLOW = 0;
+    private static final int NOT_FOLLOW = 1;
 
     private ArrayList<User> followers = new ArrayList<>(), following = new ArrayList<>();
     private UserListSimpleAdapter mUsersSimpleAdapter;
     private long cursor = -1;
     private boolean dialogLoading = true;
-
-    private static final int FOLLOW = 0;
-    private static final int NOT_FOLLOW = 1;
     private int type = -1;
+
+    private Context context;
+    private User user;
+    private Twitter twitter;
 
     private ImageView profilePictureImageView;
     private Button shareUserButton, followUserButton;
@@ -68,8 +71,14 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
 
     public void setup(final User user, final Context context, final Twitter twitter) {
 
+        if (this.user == null) {
+            this.user = user;
+            this.context = context;
+            this.twitter = twitter;
+        }
+
         if (type < 0)
-            new LoadRelationship(twitter, user, context).execute(null, null, null);
+            new LoadRelationship().execute(null, null, null);
 
         Glide.with(context)
                 .load(user.getOriginalProfileImageURL())
@@ -115,16 +124,16 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
         followingStatsTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createUsersDialog(FOLLOWING, context, twitter, user);
-                new LoadFollowersOrFollowing(twitter, user).execute(FOLLOWING, null, null);
+                createUsersDialog(FOLLOWING);
+                new LoadFollowersOrFollowing().execute(FOLLOWING, null, null);
             }
         });
 
         followersStatsTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createUsersDialog(FOLLOWERS, context, twitter, user);
-                new LoadFollowersOrFollowing(twitter, user).execute(FOLLOWERS, null, null);
+                createUsersDialog(FOLLOWERS);
+                new LoadFollowersOrFollowing().execute(FOLLOWERS, null, null);
             }
         });
 
@@ -187,7 +196,7 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
         return amount / 1000 + "k";
     }
 
-    void createUsersDialog(final int mode, Context context, final Twitter twitter, final User user) {
+    void createUsersDialog(final int mode) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         if (mode == FOLLOWERS) {
             mUsersSimpleAdapter = new UserListSimpleAdapter(followers, context);
@@ -214,7 +223,7 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
                     if ((mDialogLinearLayoutManager.getChildCount() + (mDialogLinearLayoutManager.findFirstVisibleItemPosition() + 1))
                             >= mDialogLinearLayoutManager.getItemCount() - 5) {
                         dialogLoading = false;
-                        new LoadFollowersOrFollowing(twitter, user).execute(mode, null, null);
+                        new LoadFollowersOrFollowing().execute(mode, null, null);
                     }
                 }
             }
@@ -226,16 +235,6 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
     }
 
     private class LoadRelationship extends AsyncTask<Void, Void, Boolean> {
-
-        private Twitter twitter;
-        private User user;
-        private Context context;
-
-        public LoadRelationship(Twitter twitter, User user, Context context) {
-            this.twitter = twitter;
-            this.user = user;
-            this.context = context;
-        }
 
         @Override
         protected Boolean doInBackground(Void... params) {
@@ -264,14 +263,6 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
     }
 
     private class LoadFollowersOrFollowing extends AsyncTask<Integer, Void, Boolean> {
-
-        private Twitter twitter;
-        private User user;
-
-        public LoadFollowersOrFollowing(Twitter twitter, User user) {
-            this.twitter = twitter;
-            this.user = user;
-        }
 
         @Override
         protected Boolean doInBackground(Integer... params) {
