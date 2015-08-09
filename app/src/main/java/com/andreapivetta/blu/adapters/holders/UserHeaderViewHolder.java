@@ -34,8 +34,8 @@ import twitter4j.User;
 
 public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
 
-    private final static String FOLLOWERS = "Followers";
-    private final static String FOLLOWING = "Following";
+    private final static int FOLLOWERS = 0;
+    private final static int FOLLOWING = 1;
 
     private ArrayList<User> followers = new ArrayList<>(), following = new ArrayList<>();
     private UserListSimpleAdapter mUsersSimpleAdapter;
@@ -49,7 +49,7 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
     private ImageView profilePictureImageView;
     private Button shareUserButton, followUserButton;
     private TextView userNameTextView, userNickTextView, descriptionTextView, userLocationTextView,
-            userWebsiteTextView, followingStatsTextView, followersStatsTextView;//, userStatsTextView;
+            userWebsiteTextView, followingStatsTextView, followersStatsTextView;
 
     public UserHeaderViewHolder(View container) {
         super(container);
@@ -187,9 +187,9 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
         return amount / 1000 + "k";
     }
 
-    void createUsersDialog(final String mode, Context context, final Twitter twitter, final User user) {
+    void createUsersDialog(final int mode, Context context, final Twitter twitter, final User user) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        if (mode.equals(FOLLOWERS)) {
+        if (mode == FOLLOWERS) {
             mUsersSimpleAdapter = new UserListSimpleAdapter(followers, context);
             builder.setTitle(context.getString(R.string.followers));
         } else {
@@ -263,7 +263,7 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    private class LoadFollowersOrFollowing extends AsyncTask<String, Void, Boolean> {
+    private class LoadFollowersOrFollowing extends AsyncTask<Integer, Void, Boolean> {
 
         private Twitter twitter;
         private User user;
@@ -274,11 +274,11 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
         }
 
         @Override
-        protected Boolean doInBackground(String... params) {
+        protected Boolean doInBackground(Integer... params) {
             try {
                 PagableResponseList<User> usersResponse;
 
-                if (params[0].equals(FOLLOWERS)) {
+                if (params[0] == FOLLOWERS) {
                     usersResponse = twitter.getFollowersList(user.getScreenName(), cursor);
                     followers.addAll(usersResponse);
                 } else {
