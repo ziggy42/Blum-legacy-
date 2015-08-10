@@ -17,8 +17,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:paddingLeft="@dimen/homeMargins"
-            android:paddingRight="@dimen/homeMargins"
+            android:paddingLeft="@dimen/recyclerViewPadding"
+            android:paddingRight="@dimen/recyclerViewPadding"
             android:scrollbars="none"
             android:visibility="gone" />
 
