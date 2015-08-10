@@ -107,6 +107,7 @@
     <string name="amount_following" translatable="false">&lt;b>%1$s&lt;/b> following</string>
     <string name="following" translatable="false">Following</string>
     <string name="followers" translatable="false">Followers</string>
+    <string name="follows_you">%1$s follows you!</string>
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>

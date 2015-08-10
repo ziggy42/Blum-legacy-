@@ -15,11 +15,13 @@ import android.text.Html;
 import android.text.util.Linkify;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.ImageActivity;
+import com.andreapivetta.blu.activities.SnackbarContainer;
 import com.andreapivetta.blu.adapters.UserListSimpleAdapter;
 import com.andreapivetta.blu.twitter.FollowTwitterUser;
 import com.bumptech.glide.Glide;
@@ -42,7 +44,7 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
     private ArrayList<User> followers = new ArrayList<>(), following = new ArrayList<>();
     private UserListSimpleAdapter mUsersSimpleAdapter;
     private long cursor = -1;
-    private boolean dialogLoading = true;
+    private boolean dialogLoading = true, followsYou = false;
     private int type = -1;
 
     private Context context;
@@ -51,6 +53,7 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
 
     private ImageView profilePictureImageView;
     private Button shareUserButton, followUserButton;
+    private ImageButton followsYouImageButton;
     private TextView userNameTextView, userNickTextView, descriptionTextView, userLocationTextView,
             userWebsiteTextView, followingStatsTextView, followersStatsTextView;
 
@@ -67,6 +70,7 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
         this.followUserButton = (Button) container.findViewById(R.id.followUserButton);
         this.followingStatsTextView = (TextView) container.findViewById(R.id.followingStatsTextView);
         this.followersStatsTextView = (TextView) container.findViewById(R.id.followersStatsTextView);
+        this.followsYouImageButton = (ImageButton) container.findViewById(R.id.followsYouImageButton);
     }
 
     public void setup(final User user, final Context context, final Twitter twitter) {
@@ -242,6 +246,8 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
 
                 Relationship rel = twitter.showFriendship(twitter.getId(), user.getId());
                 type = rel.isSourceFollowingTarget() ? FOLLOW : NOT_FOLLOW;
+
+                followsYou = rel.isTargetFollowingSource();
             } catch (TwitterException e) {
                 e.printStackTrace();
                 return false;
@@ -256,6 +262,16 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
                 setUpFollowButton(user, context, twitter);
             } else {
                 followUserButton.setVisibility(View.GONE);
+            }
+
+            if (followsYou) {
+                followsYouImageButton.setVisibility(View.VISIBLE);
+                followsYouImageButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((SnackbarContainer) context).showSnackBar(context.getString(R.string.follows_you, user.getName()));
+                    }
+                });
             }
         }
     }

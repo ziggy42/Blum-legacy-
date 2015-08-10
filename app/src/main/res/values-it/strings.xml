@@ -148,5 +148,6 @@
     <string name="mute_notifications_pref_title">Silenzia Notifiche</string>
     <string name="select_picture">Scegli Foto</string>
     <string name="follow_simple">Segui</string>
+    <string name="follows_you">%1$s ti segue!</string>
 
 </resources>
