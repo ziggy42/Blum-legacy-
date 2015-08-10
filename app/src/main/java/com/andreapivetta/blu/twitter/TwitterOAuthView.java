@@ -6,6 +6,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
@@ -91,17 +92,10 @@ public class TwitterOAuthView extends WebView {
         }
     }
 
-    public boolean isCancelOnDetachedFromWindow() {
-        return true;
-    }
-
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-
-        if (isCancelOnDetachedFromWindow()) {
-            cancel();
-        }
+        cancel();
     }
 
     public enum Result {
@@ -281,7 +275,7 @@ public class TwitterOAuthView extends WebView {
             }
 
             @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            public void onReceivedSslError(WebView view, @NonNull SslErrorHandler handler, SslError error) {
                 handler.proceed();
             }
 

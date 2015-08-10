@@ -1,6 +1,7 @@
 package com.andreapivetta.blu.data;
 
 
+import android.annotation.TargetApi;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -66,6 +67,7 @@ public class Notification {
         this.notificationID = notificationID;
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public static void pushNotification(long tweetID, String user, String type, String status,
                                         String profilePicURL, long userID, Context context) {
 

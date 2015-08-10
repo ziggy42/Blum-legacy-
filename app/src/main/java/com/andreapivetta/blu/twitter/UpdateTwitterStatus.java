@@ -1,5 +1,6 @@
 package com.andreapivetta.blu.twitter;
 
+import android.annotation.TargetApi;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -80,6 +81,7 @@ public class UpdateTwitterStatus extends AsyncTask<String, String, Boolean> {
         mNotifyManager.notify(mSharedPreferences.getInt("LAST", 1), mBuilder.build());
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     protected void onPostExecute(Boolean status) {
         final int i = mSharedPreferences.getInt("LAST", 1);
         mNotifyManager.cancel(i);

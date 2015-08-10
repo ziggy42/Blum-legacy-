@@ -1,5 +1,6 @@
 package com.andreapivetta.blu.data;
 
+import android.annotation.TargetApi;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -55,6 +56,7 @@ public class Message implements Comparable<Message> {
         this.isRead = isRead;
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public static void pushMessage(DirectMessage dm, Context context) {
         if (!PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getString(R.string.pref_key_mute_notifications), false)) {
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
