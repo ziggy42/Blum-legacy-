@@ -15,7 +15,6 @@
         <item name="colorPrimary">@color/blueThemeColorPrimary</item>
         <item name="colorPrimaryDark">@color/blueThemeColorPrimaryDark</item>
         <item name="colorAccent">@color/blueThemeColorAccent</item>
-        <item name="searchViewStyle">@style/CustomSearchViewStyle</item>
         <item name="appColorPrimary">@color/blueThemeColorPrimary</item>
         <item name="appColorPrimaryDark">@color/blueThemeColorPrimaryDark</item>
         <item name="appColorAccent">@color/blueThemeColorAccent</item>
@@ -26,11 +25,6 @@
 
     <style name="BlueUserTheme" parent="BlueAppTheme" />
 
-    <style name="CustomSearchViewStyle" parent="Widget.AppCompat.SearchView">
-        <item name="queryBackground">@color/blueThemeColorPrimary</item>
-        <item name="submitBackground">@color/blueThemeColorPrimary</item>
-    </style>
-
     <!-- Pink Theme -->
     <style name="PinkAppTheme" parent="LightBaseTheme">
         <item name="colorPrimary">@color/pinkThemeColorPrimary</item>
@@ -38,7 +32,6 @@
         <item name="colorAccent">@color/pinkThemeColorAccent</item>
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
-        <item name="searchViewStyle">@style/PinkSearchViewStyle</item>
         <item name="appColorPrimary">@color/pinkThemeColorPrimary</item>
         <item name="appColorPrimaryDark">@color/pinkThemeColorPrimaryDark</item>
         <item name="appColorAccent">@color/pinkThemeColorAccent</item>
@@ -49,11 +42,6 @@
 
     <style name="PinkUserTheme" parent="PinkAppTheme" />
 
-    <style name="PinkSearchViewStyle" parent="Widget.AppCompat.SearchView">
-        <item name="queryBackground">@color/pinkThemeColorPrimary</item>
-        <item name="submitBackground">@color/pinkThemeColorPrimary</item>
-    </style>
-
     <!-- Green Theme -->
     <style name="GreenAppTheme" parent="LightBaseTheme">
         <item name="colorPrimary">@color/greenThemeColorPrimary</item>
@@ -61,7 +49,6 @@
         <item name="colorAccent">@color/greenThemeColorAccent</item>
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
-        <item name="searchViewStyle">@style/GreenSearchViewStyle</item>
         <item name="appColorPrimary">@color/greenThemeColorPrimary</item>
         <item name="appColorPrimaryDark">@color/greenThemeColorPrimaryDark</item>
         <item name="appColorAccent">@color/greenThemeColorAccent</item>
@@ -72,11 +59,6 @@
 
     <style name="GreenUserTheme" parent="GreenAppTheme" />
 
-    <style name="GreenSearchViewStyle" parent="Widget.AppCompat.SearchView">
-        <item name="queryBackground">@color/greenThemeColorPrimary</item>
-        <item name="submitBackground">@color/greenThemeColorPrimary</item>
-    </style>
-
     <!-- Dark Theme -->
     <style name="DarkTheme" parent="Theme.AppCompat">
         <item name="colorPrimary">@color/darkThemeColorPrimary</item>
@@ -85,7 +67,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:textColorPrimary">@color/darkThemesTextColor</item>
-        <item name="android:windowBackground">@color/background</item>
+        <item name="android:windowBackground">@color/darkThemesBackground</item>
         <item name="appColorPrimary">@color/darkThemeColorPrimary</item>
         <item name="appCardViewBackgroundColor">@color/darkThemesCardViewBackgroundColor</item>
         <item name="appBackgroundColor">@color/darkThemesBackground</item>

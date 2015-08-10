@@ -68,7 +68,7 @@ public class UserActivity extends AppCompatActivity implements SnackbarContainer
                 setTheme(R.style.PinkUserTheme);
                 break;
             case "G":
-                setTheme(R.style.GreenAppTheme);
+                setTheme(R.style.GreenUserTheme);
                 break;
             case "D":
                 setTheme(R.style.DarkUserTheme);
