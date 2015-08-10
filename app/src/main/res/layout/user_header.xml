@@ -11,18 +11,14 @@
         android:id="@+id/userInfoLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:orientation="vertical"
-        android:paddingBottom="2dp"
         android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:paddingTop="12dp">
+        android:paddingRight="12dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
 
             <ImageView
                 android:id="@+id/userProfilePicImageView"
@@ -90,6 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:background="?android:selectableItemBackground"
+                android:contentDescription="@string/follows_you"
                 android:src="@drawable/ic_account_circle_grey_600_24dp"
                 android:visibility="gone" />
 
@@ -140,7 +137,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginTop="2dp"
             android:orientation="horizontal">
 
             <Button
