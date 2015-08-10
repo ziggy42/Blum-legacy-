@@ -147,6 +147,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/share"
+                android:textAllCaps="true"
                 android:textColor="?attr/colorPrimary" />
 
             <Button
@@ -155,6 +156,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/unfollow"
+                android:textAllCaps="true"
                 android:textColor="?attr/colorPrimary" />
 
         </LinearLayout>
