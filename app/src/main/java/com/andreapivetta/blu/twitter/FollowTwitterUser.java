@@ -40,13 +40,10 @@ public class FollowTwitterUser extends AsyncTask<Long, Void, Boolean> {
         if (status) {
             if (follow)
                 ((SnackbarContainer) context).showSnackBar(context.getString(R.string.following_added));
-                //Toast.makeText(context, context.getString(R.string.following_added), Toast.LENGTH_SHORT).show();
             else
                 ((SnackbarContainer) context).showSnackBar(context.getString(R.string.following_removed));
-                //Toast.makeText(context, context.getString(R.string.following_removed), Toast.LENGTH_SHORT).show();
         } else {
             ((SnackbarContainer) context).showSnackBar(context.getString(R.string.action_not_performed));
-            //Toast.makeText(context, context.getString(R.string.action_not_performed), Toast.LENGTH_SHORT).show();
         }
     }
 }

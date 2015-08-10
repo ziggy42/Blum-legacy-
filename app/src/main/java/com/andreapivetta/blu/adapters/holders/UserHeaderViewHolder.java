@@ -166,8 +166,7 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 if (type == FOLLOW) {
-                    builder.setTitle(context.getString(R.string.you_are_following, user.getName()))
-                            .setMessage(context.getString(R.string.stop_following, user.getName()))
+                    builder.setTitle(context.getString(R.string.stop_following, user.getName()))
                             .setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -176,18 +175,20 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
                                     type = NOT_FOLLOW;
                                     followUserButton.setText(context.getString(R.string.follow_simple));
                                 }
-                            });
+                            })
+                            .setNegativeButton(context.getString(R.string.cancel), null);
                 } else {
                     builder.setTitle(context.getString(R.string.follow, user.getName()))
                             .setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    new FollowTwitterUser(context, twitter, false)
+                                    new FollowTwitterUser(context, twitter, true)
                                             .execute(user.getId());
                                     type = FOLLOW;
                                     followUserButton.setText(context.getString(R.string.unfollow));
                                 }
-                            });
+                            })
+                            .setNegativeButton(context.getString(R.string.cancel), null);
                 }
                 builder.create().show();
             }

@@ -20,7 +20,7 @@
     <string name="favourites">%1$s PREFERITI</string>
     <string name="feedback_pref_summary">Facci sapere cosa ne pensi</string>
     <string name="feedback_pref_title">Invia Feedback</string>
-    <string name="follow">Seguire %1$s</string>
+    <string name="follow">Seguire %1$s?</string>
     <string name="follow_not_title">%1$s ti sta seguendo</string>
     <string name="frequency_pref_summary">Quanto spesso controllare per le notifiche</string>
     <string name="frequency_pref_title">Frequenza</string>
