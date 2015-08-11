@@ -52,7 +52,6 @@
     <string name="sending_tweet_title">Mandando Il Tweet</string>
     <string name="share">Condividi</string>
     <string name="share_pref_summary">Suggerisci questa app ad un amico</string>
-    <string name="you_are_following">Stai seguendo %1$s</string>
     <string name="yes">Si</string>
     <string name="welcome">Benvenuto</string>
     <string name="too_many_characters">Troppi caratteri</string>

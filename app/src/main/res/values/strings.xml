@@ -47,7 +47,6 @@
     <string name="send_tweet">Send Tweet</string>
     <string name="too_many_characters">Too many characters</string>
     <string name="chars_left">Chars Left</string>
-    <string name="you_are_following">You\'re following %1$s</string>
     <string name="reached_twitter_user_limit">Reached Twitter limit, please try again in a few minutes</string>
     <string name="streamDialogTitle">Use Stream Notification Service</string>
     <string name="streamContinue">Continue</string>
