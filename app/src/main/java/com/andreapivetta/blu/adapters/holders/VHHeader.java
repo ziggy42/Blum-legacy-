@@ -20,6 +20,8 @@ import android.text.style.StyleSpan;
 import android.util.Patterns;
 import android.view.View;
 import android.view.ViewStub;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +31,7 @@ import com.andreapivetta.blu.activities.NewTweetActivity;
 import com.andreapivetta.blu.activities.NewTweetQuoteActivity;
 import com.andreapivetta.blu.activities.TweetActivity;
 import com.andreapivetta.blu.activities.UserActivity;
+import com.andreapivetta.blu.activities.VideoActivity;
 import com.andreapivetta.blu.adapters.ImagesAdapter;
 import com.andreapivetta.blu.adapters.decorators.SpaceLeftItemDecoration;
 import com.andreapivetta.blu.twitter.FavoriteTweet;
@@ -43,6 +46,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import twitter4j.ExtendedMediaEntity;
 import twitter4j.MediaEntity;
 import twitter4j.Status;
 import twitter4j.Twitter;
@@ -51,9 +55,11 @@ import twitter4j.User;
 public class VHHeader extends BaseViewHolder {
 
     private TextView screenNameTextView, retweetsStatsTextView, favouritesStatsTextView;
-    private ImageView tweetPhotoImageView;
+    private ImageView tweetPhotoImageView, tweetVideoImageView;
     private ViewStub quotedTweetViewStub;
     private RecyclerView tweetPhotosRecyclerView;
+    private FrameLayout videoCover;
+    private ImageButton playVideoImageButton;
 
     private View tweetView;
 
@@ -66,6 +72,9 @@ public class VHHeader extends BaseViewHolder {
         this.favouritesStatsTextView = (TextView) container.findViewById(R.id.favouritesStatsTextView);
         this.quotedTweetViewStub = (ViewStub) container.findViewById(R.id.quotedViewStub);
         this.tweetPhotosRecyclerView = (RecyclerView) container.findViewById(R.id.tweetPhotosRecyclerView);
+        this.tweetVideoImageView = (ImageView) container.findViewById(R.id.tweetVideoImageView);
+        this.videoCover = (FrameLayout) container.findViewById(R.id.videoCover);
+        this.playVideoImageButton = (ImageButton) container.findViewById(R.id.playVideoImageButton);
     }
 
     @Override
@@ -275,9 +284,9 @@ public class VHHeader extends BaseViewHolder {
         sb.setSpan(b, 0, amount.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         retweetsStatsTextView.setText(sb);
 
-        MediaEntity mediaEntityArray[] = currentStatus.getExtendedMediaEntities();
+        ExtendedMediaEntity mediaEntityArray[] = currentStatus.getExtendedMediaEntities();
         if (mediaEntityArray.length == 1) {
-            final MediaEntity mediaEntity = mediaEntityArray[0];
+            final ExtendedMediaEntity mediaEntity = mediaEntityArray[0];
             if (mediaEntity.getType().equals("photo")) {
                 tweetPhotoImageView.setVisibility(View.VISIBLE);
                 Glide.with(context)
@@ -301,6 +310,23 @@ public class VHHeader extends BaseViewHolder {
                         } else {
                             context.startActivity(i);
                         }
+                    }
+                });
+            } else {
+                videoCover.setVisibility(View.VISIBLE);
+                Glide.with(context)
+                        .load(mediaEntity.getMediaURL())
+                        .placeholder(R.drawable.placeholder)
+                        .centerCrop()
+                        .into(tweetVideoImageView);
+
+                playVideoImageButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(context, VideoActivity.class);
+                        i.putExtra(VideoActivity.TAG_VIDEO, mediaEntity.getVideoVariants()[0].getUrl())
+                                .putExtra(VideoActivity.TAG_TYPE, mediaEntity.getType());
+                        context.startActivity(i);
                     }
                 });
             }

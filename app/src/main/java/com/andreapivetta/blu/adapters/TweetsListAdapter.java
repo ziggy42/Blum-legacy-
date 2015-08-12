@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.holders.VHHeader;
 import com.andreapivetta.blu.adapters.holders.VHItem;
-import com.andreapivetta.blu.adapters.holders.VHItemGIF;
+import com.andreapivetta.blu.adapters.holders.VHItemVideo;
 import com.andreapivetta.blu.adapters.holders.VHItemMultiplePhotos;
 import com.andreapivetta.blu.adapters.holders.VHItemPhoto;
 import com.andreapivetta.blu.adapters.holders.VHItemQuote;
@@ -59,8 +59,8 @@ public class TweetsListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 return new VHItemMultiplePhotos(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_multiplephotos, parent, false));
             case TYPE_ITEM_GIF:
-                return new VHItemGIF(
-                        LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_gif, parent, false));
+                return new VHItemVideo(
+                        LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_video, parent, false));
             case TYPE_HEADER:
                 return new VHHeader(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_expanded, parent, false));
@@ -87,7 +87,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             return TYPE_HEADER;
 
         Status status = mDataSet.get(position);
-        if (status.getMediaEntities().length > 0) {
+        if (status.getExtendedMediaEntities().length > 0) {
             if (status.getExtendedMediaEntities()[0].getVideoVariants().length > 0)
                 return TYPE_ITEM_GIF;
 
