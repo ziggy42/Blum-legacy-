@@ -50,10 +50,10 @@ import twitter4j.User;
 
 public class VHHeader extends BaseViewHolder {
 
-    public TextView screenNameTextView, retweetsStatsTextView, favouritesStatsTextView;
-    public ImageView tweetPhotoImageView;
-    public ViewStub quotedTweetViewStub;
-    public RecyclerView tweetPhotosRecyclerView;
+    private TextView screenNameTextView, retweetsStatsTextView, favouritesStatsTextView;
+    private ImageView tweetPhotoImageView;
+    private ViewStub quotedTweetViewStub;
+    private RecyclerView tweetPhotosRecyclerView;
 
     private View tweetView;
 
