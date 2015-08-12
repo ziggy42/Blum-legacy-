@@ -107,12 +107,14 @@ public class NewTweetActivity extends ThemedActivity {
             } else if (type.startsWith("image/")) {
                 Uri selectedImageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
                 imageFiles.add(new File(FileUtils.getPath(NewTweetActivity.this, selectedImageUri)));
+                mRecyclerView.setVisibility(View.VISIBLE);
                 mAdapter.notifyDataSetChanged();
             }
         } else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
             if (type.startsWith("image/")) {
                 ArrayList<Uri> imageUris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
                 if (imageUris != null) {
+                    mRecyclerView.setVisibility(View.VISIBLE);
                     for (int i = 0; i < imageUris.size() && i < 4; i++)
                         imageFiles.add(new File(FileUtils.getPath(NewTweetActivity.this, imageUris.get(i))));
                     mAdapter.notifyDataSetChanged();
