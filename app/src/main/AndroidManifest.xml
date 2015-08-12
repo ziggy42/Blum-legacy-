@@ -173,7 +173,6 @@
         <activity
             android:name=".activities.UserActivity"
             android:label="@string/title_empty" >
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.HomeActivity" />
@@ -185,7 +184,11 @@
 
                 <data android:scheme="com.andreapivetta.blu.user" />
             </intent-filter>
-
+        </activity>
+        <activity
+            android:name=".activities.VideoActivity"
+            android:label="@string/title_empty"
+            android:theme="@style/ImageActivityTheme">
         </activity>
     </application>
 

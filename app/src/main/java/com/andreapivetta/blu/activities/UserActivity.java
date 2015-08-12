@@ -225,7 +225,6 @@ public class UserActivity extends AppCompatActivity implements SnackbarContainer
                     }
                 }
 
-
             } catch (TwitterException e) {
                 e.printStackTrace();
                 return false;

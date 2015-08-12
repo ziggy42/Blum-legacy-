@@ -24,7 +24,7 @@
         <item name="appColorAccent">@color/blueThemeColorAccent</item>
         <item name="circleDrawable">@drawable/circle_darkblue</item>
         <item name="rectBackground">@drawable/rect_background_blue</item>
-        <item name="rectButton">@drawable/rect_button_blue</item>
+        <item name="circleButton">@drawable/circle_button_blue</item>
     </style>
 
     <style name="BlueUserTheme" parent="BlueAppTheme">
@@ -41,7 +41,7 @@
         <item name="appColorAccent">@color/pinkThemeColorAccent</item>
         <item name="circleDrawable">@drawable/circle_darkpink</item>
         <item name="rectBackground">@drawable/rect_background_pink</item>
-        <item name="rectButton">@drawable/rect_button_pink</item>
+        <item name="circleButton">@drawable/circle_button_pink</item>
     </style>
 
     <style name="PinkUserTheme" parent="PinkAppTheme">
@@ -58,7 +58,7 @@
         <item name="appColorAccent">@color/greenThemeColorAccent</item>
         <item name="circleDrawable">@drawable/circle_darkgreen</item>
         <item name="rectBackground">@drawable/rect_background_green</item>
-        <item name="rectButton">@drawable/rect_button_green</item>
+        <item name="circleButton">@drawable/circle_button_green</item>
     </style>
 
     <style name="GreenUserTheme" parent="GreenAppTheme">
@@ -87,7 +87,7 @@
         <item name="appColorAccent">@color/darkThemeColorAccent</item>
         <item name="circleDrawable">@drawable/circle_darkdark</item>
         <item name="rectBackground">@drawable/rect_background_dark</item>
-        <item name="rectButton">@drawable/rect_button_dark</item>
+        <item name="circleButton">@drawable/circle_button_dark</item>
     </style>
 
     <style name="DarkUserTheme" parent="DarkTheme">

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.holders.VHHeader;
 import com.andreapivetta.blu.adapters.holders.VHItem;
+import com.andreapivetta.blu.adapters.holders.VHItemGIF;
 import com.andreapivetta.blu.adapters.holders.VHItemMultiplePhotos;
 import com.andreapivetta.blu.adapters.holders.VHItemPhoto;
 import com.andreapivetta.blu.adapters.holders.VHItemQuote;
@@ -25,6 +26,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int TYPE_ITEM_PHOTO = 2;
     private static final int TYPE_ITEM_QUOTE = 3;
     private static final int TYPE_ITEM_MULTIPLE_PHOTOS = 4;
+    private static final int TYPE_ITEM_GIF = 5;
 
     private ArrayList<Status> mDataSet;
     private Context context;
@@ -56,6 +58,9 @@ public class TweetsListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             case TYPE_ITEM_MULTIPLE_PHOTOS:
                 return new VHItemMultiplePhotos(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_multiplephotos, parent, false));
+            case TYPE_ITEM_GIF:
+                return new VHItemGIF(
+                        LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_gif, parent, false));
             case TYPE_HEADER:
                 return new VHHeader(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_expanded, parent, false));
@@ -81,11 +86,16 @@ public class TweetsListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         if (isPositionHeader(position))
             return TYPE_HEADER;
 
-        if (mDataSet.get(position).getExtendedMediaEntities().length == 1)
-            return TYPE_ITEM_PHOTO;
+        Status status = mDataSet.get(position);
+        if (status.getMediaEntities().length > 0) {
+            if (status.getExtendedMediaEntities()[0].getVideoVariants().length > 0)
+                return TYPE_ITEM_GIF;
 
-        if (mDataSet.get(position).getExtendedMediaEntities().length > 1)
+            if (status.getExtendedMediaEntities().length == 1)
+                return TYPE_ITEM_PHOTO;
+
             return TYPE_ITEM_MULTIPLE_PHOTOS;
+        }
 
         if (mDataSet.get(position).getQuotedStatusId() > 0)
             return TYPE_ITEM_QUOTE;

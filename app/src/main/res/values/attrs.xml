@@ -7,9 +7,8 @@
     <attr name="appCardViewBackgroundColor" format="color|reference" />
     <attr name="appSeparationLineColor" format="color|reference" />
 
-    <attr name="circleButtonDrawable" format="reference" />
     <attr name="circleDrawable" format="reference" />
     <attr name="quoteBackground" format="reference" />
     <attr name="rectBackground" format="reference" />
-    <attr name="rectButton" format="reference" />
+    <attr name="circleButton" format="reference" />
 </resources>
