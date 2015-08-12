@@ -16,6 +16,7 @@ import com.andreapivetta.blu.adapters.holders.BaseViewHolder;
 
 import java.util.ArrayList;
 
+import twitter4j.ExtendedMediaEntity;
 import twitter4j.Status;
 import twitter4j.Twitter;
 
@@ -26,7 +27,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int TYPE_ITEM_PHOTO = 2;
     private static final int TYPE_ITEM_QUOTE = 3;
     private static final int TYPE_ITEM_MULTIPLE_PHOTOS = 4;
-    private static final int TYPE_ITEM_GIF = 5;
+    private static final int TYPE_ITEM_VIDEO = 5;
 
     private ArrayList<Status> mDataSet;
     private Context context;
@@ -58,7 +59,7 @@ public class TweetsListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             case TYPE_ITEM_MULTIPLE_PHOTOS:
                 return new VHItemMultiplePhotos(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_multiplephotos, parent, false));
-            case TYPE_ITEM_GIF:
+            case TYPE_ITEM_VIDEO:
                 return new VHItemVideo(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_video, parent, false));
             case TYPE_HEADER:
@@ -86,18 +87,19 @@ public class TweetsListAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         if (isPositionHeader(position))
             return TYPE_HEADER;
 
-        Status status = mDataSet.get(position);
-        if (status.getExtendedMediaEntities().length > 0) {
-            if (status.getExtendedMediaEntities()[0].getVideoVariants().length > 0)
-                return TYPE_ITEM_GIF;
-
-            if (status.getExtendedMediaEntities().length == 1)
+        final Status status = mDataSet.get(position);
+        final ExtendedMediaEntity mediaEntities[] = status.getExtendedMediaEntities();
+        if (mediaEntities.length == 1) {
+            if ("photo".equals(mediaEntities[0].getType()))
                 return TYPE_ITEM_PHOTO;
 
-            return TYPE_ITEM_MULTIPLE_PHOTOS;
+            return TYPE_ITEM_VIDEO;
         }
 
-        if (mDataSet.get(position).getQuotedStatusId() > 0)
+        if(mediaEntities.length > 1)
+            return TYPE_ITEM_MULTIPLE_PHOTOS;
+
+        if (status.getQuotedStatusId() > 0)
             return TYPE_ITEM_QUOTE;
 
         return TYPE_ITEM;

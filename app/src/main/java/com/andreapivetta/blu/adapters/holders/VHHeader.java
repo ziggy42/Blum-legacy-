@@ -47,7 +47,6 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import twitter4j.ExtendedMediaEntity;
-import twitter4j.MediaEntity;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.User;
