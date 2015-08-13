@@ -14,7 +14,6 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import twitter4j.ExtendedMediaEntity;
-import twitter4j.MediaEntity;
 import twitter4j.Status;
 import twitter4j.Twitter;
 
