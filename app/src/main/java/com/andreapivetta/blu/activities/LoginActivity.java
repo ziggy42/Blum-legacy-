@@ -35,11 +35,17 @@ public class LoginActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK)
+        if (resultCode == RESULT_OK) {
+            Intent returnIntent = new Intent();
+            setResult(RESULT_OK, returnIntent);
             finish();
+        }
     }
 
     @Override
     public void onBackPressed() {
+        Intent returnIntent = new Intent();
+        setResult(RESULT_CANCELED, returnIntent);
+        finish();
     }
 }

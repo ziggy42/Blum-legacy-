@@ -167,14 +167,18 @@ public class HomeActivity extends TimeLineActivity {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
 
         if (requestCode == REQUEST_LOGIN) {
-            twitter = TwitterUtils.getTwitter(HomeActivity.this);
-            new GetTimeLine().execute();
+            if (resultCode == RESULT_OK) {
+                twitter = TwitterUtils.getTwitter(HomeActivity.this);
+                new GetTimeLine().execute();
 
-            if (mSharedPreferences.getBoolean(getString(R.string.pref_key_stream_service), false)) {
-                startService(new Intent(HomeActivity.this, StreamNotificationService.class));
+                if (mSharedPreferences.getBoolean(getString(R.string.pref_key_stream_service), false)) {
+                    startService(new Intent(HomeActivity.this, StreamNotificationService.class));
+                } else {
+                    startService(new Intent(HomeActivity.this, PopulateDatabasesService.class));
+                    BasicNotificationService.startService(HomeActivity.this);
+                }
             } else {
-                startService(new Intent(HomeActivity.this, PopulateDatabasesService.class));
-                BasicNotificationService.startService(HomeActivity.this);
+                finish();
             }
         }
     }
