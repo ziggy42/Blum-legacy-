@@ -149,7 +149,7 @@
         <activity
             android:name=".activities.VideoActivity"
             android:label="@string/title_empty"
-            android:theme="@style/ImageActivityTheme">
+            android:theme="@style/ImageActivityTheme" >
         </activity>
 
         <service
@@ -190,6 +190,10 @@
             android:name=".services.CheckMessageService"
             android:exported="false" />
 
+        <activity
+            android:name=".activities.EditProfileActivity"
+            android:label="@string/title_activity_edit_profile" >
+        </activity>
     </application>
 
 </manifest>

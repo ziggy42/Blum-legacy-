@@ -1,0 +1,112 @@
+TASK com.andreapivetta.blu id=147
+  ACTIVITY com.andreapivetta.blu/.activities.HomeActivity cbbf905 pid=1918
+    Local FragmentActivity fed59d1 State:
+      mCreated=truemResumed=true mStopped=false mReallyStopped=false
+      mLoadersStarted=true
+    Active Fragments in 1e8cef79:
+      #0: SupportRequestManagerFragment{3771611c #0 com.bumptech.glide.manager}
+        mFragmentId=#0 mContainerId=#0 mTag=com.bumptech.glide.manager
+        mState=5 mIndex=0 mWho=android:fragment:0 mBackStackNesting=0
+        mAdded=true mRemoving=false mResumed=true mFromLayout=false mInLayout=false
+        mHidden=false mDetached=false mMenuVisible=true mHasMenu=false
+        mRetainInstance=false mRetaining=false mUserVisibleHint=true
+        mFragmentManager=FragmentManager{1e8cef79 in HomeActivity{fed59d1}}
+        mActivity=com.andreapivetta.blu.activities.HomeActivity@fed59d1
+        Child FragmentManager{1e851125 in SupportRequestManagerFragment{3771611c}}:
+          FragmentManager misc state:
+            mActivity=com.andreapivetta.blu.activities.HomeActivity@fed59d1
+            mContainer=android.support.v4.app.Fragment$1@317fc2fa
+            mParent=SupportRequestManagerFragment{3771611c #0 com.bumptech.glide.manager}
+            mCurState=5 mStateSaved=false mDestroyed=false
+    Added Fragments:
+      #0: SupportRequestManagerFragment{3771611c #0 com.bumptech.glide.manager}
+    FragmentManager misc state:
+      mActivity=com.andreapivetta.blu.activities.HomeActivity@fed59d1
+      mContainer=android.support.v4.app.FragmentActivity$2@82a60ab
+      mCurState=5 mStateSaved=false mDestroyed=false
+    View Hierarchy:
+      com.android.internal.policy.impl.PhoneWindow$DecorView{12c17308 V.E..... ... 0,0-1440,2560}
+        android.widget.LinearLayout{2d9a9aa1 V.E..... ... 0,0-1440,2392}
+          android.view.ViewStub{3f7714c6 G.E..... ... 0,0-0,0 #1020373}
+          android.widget.FrameLayout{252c5c87 V.E..... ... 0,88-1440,2392}
+            android.support.v7.internal.widget.FitWindowsLinearLayout{2f7eb7b4 V.E..... ... 0,0-1440,2304 #7f0f0053 app:id/action_bar_root}
+              android.support.v7.internal.widget.ViewStubCompat{1e253fdd G.E..... ... 0,0-0,0 #7f0f0054 app:id/action_mode_bar_stub}
+              android.support.v7.internal.widget.ContentFrameLayout{313fb752 V.E..... ... 0,0-1440,2304 #1020002 android:id/content}
+                android.widget.LinearLayout{3d683a23 V.E..... ... 0,0-1440,2304}
+                  android.support.v7.widget.Toolbar{1299b20 V.E...C. ... 0,0-1440,196 #7f0f0070 app:id/toolbar}
+                    android.widget.TextView{6bafcd9 V.ED.... ... 56,51-218,144}
+                    android.support.v7.widget.ActionMenuView{3f7df69e V.E..... ... 796,0-1440,196}
+                      android.widget.RelativeLayout{5fa557f V.E..... ... 0,0-168,196 #7f0f00d5 app:id/action_messages}
+                        android.widget.ImageButton{30dd494c VFED..C. ... 0,0-168,196 #7f0f00a1 app:id/messagesImageButton}
+                        android.support.v7.widget.AppCompatTextView{37558d95 V.ED.... ... 84,35-154,105 #7f0f00a2 app:id/messagesCountTextView}
+                      android.widget.RelativeLayout{36cedeaa V.E..... ... 168,0-336,196 #7f0f00d6 app:id/action_notifications}
+                        android.widget.ImageButton{3f68ca9b VFED..C. ... 0,0-168,196 #7f0f00a3 app:id/notificationImageButton}
+                        android.support.v7.widget.AppCompatTextView{3c3bae38 V.ED.... ... 84,35-154,105 #7f0f00a4 app:id/notificationCountTextView}
+                      android.support.v7.widget.SearchView{bce6e11 VFE..... ... 336,14-504,182 #7f0f00d7 app:id/action_search}
+                        android.widget.LinearLayout{1e943b76 V.E..... ... 0,0-168,168 #7f0f005b app:id/search_bar}
+                          android.support.v7.widget.AppCompatTextView{227f7577 G.ED.... ... 0,0-0,0 #7f0f005c app:id/search_badge}
+                          android.support.v7.internal.widget.TintImageView{171975e4 VFED..C. ... 0,0-168,168 #7f0f005d app:id/search_button}
+                          android.widget.LinearLayout{2a1ada4d G.E..... ... 0,0-0,0 #7f0f005e app:id/search_edit_frame}
+                            android.support.v7.internal.widget.TintImageView{809902 G.ED.... ... 0,0-0,0 #7f0f005f app:id/search_mag_icon}
+                            android.widget.LinearLayout{3eebf213 V.E..... ... 0,0-0,0 #7f0f0060 app:id/search_plate}
+                              android.support.v7.widget.SearchView$SearchAutoComplete{3bea0c50 VFED..CL ... 0,0-0,0 #7f0f0061 app:id/search_src_text}
+                              android.support.v7.internal.widget.TintImageView{2847ce49 VFED..C. ... 0,0-0,0 #7f0f0062 app:id/search_close_btn}
+                            android.widget.LinearLayout{1ce3434e G.E..... ... 0,0-0,0 #7f0f0063 app:id/submit_area}
+                              android.support.v7.internal.widget.TintImageView{27999c6f GFED..C. ... 0,0-0,0 #7f0f0064 app:id/search_go_btn}
+                              android.support.v7.internal.widget.TintImageView{16eb9d7c GFED..C. ... 0,0-0,0 #7f0f0065 app:id/search_voice_btn}
+                      android.support.v7.widget.ActionMenuPresenter$OverflowMenuButton{16360605 VFED..C. ... 504,14-644,182}
+                  android.support.design.widget.CoordinatorLayout{17b4465a V.E..... ... 0,196-1440,2304 #7f0f0080 app:id/coordinatorLayout}
+                    android.support.v4.widget.SwipeRefreshLayout{8cd908b V.ED.... ... 0,0-1440,2108 #7f0f0081 app:id/swipeRefreshLayout}
+                      android.support.v7.widget.RecyclerView{38131568 VFED.V.. F.. 0,0-1440,2108 #7f0f0082 app:id/tweetsRecyclerView}
+                        android.support.v7.widget.CardView{2715fd81 V.E...C. ... 35,-167-1405,994 #7f0f00a6 app:id/card_view}
+                          android.widget.RelativeLayout{2a606e26 V.E..... ... 0,0-1370,1161}
+                            android.widget.ImageView{402aa67 V.ED..C. ... 18,18-228,228 #7f0f008c app:id/userProfilePicImageView}
+                            android.support.v7.widget.AppCompatTextView{37b82014 V.ED.... ... 246,0-1254,81 #7f0f007a app:id/userNameTextView}
+                            android.support.v7.widget.AppCompatTextView{36a3f0bd V.ED.... ... 1254,18-1352,84 #7f0f008d app:id/timeTextView}
+                            android.support.v7.widget.AppCompatTextView{265546b2 VFED..CL ... 246,81-1084,152 #7f0f007b app:id/statusTextView}
+                            com.andreapivetta.blu.views.BorderedLinearLayout{2d858603 V.ED..C. ... 246,166-1342,1136 #7f0f00c2 app:id/quotedStatus}
+                              android.support.v7.widget.AppCompatTextView{3a012980 V.ED.... ... 28,14-1068,95 #7f0f00b8 app:id/quotedUserNameTextView}
+                              android.support.v7.widget.AppCompatTextView{2623dbb9 V.ED.... ... 28,95-1068,290 #7f0f00b9 app:id/quotedStatusTextView}
+                              android.widget.ImageView{144d1bfe V.ED.... ... 46,308-1050,938 #7f0f007c app:id/photoImageView}
+                            android.support.v7.widget.AppCompatTextView{7d07f5f G.ED.... ... 0,0-0,0 #7f0f0097 app:id/retweetTextView}
+                            android.widget.LinearLayout{3d0f5dac G.E..... ... 0,0-0,0 #7f0f0096 app:id/interactionLinearLayout}
+                              android.widget.ImageButton{d1d7a75 VFED..C. ... 0,0-0,0 #7f0f0098 app:id/favouriteImageButton}
+                              android.widget.ImageButton{3c5afa0a VFED..C. ... 0,0-0,0 #7f0f0099 app:id/retweetImageButton}
+                              android.widget.ImageButton{18a7b27b VFED..C. ... 0,0-0,0 #7f0f009a app:id/quoteImageButton}
+                              android.widget.ImageButton{1deaa898 VFED..C. ... 0,0-0,0 #7f0f009b app:id/respondImageButton}
+                              android.widget.ImageButton{39d848f1 VFED..C. ... 0,0-0,0 #7f0f009c app:id/shareImageButton}
+                              android.widget.ImageButton{22b6acd6 VFED..C. ... 0,0-0,0 #7f0f009d app:id/openTweetImageButton}
+                        android.support.v7.widget.CardView{33f4fb57 V.E...C. ... 35,1029-1405,1385 #7f0f00a6 app:id/card_view}
+                          android.widget.RelativeLayout{2db644 V.E..... ... 0,0-1370,356}
+                            android.widget.ImageView{3d97832d V.ED..C. ... 18,18-228,228 #7f0f008c app:id/userProfilePicImageView}
+                            android.support.v7.widget.AppCompatTextView{548c062 V.ED.... ... 246,0-1254,81 #7f0f007a app:id/userNameTextView}
+                            android.support.v7.widget.AppCompatTextView{1863f5f3 V.ED.... ... 1254,18-1352,84 #7f0f008d app:id/timeTextView}
+                            android.support.v7.widget.AppCompatTextView{471f2b0 VFED..CL ... 246,81-1352,338 #7f0f007b app:id/statusTextView}
+                            android.support.v7.widget.AppCompatTextView{962529 G.ED.... ... 246,352-813,418 #7f0f0097 app:id/retweetTextView}
+                            android.widget.LinearLayout{25f680ae G.E..... ... 0,0-0,0 #7f0f0096 app:id/interactionLinearLayout}
+                              android.widget.ImageButton{39bdfe4f VFED..C. ... 0,0-0,0 #7f0f0098 app:id/favouriteImageButton}
+                              android.widget.ImageButton{397b89dc VFED..C. ... 0,0-0,0 #7f0f0099 app:id/retweetImageButton}
+                              android.widget.ImageButton{19c2eae5 VFED..C. ... 0,0-0,0 #7f0f009a app:id/quoteImageButton}
+                              android.widget.ImageButton{2dadf9ba VFED..C. ... 0,0-0,0 #7f0f009b app:id/respondImageButton}
+                              android.widget.ImageButton{1506306b VFED..C. ... 0,0-0,0 #7f0f009c app:id/shareImageButton}
+                              android.widget.ImageButton{342567c8 VFED..C. ... 0,0-0,0 #7f0f009d app:id/openTweetImageButton}
+                        android.support.v7.widget.CardView{263c5061 V.E...C. ... 35,1420-1405,2505 #7f0f00a6 app:id/card_view}
+                          android.widget.RelativeLayout{3431f786 V.E..... ... 0,0-1370,1085}
+                            android.widget.ImageView{2a556847 V.ED..C. ... 18,18-228,228 #7f0f008c app:id/userProfilePicImageView}
+                            android.support.v7.widget.AppCompatTextView{3a0d3874 V.ED.... ... 246,0-1254,81 #7f0f007a app:id/userNameTextView}
+                            android.support.v7.widget.AppCompatTextView{1c8c919d V.ED.... ... 1254,18-1352,84 #7f0f008d app:id/timeTextView}
+                            android.support.v7.widget.AppCompatTextView{38a60612 VFED..CL ... 246,81-1352,276 #7f0f007b app:id/statusTextView}
+                            android.widget.ImageView{387641e3 V.ED..C. ... 246,290-1352,990 #7f0f00b5 app:id/tweetPhotoImageView}
+                            android.support.v7.widget.AppCompatTextView{2aff67e0 V.ED.... ... 246,1008-672,1074 #7f0f0097 app:id/retweetTextView}
+                            android.widget.LinearLayout{17a5aa99 G.E..... ... 0,0-0,0 #7f0f0096 app:id/interactionLinearLayout}
+                              android.widget.ImageButton{16da715e VFED..C. ... 0,0-0,0 #7f0f0098 app:id/favouriteImageButton}
+                              android.widget.ImageButton{1641193f VFED..C. ... 0,0-0,0 #7f0f0099 app:id/retweetImageButton}
+                              android.widget.ImageButton{1523220c VFED..C. ... 0,0-0,0 #7f0f009a app:id/quoteImageButton}
+                              android.widget.ImageButton{159d5755 VFED..C. ... 0,0-0,0 #7f0f009b app:id/respondImageButton}
+                              android.widget.ImageButton{558456a VFED..C. ... 0,0-0,0 #7f0f009c app:id/shareImageButton}
+                              android.widget.ImageButton{5b80a5b VFED..C. ... 0,0-0,0 #7f0f009d app:id/openTweetImageButton}
+                      android.support.v4.widget.CircleImageView{1fe652f8 G.ED.... ... 650,-140-790,0}
+                    android.widget.ProgressBar{262913d1 G.ED.... ... 636,970-804,1138 #7f0f0068 app:id/loadingProgressBar}
+                    android.support.design.widget.FloatingActionButton{ca240c2 V.ED..C. ... 1188,1856-1384,2052 #7f0f0083 app:id/newTweetFAB}
+        android.view.View{282d4e36 V.ED.... ... 0,0-1440,88 #102002f android:id/statusBarBackground}
+        android.view.View{1ce2f137 V.ED.... ... 0,2392-1440,2560 #1020030 android:id/navigationBarBackground}

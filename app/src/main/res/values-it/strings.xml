@@ -148,5 +148,12 @@
     <string name="select_picture">Scegli Foto</string>
     <string name="follow_simple">Segui</string>
     <string name="follows_you">%1$s ti segue!</string>
+    <string name="description">Descrizione</string>
+    <string name="edit_pref_summary">Modifica il tuo nome, descrizione ecc</string>
+    <string name="edit_pref_title">Modifica Profilo</string>
+    <string name="location">Posizione</string>
+    <string name="profile_updated">Profilo Aggiornato!</string>
+    <string name="screen_name">Nome</string>
+    <string name="title_activity_edit_profile">Modifica Profilo</string>
 
 </resources>

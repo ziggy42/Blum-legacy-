@@ -4,11 +4,13 @@
     android:layout_height="wrap_content">
 
     <ImageView
+        android:contentDescription="@string/video_preview_contentDescription"
         android:id="@+id/tweetVideoImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <ImageButton
+        android:contentDescription="@string/play_video_contentDescription"
         android:id="@+id/playVideoImageButton"
         android:layout_width="48dp"
         android:layout_height="48dp"

@@ -133,6 +133,16 @@ public class SettingsActivity extends ThemedActivity {
                 }
             });
 
+            findPreference("pref_key_edit").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Intent i = new Intent(getActivity(), EditProfileActivity.class);
+                    getActivity().startActivity(i);
+
+                    return false;
+                }
+            });
+
             findPreference("pref_key_feedback").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {

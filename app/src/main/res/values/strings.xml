@@ -107,6 +107,13 @@
     <string name="following" translatable="false">Following</string>
     <string name="followers" translatable="false">Followers</string>
     <string name="follows_you">%1$s follows you!</string>
+    <string name="edit_pref_summary">Edit your name, description etc</string>
+    <string name="edit_pref_title">Edit Profile</string>
+    <string name="website" translatable="false">Website</string>
+    <string name="screen_name">Screen Name</string>
+    <string name="description">Description</string>
+    <string name="location">Location</string>
+    <string name="profile_updated">Profile Updated!</string>
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>
@@ -176,6 +183,7 @@
     <string name="title_activity_new_tweet">New Tweet</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_conversations_list">Direct Messages</string>
+    <string name="title_activity_edit_profile">Edit Profile</string>
 
     <!-- Preferences Titles and Summaries -->
     <string name="logout_pref_title" translatable="false">Logout</string>
@@ -213,6 +221,8 @@
     <string name="send_message_contentDescriptor" translatable="false">Send Message Button</string>
     <string name="profile_pic_contentDescriptor" translatable="false">Profile Picture</string>
     <string name="delete_photo_tweet_contentDescriptor" translatable="false">Delete Photo Buttom</string>
+    <string name="play_video_contentDescription" translatable="false">Play Video Button</string>
+    <string name="video_preview_contentDescription" translatable="false">Video Preview</string>
     <string name="image_transition" translatable="false">imageTransition</string>
 
     <!-- Prefs -->
