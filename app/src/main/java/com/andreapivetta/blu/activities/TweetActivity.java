@@ -121,7 +121,7 @@ public class TweetActivity extends ThemedActivity implements SnackbarContainer {
         });
 
         if (mDataSet.isEmpty())
-            new LoadConversationAsyncTask().execute(null, null, null);
+            new LoadConversationAsyncTask().execute();
 
     }
 

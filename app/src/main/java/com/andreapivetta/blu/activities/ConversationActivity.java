@@ -87,7 +87,7 @@ public class ConversationActivity extends ThemedActivity {
             public void onClick(View v) {
                 String message = messageEditText.getText().toString();
                 if (message.length() > 0) {
-                    new SendDirectMessage(ConversationActivity.this, twitter, userID).execute(message, null, null);
+                    new SendDirectMessage(ConversationActivity.this, twitter, userID).execute(message);
 
                     mDataSet.add(
                             new Message(0L, PreferenceManager.getDefaultSharedPreferences(ConversationActivity.this)
@@ -104,7 +104,7 @@ public class ConversationActivity extends ThemedActivity {
         if (userID == 0)
             finish();
         else
-            new Loader().execute(null, null, null);
+            new Loader().execute();
     }
 
     @Override

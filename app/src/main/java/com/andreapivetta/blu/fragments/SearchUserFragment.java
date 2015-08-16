@@ -84,7 +84,7 @@ public class SearchUserFragment extends Fragment {
                 if (loading && ((mLinearLayoutManager.getChildCount() + (mLinearLayoutManager.findFirstVisibleItemPosition() + 1))
                         >= mLinearLayoutManager.getItemCount())) {
                     loading = false;
-                    new LoadUsers().execute(null, null, null);
+                    new LoadUsers().execute();
                 }
             }
         });
@@ -92,7 +92,7 @@ public class SearchUserFragment extends Fragment {
         loadingProgressBar = (ProgressBar) rootView.findViewById(R.id.loadingProgressBar);
         nothingToShowTextView = (TextView) rootView.findViewById(R.id.nothingToShowTextView);
 
-        new LoadUsers().execute(null, null, null);
+        new LoadUsers().execute();
 
         return rootView;
     }

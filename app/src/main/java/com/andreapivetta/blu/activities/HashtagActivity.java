@@ -32,7 +32,7 @@ public class HashtagActivity extends TimeLineActivity {
         if (savedInstanceState != null)
             tweetList = (ArrayList<Status>) savedInstanceState.getSerializable(TAG_TWEET_LIST);
         else
-            new GetTimeLine().execute(null, null, null);
+            new GetTimeLine().execute();
 
         super.onCreate(savedInstanceState);
 

@@ -79,7 +79,7 @@ public abstract class TimeLineActivity extends ThemedActivity implements Snackba
                 if (loading && ((mLinearLayoutManager.getChildCount() + (mLinearLayoutManager.findFirstVisibleItemPosition() + 1))
                         >= mLinearLayoutManager.getItemCount() - 10)) {
                     loading = false;
-                    new GetTimeLine().execute(null, null, null);
+                    new GetTimeLine().execute();
                 }
 
                 if (dy > 0) {
@@ -101,7 +101,7 @@ public abstract class TimeLineActivity extends ThemedActivity implements Snackba
                 new Handler().post(new Runnable() {
                     @Override
                     public void run() {
-                        new RefreshTimeLine().execute(null, null, null);
+                        new RefreshTimeLine().execute();
                     }
                 });
             }

@@ -81,7 +81,7 @@ public class SearchTweetsFragment extends Fragment {
                 if (loading && ((mLinearLayoutManager.getChildCount() + (mLinearLayoutManager.findFirstVisibleItemPosition() + 1))
                         >= mLinearLayoutManager.getItemCount())) {
                     loading = false;
-                    new TweetsLoaderAsyncTask().execute(null, null, null);
+                    new TweetsLoaderAsyncTask().execute();
                 }
             }
         });
@@ -89,7 +89,7 @@ public class SearchTweetsFragment extends Fragment {
         loadingProgressBar = (ProgressBar) rootView.findViewById(R.id.loadingProgressBar);
         nothingToShowTextView = (TextView) rootView.findViewById(R.id.nothingToShowTextView);
 
-        new TweetsLoaderAsyncTask().execute(null, null, null);
+        new TweetsLoaderAsyncTask().execute();
 
         return rootView;
     }

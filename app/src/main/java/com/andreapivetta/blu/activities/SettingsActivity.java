@@ -224,7 +224,7 @@ public class SettingsActivity extends ThemedActivity {
                     getString(R.string.please_wait), true);
             dialog.show();
 
-            new PerformLogOut().execute(null, null, null);
+            new PerformLogOut().execute();
         }
 
         void restartApplication() {

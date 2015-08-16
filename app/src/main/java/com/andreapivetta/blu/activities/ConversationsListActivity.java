@@ -114,7 +114,7 @@ public class ConversationsListActivity extends ThemedActivity {
 
     void showChooseUserDialog() {
         mUsersSimpleAdapter = new UserListMessageAdapter(subset, ConversationsListActivity.this);
-        new LoadFollowers().execute(null, null, null);
+        new LoadFollowers().execute();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ConversationsListActivity.this);
         View dialogView = View.inflate(ConversationsListActivity.this, R.layout.dialog_select_user, null);

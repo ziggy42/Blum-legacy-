@@ -73,7 +73,7 @@ public class HomeActivity extends TimeLineActivity {
                 currentPage = savedInstanceState.getInt(TAG_CURRENT_PAGE);
                 newTweetsCount = savedInstanceState.getInt(UPCOMING_TWEET_COUNT_TAG);
             } else {
-                new GetTimeLine().execute(null, null, null);
+                new GetTimeLine().execute();
             }
 
             if (mSharedPreferences.getBoolean(getString(R.string.pref_key_stream_service), false))
@@ -168,7 +168,7 @@ public class HomeActivity extends TimeLineActivity {
 
         if (requestCode == REQUEST_LOGIN) {
             twitter = TwitterUtils.getTwitter(HomeActivity.this);
-            new GetTimeLine().execute(null, null, null);
+            new GetTimeLine().execute();
 
             if (mSharedPreferences.getBoolean(getString(R.string.pref_key_stream_service), false)) {
                 startService(new Intent(HomeActivity.this, StreamNotificationService.class));

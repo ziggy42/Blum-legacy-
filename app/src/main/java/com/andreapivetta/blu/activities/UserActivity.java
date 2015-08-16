@@ -117,9 +117,9 @@ public class UserActivity extends AppCompatActivity implements SnackbarContainer
             mDataSet.add(user);
             setUpUI();
 
-            new LoadTweets().execute(null, null, null);
+            new LoadTweets().execute();
         } else {
-            new LoadUser().execute(null, null, null);
+            new LoadUser().execute();
         }
     }
 
@@ -138,7 +138,7 @@ public class UserActivity extends AppCompatActivity implements SnackbarContainer
                 if (loading && ((mLinearLayoutManager.getChildCount() + (mLinearLayoutManager.findFirstVisibleItemPosition() + 1))
                         >= mLinearLayoutManager.getItemCount() - 10)) {
                     loading = false;
-                    new LoadTweets().execute(null, null, null);
+                    new LoadTweets().execute();
                 }
 
                 if (dy > 0) {
@@ -238,7 +238,7 @@ public class UserActivity extends AppCompatActivity implements SnackbarContainer
                 mDataSet.add(user);
                 setUpUI();
 
-                new LoadTweets().execute(null, null, null);
+                new LoadTweets().execute();
             } else {
                 if (!new ConnectionDetector(UserActivity.this).isConnectingToInternet())
                     Toast.makeText(UserActivity.this,

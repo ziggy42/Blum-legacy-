@@ -82,7 +82,7 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
         }
 
         if (type < 0)
-            new LoadRelationship().execute(null, null, null);
+            new LoadRelationship().execute();
 
         Glide.with(context)
                 .load(user.getOriginalProfileImageURL())
@@ -129,7 +129,7 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 createUsersDialog(FOLLOWING);
-                new LoadFollowersOrFollowing().execute(FOLLOWING, null, null);
+                new LoadFollowersOrFollowing().execute(FOLLOWING);
             }
         });
 
@@ -137,7 +137,7 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 createUsersDialog(FOLLOWERS);
-                new LoadFollowersOrFollowing().execute(FOLLOWERS, null, null);
+                new LoadFollowersOrFollowing().execute(FOLLOWERS);
             }
         });
 
@@ -227,7 +227,7 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
                 if (dialogLoading && ((mDialogLinearLayoutManager.getChildCount() + (mDialogLinearLayoutManager.findFirstVisibleItemPosition() + 1))
                         >= mDialogLinearLayoutManager.getItemCount() - 5)) {
                     dialogLoading = false;
-                    new LoadFollowersOrFollowing().execute(mode, null, null);
+                    new LoadFollowersOrFollowing().execute(mode);
                 }
             }
         });
