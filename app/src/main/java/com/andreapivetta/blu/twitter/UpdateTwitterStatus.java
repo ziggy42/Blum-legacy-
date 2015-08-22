@@ -102,7 +102,7 @@ public class UpdateTwitterStatus extends AsyncTask<String, String, Boolean> {
         } else {
             mBuilder.setContentTitle(context.getString(R.string.ops))
                     .setContentText(context.getString(R.string.tweet_not_sent))
-                    .setSmallIcon(R.drawable.abc_ic_clear_mtrl_alpha);
+                    .setSmallIcon(R.drawable.ic_clear_white_24dp);
         }
 
         mNotifyManager.notify(i, mBuilder.build());

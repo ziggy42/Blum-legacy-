@@ -75,7 +75,7 @@ public class NewTweetActivity extends ThemedActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            toolbar.setNavigationIcon(R.drawable.abc_ic_clear_mtrl_alpha);
+            toolbar.setNavigationIcon(R.drawable.ic_clear_white_24dp);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -266,7 +266,7 @@ public class NewTweetActivity extends ThemedActivity {
         charsLeftTextView.setText(String.valueOf(charsLeft));
 
         if (charsLeft < 0)
-            charsLeftTextView.setTextColor(getResources().getColor(R.color.red));
+            charsLeftTextView.setTextColor(getColor(R.color.red));
 
         return true;
     }

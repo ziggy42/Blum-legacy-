@@ -40,7 +40,6 @@ public class ConversationsListActivity extends ThemedActivity {
     private ArrayList<Message> mDataSet = new ArrayList<>();
     private ArrayList<User> followers = new ArrayList<>(), subset = new ArrayList<>();
     private ConversationListAdapter conversationListAdapter;
-    private LinearLayoutManager mLinearLayoutManager;
     private DataUpdateReceiver dataUpdateReceiver;
     private UserListMessageAdapter mUsersSimpleAdapter;
     private ProgressBar loadingProgressBar;
@@ -48,7 +47,6 @@ public class ConversationsListActivity extends ThemedActivity {
 
     private boolean isUp = true;
 
-    private RecyclerView mRecyclerView;
     private FloatingActionButton newMessageFAB;
     private DatabaseManager databaseManager = DatabaseManager.getInstance(ConversationsListActivity.this);
 
@@ -64,9 +62,9 @@ public class ConversationsListActivity extends ThemedActivity {
 
         mDataSet.addAll(databaseManager.getLastMessages());
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.conversationRecyclerView);
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.conversationRecyclerView);
         conversationListAdapter = new ConversationListAdapter(ConversationsListActivity.this, mDataSet);
-        mLinearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setAdapter(conversationListAdapter);
@@ -94,22 +92,8 @@ public class ConversationsListActivity extends ThemedActivity {
         });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
-            toolbar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mLinearLayoutManager.smoothScrollToPosition(mRecyclerView, null, 0);
-                }
-            });
-        }
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     void showChooseUserDialog() {

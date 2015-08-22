@@ -11,15 +11,15 @@ public class ThemeUtils {
         switch (PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(context.getString(R.string.pref_key_themes), "B")) {
             case "B":
-                return context.getResources().getColor(R.color.blueThemeColorPrimary);
+                return context.getColor(R.color.blueThemeColorPrimary);
             case "P":
-                return context.getResources().getColor(R.color.pinkThemeColorPrimary);
+                return context.getColor(R.color.pinkThemeColorPrimary);
             case "G":
-                return context.getResources().getColor(R.color.greenThemeColorPrimary);
+                return context.getColor(R.color.greenThemeColorPrimary);
             case "D":
-                return context.getResources().getColor(R.color.darkThemeColorPrimary);
+                return context.getColor(R.color.darkThemeColorPrimary);
             default:
-                return context.getResources().getColor(R.color.blueThemeColorPrimary);
+                return context.getColor(R.color.blueThemeColorPrimary);
         }
     }
 

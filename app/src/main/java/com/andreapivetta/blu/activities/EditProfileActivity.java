@@ -32,7 +32,7 @@ public class EditProfileActivity extends ThemedActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            toolbar.setNavigationIcon(R.drawable.abc_ic_clear_mtrl_alpha);
+            toolbar.setNavigationIcon(R.drawable.ic_clear_white_24dp);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -58,7 +58,7 @@ public class EditProfileActivity extends ThemedActivity {
 
     void setUpUI() {
         findViewById(R.id.loadingProgressBar).setVisibility(View.GONE);
-        findViewById(R.id.scrollView).setVisibility(View.VISIBLE);
+        findViewById(R.id.editScrollView).setVisibility(View.VISIBLE);
         screenNameEditText.setText(user.getScreenName());
         descriptionEditText.setText(user.getDescription());
         locationEditText.setText(user.getLocation());

@@ -56,16 +56,8 @@ public class ConversationActivity extends ThemedActivity {
         databaseManager = DatabaseManager.getInstance(ConversationActivity.this);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
-        }
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         userID = getIntent().getLongExtra(TAG_ID, 0L);
 
