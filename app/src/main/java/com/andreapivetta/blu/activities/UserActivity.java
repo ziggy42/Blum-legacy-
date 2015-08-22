@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -185,16 +184,15 @@ public class UserActivity extends AppCompatActivity implements SnackbarContainer
 
     @Override
     public void showSnackBar(String content) {
-        Snackbar.make(getWindow().getDecorView().findViewById(R.id.coordinatorLayout), content, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(getWindow().getDecorView().findViewById(R.id.coordinatorLayout), content, Snackbar.LENGTH_SHORT)
+                .setCallback(new Snackbar.Callback() {
+                    @Override
+                    public void onDismissed(Snackbar snackbar, int event) {
+                        isBlocked = false;
+                    }
+                }).show();
         isUp = true;
         isBlocked = true;
-
-        (new Handler()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                isBlocked = false;
-            }
-        }, 1800);
     }
 
     @Override

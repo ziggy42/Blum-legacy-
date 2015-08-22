@@ -3,7 +3,6 @@ package com.andreapivetta.blu.activities;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -167,16 +166,15 @@ public class TweetActivity extends ThemedActivity implements SnackbarContainer {
 
     @Override
     public void showSnackBar(String content) {
-        Snackbar.make(getWindow().getDecorView().findViewById(R.id.coordinatorLayout), content, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(getWindow().getDecorView().findViewById(R.id.coordinatorLayout), content, Snackbar.LENGTH_SHORT)
+                .setCallback(new Snackbar.Callback() {
+                    @Override
+                    public void onDismissed(Snackbar snackbar, int event) {
+                        isBlocked = false;
+                    }
+                }).show();
         isUp = true;
         isBlocked = true;
-
-        (new Handler()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                isBlocked = false;
-            }
-        }, 1800);
     }
 
     private class LoadConversationAsyncTask extends AsyncTask<Void, Void, Boolean> {

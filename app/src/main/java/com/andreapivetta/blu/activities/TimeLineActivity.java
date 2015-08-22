@@ -174,16 +174,15 @@ public abstract class TimeLineActivity extends ThemedActivity implements Snackba
     }
 
     public void showSnackBar(String content) {
-        Snackbar.make(getWindow().getDecorView().findViewById(R.id.coordinatorLayout), content, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(getWindow().getDecorView().findViewById(R.id.coordinatorLayout), content, Snackbar.LENGTH_SHORT)
+                .setCallback(new Snackbar.Callback() {
+                    @Override
+                    public void onDismissed(Snackbar snackbar, int event) {
+                        isBlocked = false;
+                    }
+                }).show();
         isUp = true;
         isBlocked = true;
-
-        (new Handler()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                isBlocked = false;
-            }
-        }, 1800);
     }
 
     protected class GetTimeLine extends AsyncTask<Void, Void, Boolean> {
