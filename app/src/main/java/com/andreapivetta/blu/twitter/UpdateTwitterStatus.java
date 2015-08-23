@@ -11,7 +11,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.utilities.ThemeUtils;
+import com.andreapivetta.blu.utilities.Common;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -72,7 +72,7 @@ public class UpdateTwitterStatus extends AsyncTask<String, String, Boolean> {
     void pushNotification() {
         mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(context);
-        mBuilder.setColor(ThemeUtils.getResourceColorPrimary(context))
+        mBuilder.setColor(Common.getResourceColorPrimary(context))
                 .setContentTitle(context.getString(R.string.sending_tweet_title))
                 .setContentText(context.getString(R.string.sending_tweet_content))
                 .setSmallIcon(R.drawable.ic_stat_notification_sync)
@@ -87,7 +87,7 @@ public class UpdateTwitterStatus extends AsyncTask<String, String, Boolean> {
         mNotifyManager.cancel(i);
 
         mBuilder = new NotificationCompat.Builder(context);
-        mBuilder.setColor(ThemeUtils.getResourceColorPrimary(context));
+        mBuilder.setColor(Common.getResourceColorPrimary(context));
 
         if (mSharedPreferences.getBoolean(context.getString(R.string.pref_key_heads_up_notifications), true)
                 && (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT)) {

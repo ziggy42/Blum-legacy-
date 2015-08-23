@@ -10,15 +10,15 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.adapters.decorators.SpaceTopItemDecoration;
 import com.andreapivetta.blu.adapters.TweetsListAdapter;
+import com.andreapivetta.blu.adapters.decorators.SpaceTopItemDecoration;
 import com.andreapivetta.blu.utilities.Common;
-import com.andreapivetta.blu.utilities.ThemeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,9 +92,14 @@ public abstract class TimeLineActivity extends ThemedActivity implements Snackba
             }
         });
 
+        TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(R.attr.appColorPrimary, typedValue, true);
+        int color1 = typedValue.data;
+        getTheme().resolveAttribute(R.attr.appColorPrimaryDark, typedValue, true);
+        int color2 = typedValue.data;
+
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayout.setColorSchemeResources(ThemeUtils.getColorPrimaryDark(TimeLineActivity.this),
-                ThemeUtils.getColorPrimary(TimeLineActivity.this));
+        swipeRefreshLayout.setColorSchemeColors(color1, color2);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

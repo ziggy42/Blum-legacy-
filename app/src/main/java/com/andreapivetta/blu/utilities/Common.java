@@ -3,7 +3,11 @@ package com.andreapivetta.blu.utilities;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
+
+import com.andreapivetta.blu.R;
 
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -101,6 +105,22 @@ public class Common {
     public static int dpToPx(Context context, int dp) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+    }
+
+    public static int getResourceColorPrimary(Context context) {
+        switch (PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(context.getString(R.string.pref_key_themes), "B")) {
+            case "B":
+                return ContextCompat.getColor(context, R.color.blueThemeColorPrimary);
+            case "P":
+                return ContextCompat.getColor(context, R.color.pinkThemeColorPrimary);
+            case "G":
+                return ContextCompat.getColor(context, R.color.greenThemeColorPrimary);
+            case "D":
+                return ContextCompat.getColor(context, R.color.darkThemeColorPrimary);
+            default:
+                return ContextCompat.getColor(context, R.color.blueThemeColorPrimary);
+        }
     }
 
 }
