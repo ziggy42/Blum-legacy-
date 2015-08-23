@@ -30,7 +30,7 @@ public class SearchActivity extends ThemedActivity implements SnackbarContainer 
         if (toolbar != null) {
             toolbar.setTitle(query);
             setSupportActionBar(toolbar);
-            toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+            toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
