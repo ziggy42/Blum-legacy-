@@ -155,5 +155,7 @@
     <string name="profile_updated">Profilo Aggiornato!</string>
     <string name="screen_name">Nome</string>
     <string name="title_activity_edit_profile">Modifica Profilo</string>
+    <string name="no_grab_images">Non potrai tweeetare immagini presenti nel tuo telefono. Clicca di nuovo per dare il permesso</string>
+    <string name="no_photos">Non potrai tweetare nuove foto. Clicca di nuovo per dare il permesso.</string>
 
 </resources>

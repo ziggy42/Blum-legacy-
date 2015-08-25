@@ -9,6 +9,8 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.webkit.SslErrorHandler;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -270,7 +272,7 @@ public class TwitterOAuthView extends WebView {
         private class LocalWebViewClient extends WebViewClient {
 
             @Override
-            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 notifyAuthorization();
             }
 

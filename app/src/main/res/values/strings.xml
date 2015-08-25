@@ -114,6 +114,8 @@
     <string name="description">Description</string>
     <string name="location">Location</string>
     <string name="profile_updated">Profile Updated!</string>
+    <string name="no_photos">You won\'t be able to tweet new pictures. Click again to grant the permission.</string>
+    <string name="no_grab_images">You won\'t be able to send images saved on your phone without this permission. Click again to enable it.</string>
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>

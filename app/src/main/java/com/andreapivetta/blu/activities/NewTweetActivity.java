@@ -1,8 +1,10 @@
 package com.andreapivetta.blu.activities;
 
+import android.Manifest.permission;
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
@@ -11,6 +13,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
@@ -150,20 +156,11 @@ public class NewTweetActivity extends ThemedActivity {
             @Override
             public void onClick(View v) {
                 if (imageFiles.size() < 4) {
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                        File photoFile = null;
-                        try {
-                            photoFile = createImageFile();
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
-
-                        if (photoFile != null) {
-                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                                    Uri.fromFile(photoFile));
-                            startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-                        }
+                    if (ContextCompat.checkSelfPermission(NewTweetActivity.this, permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                        takePicture();
+                    } else {
+                        ActivityCompat.requestPermissions(NewTweetActivity.this,
+                                new String[]{permission.WRITE_EXTERNAL_STORAGE}, REQUEST_TAKE_PHOTO);
                     }
                 } else {
                     showTooMuchImagesToast();
@@ -174,21 +171,46 @@ public class NewTweetActivity extends ThemedActivity {
         grabImageImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (imageFiles.size() < 4) {
-                    Intent intent = new Intent()
-                            .setType("image/*")
-                            .setAction(Intent.ACTION_GET_CONTENT);
-
-                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-                        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-
-                    startActivityForResult(Intent.createChooser(intent, getString(R.string.select_picture)), REQUEST_GRAB_IMAGE);
-                } else {
-                    showTooMuchImagesToast();
-                }
-
+                if (ContextCompat.checkSelfPermission(NewTweetActivity.this, permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+                    grabImage();
+                else
+                    ActivityCompat.requestPermissions(NewTweetActivity.this,
+                            new String[]{permission.READ_EXTERNAL_STORAGE}, REQUEST_TAKE_PHOTO);
             }
         });
+    }
+
+    void takePicture() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+            if (photoFile != null) {
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        Uri.fromFile(photoFile));
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
+        }
+    }
+
+    void grabImage() {
+        if (imageFiles.size() < 4) {
+            Intent intent = new Intent()
+                    .setType("image/*")
+                    .setAction(Intent.ACTION_GET_CONTENT);
+
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+
+            startActivityForResult(Intent.createChooser(intent, getString(R.string.select_picture)), REQUEST_GRAB_IMAGE);
+        } else {
+            showTooMuchImagesToast();
+        }
     }
 
     void checkLength(String text) {
@@ -248,6 +270,28 @@ public class NewTweetActivity extends ThemedActivity {
         }
 
         checkLength(newTweetEditText.getText().toString());
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (requestCode == REQUEST_TAKE_PHOTO) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                takePicture();
+            } else {
+                Snackbar.make(getWindow().getDecorView().findViewById(R.id.linearLayout), R.string.no_photos,
+                        Snackbar.LENGTH_LONG).show();
+            }
+        } else if (requestCode == REQUEST_GRAB_IMAGE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                grabImage();
+            } else {
+                Snackbar.make(getWindow().getDecorView().findViewById(R.id.linearLayout), R.string.no_grab_images,
+                        Snackbar.LENGTH_LONG).show();
+            }
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void showTooMuchImagesToast() {
