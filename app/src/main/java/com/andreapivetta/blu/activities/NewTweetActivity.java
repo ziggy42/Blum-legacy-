@@ -90,9 +90,8 @@ public class NewTweetActivity extends ThemedActivity {
             });
         }
 
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null)
             imageFiles = (ArrayList<File>) savedInstanceState.getSerializable(FILES);
-        }
 
         twitter = TwitterUtils.getTwitter(NewTweetActivity.this);
         newTweetEditText = (EditText) findViewById(R.id.newTweetEditText);
@@ -171,11 +170,12 @@ public class NewTweetActivity extends ThemedActivity {
         grabImageImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(NewTweetActivity.this, permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+                if (ContextCompat.checkSelfPermission(NewTweetActivity.this, permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     grabImage();
-                else
+                } else {
                     ActivityCompat.requestPermissions(NewTweetActivity.this,
-                            new String[]{permission.READ_EXTERNAL_STORAGE}, REQUEST_TAKE_PHOTO);
+                            new String[]{permission.READ_EXTERNAL_STORAGE}, REQUEST_GRAB_IMAGE);
+                }
             }
         });
     }
