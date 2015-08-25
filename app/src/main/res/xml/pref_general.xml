@@ -87,11 +87,6 @@
             android:title="@string/feedback_pref_title" />
 
         <Preference
-            android:key="pref_key_share"
-            android:summary="@string/share_pref_summary"
-            android:title="@string/share_pref_title" />
-
-        <Preference
             android:key="pref_key_licenses"
             android:summary="@string/licenses_pref_summary"
             android:title="@string/licenses_pref_title" />

@@ -56,9 +56,7 @@ public abstract class TimeLineActivity extends ThemedActivity implements Snackba
         setContentView(R.layout.activity_timeline);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-        }
+        setSupportActionBar(toolbar);
 
         ScaleInBottomAnimator animator = new ScaleInBottomAnimator();
         animator.setAddDuration(300);

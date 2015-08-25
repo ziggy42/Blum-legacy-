@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.fragments.SearchTweetsFragment;
@@ -27,24 +26,14 @@ public class SearchActivity extends ThemedActivity implements SnackbarContainer 
         query = getIntent().getStringExtra(SearchManager.QUERY);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            toolbar.setTitle(query);
-            setSupportActionBar(toolbar);
-            toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
-        }
+        toolbar.setTitle(query);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
-        SearchFragmentPagerAdapter myFragmentPagerAdapter = new SearchFragmentPagerAdapter();
-        viewPager.setAdapter(myFragmentPagerAdapter);
+        viewPager.setAdapter(new SearchFragmentPagerAdapter());
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
-
     }
 
     @Override

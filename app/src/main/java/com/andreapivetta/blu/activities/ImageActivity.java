@@ -54,9 +54,10 @@ public class ImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image);
 
-        images = Arrays.asList(getIntent().getStringArrayExtra(TAG_IMAGES));
-        int currentItem = getIntent().getIntExtra(TAG_CURRENT_ITEM, 0);
-        String toolbarTitle = getIntent().getStringExtra(TAG_TITLE);
+        Intent intent = getIntent();
+        images = Arrays.asList(intent.getStringArrayExtra(TAG_IMAGES));
+        int currentItem = intent.getIntExtra(TAG_CURRENT_ITEM, 0);
+        String toolbarTitle = intent.getStringExtra(TAG_TITLE);
         if (images.size() > 1)
             toolbarTitle = getString(R.string.m_of_n, currentItem + 1, images.size());
 

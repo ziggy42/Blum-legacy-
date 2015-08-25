@@ -366,7 +366,6 @@ public class VHHeader extends BaseViewHolder {
                 }
             });
 
-
         }
     }
 }

@@ -85,7 +85,7 @@ public class Message implements Comparable<Message> {
                     .notify((int) dm.getId(), mBuilder.build());
 
             Intent i = new Intent();
-            i.setAction(Message.NEW_MESSAGE_INTENT);
+            i.setAction(NEW_MESSAGE_INTENT);
             context.sendBroadcast(i);
         }
     }

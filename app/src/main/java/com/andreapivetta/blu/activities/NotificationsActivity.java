@@ -11,7 +11,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.data.DatabaseManager;
@@ -25,24 +24,14 @@ public class NotificationsActivity extends ThemedActivity {
         setContentView(R.layout.activity_tabbed);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
-        }
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-        MyFragmentPagerAdapter myFragmentPagerAdapter = new MyFragmentPagerAdapter();
-        viewPager.setAdapter(myFragmentPagerAdapter);
+        viewPager.setAdapter(new MyFragmentPagerAdapter());
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

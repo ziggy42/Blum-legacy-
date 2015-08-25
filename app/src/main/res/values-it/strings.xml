@@ -51,7 +51,6 @@
     <string name="sending_tweet_content">Sto mandando il Tweet</string>
     <string name="sending_tweet_title">Mandando Il Tweet</string>
     <string name="share">Condividi</string>
-    <string name="share_pref_summary">Suggerisci questa app ad un amico</string>
     <string name="yes">Si</string>
     <string name="welcome">Benvenuto</string>
     <string name="too_many_characters">Troppi caratteri</string>
@@ -63,9 +62,7 @@
     <string name="streamContinue">Continua</string>
     <string name="stop_following">Smettere di seguire %1$s?</string>
     <string name="share_tweet">Condividi questo Tweet!</string>
-    <string name="share_pref_title">Condividi questa app!</string>
     <string name="sending_message_error">C\'è stato qualche problema a mandare il messaggio. Riprova tra qualche minuto.</string>
-    <string name="share_this_app">Si, un altro Twitter client https://play.google.com/store/apps/details?id=com.andreapivetta.blu</string>
     <string name="streamDialogMessage">Usando lo Stream Notification Service, avrai notifiche real-time e non dovrai mai aggiornare per ricevere i nuovi tweet. Sfortunatamente, se segui un grande numero di utenti e la tua connessione non è tra le migliori, usare questa opzione può intaccare sensibilmente la durata della batteria del tuo device.</string>
 
     <plurals name="new_tweets">

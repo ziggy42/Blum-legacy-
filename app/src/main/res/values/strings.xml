@@ -54,8 +54,6 @@
         notifications and new tweets will be brought to you without the need of a refresh.
         Unfortunately, if you follow a huge number of people and if your network isn\'t that great,
         you may experience a really high battery consuming. It\'s up to you. Blu will be restarted.</string>
-    <string name="share_this_app">Yes, another Twitter client
-        https://play.google.com/store/apps/details?id=com.andreapivetta.blu</string>
     <string name="subject_form_hint">Subject</string>
     <string name="content_form">Content</string>
     <string name="send">Send</string>
@@ -198,8 +196,6 @@
     <string name="enable_stream_service_pref_summary">Better experience, worst battery life</string>
     <string name="enable_stream_service_pref_title">Enable Stream Notification Service</string>
     <string name="prefcat_others_title">Others</string>
-    <string name="share_pref_title">Share this App</string>
-    <string name="share_pref_summary">Suggest it to your friends!</string>
     <string name="about_pref_summary">About the authors</string>
     <string name="feedback_pref_summary">Let us know what do you think</string>
     <string name="feedback_pref_title">Send Feedback</string>
