@@ -14,18 +14,18 @@ public class ConnectionDetector {
     }
 
     public boolean isConnectingToInternet() {
-        if (connectivityManager != null) {
-            NetworkInfo[] info = connectivityManager.getAllNetworkInfo();
-            if (info != null)
-                for (NetworkInfo anInfo : info)
-                    if (anInfo.getState() == NetworkInfo.State.CONNECTED) {
-                        return true;
-                    }
-        }
-        return false;
+        if (connectivityManager == null)
+            return false;
+
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 
     public boolean isConnectingToWiFi() {
-        return connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected();
+        if (connectivityManager == null)
+            return false;
+
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && connectivityManager.getActiveNetworkInfo().getType() == ConnectivityManager.TYPE_WIFI;
     }
 }
