@@ -236,5 +236,6 @@
     <string name="pref_key_logged_user" translatable="false">user</string>
     <string name="pref_key_db_populated" translatable="false">popdb</string>
     <string name="pref_key_mute_notifications" translatable="false">muteNot</string>
+    <string name="previously_denied_storage_permission">You previously denied access to Storage. You have to manually grant this permission in Settings.</string>
 
 </resources>
