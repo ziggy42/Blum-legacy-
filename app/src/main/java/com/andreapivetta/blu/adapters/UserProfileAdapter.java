@@ -13,9 +13,11 @@ import com.andreapivetta.blu.adapters.holders.VHItem;
 import com.andreapivetta.blu.adapters.holders.VHItemMultiplePhotos;
 import com.andreapivetta.blu.adapters.holders.VHItemPhoto;
 import com.andreapivetta.blu.adapters.holders.VHItemQuote;
+import com.andreapivetta.blu.adapters.holders.VHItemVideo;
 
 import java.util.ArrayList;
 
+import twitter4j.ExtendedMediaEntity;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.User;
@@ -27,6 +29,7 @@ public class UserProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int TYPE_ITEM_PHOTO = 2;
     private static final int TYPE_ITEM_QUOTE = 3;
     private static final int TYPE_ITEM_MULTIPLE_PHOTOS = 4;
+    private static final int TYPE_ITEM_VIDEO = 5;
 
     private ArrayList<Object> mDataSet;
     private Context context;
@@ -56,6 +59,9 @@ public class UserProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case TYPE_ITEM_MULTIPLE_PHOTOS:
                 return new VHItemMultiplePhotos(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_multiplephotos, parent, false));
+            case TYPE_ITEM_VIDEO:
+                return new VHItemVideo(
+                        LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_video, parent, false));
             case TYPE_HEADER:
                 return new UserHeaderViewHolder(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.user_header, parent, false));
@@ -84,11 +90,16 @@ public class UserProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (position == 0)
             return TYPE_HEADER;
         else {
-            Status status = (Status) mDataSet.get(position);
-            if (status.getExtendedMediaEntities().length == 1)
-                return TYPE_ITEM_PHOTO;
+            final Status status = (Status) mDataSet.get(position);
+            final ExtendedMediaEntity mediaEntities[] = status.getExtendedMediaEntities();
+            if (mediaEntities.length == 1) {
+                if ("photo".equals(mediaEntities[0].getType()))
+                    return TYPE_ITEM_PHOTO;
 
-            if (status.getExtendedMediaEntities().length > 1)
+                return TYPE_ITEM_VIDEO;
+            }
+
+            if (mediaEntities.length > 1)
                 return TYPE_ITEM_MULTIPLE_PHOTOS;
 
             if (status.getQuotedStatusId() > 0)
