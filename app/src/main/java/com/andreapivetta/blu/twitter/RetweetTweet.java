@@ -33,10 +33,8 @@ public class RetweetTweet extends AsyncTask<Long, Void, Boolean> {
     protected void onPostExecute(Boolean status) {
         if (status) {
             ((SnackbarContainer) context).showSnackBar(context.getString(R.string.status_retweeted));
-            //Toast.makeText(context, context.getString(R.string.status_retweeted), Toast.LENGTH_SHORT).show();
         } else {
             ((SnackbarContainer) context).showSnackBar(context.getString(R.string.action_not_performed));
-            //Toast.makeText(context, context.getString(R.string.action_not_performed), Toast.LENGTH_SHORT).show();
         }
     }
 }

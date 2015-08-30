@@ -41,13 +41,10 @@ public class FavoriteTweet extends AsyncTask<Long, Void, Boolean> {
         if (status) {
             if (removed)
                 ((SnackbarContainer) context).showSnackBar(context.getString(R.string.favorite_removed));
-                //Toast.makeText(context, context.getString(R.string.favorite_removed), Toast.LENGTH_SHORT).show();
             else
                 ((SnackbarContainer) context).showSnackBar(context.getString(R.string.favorite_added));
-                //Toast.makeText(context, context.getString(R.string.favorite_added), Toast.LENGTH_SHORT).show();
         } else {
             ((SnackbarContainer) context).showSnackBar(context.getString(R.string.action_not_performed));
-            //Toast.makeText(context, context.getString(R.string.action_not_performed), Toast.LENGTH_SHORT).show();
         }
     }
 }
