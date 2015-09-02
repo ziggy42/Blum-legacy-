@@ -168,7 +168,7 @@ public class Notification {
         User currentUser = twitter.showUser(userID);
 
         pushNotification(tweetID, currentUser.getName(), type,
-                (tweetID > 0) ? twitter.showStatus(tweetID).getText() : "", currentUser.getProfileImageURL(),
+                (tweetID > 0) ? twitter.showStatus(tweetID).getText() : "", currentUser.getBiggerProfileImageURL(),
                 currentUser.getId(), context);
     }
 }
