@@ -49,19 +49,6 @@ public class HomeActivity extends TimeLineActivity {
     protected void onCreate(Bundle savedInstanceState) {
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if (mSharedPreferences.getBoolean("stillthere", true)) {
-
-            deleteDatabase("messages_db");
-            deleteDatabase("favorites_db");
-            deleteDatabase("followers_db");
-            deleteDatabase("mentions_db");
-            deleteDatabase("notifications_db");
-            deleteDatabase("retweets_db");
-
-            mSharedPreferences.edit().clear().commit();
-            mSharedPreferences.edit().putBoolean("stillthere", false).commit();
-        }
-
         if (!isTwitterLoggedInAlready()) {
             startActivityForResult(new Intent(HomeActivity.this, LoginActivity.class), REQUEST_LOGIN);
         } else {
