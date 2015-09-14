@@ -28,7 +28,8 @@
     </style>
 
     <style name="BlueUserTheme" parent="BlueAppTheme">
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/transparent</item> 
     </style>
 
     <!-- Pink Theme -->
@@ -45,7 +46,8 @@
     </style>
 
     <style name="PinkUserTheme" parent="PinkAppTheme">
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/transparent</item> 
     </style>
 
     <!-- Green Theme -->
@@ -62,7 +64,8 @@
     </style>
 
     <style name="GreenUserTheme" parent="GreenAppTheme">
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/transparent</item> 
     </style>
 
     <!-- Dark Theme -->
@@ -91,7 +94,8 @@
     </style>
 
     <style name="DarkUserTheme" parent="DarkTheme">
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/transparent</item> 
     </style>
 
     <style name="ImageActivityTheme" parent="Theme.AppCompat.NoActionBar">

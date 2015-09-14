@@ -27,7 +27,7 @@ public class NotificationFragment extends Fragment {
 
     private int kind;
 
-    private DatabaseManager databaseManager = DatabaseManager.getInstance(getActivity());
+    private DatabaseManager databaseManager;
 
     public static NotificationFragment newInstance(int mode) {
         NotificationFragment f = new NotificationFragment();
@@ -42,6 +42,7 @@ public class NotificationFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         kind = getArguments().getInt(TAG_KIND);
+        databaseManager = DatabaseManager.getInstance(getActivity());
     }
 
     @Override
