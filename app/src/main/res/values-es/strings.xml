@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_settings">Ajustes</string>
+    <string name="login_button_text">Login</string>
+    <string name="welcome">¡Bienvenido!</string>
+    <string name="retweeted_by">%1$s ha retwitteado</string>
+    <string name="cancel">Cancelar</string>
+    <string name="new_tweet_hint">Tweet tu vida en 140 caracteres </string>
+    <string name="sending_tweet_title">Enviar Tweet</string>
+    <string name="sending_tweet_content">Envío en curso</string>
+    <string name="share_tweet">¡Compartir este Tweet!</string>
+    <string name="stop_following">Deja de seguir %1$s?</string>
+    <string name="follow">Sigue %1$s?</string>
+    <string name="check_out">Echa un vistazo %1$s en twitter http://twitter.com/%2$s</string>
+    <string name="share">Compartir</string>
+    <string name="logout_title_dialog">¿Logout?</string>
+    <string name="yes">Si</string>
+    <string name="internet_connection_required">Esta operación requiere una conexión a internet</string>
+    <string name="favourites">%1$s FAVORITO</string>
+    <string name="retweets">%1$s RETWEET</string>
+    <string name="notifications">Notificaciones</string>
+    <string name="nothing_to_show">Nada que ver aquí :(</string>
+    <string name="is_following_not">ahora te está siguendo</string>
+    <string name="mentioned_not">%1$s te ha citado:</string>
+    <string name="action_clear_db">Borrar todas las notificaciones</string>
+    <string name="clear_database">¿Borrar todas las notificaciones?</string>
+    <string name="action_search">Buscar</string>
+    <string name="search_hint">Buscar Tweet or Usuario</string>
+    <string name="logout_done">Log Out Realizado.</string>
+    <string name="fav_not_title">%1$s ha marcado tu tweet como favorito</string>
+    <string name="retw_not_title">%1$s ha retwiteado tu tweet</string>
+    <string name="follow_not_title">%1$s te sigue</string>
+    <string name="reply_not_title">%1$s twiteado</string>
+    <string name="retw_ment_not_title">%1$s ha retwitteado un tweet donde eres citado</string>
+    <string name="cant_find_user">No se puede cargar este usuario, compruebe su conexión a Internet</string>
+    <string name="action_profile">Mi Perfil</string>
+    <string name="send_tweet">Enviar el Tweet</string>
+    <string name="too_many_characters">Demasiados caracteres</string>
+    <string name="chars_left">Caracteres permanecidos</string>
+    <string name="reached_twitter_user_limit">Límite Twitter alcanzado, por favor intente de nuevo en unos minutos</string>
+    <string name="streamDialogTitle">Usa el servicio de notificatión de flujo</string>
+    <string name="streamContinue">Continuar</string>
+    <string name="streamDialogMessage">Utilizando el servicio de notificación de flujo, obtendrá en tiempo real
+        notificaciones y nuevos tweets que serán traídos a usted sin la necesidad de una actualización.
+        Desafortunadamente, si usted sigue un gran número de personas y si la red no es tan grande,
+        puede experimentar un consumo muy alto de la batería. Depende de ti. Blum se reiniciará.</string>
+    <string name="subject_form_hint">Sujeto</string>
+    <string name="content_form">Contenido</string>
+    <string name="send">Enviar</string>
+    <string name="all_fields_needed">Todos los campos son obligatorios.</string>
+    <string name="provide_valid_email">Por favor, introducir un correo electrónico válido.</string>
+    <string name="message_sent">¡Mensaje enviado con éxito</string>
+    <string name="sending_message_error">Hubo un error en el envío del mensaje.
+        Por favor, inténtelo otra en unos minutos. </string>
+    <string name="authorized_by">Autorizado por %1$s</string>
+    <string name="failed_due">Error debido a %1$s</string>
+    <string name="favorite_removed">Favorito eliminado</string>
+    <string name="favorite_added">¡Tweet favourited!</string>
+    <string name="following_added">Estás siguiendo este usuario</string>
+    <string name="following_removed">No estás siguiendo este usuario</string>
+    <string name="status_retweeted">¡Status retwiteado!</string>
+    <string name="tweet_sent_message">¡Tweet Enviado!</string>
+    <string name="messages_notifications">Notificaciones de mensaje</string>
+    <string name="hint_message">Mensaje</string>
+    <string name="you_message">Tu: %1$s</string>
+    <string name="message_not_title">¡%1$s te ha enviado un mensaje!</string>
+    <string name="hint_user">Nombre del usuario</string>
+    <string name="ops">Oops, este es embarazoso…</string>
+    <string name="come_here_later_message">Siguo descargando cosas para ti, por favor vuelve aquí más tarde ;)</string>
+    <string name="performing_logout">Estoy cierrando la sesión</string>
+    <string name="please_wait">Por favor espera algunos sugundos</string>
+    <string name="action_not_performed">Oops! Algo salió mal, intente más tarde.</string>
+    <string name="when_fav_ret_pref_title">Favoritos and Retweetes</string>
+    <string name="when_mentions_pref_title">Citado</string>
+    <string name="when_followers_pref_title">Follower</string>
+    <string name="when_dms_pref_title">Mensaje Directo</string>
+    <string name="when_fav_ret_pref_summary">Mostrar notificaciones por Favoritos e Retweetes</string>
+    <string name="when_mentions_pref_summary">Mostrar notificaciones de las menciones</string>
+    <string name="when_followers_pref_summary">Mostrar notificaciones de los Follower</string>
+    <string name="when_dms_pref_summary">Mostrar notificaciones de los mensajes directos</string>
+    <string name="licenses_pref_title">Licencias de software libre.</string>
+    <string name="licenses_pref_summary">Licencias de software libre es aplicada en este app.</string>
+    <string name="action_mark_as_read">Señalar todos como leídos</string>
+    <string name="my_twitter"><![CDATA[Developed with ♥ by <a href="com.andreapivetta.blu.user://Pivix00">\@Pivix00<a><br/>Icon from <a href="com.andreapivetta.blu.user://stefano_openlab">\@stefano_openlab<a>]]></string>
+    <string name="too_many_images">Puedes enviar un máximo de 4 imagénes</string>
+    <string name="operation_not_supported">Operatión no compatible</string>
+    <string name="check_out_photo">He encontrado esta imagen en Twitter %1$s</string>
+    <string name="m_of_n">%1$d de %2$d</string>
+    <string name="done">¡Hecho!</string>
+    <string name="tweet_not_sent">El tweet no ha sido enviado</string>
+    <string name="select_picture">Selectiona imagen</string>
+    <string name="follow_simple">Sigue</string>
+    <string name="follows_you">¡%1$s te está siguiendo!</string>
+    <string name="edit_pref_summary">Editar tu nombre, descriptión etc</string>
+    <string name="edit_pref_title">Editar Perfil</string>
+    <string name="screen_name">Pantella Nombre</string>
+    <string name="description">Biografía</string>
+    <string name="location">Ubicatión</string>
+    <string name="profile_updated">¡Guardar!</string>
+    <string name="no_photos">No puede twittear nuevas imágenes Click otra vez para conceder el permiso.</string>
+    <string name="no_grab_images">No puede enviar imágenes collecionadas en tu movíl sin este permiso. Click otra vez para concederlo.</string>
+
+    <plurals name="new_tweets">
+        <item quantity="one">%1$d nuevo Tweet</item>
+        <item quantity="other">%1$d nuevos Tweets</item>
+    </plurals>
+
+    <array name="notifications_tabs_names">
+        <item>Nuevo</item>
+        <item>Antiguo</item>
+    </array>
+
+    <array name="search_tabs_names">
+        <item>Tweets</item>
+        <item>Usuarios</item>
+    </array>
+
+    <string-array name="when_notifications">
+        <item>Nunca</item>
+        <item>Wi-Fi Solo</item>
+        <item>Siempre</item>
+    </string-array>
+
+    <string-array name="frequencies">
+        <item>5 minutos</item>
+        <item>10 minutos</item>
+        <item>15 minutos</item>
+        <item>20 minutos</item>
+        <item>30 minutos</item>
+        <item>60 minutos</item>
+        <item>120 minutos</item>
+    </string-array>
+
+    <string-array name="themes">
+        <item>Azul</item>
+        <item>Rosa</item>
+        <item>Verde</item>
+        <item>Oscuro</item>
+    </string-array>
+
+    <string name="title_activity_feedback">Enviar Feedback</string>
+    <string name="title_activity_new_tweet">Nuevo Tweet</string>
+    <string name="title_activity_settings">Ajustes</string>
+    <string name="title_activity_conversations_list">Mensajes directos</string>
+    <string name="title_activity_edit_profile">Editar Perfil</string>
+    <string name="logout_pref_summary">Cerrar la sesión y Salir</string>
+    <string name="heads_up_notifications_pref_summary">Permitir heads-up notificaciones</string>
+    <string name="heads_up_notifications_pref_title">Heads-Up Notificaciones</string>
+    <string name="frequency_pref_summary">¿Con qué frecuencia comproba notificaciones?</string>
+    <string name="frequency_pref_title">Frecuencia</string>
+    <string name="enable_stream_service_pref_summary">Una mejor experiencia implica más uso de energía de la batería.</string>
+    <string name="enable_stream_service_pref_title">Permitir el servicio de notification de flujo</string>
+    <string name="prefcat_others_title">Otro</string>
+    <string name="about_pref_summary">Sobre los autores</string>
+    <string name="feedback_pref_summary">Háganos saber lo que piensas</string>
+    <string name="feedback_pref_title">Enviar Feedback</string>
+    <string name="mute_notifications_pref_summary">Tu no quiere recibir notificaciones</string>
+    <string name="mute_notifications_pref_title">Notificaciones mudas</string>
+    <string name="themes_pref_summary">Elija el tema de la interfaz de usuario</string>
+    <string name="themes_pref_title">Temas</string>
+    <string name="prefcat_appearance_title">Aparición</string>
+    <string name="previously_denied_storage_permission">Has negado previamente el acceso al almacenamiento. Hay que conceder manualmente el permiso en las ajustes.</string>
+</resources>
