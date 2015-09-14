@@ -53,7 +53,7 @@
     <string name="streamDialogMessage">Using the stream notification service, you\'ll get real time
         notifications and new tweets will be brought to you without the need of a refresh.
         Unfortunately, if you follow a huge number of people and if your network isn\'t that great,
-        you may experience a really high battery consuming. It\'s up to you. Blu will be restarted.</string>
+        you may experience a really high battery consuming. It\'s up to you. Blum will be restarted.</string>
     <string name="subject_form_hint">Subject</string>
     <string name="content_form">Content</string>
     <string name="send">Send</string>

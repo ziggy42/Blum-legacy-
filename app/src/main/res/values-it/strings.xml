@@ -41,8 +41,8 @@
     <string name="provide_valid_email">Inserisci un\' email valida</string>
     <string name="reached_twitter_user_limit">Hai raggiunto il limite di Twitter, riprova tra qualche minuto</string>
     <string name="reply_not_title">%1$s ha twittato</string>
-    <string name="retw_ment_not_title">%1$s ha retwittato un Tweet in cui sei menzionato</string>
-    <string name="retw_not_title">%1$s ti ha retwittato</string>
+    <string name="retw_ment_not_title">%1$s ha ritwittato un Tweet in cui sei menzionato</string>
+    <string name="retw_not_title">%1$s ti ha ritwittato</string>
     <string name="retweeted_by">Retweetato da @%1$s</string>
     <string name="retweets">%1$s RETWEET</string>
     <string name="search_hint">Cerca Tweet o utenti</string>
@@ -104,7 +104,7 @@
     </string-array>
     <string name="favorite_added">Tweet Preferito!</string>
     <string name="favorite_removed">Preferito rimosso</string>
-    <string name="status_retweeted">Tweet Retwittato!</string>
+    <string name="status_retweeted">Tweet Ritwittato!</string>
     <string name="tweet_sent_message">Tweet Inviato!</string>
     <string name="following_added">Ora stai seguendo questo utente</string>
     <string name="following_removed">Non stai seguendo questo utente</string>
