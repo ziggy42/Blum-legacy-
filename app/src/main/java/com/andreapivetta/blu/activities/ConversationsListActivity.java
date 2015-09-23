@@ -91,8 +91,7 @@ public class ConversationsListActivity extends ThemedActivity {
             }
         });
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -104,9 +103,8 @@ public class ConversationsListActivity extends ThemedActivity {
         View dialogView = View.inflate(ConversationsListActivity.this, R.layout.dialog_select_user, null);
         RecyclerView mRecyclerView = (RecyclerView) dialogView.findViewById(R.id.usersRecyclerView);
 
-        LinearLayoutManager mDialogLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(mDialogLinearLayoutManager);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mUsersSimpleAdapter);
 
         loadingProgressBar = (ProgressBar) dialogView.findViewById(R.id.loadingProgressBar);

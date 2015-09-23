@@ -77,8 +77,7 @@ public class ImageActivity extends AppCompatActivity {
         }
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.photosViewPager);
-        ImageFragmentPagerAdapter myFragmentPagerAdapter = new ImageFragmentPagerAdapter();
-        viewPager.setAdapter(myFragmentPagerAdapter);
+        viewPager.setAdapter(new ImageFragmentPagerAdapter());
         viewPager.setCurrentItem(currentItem);
         viewPager.setPageTransformer(true, new ViewPager.PageTransformer() {
             @Override
