@@ -328,7 +328,7 @@ public class NewTweetActivity extends ThemedActivity {
         charsLeftTextView.setText(String.valueOf(charsLeft));
 
         if (charsLeft < 0)
-            charsLeftTextView.setTextColor(getColor(R.color.red));
+            charsLeftTextView.setTextColor(ContextCompat.getColor(NewTweetActivity.this, R.color.red));
 
         return true;
     }

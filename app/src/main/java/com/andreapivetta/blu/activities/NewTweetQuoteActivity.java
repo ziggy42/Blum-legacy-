@@ -1,9 +1,10 @@
 package com.andreapivetta.blu.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -130,7 +131,7 @@ public class NewTweetQuoteActivity extends ThemedActivity {
         charsLeftTextView.setText(String.valueOf(charsLeft));
 
         if (charsLeft < 0)
-            charsLeftTextView.setTextColor(getColor(R.color.red));
+            charsLeftTextView.setTextColor(ContextCompat.getColor(NewTweetQuoteActivity.this, R.color.red));
 
         return true;
     }
