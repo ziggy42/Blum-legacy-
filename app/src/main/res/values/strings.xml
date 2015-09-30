@@ -237,5 +237,7 @@
     <string name="pref_key_db_populated" translatable="false">popdb</string>
     <string name="pref_key_mute_notifications" translatable="false">muteNot</string>
     <string name="previously_denied_storage_permission">You previously denied access to Storage. You have to manually grant this permission in Settings.</string>
+    <string name="wait_a_minute">Please wait a minute...</string>
+    <string name="i_need_to_download">I need to download some other stuff</string>
 
 </resources>

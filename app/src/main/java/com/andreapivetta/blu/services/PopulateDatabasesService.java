@@ -11,9 +11,11 @@ import com.andreapivetta.blu.utilities.Common;
 
 import twitter4j.DirectMessage;
 import twitter4j.IDs;
+import twitter4j.PagableResponseList;
 import twitter4j.Paging;
 import twitter4j.Status;
 import twitter4j.Twitter;
+import twitter4j.User;
 
 
 public class PopulateDatabasesService extends IntentService {
@@ -64,6 +66,17 @@ public class PopulateDatabasesService extends IntentService {
                 databaseManager.insertDirectMessage(message.getId(), message.getSenderId(), message.getRecipientId(),
                         message.getText(), message.getCreatedAt().getTime(), message.getRecipient().getName(), message.getRecipientId(),
                         message.getRecipient().getBiggerProfileImageURL(), true);
+
+            long cursor = -1;
+            PagableResponseList<User> pagableFollowings;
+            do {
+                pagableFollowings = twitter.getFriendsList(twitter.getId(), cursor);
+                for (User user : pagableFollowings) {
+                    databaseManager.insertFollowing(user.getId(), user.getName(), user.getScreenName(),
+                            user.getBiggerProfileImageURL());
+                }
+            } while ((cursor = pagableFollowings.getNextCursor()) != 0);
+
 
             PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit()
                     .putBoolean(getString(R.string.pref_key_db_populated), true).apply();

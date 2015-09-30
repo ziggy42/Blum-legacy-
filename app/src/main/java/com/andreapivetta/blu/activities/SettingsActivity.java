@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.services.BasicNotificationService;
+import com.andreapivetta.blu.services.CheckFollowingService;
 import com.andreapivetta.blu.services.StreamNotificationService;
 
 
@@ -232,6 +233,8 @@ public class SettingsActivity extends ThemedActivity {
                             new Intent(getActivity(), StreamNotificationService.class));
                 else
                     BasicNotificationService.stopService(getActivity());
+
+                CheckFollowingService.stopService(getActivity());
 
                 mSharedPreferences.edit().clear().commit();
                 DatabaseManager.getInstance(getActivity()).clearDatabase();

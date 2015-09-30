@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +16,7 @@ import java.util.Arrays;
 public class DatabaseManager {
 
     private static final String DB_NAME = "blumdb";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2; // Changed
 
     private SQLiteDatabase sqLiteDatabase;
 
@@ -330,6 +332,52 @@ public class DatabaseManager {
         sqLiteDatabase.execSQL(Notification.CREATE_TABLE);
     }
 
+    public void insertFollowing(long id, String userName, String screenName, String profilePicUrl) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Following.ID, id);
+        contentValues.put(Following.NAME, userName);
+        contentValues.put(Following.SCREEN_NAME, screenName);
+        contentValues.put(Following.PIC_URL, profilePicUrl);
+        sqLiteDatabase.insert(Following.TABLE_NAME, null, contentValues);
+    }
+
+    public void deleteFollowing(Object[] ids) {
+        sqLiteDatabase.delete(Following.TABLE_NAME, Following.ID + " IN " +
+                Arrays.toString(ids).replace("[", "(").replace("]", ")"), null);
+    }
+
+    public ArrayList<String[]> getFollowing(@Nullable String start) {
+        ArrayList<String[]> users = new ArrayList<>();
+        Cursor cursor = sqLiteDatabase.rawQuery(Following.GET_FOLLOWING_BY_START,
+                (start == null) ? null : new String[]{start});
+        while (cursor.moveToNext())
+            users.add(new String[]{cursor.getString(1), cursor.getString(2), cursor.getString(3)});
+        cursor.close();
+        return users;
+    }
+
+    private ArrayList<Long> getFollowingList() {
+        ArrayList<Long> list = new ArrayList<>();
+        Cursor cursor = sqLiteDatabase.rawQuery(Following.GET_FOLLOWING, null);
+        while (cursor.moveToNext())
+            list.add(cursor.getLong(0));
+        cursor.close();
+        return list;
+    }
+
+    @SuppressWarnings("SuspiciousMethodCalls")
+    public void checkFollowing(ArrayList<Object[]> following) {
+        ArrayList<Long> existingUsersIDs = getFollowingList();
+        for (int i = 0; i < following.size(); i++) {
+            if (!existingUsersIDs.contains(following.get(i)[0]))
+                insertFollowing((Long) following.get(i)[0], (String) following.get(i)[1], (String) following.get(i)[3], (String) following.get(i)[4]);
+            else
+                existingUsersIDs.remove(following.get(i)[0]);
+        }
+
+        deleteFollowing(existingUsersIDs.toArray());
+    }
+
     public void clearDatabase() {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + DirectMessage.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Favorite.TABLE_NAME);
@@ -337,6 +385,7 @@ public class DatabaseManager {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Follower.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Mention.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Notification.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Following.TABLE_NAME);
 
         sqLiteDatabase.execSQL(DirectMessage.CREATE_TABLE);
         sqLiteDatabase.execSQL(Favorite.CREATE_TABLE);
@@ -344,6 +393,7 @@ public class DatabaseManager {
         sqLiteDatabase.execSQL(Follower.CREATE_TABLE);
         sqLiteDatabase.execSQL(Mention.CREATE_TABLE);
         sqLiteDatabase.execSQL(Notification.CREATE_TABLE);
+        sqLiteDatabase.execSQL(Following.CREATE_TABLE);
     }
 
     private interface DirectMessage {
@@ -414,6 +464,19 @@ public class DatabaseManager {
         String GET_FOLLOWERS = "SELECT " + FOLLOWER_ID + " FROM " + TABLE_NAME;
     }
 
+    private interface Following {
+        String TABLE_NAME = "following_table";
+        String ID = "id";
+        String NAME = "name";
+        String SCREEN_NAME = "screename";
+        String PIC_URL = "pic_url";
+
+        String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" + ID + " INTEGER NOT NULL PRIMARY KEY, " +
+                NAME + " TEXT NOT NULL, " + SCREEN_NAME + " TEXT NOT NULL, " + PIC_URL + " TEXT NOT NULL)";
+        String GET_FOLLOWING_BY_START = "SELECT * FROM " + TABLE_NAME + " WHERE " + SCREEN_NAME + " LIKE ?";
+        String GET_FOLLOWING = "SELECT " + ID + " FROM " + TABLE_NAME;
+    }
+
     private interface Mention {
         String TABLE_NAME = "mentions_table";
         String TWEET_ID = "tweetid";
@@ -470,11 +533,15 @@ public class DatabaseManager {
             db.execSQL(Follower.CREATE_TABLE);
             db.execSQL(Mention.CREATE_TABLE);
             db.execSQL(Notification.CREATE_TABLE);
+            db.execSQL(Following.CREATE_TABLE);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+            Log.i("DatabaseHelper", "onUpgrade called");
+            if (newVersion > oldVersion && newVersion == 2) {
+                db.execSQL(Following.CREATE_TABLE);
+            }
         }
     }
 }
