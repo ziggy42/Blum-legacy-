@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.andreapivetta.blu.services.BasicNotificationService;
 import com.andreapivetta.blu.services.CheckFollowingService;
 
 public class FollowingAlarmReceiver extends BroadcastReceiver {

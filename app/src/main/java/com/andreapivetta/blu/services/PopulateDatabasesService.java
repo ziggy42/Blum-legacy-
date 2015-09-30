@@ -80,6 +80,9 @@ public class PopulateDatabasesService extends IntentService {
 
             PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit()
                     .putBoolean(getString(R.string.pref_key_db_populated), true).apply();
+
+            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit()
+                    .putBoolean("Following", true).apply();
         } catch (Exception e) {
             e.printStackTrace();
         }

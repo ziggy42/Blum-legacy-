@@ -154,11 +154,9 @@
             android:label="@string/title_empty"
             android:theme="@style/ImageActivityTheme" >
         </activity>
-
-        <service
-            android:name=".services.StreamNotificationService"
-            android:enabled="true"
-            android:exported="false" />
+        <activity
+            android:name=".activities.EditProfileActivity"
+            android:label="@string/title_activity_edit_profile" />
 
         <receiver
             android:name=".receivers.BootReceiver"
@@ -168,15 +166,16 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name=".receivers.AlarmReceiver"
+            android:enabled="true" />
+        <receiver
+            android:name=".receivers.FollowingAlarmReceiver"
+            android:enabled="true"/>
 
         <service
             android:name=".services.BasicNotificationService"
             android:exported="false" />
-
-        <receiver
-            android:name=".receivers.AlarmReceiver"
-            android:enabled="true" />
-
         <service
             android:name=".services.CheckInteractionsService"
             android:exported="false" />
@@ -192,20 +191,13 @@
         <service
             android:name=".services.CheckMessageService"
             android:exported="false" />
-
-        <activity
-            android:name=".activities.EditProfileActivity"
-            android:label="@string/title_activity_edit_profile" >
-        </activity>
-
         <service
             android:name=".services.CheckFollowingService"
-            android:exported="false" >
-        </service>
-
-        <receiver
-            android:name=".receivers.FollowingAlarmReceiver"
-            android:enabled="true"/>
+            android:exported="false" />
+        <service
+            android:name=".services.StreamNotificationService"
+            android:enabled="true"
+            android:exported="false" />
 
     </application>
 
