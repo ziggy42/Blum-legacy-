@@ -20,7 +20,7 @@
     <string name="retweets">%1$s RETWEET</string>
     <string name="notifications">Notificaciones</string>
     <string name="nothing_to_show">Nada que ver aquí :(</string>
-    <string name="is_following_not">ahora te está siguendo</string>
+    <string name="is_following_not">%1$s ahora te está siguendo</string>
     <string name="mentioned_not">%1$s te ha citado:</string>
     <string name="action_clear_db">Borrar todas las notificaciones</string>
     <string name="clear_database">¿Borrar todas las notificaciones?</string>

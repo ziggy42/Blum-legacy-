@@ -27,7 +27,7 @@
     <string name="heads_up_notifications_pref_summary">Permetti notifiche heads-up</string>
     <string name="heads_up_notifications_pref_title">Notifiche Heads-Up</string>
     <string name="internet_connection_required">Questa operazione richiede una connessione ad Internet</string>
-    <string name="is_following_not">ti sta seguendo</string>
+    <string name="is_following_not">%1$s ti sta seguendo</string>
     <string name="login_button_text">Login</string>
     <string name="logout_done">Log Out effettuato</string>
     <string name="logout_pref_summary">Log Out ed esci</string>

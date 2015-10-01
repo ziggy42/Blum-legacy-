@@ -112,8 +112,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             SpannableStringBuilder sb = new SpannableStringBuilder(screenName);
             sb.setSpan(b, 0, screenName.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
             holder.notificationExplainedTextView.setText(sb);
-            holder.statusTextView.setText(screenName + " " +
-                    context.getString(R.string.is_following_not));
+            holder.statusTextView.setText(context.getString(R.string.is_following_not, screenName));
 
             holder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override

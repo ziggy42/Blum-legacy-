@@ -11,6 +11,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
         android:background="@null"
         android:hint="@string/hint_user"
@@ -26,13 +27,5 @@
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
         android:scrollbars="vertical" />
-
-    <!--<ProgressBar
-        android:id="@+id/loadingProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:indeterminate="true" />-->
 
 </RelativeLayout>

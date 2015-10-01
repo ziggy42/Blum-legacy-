@@ -19,8 +19,6 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-import twitter4j.User;
-
 public class UserListMessageAdapter extends RecyclerView.Adapter<UserSimpleViewHolder> {
 
     private ArrayList<UserFollowed> mDataSet;
