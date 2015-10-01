@@ -1,15 +1,14 @@
 package com.andreapivetta.blu.activities;
 
-import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -19,31 +18,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.ConversationListAdapter;
 import com.andreapivetta.blu.adapters.UserListMessageAdapter;
 import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.data.Message;
-import com.andreapivetta.blu.twitter.TwitterUtils;
+import com.andreapivetta.blu.data.UserFollowed;
 
 import java.util.ArrayList;
-
-import twitter4j.PagableResponseList;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.User;
 
 public class ConversationsListActivity extends ThemedActivity {
 
     private ArrayList<Message> mDataSet = new ArrayList<>();
-    private ArrayList<User> followers = new ArrayList<>(), subset = new ArrayList<>();
+    private ArrayList<UserFollowed> followers = new ArrayList<>(), subset = new ArrayList<>();
     private ConversationListAdapter conversationListAdapter;
     private DataUpdateReceiver dataUpdateReceiver;
     private UserListMessageAdapter mUsersSimpleAdapter;
-    private ProgressBar loadingProgressBar;
-    private Twitter t;
 
     private boolean isUp = true;
 
@@ -57,8 +48,6 @@ public class ConversationsListActivity extends ThemedActivity {
 
         if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.pref_key_db_populated), false))
             showComeHereLaterDialog();
-
-        t = TwitterUtils.getTwitter(ConversationsListActivity.this);
 
         mDataSet.addAll(databaseManager.getLastMessages());
 
@@ -96,18 +85,17 @@ public class ConversationsListActivity extends ThemedActivity {
     }
 
     void showChooseUserDialog() {
-        mUsersSimpleAdapter = new UserListMessageAdapter(subset, ConversationsListActivity.this);
-        new LoadFollowers().execute();
+        followers.addAll(databaseManager.getFollowed());
+        subset.addAll(followers);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ConversationsListActivity.this);
         View dialogView = View.inflate(ConversationsListActivity.this, R.layout.dialog_select_user, null);
-        RecyclerView mRecyclerView = (RecyclerView) dialogView.findViewById(R.id.usersRecyclerView);
 
+        RecyclerView mRecyclerView = (RecyclerView) dialogView.findViewById(R.id.usersRecyclerView);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mUsersSimpleAdapter = new UserListMessageAdapter(subset, ConversationsListActivity.this);
         mRecyclerView.setAdapter(mUsersSimpleAdapter);
-
-        loadingProgressBar = (ProgressBar) dialogView.findViewById(R.id.loadingProgressBar);
 
         EditText searchEditText = (EditText) dialogView.findViewById(R.id.findUserEditText);
         searchEditText.addTextChangedListener(new TextWatcher() {
@@ -125,8 +113,8 @@ public class ConversationsListActivity extends ThemedActivity {
             public void afterTextChanged(Editable s) {
                 String prefix = s.toString().toLowerCase();
                 subset.clear();
-                for (User u : followers)
-                    if (u.getName().toLowerCase().startsWith(prefix))
+                for (UserFollowed u : followers)
+                    if (u.userName.toLowerCase().startsWith(prefix))
                         subset.add(u);
 
                 mUsersSimpleAdapter.notifyDataSetChanged();
@@ -222,35 +210,4 @@ public class ConversationsListActivity extends ThemedActivity {
         }
     }
 
-    private class LoadFollowers extends AsyncTask<Void, Void, Boolean> {
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            try {
-                long cursor = -1;
-                PagableResponseList<User> usersResponse = t.getFollowersList(t.getScreenName(), cursor, 200);
-                followers.addAll(usersResponse);
-                subset.addAll(usersResponse);
-
-                while (usersResponse.hasNext()) {
-                    cursor = usersResponse.getNextCursor();
-                    usersResponse = t.getFollowersList(t.getScreenName(), cursor, 200);
-                    followers.addAll(usersResponse);
-                    subset.addAll(usersResponse);
-                }
-            } catch (TwitterException e) {
-                e.printStackTrace();
-                return false;
-            }
-
-            return true;
-        }
-
-        protected void onPostExecute(Boolean status) {
-            if (status) {
-                loadingProgressBar.setVisibility(View.GONE);
-                mUsersSimpleAdapter.notifyDataSetChanged();
-            }
-        }
-    }
 }

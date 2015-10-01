@@ -161,6 +161,5 @@
     <string name="prefcat_appearance_title">Aparición</string>
     <string name="previously_denied_storage_permission">Has negado previamente el acceso al almacenamiento. Hay que conceder manualmente el permiso en las ajustes.</string>
     <string name="i_need_to_download">Tengo que descargar algunas otras cosas</string>
-    <string name="video_preview_contentDescription" translatable="false"></string>
     <string name="wait_a_minute">Por favor, espere un minuto…</string>
 </resources>

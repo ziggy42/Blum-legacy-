@@ -233,7 +233,6 @@ public class SettingsActivity extends ThemedActivity {
                             new Intent(getActivity(), StreamNotificationService.class));
                 else
                     BasicNotificationService.stopService(getActivity());
-
                 CheckFollowingService.stopService(getActivity());
 
                 mSharedPreferences.edit().clear().commit();

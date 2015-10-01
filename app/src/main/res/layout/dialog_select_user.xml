@@ -27,12 +27,12 @@
         android:paddingRight="24dp"
         android:scrollbars="vertical" />
 
-    <ProgressBar
+    <!--<ProgressBar
         android:id="@+id/loadingProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:indeterminate="true" />
+        android:indeterminate="true" />-->
 
 </RelativeLayout>

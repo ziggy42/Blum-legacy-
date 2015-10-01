@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.data.DatabaseManager;
+import com.andreapivetta.blu.data.UserFollowed;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.utilities.Common;
 
@@ -70,11 +71,10 @@ public class PopulateDatabasesService extends IntentService {
             long cursor = -1;
             PagableResponseList<User> pagableFollowings;
             do {
-                pagableFollowings = twitter.getFriendsList(twitter.getId(), cursor);
-                for (User user : pagableFollowings) {
-                    databaseManager.insertFollowing(user.getId(), user.getName(), user.getScreenName(),
-                            user.getBiggerProfileImageURL());
-                }
+                pagableFollowings = twitter.getFriendsList(twitter.getId(), cursor, 200);
+                for (User user : pagableFollowings)
+                    databaseManager.insertFollowed(new UserFollowed(user.getId(), user.getName(), user.getScreenName(),
+                            user.getBiggerProfileImageURL()));
             } while ((cursor = pagableFollowings.getNextCursor()) != 0);
 
 

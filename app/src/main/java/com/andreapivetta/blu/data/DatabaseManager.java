@@ -332,33 +332,32 @@ public class DatabaseManager {
         sqLiteDatabase.execSQL(Notification.CREATE_TABLE);
     }
 
-    public void insertFollowing(long id, String userName, String screenName, String profilePicUrl) {
+    public void insertFollowed(UserFollowed user) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(Following.ID, id);
-        contentValues.put(Following.NAME, userName);
-        contentValues.put(Following.SCREEN_NAME, screenName);
-        contentValues.put(Following.PIC_URL, profilePicUrl);
-        sqLiteDatabase.insert(Following.TABLE_NAME, null, contentValues);
+        contentValues.put(Followed.ID, user.userId);
+        contentValues.put(Followed.NAME, user.userName);
+        contentValues.put(Followed.SCREEN_NAME, user.screenName);
+        contentValues.put(Followed.PIC_URL, user.profilePicUrl);
+        sqLiteDatabase.insert(Followed.TABLE_NAME, null, contentValues);
     }
 
-    public void deleteFollowing(Object[] ids) {
-        sqLiteDatabase.delete(Following.TABLE_NAME, Following.ID + " IN " +
+    public void deleteFollowed(Object[] ids) {
+        sqLiteDatabase.delete(Followed.TABLE_NAME, Followed.ID + " IN " +
                 Arrays.toString(ids).replace("[", "(").replace("]", ")"), null);
     }
 
-    public ArrayList<String[]> getFollowing(@Nullable String start) {
-        ArrayList<String[]> users = new ArrayList<>();
-        Cursor cursor = sqLiteDatabase.rawQuery(Following.GET_FOLLOWING_BY_START,
-                (start == null) ? null : new String[]{start});
+    public ArrayList<UserFollowed> getFollowed() {
+        ArrayList<UserFollowed> users = new ArrayList<>();
+        Cursor cursor = sqLiteDatabase.rawQuery(Followed.GET_FOLLOWED, null);
         while (cursor.moveToNext())
-            users.add(new String[]{cursor.getString(1), cursor.getString(2), cursor.getString(3)});
+            users.add(new UserFollowed(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3)));
         cursor.close();
         return users;
     }
 
-    private ArrayList<Long> getFollowingList() {
+    private ArrayList<Long> getFollowedIdsList() {
         ArrayList<Long> list = new ArrayList<>();
-        Cursor cursor = sqLiteDatabase.rawQuery(Following.GET_FOLLOWING, null);
+        Cursor cursor = sqLiteDatabase.rawQuery(Followed.GET_FOLLOWED_IDS, null);
         while (cursor.moveToNext())
             list.add(cursor.getLong(0));
         cursor.close();
@@ -366,16 +365,16 @@ public class DatabaseManager {
     }
 
     @SuppressWarnings("SuspiciousMethodCalls")
-    public void checkFollowing(ArrayList<Object[]> following) {
-        ArrayList<Long> existingUsersIDs = getFollowingList();
+    public void checkFollowing(ArrayList<UserFollowed> following) {
+        ArrayList<Long> existingUsersIDs = getFollowedIdsList();
         for (int i = 0; i < following.size(); i++) {
-            if (!existingUsersIDs.contains(following.get(i)[0]))
-                insertFollowing((Long) following.get(i)[0], (String) following.get(i)[1], (String) following.get(i)[3], (String) following.get(i)[4]);
+            if (!existingUsersIDs.contains(following.get(i).userId))
+                insertFollowed(following.get(i));
             else
-                existingUsersIDs.remove(following.get(i)[0]);
+                existingUsersIDs.remove(following.get(i).userId);
         }
 
-        deleteFollowing(existingUsersIDs.toArray());
+        deleteFollowed(existingUsersIDs.toArray());
     }
 
     public void clearDatabase() {
@@ -385,7 +384,7 @@ public class DatabaseManager {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Follower.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Mention.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Notification.TABLE_NAME);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Following.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + Followed.TABLE_NAME);
 
         sqLiteDatabase.execSQL(DirectMessage.CREATE_TABLE);
         sqLiteDatabase.execSQL(Favorite.CREATE_TABLE);
@@ -393,7 +392,7 @@ public class DatabaseManager {
         sqLiteDatabase.execSQL(Follower.CREATE_TABLE);
         sqLiteDatabase.execSQL(Mention.CREATE_TABLE);
         sqLiteDatabase.execSQL(Notification.CREATE_TABLE);
-        sqLiteDatabase.execSQL(Following.CREATE_TABLE);
+        sqLiteDatabase.execSQL(Followed.CREATE_TABLE);
     }
 
     private interface DirectMessage {
@@ -464,7 +463,7 @@ public class DatabaseManager {
         String GET_FOLLOWERS = "SELECT " + FOLLOWER_ID + " FROM " + TABLE_NAME;
     }
 
-    private interface Following {
+    private interface Followed {
         String TABLE_NAME = "following_table";
         String ID = "id";
         String NAME = "name";
@@ -473,8 +472,8 @@ public class DatabaseManager {
 
         String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" + ID + " INTEGER NOT NULL PRIMARY KEY, " +
                 NAME + " TEXT NOT NULL, " + SCREEN_NAME + " TEXT NOT NULL, " + PIC_URL + " TEXT NOT NULL)";
-        String GET_FOLLOWING_BY_START = "SELECT * FROM " + TABLE_NAME + " WHERE " + SCREEN_NAME + " LIKE ?";
-        String GET_FOLLOWING = "SELECT " + ID + " FROM " + TABLE_NAME;
+        String GET_FOLLOWED = "SELECT * FROM " + TABLE_NAME;
+        String GET_FOLLOWED_IDS = "SELECT " + ID + " FROM " + TABLE_NAME;
     }
 
     private interface Mention {
@@ -533,14 +532,14 @@ public class DatabaseManager {
             db.execSQL(Follower.CREATE_TABLE);
             db.execSQL(Mention.CREATE_TABLE);
             db.execSQL(Notification.CREATE_TABLE);
-            db.execSQL(Following.CREATE_TABLE);
+            db.execSQL(Followed.CREATE_TABLE);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             Log.i("DatabaseHelper", "onUpgrade called");
             if (newVersion > oldVersion && newVersion == 2) {
-                db.execSQL(Following.CREATE_TABLE);
+                db.execSQL(Followed.CREATE_TABLE);
             }
         }
     }

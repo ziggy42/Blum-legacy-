@@ -22,6 +22,7 @@ import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.data.Message;
 import com.andreapivetta.blu.data.Notification;
+import com.andreapivetta.blu.data.UserFollowed;
 import com.andreapivetta.blu.services.BasicNotificationService;
 import com.andreapivetta.blu.services.CheckFollowingService;
 import com.andreapivetta.blu.services.PopulateDatabasesService;
@@ -307,8 +308,8 @@ public class HomeActivity extends TimeLineActivity {
                     do {
                         followingList = twitter.getFriendsList(twitter.getId(), cursor, 200);
                         for (User user : followingList)
-                            databaseManager.insertFollowing(user.getId(), user.getName(), user.getScreenName(),
-                                    user.getBiggerProfileImageURL());
+                            databaseManager.insertFollowed(new UserFollowed(user.getId(), user.getName(), user.getScreenName(),
+                                    user.getBiggerProfileImageURL()));
                     } while ((cursor = followingList.getNextCursor()) != 0);
                 } catch (TwitterException e) {
                     e.printStackTrace();

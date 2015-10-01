@@ -7,8 +7,6 @@ import android.content.Intent;
 import com.andreapivetta.blu.services.CheckFollowingService;
 
 public class FollowingAlarmReceiver extends BroadcastReceiver {
-    public FollowingAlarmReceiver() {
-    }
 
     @Override
     public void onReceive(Context context, Intent intent) {

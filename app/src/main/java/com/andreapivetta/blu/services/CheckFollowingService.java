@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.andreapivetta.blu.data.DatabaseManager;
+import com.andreapivetta.blu.data.UserFollowed;
 import com.andreapivetta.blu.receivers.FollowingAlarmReceiver;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 
@@ -52,16 +53,15 @@ public class CheckFollowingService extends IntentService {
         DatabaseManager databaseManager = DatabaseManager.getInstance(getApplicationContext());
 
         try {
-            ArrayList<Object[]> following = new ArrayList<>();
+            ArrayList<UserFollowed> following = new ArrayList<>();
 
             long cursor = -1;
             PagableResponseList<User> pagableFollowings;
             do {
                 pagableFollowings = twitter.getFriendsList(twitter.getId(), cursor);
-                for (User user : pagableFollowings) {
-                    following.add(new Object[]{user.getId(), user.getName(), user.getScreenName(),
-                            user.getBiggerProfileImageURL()});
-                }
+                for (User user : pagableFollowings)
+                    following.add(new UserFollowed(user.getId(), user.getName(), user.getScreenName(),
+                            user.getBiggerProfileImageURL()));
             } while ((cursor = pagableFollowings.getNextCursor()) != 0);
 
             databaseManager.checkFollowing(following);

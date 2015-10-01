@@ -13,6 +13,7 @@ import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.ConversationActivity;
 import com.andreapivetta.blu.activities.UserActivity;
 import com.andreapivetta.blu.adapters.holders.UserSimpleViewHolder;
+import com.andreapivetta.blu.data.UserFollowed;
 import com.andreapivetta.blu.utilities.CircleTransform;
 import com.bumptech.glide.Glide;
 
@@ -22,10 +23,10 @@ import twitter4j.User;
 
 public class UserListMessageAdapter extends RecyclerView.Adapter<UserSimpleViewHolder> {
 
-    private ArrayList<User> mDataSet;
+    private ArrayList<UserFollowed> mDataSet;
     private Context context;
 
-    public UserListMessageAdapter(ArrayList<User> mDataSet, Context context) {
+    public UserListMessageAdapter(ArrayList<UserFollowed> mDataSet, Context context) {
         this.mDataSet = mDataSet;
         this.context = context;
     }
@@ -40,10 +41,10 @@ public class UserListMessageAdapter extends RecyclerView.Adapter<UserSimpleViewH
 
     @Override
     public void onBindViewHolder(UserSimpleViewHolder holder, int position) {
-        final User user = mDataSet.get(position);
+        final UserFollowed user = mDataSet.get(position);
 
         Glide.with(context)
-                .load(user.getBiggerProfileImageURL())
+                .load(user.profilePicUrl)
                 .placeholder(R.drawable.placeholder_circular)
                 .transform(new CircleTransform(context))
                 .into(holder.userProfilePicImageView);
@@ -53,20 +54,20 @@ public class UserListMessageAdapter extends RecyclerView.Adapter<UserSimpleViewH
             public void onClick(View v) {
                 Intent i = new Intent(context, UserActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(UserActivity.TAG_USER, user);
+                bundle.putSerializable(UserActivity.TAG_ID, user.userId);
                 i.putExtras(bundle);
                 context.startActivity(i);
             }
         });
 
-        holder.userNameTextView.setText(user.getName());
-        holder.screenNameTextView.setText("@" + user.getScreenName());
+        holder.userNameTextView.setText(user.userName);
+        holder.screenNameTextView.setText("@" + user.screenName);
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, ConversationActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(ConversationActivity.TAG_ID, user.getId());
+                bundle.putSerializable(ConversationActivity.TAG_ID, user.userId);
                 i.putExtras(bundle);
                 context.startActivity(i);
             }
