@@ -6,11 +6,14 @@ import android.os.AsyncTask;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.SnackbarContainer;
+import com.andreapivetta.blu.data.DatabaseManager;
+import com.andreapivetta.blu.data.UserFollowed;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.User;
 
-public class FollowTwitterUser extends AsyncTask<Long, Void, Boolean> {
+public class FollowTwitterUser extends AsyncTask<User, Void, Boolean> {
 
     private Context context;
     private Twitter twitter;
@@ -22,12 +25,16 @@ public class FollowTwitterUser extends AsyncTask<Long, Void, Boolean> {
         this.follow = follow;
     }
 
-    protected Boolean doInBackground(Long... args) {
+    protected Boolean doInBackground(User... args) {
         try {
-            if (follow)
-                twitter.createFriendship(args[0]);
-            else
-                twitter.destroyFriendship(args[0]);
+            if (follow) {
+                twitter.createFriendship(args[0].getId());
+                DatabaseManager.getInstance(context).insertFollowed(new UserFollowed(args[0].getId(), args[0].getName(),
+                        args[0].getScreenName(), args[0].getBiggerProfileImageURL()));
+            } else {
+                twitter.destroyFriendship(args[0].getId());
+                DatabaseManager.getInstance(context).deleteFollowed(new Object[]{args[0].getId()});
+            }
         } catch (TwitterException e) {
             e.printStackTrace();
             return false;

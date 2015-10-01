@@ -171,7 +171,7 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     new FollowTwitterUser(context, twitter, false)
-                                            .execute(user.getId());
+                                            .execute(user);
                                     type = NOT_FOLLOW;
                                     followUserButton.setText(context.getString(R.string.follow_simple));
                                 }
@@ -183,7 +183,7 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     new FollowTwitterUser(context, twitter, true)
-                                            .execute(user.getId());
+                                            .execute(user);
                                     type = FOLLOW;
                                     followUserButton.setText(context.getString(R.string.unfollow));
                                 }

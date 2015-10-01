@@ -52,20 +52,20 @@ public class UserListMessageAdapter extends RecyclerView.Adapter<UserSimpleViewH
             public void onClick(View v) {
                 Intent i = new Intent(context, UserActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(UserActivity.TAG_ID, user.userId);
+                bundle.putSerializable(UserActivity.TAG_ID, user.id);
                 i.putExtras(bundle);
                 context.startActivity(i);
             }
         });
 
-        holder.userNameTextView.setText(user.userName);
+        holder.userNameTextView.setText(user.name);
         holder.screenNameTextView.setText("@" + user.screenName);
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, ConversationActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(ConversationActivity.TAG_ID, user.userId);
+                bundle.putSerializable(ConversationActivity.TAG_ID, user.id);
                 i.putExtras(bundle);
                 context.startActivity(i);
             }

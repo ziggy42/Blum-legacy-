@@ -333,8 +333,8 @@ public class DatabaseManager {
 
     public void insertFollowed(UserFollowed user) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(Followed.ID, user.userId);
-        contentValues.put(Followed.NAME, user.userName);
+        contentValues.put(Followed.ID, user.id);
+        contentValues.put(Followed.NAME, user.name);
         contentValues.put(Followed.SCREEN_NAME, user.screenName);
         contentValues.put(Followed.PIC_URL, user.profilePicUrl);
         sqLiteDatabase.insert(Followed.TABLE_NAME, null, contentValues);
@@ -367,10 +367,10 @@ public class DatabaseManager {
     public void checkFollowing(ArrayList<UserFollowed> following) {
         ArrayList<Long> existingUsersIDs = getFollowedIdsList();
         for (int i = 0; i < following.size(); i++) {
-            if (!existingUsersIDs.contains(following.get(i).userId))
+            if (!existingUsersIDs.contains(following.get(i).id))
                 insertFollowed(following.get(i));
             else
-                existingUsersIDs.remove(following.get(i).userId);
+                existingUsersIDs.remove(following.get(i).id);
         }
 
         deleteFollowed(existingUsersIDs.toArray());

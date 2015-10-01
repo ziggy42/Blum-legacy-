@@ -114,7 +114,7 @@ public class ConversationsListActivity extends ThemedActivity {
                 String prefix = s.toString().toLowerCase();
                 subset.clear();
                 for (UserFollowed u : followers)
-                    if (u.userName.toLowerCase().startsWith(prefix))
+                    if (u.name.toLowerCase().startsWith(prefix))
                         subset.add(u);
 
                 mUsersSimpleAdapter.notifyDataSetChanged();

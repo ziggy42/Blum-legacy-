@@ -56,13 +56,13 @@ public class CheckFollowingService extends IntentService {
             ArrayList<UserFollowed> following = new ArrayList<>();
 
             long cursor = -1;
-            PagableResponseList<User> pagableFollowings;
+            PagableResponseList<User> followingList;
             do {
-                pagableFollowings = twitter.getFriendsList(twitter.getId(), cursor);
-                for (User user : pagableFollowings)
+                followingList = twitter.getFriendsList(twitter.getId(), cursor);
+                for (User user : followingList)
                     following.add(new UserFollowed(user.getId(), user.getName(), user.getScreenName(),
                             user.getBiggerProfileImageURL()));
-            } while ((cursor = pagableFollowings.getNextCursor()) != 0);
+            } while ((cursor = followingList.getNextCursor()) != 0);
 
             databaseManager.checkFollowing(following);
         } catch (TwitterException e) {
