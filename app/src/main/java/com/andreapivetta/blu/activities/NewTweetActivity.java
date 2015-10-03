@@ -2,6 +2,7 @@ package com.andreapivetta.blu.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -68,8 +69,8 @@ public class NewTweetActivity extends ThemedActivity {
     private static final String FILES = "file";
 
     private ArrayList<File> imageFiles = new ArrayList<>();
-    private RecyclerView mRecyclerView;
-    private DeletableImageAdapter mAdapter;
+    private RecyclerView photosRecyclerView;
+    private DeletableImageAdapter photosAdapter;
     private Twitter twitter;
     private Intent intent;
 
@@ -84,7 +85,7 @@ public class NewTweetActivity extends ThemedActivity {
     private int charsLeft;
     private File imageFile;
 
-    boolean suggestionsOn = false;
+    private boolean suggestionsOn = false;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -111,10 +112,10 @@ public class NewTweetActivity extends ThemedActivity {
         newTweetEditText = (EditTextCursorWatcher) findViewById(R.id.newTweetEditText);
         ImageButton takePhotoImageButton = (ImageButton) findViewById(R.id.takePhotoImageButton);
         ImageButton grabImageImageButton = (ImageButton) findViewById(R.id.grabImageImageButton);
-        mRecyclerView = (RecyclerView) findViewById(R.id.photosRecyclerView);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(NewTweetActivity.this, 2));
-        mAdapter = new DeletableImageAdapter();
-        mRecyclerView.setAdapter(mAdapter);
+        photosRecyclerView = (RecyclerView) findViewById(R.id.photosRecyclerView);
+        photosRecyclerView.setLayoutManager(new GridLayoutManager(NewTweetActivity.this, 2));
+        photosAdapter = new DeletableImageAdapter();
+        photosRecyclerView.setAdapter(photosAdapter);
 
         followedRecyclerView = (RecyclerView) findViewById(R.id.followedRecyclerView);
         followedRecyclerView.setLayoutManager(new LinearLayoutManager(NewTweetActivity.this, LinearLayoutManager.HORIZONTAL, false));
@@ -132,77 +133,23 @@ public class NewTweetActivity extends ThemedActivity {
             } else if (type.startsWith("image/")) {
                 Uri selectedImageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
                 imageFiles.add(new File(FileUtils.getPath(NewTweetActivity.this, selectedImageUri)));
-                mRecyclerView.setVisibility(View.VISIBLE);
-                mAdapter.notifyDataSetChanged();
+                photosRecyclerView.setVisibility(View.VISIBLE);
+                photosAdapter.notifyDataSetChanged();
             }
         } else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
             if (type.startsWith("image/")) {
                 ArrayList<Uri> imageUris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
                 if (imageUris != null) {
-                    mRecyclerView.setVisibility(View.VISIBLE);
+                    photosRecyclerView.setVisibility(View.VISIBLE);
                     for (int i = 0; i < imageUris.size() && i < 4; i++)
                         imageFiles.add(new File(FileUtils.getPath(NewTweetActivity.this, imageUris.get(i))));
-                    mAdapter.notifyDataSetChanged();
+                    photosAdapter.notifyDataSetChanged();
                 }
             }
         }
 
-        if (intent.getStringExtra(TAG_USER_PREFIX) != null &&
-                intent.getStringExtra(TAG_USER_PREFIX).length() > 0)
-            newTweetEditText.setText(intent.getStringExtra(TAG_USER_PREFIX) + " ");
-
-        newTweetEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String text = s.toString();
-                if (text.length() > 0) {
-                    if (text.charAt(start - 1 + count) == '@') {
-                        charsAfterAt = 0;
-                        lastAtIndex = start - 1 + count;
-                        suggestionsOn = true;
-
-                        followedRecyclerView.setVisibility(View.VISIBLE);
-                        if (followers.size() == 0)
-                            followers.addAll(DatabaseManager.getInstance(NewTweetActivity.this).getFollowed());
-                        subset.clear();
-                        subset.addAll(followers);
-                        followedAdapter.notifyDataSetChanged();
-                    } else if (Character.isSpaceChar(text.charAt(start - 1 + count))) {
-                        hideSuggestions();
-                    } else if (suggestionsOn) {
-                        charsAfterAt += (count == 0) ? -1 : 1;
-                        String prefix = text.subSequence(lastAtIndex + 1, lastAtIndex + charsAfterAt + 1).toString().toLowerCase();
-                        subset.clear();
-                        for (int i = 0; i < followers.size(); i++)
-                            if (followers.get(i).screenName.toLowerCase().startsWith(prefix))
-                                subset.add(followers.get(i));
-                        followedAdapter.notifyDataSetChanged();
-                    }
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                checkLength(s.toString());
-            }
-        });
-
-        newTweetEditText.addCursorWatcher(new EditTextCursorWatcher.CursorWatcher() {
-            @Override
-            public void onCursorPositionChanged(int currentStartPosition, int currentEndPosition) {
-                hideSuggestions();
-            }
-        });
-
-        newTweetEditText.setSelection(newTweetEditText.getText().length());
-        checkLength(newTweetEditText.getText().toString());
-
         takePhotoImageButton.setOnClickListener(new View.OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
                 if (imageFiles.size() < 4) {
@@ -228,6 +175,7 @@ public class NewTweetActivity extends ThemedActivity {
         });
 
         grabImageImageButton.setOnClickListener(new View.OnClickListener() {
+            @TargetApi(Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
                 if (ContextCompat.checkSelfPermission(NewTweetActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -247,11 +195,71 @@ public class NewTweetActivity extends ThemedActivity {
                 }
             }
         });
+
+        if (intent.getStringExtra(TAG_USER_PREFIX) != null &&
+                intent.getStringExtra(TAG_USER_PREFIX).length() > 0)
+            newTweetEditText.setText(intent.getStringExtra(TAG_USER_PREFIX) + " ");
+
+        newTweetEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String text = s.toString();
+                if (text.length() > 0) {
+                    if (text.charAt(start - 1 + count) == '@') {
+                        charsAfterAt = 0;
+                        lastAtIndex = start - 1 + count;
+                        showSuggestions();
+                    } else if (Character.isSpaceChar(text.charAt(start - 1 + count))) {
+                        lastAtIndex = -1;
+                        charsAfterAt = 0;
+                        hideSuggestions();
+                    } else if (suggestionsOn) {
+                        charsAfterAt += (count == 0) ? -1 : 1;
+                        String prefix = text.subSequence(lastAtIndex + 1, lastAtIndex + charsAfterAt + 1).toString().toLowerCase();
+                        subset.clear();
+                        for (int i = 0; i < followers.size(); i++)
+                            if (followers.get(i).screenName.toLowerCase().startsWith(prefix))
+                                subset.add(followers.get(i));
+                        followedAdapter.notifyDataSetChanged();
+                    }
+                } else if (suggestionsOn) {
+                    hideSuggestions();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                checkLength(s.toString());
+            }
+        });
+
+        newTweetEditText.addCursorWatcher(new EditTextCursorWatcher.CursorWatcher() {
+            @Override
+            public void onCursorPositionChanged(int currentStartPosition, int currentEndPosition) {
+                hideSuggestions();
+            }
+        });
+
+        newTweetEditText.setSelection(newTweetEditText.getText().length());
+        checkLength(newTweetEditText.getText().toString());
+    }
+
+    void showSuggestions() {
+        suggestionsOn = true;
+        followedRecyclerView.setVisibility(View.VISIBLE);
+        if (followers.size() == 0)
+            followers.addAll(DatabaseManager.getInstance(NewTweetActivity.this).getFollowed());
+        subset.clear();
+        subset.addAll(followers);
+        followedAdapter.notifyDataSetChanged();
     }
 
     void hideSuggestions() {
-        lastAtIndex = -1;
-        charsAfterAt = 0;
         suggestionsOn = false;
         subset.clear();
         followedAdapter.notifyDataSetChanged();
@@ -323,16 +331,16 @@ public class NewTweetActivity extends ThemedActivity {
         switch (requestCode) {
             case REQUEST_GRAB_IMAGE:
                 if (resultCode == RESULT_OK) {
-                    mRecyclerView.setVisibility(View.VISIBLE);
+                    photosRecyclerView.setVisibility(View.VISIBLE);
                     if (imageReturnedIntent.getData() != null) {
                         imageFiles.add(new File(FileUtils.getPath(NewTweetActivity.this, imageReturnedIntent.getData())));
-                        mAdapter.notifyItemInserted(imageFiles.size() - 1);
+                        photosAdapter.notifyItemInserted(imageFiles.size() - 1);
                     } else if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2
                             && imageReturnedIntent.getClipData() != null) {
                         ClipData mClipData = imageReturnedIntent.getClipData();
                         for (int i = 0; i < mClipData.getItemCount() && i < 4; i++)
                             imageFiles.add(new File(FileUtils.getPath(NewTweetActivity.this, mClipData.getItemAt(i).getUri())));
-                        mAdapter.notifyDataSetChanged();
+                        photosAdapter.notifyDataSetChanged();
                     } else {
                         Toast.makeText(NewTweetActivity.this, getString(R.string.operation_not_supported), Toast.LENGTH_SHORT).show();
                     }
@@ -340,9 +348,9 @@ public class NewTweetActivity extends ThemedActivity {
                 break;
             case REQUEST_TAKE_PHOTO:
                 if (resultCode == RESULT_OK) {
-                    mRecyclerView.setVisibility(View.VISIBLE);
+                    photosRecyclerView.setVisibility(View.VISIBLE);
                     imageFiles.add(imageFile);
-                    mAdapter.notifyItemInserted(imageFiles.size() - 1);
+                    photosAdapter.notifyItemInserted(imageFiles.size() - 1);
                 }
                 break;
         }
