@@ -38,28 +38,31 @@ public class VHItemQuote extends VHItem {
         super.setup(status, context, favorites, retweets, twitter);
 
         final Status quotedStatus = status.getQuotedStatus();
+        if (quotedStatus != null) {
+            quotedUserNameTextView.setText(quotedStatus.getUser().getName());
+            quotedStatusTextView.setText(quotedStatus.getText());
 
-        quotedUserNameTextView.setText(quotedStatus.getUser().getName());
-        quotedStatusTextView.setText(quotedStatus.getText());
+            if (quotedStatus.getMediaEntities().length > 0) {
+                photoImageView.setVisibility(View.VISIBLE);
+                Glide.with(context)
+                        .load(quotedStatus.getMediaEntities()[0].getMediaURL())
+                        .placeholder(R.drawable.placeholder)
+                        .into(photoImageView);
+            } else
+                photoImageView.setVisibility(View.GONE);
 
-        if (quotedStatus.getMediaEntities().length > 0) {
-            photoImageView.setVisibility(View.VISIBLE);
-            Glide.with(context)
-                    .load(quotedStatus.getMediaEntities()[0].getMediaURL())
-                    .placeholder(R.drawable.placeholder)
-                    .into(photoImageView);
-        } else
-            photoImageView.setVisibility(View.GONE);
-
-        quotedStatusLinearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(context, TweetActivity.class);
-                Bundle b = new Bundle();
-                b.putSerializable(TweetActivity.TAG_TWEET, quotedStatus);
-                i.putExtra(TweetActivity.TAG_STATUS_BUNDLE, b);
-                context.startActivity(i);
-            }
-        });
+            quotedStatusLinearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(context, TweetActivity.class);
+                    Bundle b = new Bundle();
+                    b.putSerializable(TweetActivity.TAG_TWEET, quotedStatus);
+                    i.putExtra(TweetActivity.TAG_STATUS_BUNDLE, b);
+                    context.startActivity(i);
+                }
+            });
+        } else {
+            quotedStatusLinearLayout.setVisibility(View.GONE);
+        }
     }
 }
