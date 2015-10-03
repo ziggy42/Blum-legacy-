@@ -20,6 +20,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -30,17 +31,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.adapters.holders.UserSimpleViewHolder;
+import com.andreapivetta.blu.data.DatabaseManager;
+import com.andreapivetta.blu.data.UserFollowed;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.twitter.UpdateTwitterStatus;
+import com.andreapivetta.blu.utilities.CircleTransform;
 import com.andreapivetta.blu.utilities.Common;
 import com.andreapivetta.blu.utilities.FileUtils;
+import com.andreapivetta.blu.views.EditTextCursorWatcher;
+import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,10 +73,18 @@ public class NewTweetActivity extends ThemedActivity {
     private Twitter twitter;
     private Intent intent;
 
-    private EditText newTweetEditText;
+    private EditTextCursorWatcher newTweetEditText;
 
+    private RecyclerView followedRecyclerView;
+    private UserFollowedAdapter followedAdapter;
+    private ArrayList<UserFollowed> followers = new ArrayList<>(), subset = new ArrayList<>();
+
+    private int lastAtIndex = -1;
+    private int charsAfterAt = 0;
     private int charsLeft;
     private File imageFile;
+
+    boolean suggestionsOn = false;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -94,13 +108,19 @@ public class NewTweetActivity extends ThemedActivity {
             imageFiles = (ArrayList<File>) savedInstanceState.getSerializable(FILES);
 
         twitter = TwitterUtils.getTwitter(NewTweetActivity.this);
-        newTweetEditText = (EditText) findViewById(R.id.newTweetEditText);
+        newTweetEditText = (EditTextCursorWatcher) findViewById(R.id.newTweetEditText);
         ImageButton takePhotoImageButton = (ImageButton) findViewById(R.id.takePhotoImageButton);
         ImageButton grabImageImageButton = (ImageButton) findViewById(R.id.grabImageImageButton);
         mRecyclerView = (RecyclerView) findViewById(R.id.photosRecyclerView);
         mRecyclerView.setLayoutManager(new GridLayoutManager(NewTweetActivity.this, 2));
         mAdapter = new DeletableImageAdapter();
         mRecyclerView.setAdapter(mAdapter);
+
+        followedRecyclerView = (RecyclerView) findViewById(R.id.followedRecyclerView);
+        followedRecyclerView.setLayoutManager(new LinearLayoutManager(NewTweetActivity.this, LinearLayoutManager.HORIZONTAL, false));
+        followedRecyclerView.setHasFixedSize(true);
+        followedAdapter = new UserFollowedAdapter();
+        followedRecyclerView.setAdapter(followedAdapter);
 
         intent = getIntent();
         final String action = intent.getAction();
@@ -139,12 +159,43 @@ public class NewTweetActivity extends ThemedActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String text = s.toString();
+                if (text.length() > 0) {
+                    if (text.charAt(start - 1 + count) == '@') {
+                        charsAfterAt = 0;
+                        lastAtIndex = start - 1 + count;
+                        suggestionsOn = true;
 
+                        followedRecyclerView.setVisibility(View.VISIBLE);
+                        if (followers.size() == 0)
+                            followers.addAll(DatabaseManager.getInstance(NewTweetActivity.this).getFollowed());
+                        subset.clear();
+                        subset.addAll(followers);
+                        followedAdapter.notifyDataSetChanged();
+                    } else if (Character.isSpaceChar(text.charAt(start - 1 + count))) {
+                        hideSuggestions();
+                    } else if (suggestionsOn) {
+                        charsAfterAt += (count == 0) ? -1 : 1;
+                        String prefix = text.subSequence(lastAtIndex + 1, lastAtIndex + charsAfterAt + 1).toString().toLowerCase();
+                        subset.clear();
+                        for (int i = 0; i < followers.size(); i++)
+                            if (followers.get(i).screenName.toLowerCase().startsWith(prefix))
+                                subset.add(followers.get(i));
+                        followedAdapter.notifyDataSetChanged();
+                    }
+                }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
                 checkLength(s.toString());
+            }
+        });
+
+        newTweetEditText.addCursorWatcher(new EditTextCursorWatcher.CursorWatcher() {
+            @Override
+            public void onCursorPositionChanged(int currentStartPosition, int currentEndPosition) {
+                hideSuggestions();
             }
         });
 
@@ -196,6 +247,15 @@ public class NewTweetActivity extends ThemedActivity {
                 }
             }
         });
+    }
+
+    void hideSuggestions() {
+        lastAtIndex = -1;
+        charsAfterAt = 0;
+        suggestionsOn = false;
+        subset.clear();
+        followedAdapter.notifyDataSetChanged();
+        followedRecyclerView.setVisibility(View.GONE);
     }
 
     void takePicture() {
@@ -389,7 +449,7 @@ public class NewTweetActivity extends ThemedActivity {
             return imageFiles.size();
         }
 
-        public class VHItem extends RecyclerView.ViewHolder {
+        class VHItem extends RecyclerView.ViewHolder {
             public ImageView photoImageView;
             public ImageButton deleteButton;
 
@@ -407,6 +467,61 @@ public class NewTweetActivity extends ThemedActivity {
                     }
                 });
             }
+        }
+    }
+
+    private class UserFollowedAdapter extends RecyclerView.Adapter<UserSimpleViewHolder> {
+
+        @Override
+        public UserSimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.user_simple_card, parent, false);
+
+            return new UserSimpleViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(UserSimpleViewHolder holder, int position) {
+            final UserFollowed user = subset.get(position);
+
+            Glide.with(NewTweetActivity.this)
+                    .load(user.profilePicUrl)
+                    .placeholder(R.drawable.placeholder_circular)
+                    .transform(new CircleTransform(NewTweetActivity.this))
+                    .into(holder.userProfilePicImageView);
+
+            holder.userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(NewTweetActivity.this, UserActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(UserActivity.TAG_ID, user.id);
+                    i.putExtras(bundle);
+                    NewTweetActivity.this.startActivity(i);
+                }
+            });
+
+            holder.userNameTextView.setText(user.name);
+            holder.screenNameTextView.setText("@" + user.screenName);
+            holder.container.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onClick(View v) {
+                    String text = newTweetEditText.getText().toString();
+                    int selectionIndex = lastAtIndex + user.screenName.length() + 1;
+
+                    newTweetEditText.setText(text.substring(0, lastAtIndex + 1) + user.screenName +
+                            text.substring(lastAtIndex + charsAfterAt + 1, text.length()));
+                    newTweetEditText.setSelection(selectionIndex);
+                    followedRecyclerView.setVisibility(View.GONE);
+                    subset.clear();
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return subset.size();
         }
     }
 }
