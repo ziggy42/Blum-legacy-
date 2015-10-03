@@ -80,12 +80,11 @@ public class NewTweetActivity extends ThemedActivity {
     private UserFollowedAdapter followedAdapter;
     private ArrayList<UserFollowed> followers = new ArrayList<>(), subset = new ArrayList<>();
 
+    private boolean suggestionsOn = false;
     private int lastAtIndex = -1;
     private int charsAfterAt = 0;
     private int charsLeft;
     private File imageFile;
-
-    private boolean suggestionsOn = false;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -118,7 +117,8 @@ public class NewTweetActivity extends ThemedActivity {
         photosRecyclerView.setAdapter(photosAdapter);
 
         followedRecyclerView = (RecyclerView) findViewById(R.id.followedRecyclerView);
-        followedRecyclerView.setLayoutManager(new LinearLayoutManager(NewTweetActivity.this, LinearLayoutManager.HORIZONTAL, false));
+        followedRecyclerView.setLayoutManager(new LinearLayoutManager(NewTweetActivity.this,
+                LinearLayoutManager.HORIZONTAL, false));
         followedRecyclerView.setHasFixedSize(true);
         followedAdapter = new UserFollowedAdapter();
         followedRecyclerView.setAdapter(followedAdapter);

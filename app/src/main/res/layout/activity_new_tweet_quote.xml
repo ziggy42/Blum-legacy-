@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <EditText
+            <com.andreapivetta.blu.views.EditTextCursorWatcher
                 android:id="@+id/newTweetEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -26,6 +26,15 @@
                 android:inputType="textMultiLine|textCapSentences"
                 android:textColor="@color/grey"
                 android:textColorHint="@color/lightGrey" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/followedRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:scrollbars="none"
+                android:visibility="gone" />
 
             <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/containerCardView"
