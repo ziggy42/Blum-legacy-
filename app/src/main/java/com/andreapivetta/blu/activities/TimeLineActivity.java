@@ -230,6 +230,10 @@ public abstract class TimeLineActivity extends ThemedActivity implements Snackba
     protected class RefreshTimeLine extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Void... uris) {
+
+            if (tweetList.size() <= 0)
+                return false;
+
             try {
                 Paging currentPaging = new Paging(1, 200);
                 currentPaging.setSinceId(tweetList.get(0).getId());
