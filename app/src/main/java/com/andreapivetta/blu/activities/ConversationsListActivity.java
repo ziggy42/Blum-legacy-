@@ -53,9 +53,8 @@ public class ConversationsListActivity extends ThemedActivity {
 
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.conversationRecyclerView);
         conversationListAdapter = new ConversationListAdapter(ConversationsListActivity.this, mDataSet);
-        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(conversationListAdapter);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -113,9 +112,9 @@ public class ConversationsListActivity extends ThemedActivity {
             public void afterTextChanged(Editable s) {
                 String prefix = s.toString().toLowerCase();
                 subset.clear();
-                for (UserFollowed u : followers)
-                    if (u.name.toLowerCase().startsWith(prefix))
-                        subset.add(u);
+                for (int i = 0; i< followers.size(); i++)
+                    if (followers.get(i).name.toLowerCase().startsWith(prefix))
+                        subset.add(followers.get(i));
 
                 mUsersSimpleAdapter.notifyDataSetChanged();
             }

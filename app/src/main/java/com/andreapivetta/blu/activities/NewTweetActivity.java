@@ -38,6 +38,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.adapters.decorators.SpaceLeftMarginItemDecoration;
 import com.andreapivetta.blu.adapters.holders.UserSimpleViewHolder;
 import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.data.UserFollowed;
@@ -117,9 +118,10 @@ public class NewTweetActivity extends ThemedActivity {
         photosRecyclerView.setAdapter(photosAdapter);
 
         followedRecyclerView = (RecyclerView) findViewById(R.id.followedRecyclerView);
-        followedRecyclerView.setLayoutManager(new LinearLayoutManager(NewTweetActivity.this,
-                LinearLayoutManager.HORIZONTAL, false));
+        followedRecyclerView.setLayoutManager(new org.solovyev.android.views.llm.LinearLayoutManager(
+                NewTweetActivity.this, LinearLayoutManager.HORIZONTAL, false));
         followedRecyclerView.setHasFixedSize(true);
+        followedRecyclerView.addItemDecoration(new SpaceLeftMarginItemDecoration(Common.dpToPx(this, 6)));
         followedAdapter = new UserFollowedAdapter();
         followedRecyclerView.setAdapter(followedAdapter);
 
@@ -220,7 +222,8 @@ public class NewTweetActivity extends ThemedActivity {
                         hideSuggestions();
                     } else if (suggestionsOn) {
                         charsAfterAt += (count == 0) ? -1 : 1;
-                        String prefix = text.subSequence(lastAtIndex + 1, lastAtIndex + charsAfterAt + 1).toString().toLowerCase();
+                        String prefix = text.subSequence(lastAtIndex + 1, lastAtIndex + charsAfterAt + 1)
+                                .toString().toLowerCase();
                         subset.clear();
                         for (int i = 0; i < followers.size(); i++)
                             if (followers.get(i).screenName.toLowerCase().startsWith(prefix))

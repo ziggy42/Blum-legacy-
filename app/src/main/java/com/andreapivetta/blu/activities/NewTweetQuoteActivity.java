@@ -23,12 +23,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.adapters.decorators.SpaceLeftMarginItemDecoration;
 import com.andreapivetta.blu.adapters.holders.UserSimpleViewHolder;
 import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.data.UserFollowed;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.twitter.UpdateTwitterStatus;
 import com.andreapivetta.blu.utilities.CircleTransform;
+import com.andreapivetta.blu.utilities.Common;
 import com.andreapivetta.blu.views.EditTextCursorWatcher;
 import com.bumptech.glide.Glide;
 
@@ -94,9 +96,10 @@ public class NewTweetQuoteActivity extends ThemedActivity {
         });
 
         followedRecyclerView = (RecyclerView) findViewById(R.id.followedRecyclerView);
-        followedRecyclerView.setLayoutManager(new LinearLayoutManager(NewTweetQuoteActivity.this,
-                LinearLayoutManager.HORIZONTAL, false));
+        followedRecyclerView.setLayoutManager(new org.solovyev.android.views.llm.LinearLayoutManager(
+                NewTweetQuoteActivity.this, LinearLayoutManager.HORIZONTAL, false));
         followedRecyclerView.setHasFixedSize(true);
+        followedRecyclerView.addItemDecoration(new SpaceLeftMarginItemDecoration(Common.dpToPx(this, 6)));
         followedAdapter = new UserFollowedAdapter();
         followedRecyclerView.setAdapter(followedAdapter);
 

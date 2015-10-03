@@ -3,7 +3,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/containerRelativeLayout"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="54dp"
     android:layout_margin="4dp"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
@@ -13,15 +13,16 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="4dp">
+        android:padding="3dp">
 
         <ImageView
             android:id="@+id/userProfilePicImageView"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:adjustViewBounds="true"
             android:contentDescription="@string/profile_pic_contentDescriptor"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:src="@drawable/placeholder" />
 
         <LinearLayout
@@ -38,16 +39,16 @@
                 android:id="@+id/userNameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
                 android:fontFamily="sans-serif-bold"
+                android:includeFontPadding="false"
                 android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/screenNameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
                 android:fontFamily="sans-serif-thin"
+                android:includeFontPadding="false"
                 android:textSize="14sp" />
 
         </LinearLayout>
