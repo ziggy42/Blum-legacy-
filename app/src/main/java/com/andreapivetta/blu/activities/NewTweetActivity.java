@@ -105,9 +105,6 @@ public class NewTweetActivity extends ThemedActivity {
             });
         }
 
-        if (savedInstanceState != null)
-            imageFiles = (ArrayList<File>) savedInstanceState.getSerializable(FILES);
-
         twitter = TwitterUtils.getTwitter(NewTweetActivity.this);
         newTweetEditText = (EditTextCursorWatcher) findViewById(R.id.newTweetEditText);
         ImageButton takePhotoImageButton = (ImageButton) findViewById(R.id.takePhotoImageButton);
@@ -124,6 +121,12 @@ public class NewTweetActivity extends ThemedActivity {
         followedRecyclerView.addItemDecoration(new SpaceLeftMarginItemDecoration(Common.dpToPx(this, 6)));
         followedAdapter = new UserFollowedAdapter();
         followedRecyclerView.setAdapter(followedAdapter);
+
+        if (savedInstanceState != null) {
+            imageFiles = (ArrayList<File>) savedInstanceState.getSerializable(FILES);
+            if (imageFiles != null && imageFiles.size() > 0)
+                photosRecyclerView.setVisibility(View.VISIBLE);
+        }
 
         intent = getIntent();
         final String action = intent.getAction();
