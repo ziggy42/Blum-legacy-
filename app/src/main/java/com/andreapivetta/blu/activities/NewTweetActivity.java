@@ -214,27 +214,49 @@ public class NewTweetActivity extends ThemedActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String text = s.toString();
-                if (text.length() > 0) {
-                    if (text.charAt(start - 1 + count) == '@') {
-                        charsAfterAt = 0;
-                        lastAtIndex = start - 1 + count;
-                        showSuggestions();
-                    } else if (Character.isSpaceChar(text.charAt(start - 1 + count))) {
-                        lastAtIndex = -1;
-                        charsAfterAt = 0;
-                        hideSuggestions();
-                    } else if (suggestionsOn) {
-                        charsAfterAt += (count == 0) ? -1 : 1;
-                        String prefix = text.subSequence(lastAtIndex + 1, lastAtIndex + charsAfterAt + 1)
-                                .toString().toLowerCase();
-                        subset.clear();
-                        for (int i = 0; i < followers.size(); i++)
-                            if (followers.get(i).screenName.toLowerCase().startsWith(prefix))
-                                subset.add(followers.get(i));
-                        followedAdapter.notifyDataSetChanged();
+
+                String query = null;
+                String selectedText = text.substring(start, start + count);
+                if (selectedText.length() > 1) {
+                    if ((start > 0 && text.charAt(start - 1) == '@')) {
+                        query = selectedText;
+                        lastAtIndex = start - 1;
+                    } else if (selectedText.startsWith("@")) {
+                        query = selectedText.substring(1);
+                        lastAtIndex = start;
                     }
-                } else if (suggestionsOn) {
-                    hideSuggestions();
+                } else if (text.length() > 0) {
+                    StringBuilder buffer = new StringBuilder();
+                    int i = newTweetEditText.getSelectionStart() - 1;
+                    char c = text.charAt(i);
+                    while (c != '@' && c != ' ' && i > 0) {
+                        buffer.append(c);
+                        i--;
+                        c = text.charAt(i);
+                    }
+
+                    if (c == '@') {
+                        query = buffer.reverse().toString();
+                        lastAtIndex = i;
+                    }
+                }
+
+                if (query != null) {
+                    if (!suggestionsOn) {
+                        suggestionsOn = true;
+                        followedRecyclerView.setVisibility(View.VISIBLE);
+                        if (followers.size() == 0)
+                            followers.addAll(DatabaseManager.getInstance(NewTweetActivity.this).getFollowed());
+                    }
+
+                    subset.clear();
+                    for (int i = 0; i < followers.size(); i++)
+                        if (followers.get(i).screenName.toLowerCase().startsWith(query.toLowerCase()))
+                            subset.add(followers.get(i));
+                    followedAdapter.notifyDataSetChanged();
+
+                } else {
+                    if (suggestionsOn) hideSuggestions();
                 }
             }
 
@@ -253,16 +275,6 @@ public class NewTweetActivity extends ThemedActivity {
 
         newTweetEditText.setSelection(newTweetEditText.getText().length());
         checkLength(newTweetEditText.getText().toString());
-    }
-
-    void showSuggestions() {
-        suggestionsOn = true;
-        followedRecyclerView.setVisibility(View.VISIBLE);
-        if (followers.size() == 0)
-            followers.addAll(DatabaseManager.getInstance(NewTweetActivity.this).getFollowed());
-        subset.clear();
-        subset.addAll(followers);
-        followedAdapter.notifyDataSetChanged();
     }
 
     void hideSuggestions() {
@@ -525,7 +537,7 @@ public class NewTweetActivity extends ThemedActivity {
                     int selectionIndex = lastAtIndex + user.screenName.length() + 1;
 
                     newTweetEditText.setText(text.substring(0, lastAtIndex + 1) + user.screenName +
-                            text.substring(lastAtIndex + charsAfterAt + 1, text.length()));
+                            text.substring(newTweetEditText.getSelectionStart(), text.length()));
                     newTweetEditText.setSelection(selectionIndex);
                     followedRecyclerView.setVisibility(View.GONE);
                     subset.clear();
