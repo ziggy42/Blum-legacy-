@@ -29,7 +29,7 @@ public class BootReceiver extends BroadcastReceiver {
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(System.currentTimeMillis());
             calendar.add(Calendar.SECOND, frequency);
-            alarmManager.setRepeating(
+            alarmManager.setInexactRepeating(
                     AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), frequency * 1000, pendingIntent);
         }
 
