@@ -83,7 +83,6 @@ public class NewTweetActivity extends ThemedActivity {
 
     private boolean suggestionsOn = false;
     private int lastAtIndex = -1;
-    private int charsAfterAt = 0;
     private int charsLeft;
     private File imageFile;
 

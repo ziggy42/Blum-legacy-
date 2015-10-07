@@ -8,6 +8,7 @@ import android.content.Intent;
 
 import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.data.UserFollowed;
+import com.andreapivetta.blu.internet.ConnectionDetector;
 import com.andreapivetta.blu.receivers.FollowingAlarmReceiver;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 
@@ -49,24 +50,26 @@ public class CheckFollowingService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Twitter twitter = TwitterUtils.getTwitter(getApplicationContext());
-        DatabaseManager databaseManager = DatabaseManager.getInstance(getApplicationContext());
+        if ((new ConnectionDetector(getApplicationContext())).isConnectingToWiFi()) {
+            Twitter twitter = TwitterUtils.getTwitter(getApplicationContext());
+            DatabaseManager databaseManager = DatabaseManager.getInstance(getApplicationContext());
 
-        try {
-            ArrayList<UserFollowed> following = new ArrayList<>();
+            try {
+                ArrayList<UserFollowed> following = new ArrayList<>();
 
-            long cursor = -1;
-            PagableResponseList<User> followingList;
-            do {
-                followingList = twitter.getFriendsList(twitter.getId(), cursor);
-                for (User user : followingList)
-                    following.add(new UserFollowed(user.getId(), user.getName(), user.getScreenName(),
-                            user.getBiggerProfileImageURL()));
-            } while ((cursor = followingList.getNextCursor()) != 0);
+                long cursor = -1;
+                PagableResponseList<User> followingList;
+                do {
+                    followingList = twitter.getFriendsList(twitter.getId(), cursor);
+                    for (User user : followingList)
+                        following.add(new UserFollowed(user.getId(), user.getName(), user.getScreenName(),
+                                user.getBiggerProfileImageURL()));
+                } while ((cursor = followingList.getNextCursor()) != 0);
 
-            databaseManager.checkFollowing(following);
-        } catch (TwitterException e) {
-            e.printStackTrace();
+                databaseManager.checkFollowing(following);
+            } catch (TwitterException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.services.CheckFollowingService;
 import com.andreapivetta.blu.services.StreamNotificationService;
 
 import java.util.Calendar;
