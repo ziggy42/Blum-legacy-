@@ -32,5 +32,7 @@ public class BootReceiver extends BroadcastReceiver {
             alarmManager.setRepeating(
                     AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), frequency * 1000, pendingIntent);
         }
+
+        CheckFollowingService.startService(context);
     }
 }
