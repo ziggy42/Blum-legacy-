@@ -72,7 +72,8 @@ public class HomeActivity extends TimeLineActivity {
             if (mSharedPreferences.getBoolean(getString(R.string.pref_key_stream_service), false))
                 startService(new Intent(HomeActivity.this, StreamNotificationService.class));
 
-            if (!mSharedPreferences.getBoolean("Following", false)) {
+            if (mSharedPreferences.getBoolean(getString(R.string.pref_key_db_populated), false) &&
+                    !mSharedPreferences.getBoolean("Following", false)) {
                 showFollowingLoadingDialog();
             }
         }

@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +14,7 @@ import java.util.Arrays;
 public class DatabaseManager {
 
     private static final String DB_NAME = "blumdb";
-    private static final int DB_VERSION = 2; // Changed
+    private static final int DB_VERSION = 2;
 
     private SQLiteDatabase sqLiteDatabase;
 
@@ -536,7 +535,6 @@ public class DatabaseManager {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            Log.i("DatabaseHelper", "onUpgrade called");
             if (newVersion > oldVersion && newVersion == 2) {
                 db.execSQL(Followed.CREATE_TABLE);
             }
