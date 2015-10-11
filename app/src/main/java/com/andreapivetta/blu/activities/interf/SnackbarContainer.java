@@ -1,4 +1,4 @@
-package com.andreapivetta.blu.activities;
+package com.andreapivetta.blu.activities.interf;
 
 public interface SnackbarContainer {
 

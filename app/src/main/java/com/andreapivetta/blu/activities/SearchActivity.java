@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.activities.interf.SnackbarContainer;
 import com.andreapivetta.blu.fragments.SearchTweetsFragment;
 import com.andreapivetta.blu.fragments.SearchUserFragment;
 

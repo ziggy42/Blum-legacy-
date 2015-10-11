@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.activities.SnackbarContainer;
+import com.andreapivetta.blu.activities.interf.SnackbarContainer;
 import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.data.UserFollowed;
 

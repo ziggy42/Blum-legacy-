@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.activities.ImageActivity;
-import com.andreapivetta.blu.activities.SnackbarContainer;
+import com.andreapivetta.blu.activities.interf.SnackbarContainer;
 import com.andreapivetta.blu.adapters.UserListSimpleAdapter;
 import com.andreapivetta.blu.twitter.FollowTwitterUser;
 import com.bumptech.glide.Glide;

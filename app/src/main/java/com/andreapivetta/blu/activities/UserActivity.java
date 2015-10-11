@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.activities.interf.SnackbarContainer;
 import com.andreapivetta.blu.adapters.UserProfileAdapter;
 import com.andreapivetta.blu.adapters.decorators.SpaceTopItemDecoration;
 import com.andreapivetta.blu.internet.ConnectionDetector;

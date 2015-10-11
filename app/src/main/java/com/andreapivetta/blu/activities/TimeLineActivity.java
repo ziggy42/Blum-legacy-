@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.blu.activities.interf.SnackbarContainer;
 import com.andreapivetta.blu.adapters.TweetsListAdapter;
 import com.andreapivetta.blu.adapters.decorators.SpaceTopItemDecoration;
 import com.andreapivetta.blu.utilities.Common;

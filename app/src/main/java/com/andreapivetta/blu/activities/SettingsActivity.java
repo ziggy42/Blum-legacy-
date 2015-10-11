@@ -16,7 +16,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -28,8 +27,6 @@ import com.andreapivetta.blu.services.BasicNotificationService;
 import com.andreapivetta.blu.services.CheckFollowingService;
 import com.andreapivetta.blu.services.StreamNotificationService;
 import com.andreapivetta.blu.twitter.TwitterUtils;
-
-import twitter4j.TwitterException;
 
 
 public class SettingsActivity extends ThemedActivity {
@@ -241,8 +238,6 @@ public class SettingsActivity extends ThemedActivity {
 
                 mSharedPreferences.edit().clear().commit();
                 DatabaseManager.getInstance(getActivity()).clearDatabase();
-
-                Log.i("PerformLogOut", "DONE");
                 TwitterUtils.nullTwitter();
 
                 return null;

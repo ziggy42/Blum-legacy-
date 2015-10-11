@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.andreapivetta.blu.R;
-import com.andreapivetta.blu.activities.SnackbarContainer;
+import com.andreapivetta.blu.activities.interf.SnackbarContainer;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
