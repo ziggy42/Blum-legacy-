@@ -60,7 +60,7 @@ public class CheckFollowingService extends IntentService {
                 long cursor = -1;
                 PagableResponseList<User> followingList;
                 do {
-                    followingList = twitter.getFriendsList(twitter.getId(), cursor);
+                    followingList = twitter.getFriendsList(twitter.getId(), cursor, 200);
                     for (User user : followingList)
                         following.add(new UserFollowed(user.getId(), user.getName(), user.getScreenName(),
                                 user.getBiggerProfileImageURL()));

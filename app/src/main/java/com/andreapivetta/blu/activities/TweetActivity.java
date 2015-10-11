@@ -68,7 +68,7 @@ public class TweetActivity extends ThemedActivity implements SnackbarContainer {
             mRecyclerView.setVisibility(View.VISIBLE);
         }
 
-        this.twitter = TwitterUtils.getTwitter(TweetActivity.this);
+        twitter = TwitterUtils.getTwitter(TweetActivity.this);
         mRecyclerView.addItemDecoration(new SpaceTopItemDecoration(Common.dpToPx(this, 10)));
         mTweetsAdapter = new TweetsListAdapter(mDataSet, this, twitter, currentIndex);
         mLinearLayoutManager = new LinearLayoutManager(this);
