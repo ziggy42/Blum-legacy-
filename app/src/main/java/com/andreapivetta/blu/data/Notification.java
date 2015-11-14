@@ -98,11 +98,11 @@ public class Notification {
                     resultPendingIntent = PendingIntent.getActivity(
                             context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                    mBuilder.setContentTitle(context.getString(R.string.fav_not_title, user))
+                    mBuilder.setContentTitle(context.getString(R.string.like_not_title, user))
                             .setContentText(status)
                             .setStyle(new NotificationCompat.BigTextStyle()
                                     .bigText(status))
-                            .setSmallIcon(R.drawable.ic_star_white_24dp)
+                            .setSmallIcon(R.drawable.ic_favorite_white_24dp)
                             .setContentIntent(resultPendingIntent);
                     break;
                 case TYPE_RETWEET:

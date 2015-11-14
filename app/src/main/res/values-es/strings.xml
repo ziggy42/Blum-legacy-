@@ -16,7 +16,7 @@
     <string name="logout_title_dialog">¿Logout?</string>
     <string name="yes">Si</string>
     <string name="internet_connection_required">Esta operación requiere una conexión a internet</string>
-    <string name="favourites">%1$s FAVORITO</string>
+    <string name="likes">%1$s LIKES</string>
     <string name="retweets">%1$s RETWEET</string>
     <string name="notifications">Notificaciones</string>
     <string name="nothing_to_show">Nada que ver aquí :(</string>
@@ -27,7 +27,7 @@
     <string name="action_search">Buscar</string>
     <string name="search_hint">Buscar Tweet or Usuario</string>
     <string name="logout_done">Log Out Realizado.</string>
-    <string name="fav_not_title">%1$s ha marcado tu tweet como favorito</string>
+    <string name="like_not_title">%1$s gustado su tweet</string>
     <string name="retw_not_title">%1$s ha retwiteado tu tweet</string>
     <string name="follow_not_title">%1$s te sigue</string>
     <string name="reply_not_title">%1$s twiteado</string>
@@ -54,8 +54,8 @@
         Por favor, inténtelo otra en unos minutos. </string>
     <string name="authorized_by">Autorizado por %1$s</string>
     <string name="failed_due">Error debido a %1$s</string>
-    <string name="favorite_removed">Favorito eliminado</string>
-    <string name="favorite_added">¡Tweet favourited!</string>
+    <string name="like_removed">Like eliminado</string>
+    <string name="like_added">¡Tweet gustado!</string>
     <string name="following_added">Estás siguiendo este usuario</string>
     <string name="following_removed">No estás siguiendo este usuario</string>
     <string name="status_retweeted">¡Status retwiteado!</string>
@@ -70,11 +70,11 @@
     <string name="performing_logout">Estoy cierrando la sesión</string>
     <string name="please_wait">Por favor espera algunos sugundos</string>
     <string name="action_not_performed">Oops! Algo salió mal, intente más tarde.</string>
-    <string name="when_fav_ret_pref_title">Favoritos and Retweetes</string>
+    <string name="when_likes_ret_pref_title">Likes y Retweetes</string>
     <string name="when_mentions_pref_title">Citado</string>
     <string name="when_followers_pref_title">Follower</string>
     <string name="when_dms_pref_title">Mensaje Directo</string>
-    <string name="when_fav_ret_pref_summary">Mostrar notificaciones por Favoritos e Retweetes</string>
+    <string name="when_likes_ret_pref_summary">Mostrar notificaciones por Favoritos e Retweetes</string>
     <string name="when_mentions_pref_summary">Mostrar notificaciones de las menciones</string>
     <string name="when_followers_pref_summary">Mostrar notificaciones de los Follower</string>
     <string name="when_dms_pref_summary">Mostrar notificaciones de los mensajes directos</string>

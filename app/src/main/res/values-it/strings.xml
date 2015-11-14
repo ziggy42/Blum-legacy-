@@ -16,8 +16,8 @@
     <string name="enable_stream_service_pref_summary">Migliore esperienza, peggiore batteria</string>
     <string name="enable_stream_service_pref_title">Abilita Stream Notification Service</string>
     <string name="failed_due">Fallito per %1$s</string>
-    <string name="fav_not_title">%1$s ha aggiunto ai preferiti il tuo Tweet</string>
-    <string name="favourites">%1$s PREFERITI</string>
+    <string name="like_not_title">A %1$s piace il tuo Tweet</string>
+    <string name="likes">%1$s LIKES</string>
     <string name="feedback_pref_summary">Facci sapere cosa ne pensi</string>
     <string name="feedback_pref_title">Invia Feedback</string>
     <string name="follow">Seguire %1$s?</string>
@@ -102,8 +102,8 @@
         <item>Verde</item>
         <item>Scuro</item>
     </string-array>
-    <string name="favorite_added">Tweet Preferito!</string>
-    <string name="favorite_removed">Preferito rimosso</string>
+    <string name="like_added">Tweet Piaciuto!</string>
+    <string name="like_removed">Like rimosso</string>
     <string name="status_retweeted">Tweet Ritwittato!</string>
     <string name="tweet_sent_message">Tweet Inviato!</string>
     <string name="following_added">Ora stai seguendo questo utente</string>
@@ -121,8 +121,8 @@
     <string name="action_not_performed">Oops! Qualcosa è andato storto, riprova più tardi</string>
     <string name="when_dms_pref_summary">Mostra notifiche per Messaggi Diretti</string>
     <string name="when_dms_pref_title">Messaggi Diretti</string>
-    <string name="when_fav_ret_pref_summary">Mostra notifiche per Preferiti e Retweet</string>
-    <string name="when_fav_ret_pref_title">Preferiti e Retweet</string>
+    <string name="when_likes_ret_pref_summary">Mostra notifiche per Preferiti e Retweet</string>
+    <string name="when_likes_ret_pref_title">Like e Retweet</string>
     <string name="when_followers_pref_summary">Mostra notifiche per nuovi Follower</string>
     <string name="when_followers_pref_title">Follower</string>
     <string name="when_mentions_pref_summary">Mostra notifiche per Menzioni</string>

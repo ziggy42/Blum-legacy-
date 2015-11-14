@@ -27,8 +27,8 @@
             android:entries="@array/when_notifications"
             android:entryValues="@array/when_notifications_values"
             android:key="@string/pref_key_fav_ret"
-            android:summary="@string/when_fav_ret_pref_summary"
-            android:title="@string/when_fav_ret_pref_title" />
+            android:summary="@string/when_likes_ret_pref_summary"
+            android:title="@string/when_likes_ret_pref_title" />
 
         <ListPreference
             android:defaultValue="always"

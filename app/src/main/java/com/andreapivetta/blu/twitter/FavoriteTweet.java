@@ -40,9 +40,9 @@ public class FavoriteTweet extends AsyncTask<Long, Void, Boolean> {
     protected void onPostExecute(Boolean status) {
         if (status) {
             if (removed)
-                ((SnackbarContainer) context).showSnackBar(context.getString(R.string.favorite_removed));
+                ((SnackbarContainer) context).showSnackBar(context.getString(R.string.like_removed));
             else
-                ((SnackbarContainer) context).showSnackBar(context.getString(R.string.favorite_added));
+                ((SnackbarContainer) context).showSnackBar(context.getString(R.string.like_added));
         } else {
             ((SnackbarContainer) context).showSnackBar(context.getString(R.string.action_not_performed));
         }
