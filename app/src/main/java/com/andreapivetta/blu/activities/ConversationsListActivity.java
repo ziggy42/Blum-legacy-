@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -35,6 +36,7 @@ public class ConversationsListActivity extends ThemedActivity {
     private ConversationListAdapter conversationListAdapter;
     private DataUpdateReceiver dataUpdateReceiver;
     private UserListMessageAdapter mUsersSimpleAdapter;
+    private SharedPreferences mSharedPreferences;
 
     private boolean isUp = true;
 
@@ -46,7 +48,9 @@ public class ConversationsListActivity extends ThemedActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conversations_list);
 
-        if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.pref_key_db_populated), false))
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (!mSharedPreferences.getBoolean(getString(R.string.pref_key_db_populated), false))
             showComeHereLaterDialog();
 
         mDataSet.addAll(databaseManager.getLastMessages());
@@ -75,12 +79,34 @@ public class ConversationsListActivity extends ThemedActivity {
         newMessageFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showChooseUserDialog();
+                if (mSharedPreferences.getBoolean(getString(R.string.pref_key_following_populated), false))
+                    showChooseUserDialog();
+                else
+                    showChooseUserDialogLimited();
             }
         });
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    void showChooseUserDialogLimited() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ConversationsListActivity.this);
+        View dialogView = View.inflate(ConversationsListActivity.this, R.layout.dialog_select_user_limited, null);
+
+        final EditText searchEditText = (EditText) dialogView.findViewById(R.id.userEditText);
+        builder.setTitle(getString(R.string.insert_user_screenname))
+                .setView(dialogView)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i = new Intent(ConversationsListActivity.this, ConversationActivity.class);
+                        i.putExtra(ConversationActivity.TAG_ID, -1l);
+                        i.putExtra(ConversationActivity.TAG_SCREEN_NAME, searchEditText.getText().toString());
+                        startActivity(i);
+                    }
+                })
+                .create().show();
     }
 
     void showChooseUserDialog() {
@@ -112,7 +138,7 @@ public class ConversationsListActivity extends ThemedActivity {
             public void afterTextChanged(Editable s) {
                 String prefix = s.toString().toLowerCase();
                 subset.clear();
-                for (int i = 0; i< followers.size(); i++)
+                for (int i = 0; i < followers.size(); i++)
                     if (followers.get(i).name.toLowerCase().startsWith(prefix))
                         subset.add(followers.get(i));
 

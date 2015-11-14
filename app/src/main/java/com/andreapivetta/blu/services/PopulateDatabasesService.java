@@ -2,6 +2,7 @@ package com.andreapivetta.blu.services;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.andreapivetta.blu.R;
@@ -28,6 +29,7 @@ public class PopulateDatabasesService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Twitter twitter = TwitterUtils.getTwitter(getApplicationContext());
+        SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         DatabaseManager databaseManager = DatabaseManager.getInstance(getApplicationContext());
         databaseManager.clearDatabase();
 
@@ -68,21 +70,20 @@ public class PopulateDatabasesService extends IntentService {
                         message.getText(), message.getCreatedAt().getTime(), message.getRecipient().getName(), message.getRecipientId(),
                         message.getRecipient().getBiggerProfileImageURL(), true);
 
-            long cursor = -1;
-            PagableResponseList<User> pagableFollowings;
-            do {
-                pagableFollowings = twitter.getFriendsList(twitter.getId(), cursor, 200);
-                for (User user : pagableFollowings)
-                    databaseManager.insertFollowed(new UserFollowed(user.getId(), user.getName(), user.getScreenName(),
-                            user.getBiggerProfileImageURL()));
-            } while ((cursor = pagableFollowings.getNextCursor()) != 0);
+            mSharedPreferences.edit().putBoolean(getString(R.string.pref_key_db_populated), true).apply();
 
+            if (twitter.showUser(twitter.getId()).getFriendsCount() < 2800) {
+                long cursor = -1;
+                PagableResponseList<User> pagableFollowings;
+                do {
+                    pagableFollowings = twitter.getFriendsList(twitter.getId(), cursor, 200);
+                    for (User user : pagableFollowings)
+                        databaseManager.insertFollowed(new UserFollowed(user.getId(), user.getName(), user.getScreenName(),
+                                user.getBiggerProfileImageURL()));
+                } while ((cursor = pagableFollowings.getNextCursor()) != 0);
 
-            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit()
-                    .putBoolean(getString(R.string.pref_key_db_populated), true).apply();
-
-            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit()
-                    .putBoolean("Following", true).apply();
+                mSharedPreferences.edit().putBoolean(getString(R.string.pref_key_following_populated), true).apply();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

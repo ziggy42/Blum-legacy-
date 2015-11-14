@@ -1,13 +1,11 @@
 package com.andreapivetta.blu.activities;
 
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.view.MenuItemCompat;
@@ -22,7 +20,6 @@ import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.data.Message;
 import com.andreapivetta.blu.data.Notification;
-import com.andreapivetta.blu.data.UserFollowed;
 import com.andreapivetta.blu.services.BasicNotificationService;
 import com.andreapivetta.blu.services.CheckFollowingService;
 import com.andreapivetta.blu.services.PopulateDatabasesService;
@@ -32,11 +29,9 @@ import com.andreapivetta.blu.twitter.TwitterUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import twitter4j.PagableResponseList;
 import twitter4j.Paging;
 import twitter4j.Status;
 import twitter4j.TwitterException;
-import twitter4j.User;
 
 
 public class HomeActivity extends TimeLineActivity {
@@ -71,11 +66,6 @@ public class HomeActivity extends TimeLineActivity {
 
             if (mSharedPreferences.getBoolean(getString(R.string.pref_key_stream_service), false))
                 startService(new Intent(HomeActivity.this, StreamNotificationService.class));
-
-            if (mSharedPreferences.getBoolean(getString(R.string.pref_key_db_populated), false) &&
-                    !mSharedPreferences.getBoolean("Following", false)) {
-                showFollowingLoadingDialog();
-            }
         }
 
         super.onCreate(savedInstanceState);
@@ -291,42 +281,5 @@ public class HomeActivity extends TimeLineActivity {
                 invalidateOptionsMenu();
             }
         }
-    }
-
-    private void showFollowingLoadingDialog() {
-        final ProgressDialog ringProgressDialog = ProgressDialog.show(HomeActivity.this, getString(R.string.wait_a_minute),
-                getString(R.string.i_need_to_download), true);
-        ringProgressDialog.setCancelable(true);
-
-        new AsyncTask<Void, Void, Void>() {
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                try {
-                    long cursor = -1;
-                    PagableResponseList<User> followingList;
-                    DatabaseManager databaseManager = DatabaseManager.getInstance(HomeActivity.this);
-                    do {
-                        followingList = twitter.getFriendsList(twitter.getId(), cursor, 200);
-                        for (User user : followingList)
-                            databaseManager.insertFollowed(new UserFollowed(user.getId(), user.getName(), user.getScreenName(),
-                                    user.getBiggerProfileImageURL()));
-                    } while ((cursor = followingList.getNextCursor()) != 0);
-                } catch (TwitterException e) {
-                    e.printStackTrace();
-                }
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                mSharedPreferences.edit().putBoolean("Following", true).apply();
-                ringProgressDialog.dismiss();
-                CheckFollowingService.startService(HomeActivity.this);
-            }
-
-        }.execute();
-
     }
 }

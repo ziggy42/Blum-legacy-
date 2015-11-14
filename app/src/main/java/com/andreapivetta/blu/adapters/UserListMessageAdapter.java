@@ -1,6 +1,7 @@
 package com.andreapivetta.blu.adapters;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ public class UserListMessageAdapter extends RecyclerView.Adapter<UserSimpleViewH
         return new UserSimpleViewHolder(v);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(UserSimpleViewHolder holder, int position) {
         final UserFollowed user = mDataSet.get(position);
@@ -64,9 +66,7 @@ public class UserListMessageAdapter extends RecyclerView.Adapter<UserSimpleViewH
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, ConversationActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(ConversationActivity.TAG_ID, user.id);
-                i.putExtras(bundle);
+                i.putExtra(ConversationActivity.TAG_ID, user.id);
                 context.startActivity(i);
             }
         });

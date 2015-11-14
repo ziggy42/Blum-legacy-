@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.ConversationAdapter;
@@ -32,7 +33,8 @@ import twitter4j.User;
 
 public class ConversationActivity extends ThemedActivity {
 
-    public static String TAG_ID = "id";
+    public static final String TAG_ID = "id";
+    public static final String TAG_SCREEN_NAME = "name";
 
     private User currentUser;
     private Twitter twitter;
@@ -122,7 +124,12 @@ public class ConversationActivity extends ThemedActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                currentUser = twitter.showUser(userID);
+                if (userID <= 0) {
+                    currentUser = twitter.showUser(getIntent().getStringExtra(ConversationActivity.TAG_SCREEN_NAME));
+                    userID = currentUser.getId();
+                } else {
+                    currentUser = twitter.showUser(userID);
+                }
 
                 mDataSet.addAll(databaseManager.getConversation(userID));
                 databaseManager.markConversationAsRead(currentUser.getId());
@@ -139,6 +146,9 @@ public class ConversationActivity extends ThemedActivity {
                 loadingProgressBar.setVisibility(View.GONE);
                 toolbar.setTitle(currentUser.getName());
                 mAdapter.notifyDataSetChanged();
+            } else {
+                Toast.makeText(ConversationActivity.this, getString(R.string.cant_find_user), Toast.LENGTH_SHORT).show();
+                finish();
             }
         }
     }
