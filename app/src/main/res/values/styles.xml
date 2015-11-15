@@ -5,8 +5,6 @@
     </style>
 
     <style name="LightBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
         <item name="android:textColorPrimary">@color/lightThemesTextColor</item>
         <item name="appCardViewBackgroundColor">@color/lightThemesCardViewBackgroundColor</item>
         <item name="appBackgroundColor">@color/lightThemesBackground</item>
@@ -34,8 +32,6 @@
         <item name="colorPrimary">@color/pinkThemeColorPrimary</item>
         <item name="colorPrimaryDark">@color/pinkThemeColorPrimaryDark</item>
         <item name="colorAccent">@color/pinkThemeColorAccent</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
         <item name="appColorPrimary">@color/pinkThemeColorPrimary</item>
         <item name="appColorPrimaryDark">@color/pinkThemeColorPrimaryDark</item>
         <item name="appColorAccent">@color/pinkThemeColorAccent</item>
@@ -51,8 +47,6 @@
         <item name="colorPrimary">@color/greenThemeColorPrimary</item>
         <item name="colorPrimaryDark">@color/greenThemeColorPrimaryDark</item>
         <item name="colorAccent">@color/greenThemeColorAccent</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
         <item name="appColorPrimary">@color/greenThemeColorPrimary</item>
         <item name="appColorPrimaryDark">@color/greenThemeColorPrimaryDark</item>
         <item name="appColorAccent">@color/greenThemeColorAccent</item>
@@ -64,12 +58,10 @@
     <style name="GreenUserTheme" parent="GreenAppTheme" />
 
     <!-- Dark Theme -->
-    <style name="DarkTheme" parent="Theme.AppCompat">
+    <style name="DarkTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/darkThemeColorPrimary</item>
         <item name="colorPrimaryDark">@color/darkThemeColorPrimaryDark</item>
         <item name="colorAccent">@color/darkThemeColorAccent</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
         <item name="android:textColorPrimary">@color/darkThemesTextColor</item>
         <item name="android:windowBackground">@color/darkThemesBackground</item>
         <item name="appColorPrimary">@color/darkThemeColorPrimary</item>
@@ -84,8 +76,6 @@
     <style name="DarkUserTheme" parent="DarkTheme" />
 
     <style name="ImageActivityTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:windowBackground">@color/black</item>
     </style>
