@@ -1,9 +1,11 @@
 package com.andreapivetta.blu.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -51,10 +53,14 @@ public abstract class TimeLineActivity extends ThemedActivity implements Snackba
 
     protected boolean isUp = true, loading = true, isBlocked = false;
 
+    protected SharedPreferences mSharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(TimeLineActivity.this);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -142,14 +148,16 @@ public abstract class TimeLineActivity extends ThemedActivity implements Snackba
 
     void newTweetDown() {
         if (!isBlocked) {
-            newTweetFAB.animate().translationY(newTweetFAB.getHeight() + (int) (getResources().getDimension(R.dimen.fabMargin))).start();
+            if (mSharedPreferences.getBoolean(getString(R.string.pref_key_hide_fab), true))
+                newTweetFAB.hide();
             isUp = false;
         }
     }
 
     void newTweetUp() {
         if (!isBlocked) {
-            newTweetFAB.animate().translationY(0).start();
+            if (mSharedPreferences.getBoolean(getString(R.string.pref_key_hide_fab), true) || !isUp)
+                newTweetFAB.show();
             isUp = true;
         }
     }

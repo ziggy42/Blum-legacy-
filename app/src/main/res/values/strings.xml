@@ -204,6 +204,8 @@
     <string name="themes_pref_summary">Choose the UI Theme</string>
     <string name="themes_pref_title">Themes</string>
     <string name="prefcat_appearance_title">Appearance</string>
+    <string name="hide_fab_notifications_pref_title">Hide FAB</string>
+    <string name="hide_fab_notifications_pref_summary">Hide new tweet button while scrolling down</string>
 
     <!-- Content Descriptors -->
     <string name="profile_background_contentDescriptor" translatable="false">User Background Image View</string>
@@ -240,5 +242,6 @@
     <string name="previously_denied_storage_permission">You previously denied access to Storage. You have to manually grant this permission in Settings.</string>
     <string name="hint_user_screenname">something</string>
     <string name="insert_user_screenname">Insert User</string>
+    <string name="pref_key_hide_fab" translatable="false">hideFab</string>
 
 </resources>

@@ -10,6 +10,12 @@
             android:summary="@string/themes_pref_summary"
             android:title="@string/themes_pref_title" />
 
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/pref_key_hide_fab"
+            android:summary="@string/hide_fab_notifications_pref_summary"
+            android:title="@string/hide_fab_notifications_pref_title" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/notifications">

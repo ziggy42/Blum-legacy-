@@ -1,6 +1,7 @@
 package com.andreapivetta.blu.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -56,11 +57,14 @@ public class UserActivity extends AppCompatActivity implements SnackbarContainer
 
     private boolean isUp = true, loading = true, isBlocked = false;
 
+    private SharedPreferences mSharedPreferences;
+
     @Override
     @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
-        switch (PreferenceManager.getDefaultSharedPreferences(this)
-                .getString(getString(R.string.pref_key_themes), "B")) {
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        switch (mSharedPreferences.getString(getString(R.string.pref_key_themes), "B")) {
             case "B":
                 setTheme(R.style.BlueUserTheme);
                 break;
@@ -170,15 +174,16 @@ public class UserActivity extends AppCompatActivity implements SnackbarContainer
 
     void tweetToUserButtonDown() {
         if (!isBlocked) {
-            tweetToUserButton.animate().translationY(
-                    tweetToUserButton.getHeight() + (int) (getResources().getDimension(R.dimen.fabMargin))).start();
+            if (mSharedPreferences.getBoolean(getString(R.string.pref_key_hide_fab), true))
+                tweetToUserButton.hide();
             isUp = false;
         }
     }
 
     void tweetToUserButtonUp() {
         if (!isBlocked) {
-            tweetToUserButton.animate().translationY(0).start();
+            if (mSharedPreferences.getBoolean(getString(R.string.pref_key_hide_fab), true) || !isUp)
+                tweetToUserButton.show();
             isUp = true;
         }
     }

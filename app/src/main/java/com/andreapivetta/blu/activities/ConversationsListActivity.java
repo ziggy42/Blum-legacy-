@@ -194,13 +194,14 @@ public class ConversationsListActivity extends ThemedActivity {
     }
 
     void newMessageDown() {
-        newMessageFAB.animate().translationY(newMessageFAB.getHeight() + (int) (getResources().getDimension(R.dimen.fabMargin)))
-                .start();
+        if (mSharedPreferences.getBoolean(getString(R.string.pref_key_hide_fab), true))
+            newMessageFAB.hide();
         isUp = false;
     }
 
     void newMessageUp() {
-        newMessageFAB.animate().translationY(0).start();
+        if (mSharedPreferences.getBoolean(getString(R.string.pref_key_hide_fab), true))
+            newMessageFAB.show();
         isUp = true;
     }
 
