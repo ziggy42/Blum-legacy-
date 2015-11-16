@@ -53,7 +53,7 @@ public abstract class TimeLineActivity extends ThemedActivity implements Snackba
 
     protected boolean isUp = true, loading = true, isBlocked = false;
 
-    protected SharedPreferences mSharedPreferences;
+    private SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
