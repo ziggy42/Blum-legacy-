@@ -8,7 +8,8 @@
     <attr name="appSeparationLineColor" format="color|reference" />
 
     <attr name="circleDrawable" format="reference" />
-    <attr name="quoteBackground" format="reference" />
     <attr name="rectBackground" format="reference" />
     <attr name="circleButton" format="reference" />
+    <attr name="toolbarTheme" format="reference" />
+    <attr name="toolbarPopupTheme" format="reference" />
 </resources>

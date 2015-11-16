@@ -12,6 +12,8 @@
         <item name="appBackgroundColor">@color/lightThemesBackground</item>
         <item name="appSeparationLineColor">@color/lightGrey</item>
         <item name="android:windowBackground">@color/background</item>
+        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
 
     <!-- Blue Theme -->
@@ -89,6 +91,8 @@
         <item name="circleDrawable">@drawable/circle_darkdark</item>
         <item name="rectBackground">@drawable/rect_background_dark</item>
         <item name="circleButton">@drawable/circle_button_dark</item>
+        <item name="toolbarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="toolbarPopupTheme">@style/ThemeOverlay.AppCompat</item>
     </style>
 
     <style name="DarkUserTheme" parent="DarkTheme">
