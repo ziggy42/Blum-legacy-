@@ -114,6 +114,9 @@
     <string name="profile_updated">Profile Updated!</string>
     <string name="no_photos">You won\'t be able to tweet new pictures. Click again to grant the permission.</string>
     <string name="no_grab_images">You won\'t be able to send images saved on your phone without this permission. Click again to enable it.</string>
+    <string name="previously_denied_storage_permission">You previously denied access to Storage. You have to manually grant this permission in Settings.</string>
+    <string name="hint_user_screenname">something</string>
+    <string name="insert_user_screenname">Insert User</string>
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>
@@ -239,9 +242,6 @@
     <string name="pref_key_db_populated" translatable="false">popdb</string>
     <string name="pref_key_following_populated" translatable="false">Following</string>
     <string name="pref_key_mute_notifications" translatable="false">muteNot</string>
-    <string name="previously_denied_storage_permission">You previously denied access to Storage. You have to manually grant this permission in Settings.</string>
-    <string name="hint_user_screenname">something</string>
-    <string name="insert_user_screenname">Insert User</string>
     <string name="pref_key_hide_fab" translatable="false">hideFab</string>
 
 </resources>

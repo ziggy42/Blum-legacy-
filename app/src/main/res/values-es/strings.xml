@@ -162,4 +162,6 @@
     <string name="previously_denied_storage_permission">Has negado previamente el acceso al almacenamiento. Hay que conceder manualmente el permiso en las ajustes.</string>
     <string name="hint_user_screenname">algo</string>
     <string name="insert_user_screenname">Introduzca User</string>
+    <string name="hide_fab_notifications_pref_title">Esconder FAB</string>
+    <string name="hide_fab_notifications_pref_summary">Esconder nuevo tweet botón mientras se desplaza hacia abajo</string>
 </resources>

@@ -157,5 +157,7 @@
     <string name="previously_denied_storage_permission">Hai negato l\'accesso alla memoria del tuo telefono. Dovrai manualmente autorizzarlo dalle Impostazioni.</string>
     <string name="hint_user_screenname">qualcosa</string>
     <string name="insert_user_screenname">Inserisci Utente</string>
+    <string name="hide_fab_notifications_pref_title">Nascondi FAB</string>
+    <string name="hide_fab_notifications_pref_summary">Nascondi il tasto nuovo tweet quando scrolli giù</string>
 
 </resources>
