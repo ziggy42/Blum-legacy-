@@ -23,7 +23,7 @@ public class BasicNotificationService extends IntentService {
 
     public static void startService(Context context) {
         startService(context, Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context)
-                .getString(context.getString(R.string.pref_key_frequencies), "1200")));
+                .getString(context.getString(R.string.pref_key_frequencies), String.valueOf(1200))));
     }
 
     public static void startService(Context context, int frequency) {

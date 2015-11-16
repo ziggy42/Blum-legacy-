@@ -155,7 +155,7 @@
     <string name="no_grab_images">Non potrai tweeetare immagini presenti nel tuo telefono. Clicca di nuovo per dare il permesso</string>
     <string name="no_photos">Non potrai tweetare nuove foto. Clicca di nuovo per dare il permesso.</string>
     <string name="previously_denied_storage_permission">Hai negato l\'accesso alla memoria del tuo telefono. Dovrai manualmente autorizzarlo dalle Impostazioni.</string>
-    <string name="i_need_to_download">Devo scaricare ancora un po\' di roba</string>
-    <string name="wait_a_minute">Per favore aspetta un minuto…</string>
+    <string name="hint_user_screenname">qualcosa</string>
+    <string name="insert_user_screenname">Inserisci Utente</string>
 
 </resources>
