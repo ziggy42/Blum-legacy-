@@ -108,12 +108,7 @@ public abstract class TimeLineActivity extends ThemedActivity implements Snackba
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        new RefreshTimeLine().execute();
-                    }
-                });
+                new RefreshTimeLine().execute();
             }
         });
 
