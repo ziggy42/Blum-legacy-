@@ -110,7 +110,9 @@ public class ConversationsListActivity extends ThemedActivity {
     }
 
     void showChooseUserDialog() {
-        followers.addAll(databaseManager.getFollowed());
+        if (followers.size() == 0)
+            followers.addAll(databaseManager.getFollowed());
+        subset.clear();
         subset.addAll(followers);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ConversationsListActivity.this);
