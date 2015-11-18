@@ -26,6 +26,3 @@ build
 *~
 *.swp
 app/manifest-merger-release-report.txt
-
-# IDS
-app/src/main/java/com/andreapivetta/blu/twitter/TwitterUtils.java
