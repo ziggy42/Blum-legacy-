@@ -147,7 +147,7 @@ public class ConversationsListActivity extends ThemedActivity {
         });
 
         builder.setView(dialogView)
-                .setPositiveButton(R.string.ok, null)
+                .setPositiveButton(R.string.cancel, null)
                 .create().show();
     }
 

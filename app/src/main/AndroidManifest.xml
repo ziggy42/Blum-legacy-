@@ -94,7 +94,7 @@
         </activity>
         <activity
             android:name=".activities.NewTweetQuoteActivity"
-            android:label="@string/title_activity_new_tweet"></activity>
+            android:label="@string/title_activity_new_tweet" />
         <activity
             android:name=".activities.HashtagActivity"
             android:label="@string/title_empty">
@@ -153,7 +153,7 @@
         <activity
             android:name=".activities.VideoActivity"
             android:label="@string/title_empty"
-            android:theme="@style/ImageActivityTheme"></activity>
+            android:theme="@style/ImageActivityTheme" />
         <activity
             android:name=".activities.EditProfileActivity"
             android:label="@string/title_activity_edit_profile" />
