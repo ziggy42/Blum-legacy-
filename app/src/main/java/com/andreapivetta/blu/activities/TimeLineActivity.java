@@ -22,6 +22,8 @@ import com.andreapivetta.blu.activities.interf.SnackbarContainer;
 import com.andreapivetta.blu.adapters.TweetsListAdapter;
 import com.andreapivetta.blu.adapters.decorators.SpaceTopItemDecoration;
 import com.andreapivetta.blu.utilities.Common;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +63,13 @@ public abstract class TimeLineActivity extends ThemedActivity implements Snackba
         setContentView(R.layout.activity_timeline);
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(TimeLineActivity.this);
+
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("BF5C84C7EE32D459CE186190E0A187C7") // Nexus6p emulator
+                .addTestDevice("D92FD0DC69AECDDD9D41C63DEF1D68C4") // Nexus4
+                .build();
+        mAdView.loadAd(adRequest);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
