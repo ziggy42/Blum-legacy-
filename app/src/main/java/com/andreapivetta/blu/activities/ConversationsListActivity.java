@@ -106,6 +106,7 @@ public class ConversationsListActivity extends ThemedActivity {
                         startActivity(i);
                     }
                 })
+                .setNegativeButton(R.string.cancel, null)
                 .create().show();
     }
 
