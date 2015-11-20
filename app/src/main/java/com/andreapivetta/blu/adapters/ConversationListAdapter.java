@@ -9,8 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.R;
@@ -112,7 +112,7 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ConversationLi
 
         public ImageView userProfilePicImageView;
         public TextView userNameTextView, messageTextView, timeTextView;
-        public FrameLayout conversationContainer;
+        public RelativeLayout conversationContainer;
 
         public ViewHolder(View container) {
             super(container);
@@ -121,7 +121,7 @@ public class ConversationListAdapter extends RecyclerView.Adapter<ConversationLi
             this.userNameTextView = (TextView) container.findViewById(R.id.userNameTextView);
             this.messageTextView = (TextView) container.findViewById(R.id.messageTextView);
             this.timeTextView = (TextView) container.findViewById(R.id.timeTextView);
-            this.conversationContainer = (FrameLayout) container.findViewById(R.id.conversationContainer);
+            this.conversationContainer = (RelativeLayout) container.findViewById(R.id.conversationContainer);
         }
     }
 }

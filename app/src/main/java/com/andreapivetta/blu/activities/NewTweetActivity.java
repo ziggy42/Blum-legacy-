@@ -39,7 +39,7 @@ import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.decorators.SpaceLeftMarginItemDecoration;
-import com.andreapivetta.blu.adapters.holders.UserSimpleViewHolder;
+import com.andreapivetta.blu.adapters.holders.UserSuggestedViewHolder;
 import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.data.UserFollowed;
 import com.andreapivetta.blu.twitter.TwitterUtils;
@@ -495,18 +495,18 @@ public class NewTweetActivity extends ThemedActivity {
         }
     }
 
-    private class UserFollowedAdapter extends RecyclerView.Adapter<UserSimpleViewHolder> {
+    private class UserFollowedAdapter extends RecyclerView.Adapter<UserSuggestedViewHolder> {
 
         @Override
-        public UserSimpleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public UserSuggestedViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.user_simple_card, parent, false);
 
-            return new UserSimpleViewHolder(v);
+            return new UserSuggestedViewHolder(v);
         }
 
         @Override
-        public void onBindViewHolder(UserSimpleViewHolder holder, int position) {
+        public void onBindViewHolder(UserSuggestedViewHolder holder, int position) {
             final UserFollowed user = subset.get(position);
 
             Glide.with(NewTweetActivity.this)
