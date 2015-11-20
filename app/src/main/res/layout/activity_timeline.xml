@@ -53,6 +53,7 @@
         android:id="@+id/adView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         ads:adSize="SMART_BANNER"
         ads:adUnitId="ca-app-pub-8642726692616831/3807441907" />
 

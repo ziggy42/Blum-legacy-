@@ -164,4 +164,8 @@
     <string name="insert_user_screenname">Introduzca User</string>
     <string name="hide_fab_notifications_pref_title">Esconder FAB</string>
     <string name="hide_fab_notifications_pref_summary">Esconder nuevo tweet botón mientras se desplaza hacia abajo</string>
+    <string name="iap_pref_summary">Todos odiamos anuncios.</string>
+    <string name="iap_pref_title">Quitar anuncios</string>
+    <string name="keep_ads">Mantenga los Anuncios</string>
+    <string name="pay_with_tweet_title">Enviar esto y olvidar todos los anuncios!</string>
 </resources>

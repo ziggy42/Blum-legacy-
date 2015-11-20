@@ -117,6 +117,10 @@
     <string name="previously_denied_storage_permission">You previously denied access to Storage. You have to manually grant this permission in Settings.</string>
     <string name="hint_user_screenname">something</string>
     <string name="insert_user_screenname">Insert User</string>
+    <string name="pay_with_tweet_title">Tweet this and forget all the ads!</string>
+    <string name="pay_with_tweet_status" translatable="false">Try Blum, a clean, fast and simple Twitter client for Android https://play.google.com/store/apps/details?id=com.andreapivetta.blu via \@Pivix00</string>
+    <string name="tweet" translatable="false">Tweet</string>
+    <string name="keep_ads">Keep the Ads</string>
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>
@@ -179,6 +183,14 @@
         <item>D</item>
     </string-array>
 
+    <string-array name="iap_values" translatable="false">
+        <item>0.99$</item>
+        <item>1.99$</item>
+        <item>4.99$</item>
+        <item>9.99$</item>
+        <item>Just a Tweet</item>
+    </string-array>
+
     <!-- Activities titles -->
     <string name="title_empty" translatable="false" />
     <string name="title_activity_tweet" translatable="false">Tweet</string>
@@ -209,6 +221,8 @@
     <string name="prefcat_appearance_title">Appearance</string>
     <string name="hide_fab_notifications_pref_title">Hide FAB</string>
     <string name="hide_fab_notifications_pref_summary">Hide new tweet button while scrolling down</string>
+    <string name="iap_pref_summary">We all hate ads.</string>
+    <string name="iap_pref_title">Remove ads</string>
 
     <!-- Content Descriptors -->
     <string name="profile_background_contentDescriptor" translatable="false">User Background Image View</string>
@@ -243,5 +257,6 @@
     <string name="pref_key_following_populated" translatable="false">Following</string>
     <string name="pref_key_mute_notifications" translatable="false">muteNot</string>
     <string name="pref_key_hide_fab" translatable="false">hideFab</string>
+    <string name="pref_ads_removed" translatable="false">ads_removed</string>
 
 </resources>

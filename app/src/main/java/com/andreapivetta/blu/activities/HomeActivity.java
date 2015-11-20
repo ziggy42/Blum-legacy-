@@ -25,6 +25,10 @@ import com.andreapivetta.blu.services.CheckFollowingService;
 import com.andreapivetta.blu.services.PopulateDatabasesService;
 import com.andreapivetta.blu.services.StreamNotificationService;
 import com.andreapivetta.blu.twitter.TwitterUtils;
+import com.anjlab.android.iab.v3.BillingProcessor;
+import com.anjlab.android.iab.v3.TransactionDetails;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +48,8 @@ public class HomeActivity extends TimeLineActivity {
     private DataUpdateReceiver dataUpdateReceiver;
     private int mNotificationsCount = 0, newTweetsCount = 0, mMessageCount = 0;
     private ArrayList<Status> upComingTweets = new ArrayList<>();
+
+    private BillingProcessor billingProcessor;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -85,11 +91,47 @@ public class HomeActivity extends TimeLineActivity {
         });
 
         if (mSharedPreferences.getBoolean(getString(R.string.pref_key_stream_service), false)) {
-            this.swipeRefreshLayout.setEnabled(false);
+            swipeRefreshLayout.setEnabled(false);
 
             if (newTweetsCount > 0)
-                getSupportActionBar().setTitle(
-                        getResources().getQuantityString(R.plurals.new_tweets, newTweetsCount, newTweetsCount));
+                getSupportActionBar().setTitle(getResources().getQuantityString(R.plurals.new_tweets, newTweetsCount, newTweetsCount));
+        }
+
+        if (!mSharedPreferences.getBoolean(getString(R.string.pref_ads_removed), false)) {
+            billingProcessor = new BillingProcessor(HomeActivity.this, null, new BillingProcessor.IBillingHandler() {
+                @Override
+                public void onProductPurchased(String s, TransactionDetails transactionDetails) {
+
+                }
+
+                @Override
+                public void onPurchaseHistoryRestored() {
+
+                }
+
+                @Override
+                public void onBillingError(int i, Throwable throwable) {
+
+                }
+
+                @Override
+                public void onBillingInitialized() {
+                    if (billingProcessor.isPurchased("remove_ads_099") || billingProcessor.isPurchased("remove_ads_199") ||
+                            billingProcessor.isPurchased("remove_ads_049") || billingProcessor.isPurchased("remove_ads_999")) {
+                        mSharedPreferences.edit().putBoolean(getString(R.string.pref_ads_removed), true).apply();
+                    } else {
+                        AdView mAdView = (AdView) findViewById(R.id.adView);
+                        mAdView.setVisibility(View.VISIBLE);
+                        AdRequest adRequest = new AdRequest.Builder()
+                                .addTestDevice("BF5C84C7EE32D459CE186190E0A187C7") // Nexus6p emulator
+                                .addTestDevice("D92FD0DC69AECDDD9D41C63DEF1D68C4") // Nexus4
+                                .addTestDevice("E2FC22DC6449FC5B5658CD110B58923A") // LG
+                                .build();
+                        mAdView.loadAd(adRequest);
+                    }
+                    billingProcessor.release();
+                }
+            });
         }
     }
 
