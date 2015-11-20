@@ -5,7 +5,9 @@ import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 
+import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.data.DatabaseManager;
 import com.andreapivetta.blu.data.UserFollowed;
 import com.andreapivetta.blu.internet.ConnectionDetector;
@@ -52,24 +54,30 @@ public class CheckFollowingService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if ((new ConnectionDetector(getApplicationContext())).isConnectingToWiFi()) {
             Twitter twitter = TwitterUtils.getTwitter(getApplicationContext());
-            DatabaseManager databaseManager = DatabaseManager.getInstance(getApplicationContext());
 
             try {
-                ArrayList<UserFollowed> following = new ArrayList<>();
+                if (twitter.showUser(twitter.getId()).getFriendsCount() < 2800) {
+                    DatabaseManager databaseManager = DatabaseManager.getInstance(getApplicationContext());
+                    ArrayList<UserFollowed> following = new ArrayList<>();
 
-                long cursor = -1;
-                PagableResponseList<User> followingList;
-                do {
-                    followingList = twitter.getFriendsList(twitter.getId(), cursor, 200);
-                    for (User user : followingList)
-                        following.add(new UserFollowed(user.getId(), user.getName(), user.getScreenName(),
-                                user.getBiggerProfileImageURL()));
-                } while ((cursor = followingList.getNextCursor()) != 0);
+                    long cursor = -1;
+                    PagableResponseList<User> followingList;
+                    do {
+                        followingList = twitter.getFriendsList(twitter.getId(), cursor, 200);
+                        for (User user : followingList)
+                            following.add(new UserFollowed(user.getId(), user.getName(), user.getScreenName(),
+                                    user.getBiggerProfileImageURL()));
+                    } while ((cursor = followingList.getNextCursor()) != 0);
 
-                databaseManager.checkFollowing(following);
+                    databaseManager.checkFollowing(following);
+
+                    PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit()
+                            .putBoolean(getString(R.string.pref_key_following_populated), true).apply();
+                }
             } catch (TwitterException e) {
                 e.printStackTrace();
             }
+
         }
     }
 
