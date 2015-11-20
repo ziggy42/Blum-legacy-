@@ -82,9 +82,7 @@
 
     <PreferenceCategory android:title="@string/prefcat_others_title">
 
-        <ListPreference
-            android:entries="@array/iap_values"
-            android:entryValues="@array/iap_values"
+        <Preference
             android:key="pref_key_iap"
             android:summary="@string/iap_pref_summary"
             android:title="@string/iap_pref_title" />

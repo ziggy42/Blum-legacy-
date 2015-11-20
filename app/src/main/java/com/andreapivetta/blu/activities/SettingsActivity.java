@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -19,6 +18,8 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +31,12 @@ import com.andreapivetta.blu.services.StreamNotificationService;
 import com.andreapivetta.blu.twitter.TwitterUtils;
 import com.andreapivetta.blu.twitter.UpdateTwitterStatus;
 import com.anjlab.android.iab.v3.BillingProcessor;
+import com.anjlab.android.iab.v3.SkuDetails;
 import com.anjlab.android.iab.v3.TransactionDetails;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class SettingsActivity extends ThemedActivity implements BillingProcessor.IBillingHandler {
@@ -97,9 +103,6 @@ public class SettingsActivity extends ThemedActivity implements BillingProcessor
         private SwitchPreference streamServicePreference;
 
         private ProgressDialog dialog;
-
-        public SettingsFragment() {
-        }
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -172,38 +175,71 @@ public class SettingsActivity extends ThemedActivity implements BillingProcessor
                 }
             });
 
-            final ListPreference adsPreference = (ListPreference) findPreference("pref_key_iap");
+            final Preference adsPreference = findPreference("pref_key_iap");
             if (mSharedPreferences.getBoolean(getString(R.string.pref_ads_removed), false)) {
                 adsPreference.setEnabled(false);
             } else {
-                adsPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                adsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
-                    public boolean onPreferenceChange(Preference preference, Object newValue) {
-                        String res = String.valueOf(newValue);
-                        String[] cases = getResources().getStringArray(R.array.iap_values);
-                        if (cases[0].equals(res)) {
-                            ((SettingsActivity) getActivity()).billingProcessor.purchase(getActivity(), "remove_ads_099");
-                        } else if (cases[1].equals(res)) {
-                            ((SettingsActivity) getActivity()).billingProcessor.purchase(getActivity(), "remove_ads_199");
-                        } else if (cases[2].equals(res)) {
-                            ((SettingsActivity) getActivity()).billingProcessor.purchase(getActivity(), "remove_ads_049");
-                        } else if (cases[3].equals(res)) {
-                            ((SettingsActivity) getActivity()).billingProcessor.purchase(getActivity(), "remove_ads_999");
-                        } else {
-                            new AlertDialog.Builder(getActivity()).setTitle(getString(R.string.pay_with_tweet_title))
-                                    .setMessage(getString(R.string.pay_with_tweet_status))
-                                    .setPositiveButton(getString(R.string.tweet), new DialogInterface.OnClickListener() {
-                                        @SuppressLint("CommitPrefEdits")
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            new UpdateTwitterStatus(getActivity(), TwitterUtils.getTwitter(getActivity()), -1l)
-                                                    .execute(getString(R.string.pay_with_tweet_status));
-                                            mSharedPreferences.edit().putBoolean(getString(R.string.pref_ads_removed), true).commit();
-                                            restartApplication();
-                                        }
-                                    }).setNegativeButton(getString(R.string.keep_ads), null)
-                                    .create().show();
+                    public boolean onPreferenceClick(Preference preference) {
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        View dialogView = View.inflate(getActivity(), R.layout.dialog_iap, null);
+
+                        String[] ids = new String[]{"remove_ads_099", "remove_ads_199", "remove_ads_049", "remove_ads_999"};
+                        List<SkuDetails> details = ((SettingsActivity) getActivity()).billingProcessor.getPurchaseListingDetails(new ArrayList<>(Arrays.asList(ids)));
+                        for (SkuDetails detail : details) {
+                            if (ids[0].equals(detail.productId)) {
+                                ((RadioButton) dialogView.findViewById(R.id.iap_099_radioButton)).setText(detail.priceText);
+                            } else if (ids[1].equals(detail.productId)) {
+                                ((RadioButton) dialogView.findViewById(R.id.iap_199_radioButton)).setText(detail.priceText);
+                            } else if (ids[2].equals(detail.productId)) {
+                                ((RadioButton) dialogView.findViewById(R.id.iap_499_radioButton)).setText(detail.priceText);
+                            } else {
+                                ((RadioButton) dialogView.findViewById(R.id.iap_999_radioButton)).setText(detail.priceText);
+                            }
                         }
+
+                        ((RadioButton) dialogView.findViewById(R.id.tweet_radioButton)).setText(getString(R.string.tweet));
+
+                        RadioGroup radioGroup = (RadioGroup) dialogView.findViewById(R.id.iapRadioGroup);
+                        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                                switch (checkedId) {
+                                    case R.id.iap_099_radioButton:
+                                        ((SettingsActivity) getActivity()).billingProcessor.purchase(getActivity(), "remove_ads_099");
+                                        break;
+                                    case R.id.iap_199_radioButton:
+                                        ((SettingsActivity) getActivity()).billingProcessor.purchase(getActivity(), "remove_ads_199");
+                                        break;
+                                    case R.id.iap_499_radioButton:
+                                        ((SettingsActivity) getActivity()).billingProcessor.purchase(getActivity(), "remove_ads_049");
+                                        break;
+                                    case R.id.iap_999_radioButton:
+                                        ((SettingsActivity) getActivity()).billingProcessor.purchase(getActivity(), "remove_ads_999");
+                                        break;
+                                    case R.id.tweet_radioButton:
+                                        new AlertDialog.Builder(getActivity()).setTitle(getString(R.string.pay_with_tweet_title))
+                                                .setMessage(getString(R.string.pay_with_tweet_status))
+                                                .setPositiveButton(getString(R.string.tweet), new DialogInterface.OnClickListener() {
+                                                    @SuppressLint("CommitPrefEdits")
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        new UpdateTwitterStatus(getActivity(), TwitterUtils.getTwitter(getActivity()), -1l)
+                                                                .execute(getString(R.string.pay_with_tweet_status));
+                                                        mSharedPreferences.edit().putBoolean(getString(R.string.pref_ads_removed), true).commit();
+                                                        restartApplication();
+                                                    }
+                                                }).setNegativeButton(getString(R.string.keep_ads), null)
+                                                .create().show();
+                                        break;
+                                }
+                            }
+                        });
+
+                        builder.setTitle(getString(R.string.iap_pref_title))
+                                .setView(dialogView)
+                                .create().show();
 
                         return true;
                     }
