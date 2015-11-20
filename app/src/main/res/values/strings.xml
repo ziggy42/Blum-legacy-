@@ -183,14 +183,6 @@
         <item>D</item>
     </string-array>
 
-    <string-array name="iap_values" translatable="false">
-        <item>0.99$</item>
-        <item>1.99$</item>
-        <item>4.99$</item>
-        <item>9.99$</item>
-        <item>Just a Tweet</item>
-    </string-array>
-
     <!-- Activities titles -->
     <string name="title_empty" translatable="false" />
     <string name="title_activity_tweet" translatable="false">Tweet</string>

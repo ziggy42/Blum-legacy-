@@ -12,7 +12,6 @@ android {
         versionName "4.5.0"
 
         resConfigs "en", "it", "es"
-        resConfigs "nodpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
     }
 
     packagingOptions {
