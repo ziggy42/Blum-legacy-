@@ -4,14 +4,9 @@
     tools:context="com.andreapivetta.blu.activities.NotificationsActivity">
 
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/action_clear_db"
         android:orderInCategory="101"
         android:title="@string/action_clear_db"
         app:showAsAction="never" />
+
 </menu>

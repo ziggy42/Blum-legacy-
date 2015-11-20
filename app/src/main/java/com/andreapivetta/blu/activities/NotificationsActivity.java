@@ -1,7 +1,6 @@
 package com.andreapivetta.blu.activities;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -43,10 +42,7 @@ public class NotificationsActivity extends ThemedActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            startActivity(new Intent(NotificationsActivity.this, SettingsActivity.class));
-            return true;
-        } else if (id == R.id.action_clear_db) {
+        if (id == R.id.action_clear_db) {
             AlertDialog.Builder builder = new AlertDialog.Builder(NotificationsActivity.this);
             builder.setTitle(getString(R.string.clear_database))
                     .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
