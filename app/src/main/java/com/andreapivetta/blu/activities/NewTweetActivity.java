@@ -186,16 +186,16 @@ public class NewTweetActivity extends ThemedActivity {
                         == PackageManager.PERMISSION_GRANTED) {
                     grabImage();
                 } else {
-                    if (!shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                         new AlertDialog.Builder(NewTweetActivity.this)
                                 .setMessage(getString(R.string.previously_denied_storage_permission))
                                 .setPositiveButton(getString(R.string.ok), null)
                                 .create()
                                 .show();
+                    } else {
+                        ActivityCompat.requestPermissions(NewTweetActivity.this,
+                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_GRAB_IMAGE);
                     }
-
-                    ActivityCompat.requestPermissions(NewTweetActivity.this,
-                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_GRAB_IMAGE);
                 }
             }
         });
