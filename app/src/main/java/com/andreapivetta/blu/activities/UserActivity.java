@@ -112,7 +112,7 @@ public class UserActivity extends AppCompatActivity implements SnackbarContainer
         }
     }
 
-    void setUpUser() {
+    private void setUpUser() {
         intent = getIntent();
         Bundle bundle = intent.getExtras();
 
@@ -127,7 +127,7 @@ public class UserActivity extends AppCompatActivity implements SnackbarContainer
         }
     }
 
-    void setUpUI() {
+    private void setUpUI() {
         mRecyclerView.addItemDecoration(new SpaceTopItemDecoration(Common.dpToPx(this, 10)));
         mAdapter = new UserProfileAdapter(mDataSet, this, twitter);
         mLinearLayoutManager = new LinearLayoutManager(this);
@@ -172,7 +172,7 @@ public class UserActivity extends AppCompatActivity implements SnackbarContainer
         });
     }
 
-    void tweetToUserButtonDown() {
+    private void tweetToUserButtonDown() {
         if (!isBlocked) {
             if (mSharedPreferences.getBoolean(getString(R.string.pref_key_hide_fab), true))
                 tweetToUserButton.hide();
@@ -180,7 +180,7 @@ public class UserActivity extends AppCompatActivity implements SnackbarContainer
         }
     }
 
-    void tweetToUserButtonUp() {
+    private void tweetToUserButtonUp() {
         if (!isBlocked) {
             if (mSharedPreferences.getBoolean(getString(R.string.pref_key_hide_fab), true) || !isUp)
                 tweetToUserButton.show();

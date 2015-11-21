@@ -41,7 +41,7 @@ import java.util.List;
 
 public class SettingsActivity extends ThemedActivity implements BillingProcessor.IBillingHandler {
 
-    public BillingProcessor billingProcessor;
+    private BillingProcessor billingProcessor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

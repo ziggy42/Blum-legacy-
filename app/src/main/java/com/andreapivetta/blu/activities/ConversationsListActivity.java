@@ -90,7 +90,7 @@ public class ConversationsListActivity extends ThemedActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    void showChooseUserDialogLimited() {
+    private void showChooseUserDialogLimited() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ConversationsListActivity.this);
         View dialogView = View.inflate(ConversationsListActivity.this, R.layout.dialog_select_user_limited, null);
 
@@ -110,7 +110,7 @@ public class ConversationsListActivity extends ThemedActivity {
                 .create().show();
     }
 
-    void showChooseUserDialog() {
+    private void showChooseUserDialog() {
         if (followers.size() == 0)
             followers.addAll(databaseManager.getFollowed());
         subset.clear();
@@ -154,7 +154,7 @@ public class ConversationsListActivity extends ThemedActivity {
                 .create().show();
     }
 
-    void showComeHereLaterDialog() {
+    private void showComeHereLaterDialog() {
         new AlertDialog.Builder(ConversationsListActivity.this)
                 .setCancelable(false)
                 .setTitle(getString(R.string.ops))
@@ -196,13 +196,13 @@ public class ConversationsListActivity extends ThemedActivity {
         conversationListAdapter.notifyDataSetChanged();
     }
 
-    void newMessageDown() {
+    private void newMessageDown() {
         if (mSharedPreferences.getBoolean(getString(R.string.pref_key_hide_fab), true))
             newMessageFAB.hide();
         isUp = false;
     }
 
-    void newMessageUp() {
+    private void newMessageUp() {
         if (mSharedPreferences.getBoolean(getString(R.string.pref_key_hide_fab), true))
             newMessageFAB.show();
         isUp = true;

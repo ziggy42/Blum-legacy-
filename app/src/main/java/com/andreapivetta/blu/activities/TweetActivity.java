@@ -125,7 +125,7 @@ public class TweetActivity extends ThemedActivity implements SnackbarContainer {
 
     }
 
-    void newTweetDown() {
+    private void newTweetDown() {
         if (!isBlocked) {
             replyFAB.animate().translationY(replyFAB.getHeight() + (int) (getResources().getDimension(R.dimen.fabMargin)))
                     .start();
@@ -133,7 +133,7 @@ public class TweetActivity extends ThemedActivity implements SnackbarContainer {
         }
     }
 
-    void newTweetUp() {
+    private void newTweetUp() {
         if (!isBlocked) {
             replyFAB.animate().translationY(0).start();
             isUp = true;

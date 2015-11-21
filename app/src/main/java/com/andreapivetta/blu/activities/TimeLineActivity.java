@@ -141,7 +141,7 @@ public abstract class TimeLineActivity extends ThemedActivity implements Snackba
 
     abstract List<Status> getRefreshedTimeLine(Paging paging) throws TwitterException;
 
-    void newTweetDown() {
+    private void newTweetDown() {
         if (!isBlocked) {
             if (mSharedPreferences.getBoolean(getString(R.string.pref_key_hide_fab), true))
                 newTweetFAB.hide();
@@ -149,7 +149,7 @@ public abstract class TimeLineActivity extends ThemedActivity implements Snackba
         }
     }
 
-    void newTweetUp() {
+    private void newTweetUp() {
         if (!isBlocked) {
             if (mSharedPreferences.getBoolean(getString(R.string.pref_key_hide_fab), true) || !isUp)
                 newTweetFAB.show();

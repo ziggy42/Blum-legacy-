@@ -69,7 +69,7 @@ public class UpdateTwitterStatus extends AsyncTask<String, String, Boolean> {
         return true;
     }
 
-    void pushNotification() {
+    private void pushNotification() {
         mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(context);
         mBuilder.setColor(Common.getResourceColorPrimary(context))

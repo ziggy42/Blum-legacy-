@@ -157,7 +157,7 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
             setUpFollowButton(user, context, twitter);
     }
 
-    void setUpFollowButton(final User user, final Context context, final Twitter twitter) {
+    private void setUpFollowButton(final User user, final Context context, final Twitter twitter) {
         followUserButton.setEnabled(true);
         followUserButton.setText((type == FOLLOW) ? context.getString(R.string.unfollow) :
                 context.getString(R.string.follow_simple));
@@ -201,7 +201,7 @@ public class UserHeaderViewHolder extends RecyclerView.ViewHolder {
         return amount / 1000 + "k";
     }
 
-    void createUsersDialog(final int mode) {
+    private void createUsersDialog(final int mode) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         if (mode == FOLLOWERS) {
             mUsersSimpleAdapter = new UserListSimpleAdapter(followers, context);

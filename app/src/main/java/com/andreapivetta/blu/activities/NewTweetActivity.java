@@ -276,14 +276,14 @@ public class NewTweetActivity extends ThemedActivity {
         checkLength(newTweetEditText.getText().toString());
     }
 
-    void hideSuggestions() {
+    private void hideSuggestions() {
         suggestionsOn = false;
         subset.clear();
         followedAdapter.notifyDataSetChanged();
         followedRecyclerView.setVisibility(View.GONE);
     }
 
-    void takePicture() {
+    private void takePicture() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             File photoFile = null;
@@ -301,7 +301,7 @@ public class NewTweetActivity extends ThemedActivity {
         }
     }
 
-    void grabImage() {
+    private void grabImage() {
         if (imageFiles.size() < 4) {
             Intent intent = new Intent()
                     .setType("image/*")
@@ -316,7 +316,7 @@ public class NewTweetActivity extends ThemedActivity {
         }
     }
 
-    void checkLength(String text) {
+    private void checkLength(String text) {
         int wordsLength = 0;
         int urls = (imageFiles.size() > 0) ? 1 : 0;
 
@@ -332,7 +332,7 @@ public class NewTweetActivity extends ThemedActivity {
         invalidateOptionsMenu();
     }
 
-    File createImageFile() throws IOException {
+    private File createImageFile() throws IOException {
         @SuppressLint("SimpleDateFormat") String imageFileName =
                 "JPEG_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + "_";
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);

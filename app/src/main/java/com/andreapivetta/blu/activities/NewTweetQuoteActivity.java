@@ -160,7 +160,7 @@ public class NewTweetQuoteActivity extends ThemedActivity {
         }
     }
 
-    void showSuggestions() {
+    private void showSuggestions() {
         suggestionsOn = true;
         followedRecyclerView.setVisibility(View.VISIBLE);
         if (followers.size() == 0)
@@ -170,14 +170,14 @@ public class NewTweetQuoteActivity extends ThemedActivity {
         followedAdapter.notifyDataSetChanged();
     }
 
-    void hideSuggestions() {
+    private void hideSuggestions() {
         suggestionsOn = false;
         subset.clear();
         followedAdapter.notifyDataSetChanged();
         followedRecyclerView.setVisibility(View.GONE);
     }
 
-    void checkLength(String text) {
+    private void checkLength(String text) {
         int wordsLength = 0;
         int urls = 1;
         for (String entry : text.split(" ")) {

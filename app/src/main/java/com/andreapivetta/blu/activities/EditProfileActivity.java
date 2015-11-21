@@ -56,7 +56,7 @@ public class EditProfileActivity extends ThemedActivity {
 
     }
 
-    void setUpUI() {
+    private void setUpUI() {
         findViewById(R.id.loadingProgressBar).setVisibility(View.GONE);
         findViewById(R.id.editScrollView).setVisibility(View.VISIBLE);
         screenNameEditText.setText(user.getScreenName());
@@ -89,7 +89,7 @@ public class EditProfileActivity extends ThemedActivity {
         super.onSaveInstanceState(outState);
     }
 
-    class LoadLoggedUser extends AsyncTask<Void, Void, Boolean> {
+    private class LoadLoggedUser extends AsyncTask<Void, Void, Boolean> {
 
         @Override
         protected Boolean doInBackground(Void... params) {
@@ -110,7 +110,7 @@ public class EditProfileActivity extends ThemedActivity {
         }
     }
 
-    class UploadChanges extends AsyncTask<String, Void, Boolean> {
+    private class UploadChanges extends AsyncTask<String, Void, Boolean> {
 
         @Override
         protected Boolean doInBackground(String... params) {

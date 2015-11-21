@@ -32,7 +32,6 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 public class ImageActivity extends AppCompatActivity {
 
     public static final String TAG_IMAGES = "images";
-    public static final String TAG_TITLE = "title";
     public static final String TAG_CURRENT_ITEM = "current_item";
 
     private List<String> images;
@@ -57,7 +56,7 @@ public class ImageActivity extends AppCompatActivity {
         Intent intent = getIntent();
         images = Arrays.asList(intent.getStringArrayExtra(TAG_IMAGES));
         int currentItem = intent.getIntExtra(TAG_CURRENT_ITEM, 0);
-        String toolbarTitle = intent.getStringExtra(TAG_TITLE);
+        String toolbarTitle = "";
         if (images.size() > 1)
             toolbarTitle = getString(R.string.m_of_n, currentItem + 1, images.size());
 
@@ -130,19 +129,19 @@ public class ImageActivity extends AppCompatActivity {
         hideToolbarDelay();
     }
 
-    void hideToolbarDelay() {
+    private void hideToolbarDelay() {
         handler.removeCallbacks(hideToolbarRunnable);
         handler.postDelayed(hideToolbarRunnable, 2000);
     }
 
-    void hideToolbar() {
+    private void hideToolbar() {
         if (isToolbarVisible) {
             toolbar.animate().translationY(-toolbar.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
             isToolbarVisible = false;
         }
     }
 
-    void showToolbar() {
+    private void showToolbar() {
         if (!isToolbarVisible) {
             toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator()).start();
             isToolbarVisible = true;
