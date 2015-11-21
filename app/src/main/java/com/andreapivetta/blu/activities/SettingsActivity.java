@@ -62,6 +62,7 @@ public class SettingsActivity extends ThemedActivity implements BillingProcessor
     @Override
     public void onProductPurchased(String s, TransactionDetails transactionDetails) {
         PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(getString(R.string.pref_ads_removed), true).commit();
+        Toast.makeText(this, R.string.completed_purchase, Toast.LENGTH_SHORT).show();
         finish();
         final Intent intent = new Intent(this, HomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
@@ -75,7 +76,7 @@ public class SettingsActivity extends ThemedActivity implements BillingProcessor
 
     @Override
     public void onBillingError(int i, Throwable throwable) {
-
+        Toast.makeText(this, R.string.failed_purchase, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -228,6 +229,7 @@ public class SettingsActivity extends ThemedActivity implements BillingProcessor
                                                         new UpdateTwitterStatus(getActivity(), TwitterUtils.getTwitter(getActivity()), -1l)
                                                                 .execute(getString(R.string.pay_with_tweet_status));
                                                         mSharedPreferences.edit().putBoolean(getString(R.string.pref_ads_removed), true).commit();
+                                                        Toast.makeText(getActivity(), R.string.completed_purchase, Toast.LENGTH_SHORT).show();
                                                         restartApplication();
                                                     }
                                                 }).setNegativeButton(getString(R.string.keep_ads), null)

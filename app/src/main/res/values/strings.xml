@@ -250,5 +250,7 @@
     <string name="pref_key_mute_notifications" translatable="false">muteNot</string>
     <string name="pref_key_hide_fab" translatable="false">hideFab</string>
     <string name="pref_ads_removed" translatable="false">ads_removed</string>
+    <string name="failed_purchase">Item not purchased :/</string>
+    <string name="completed_purchase">Thanks, enjoy Blum without ads :)</string>
 
 </resources>
