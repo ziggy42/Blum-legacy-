@@ -224,7 +224,11 @@ public class SettingsActivity extends ThemedActivity {
                     BasicNotificationService.stopService(getActivity());
                 CheckFollowingService.stopService(getActivity());
 
-                mSharedPreferences.edit().clear().commit();
+                boolean adsRemoved = mSharedPreferences.getBoolean(getString(R.string.pref_ads_removed), false);
+                mSharedPreferences.edit().clear()
+                        .putBoolean(getString(R.string.pref_ads_removed), adsRemoved)
+                        .commit();
+
                 DatabaseManager.getInstance(getActivity()).clearDatabase();
                 TwitterUtils.nullTwitter();
 
