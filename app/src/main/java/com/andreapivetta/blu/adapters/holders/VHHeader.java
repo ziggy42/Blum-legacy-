@@ -36,7 +36,6 @@ import com.andreapivetta.blu.adapters.ImagesAdapter;
 import com.andreapivetta.blu.adapters.decorators.SpaceLeftItemDecoration;
 import com.andreapivetta.blu.twitter.FavoriteTweet;
 import com.andreapivetta.blu.twitter.RetweetTweet;
-import com.andreapivetta.blu.utilities.CircleTransform;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -78,25 +77,14 @@ public class VHHeader extends BaseViewHolder {
 
     @Override
     @SuppressLint("NewApi")
-    public void setup(Status status, final Context context, final ArrayList<Long> favorites,
+    public void setup(final Status status, final Context context, final ArrayList<Long> favorites,
                       final ArrayList<Long> retweets, final Twitter twitter) {
-        final Status currentStatus;
 
-        if (status.isRetweet()) {
-            currentStatus = status.getRetweetedStatus();
-            retweetTextView.setVisibility(View.VISIBLE);
-            retweetTextView.setText(
-                    context.getString(R.string.retweeted_by, status.getUser().getScreenName()));
-        } else {
-            currentStatus = status;
-            retweetTextView.setVisibility(View.GONE);
-        }
-
-        final User currentUser = currentStatus.getUser();
+        final User currentUser = status.getUser();
 
         userNameTextView.setText(currentUser.getName());
 
-        Date d = currentStatus.getCreatedAt();
+        Date d = status.getCreatedAt();
         Calendar c = Calendar.getInstance(), c2 = Calendar.getInstance();
         c2.setTime(d);
 
@@ -120,15 +108,14 @@ public class VHHeader extends BaseViewHolder {
         Glide.with(context)
                 .load(currentUser.getBiggerProfileImageURL())
                 .placeholder(R.drawable.placeholder_circular)
-                .transform(new CircleTransform(context))
                 .into(userProfilePicImageView);
 
-        if (currentStatus.isFavorited() || favorites.contains(currentStatus.getId()))
+        if (status.isFavorited() || favorites.contains(status.getId()))
             favouriteImageButton.setImageResource(R.drawable.ic_favorite_red_a700_36dp);
         else
             favouriteImageButton.setImageResource(R.drawable.ic_favorite_grey_600_36dp);
 
-        if (currentStatus.isRetweeted() || retweets.contains(currentStatus.getId()))
+        if (status.isRetweeted() || retweets.contains(status.getId()))
             retweetImageButton.setImageResource(R.drawable.ic_repeat_green_a700_36dp);
         else
             retweetImageButton.setImageResource(R.drawable.ic_repeat_grey600_36dp);
@@ -147,13 +134,13 @@ public class VHHeader extends BaseViewHolder {
         favouriteImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentStatus.isFavorited() || favorites.contains(currentStatus.getId())) {
-                    new FavoriteTweet(context, twitter).execute(currentStatus.getId(), -1L);
-                    favorites.remove(currentStatus.getId());
+                if (status.isFavorited() || favorites.contains(status.getId())) {
+                    new FavoriteTweet(context, twitter).execute(status.getId(), -1L);
+                    favorites.remove(status.getId());
                     favouriteImageButton.setImageResource(R.drawable.ic_favorite_grey_600_36dp);
                 } else {
-                    new FavoriteTweet(context, twitter).execute(currentStatus.getId(), 1L);
-                    favorites.add(currentStatus.getId());
+                    new FavoriteTweet(context, twitter).execute(status.getId(), 1L);
+                    favorites.add(status.getId());
                     favouriteImageButton.setImageResource(R.drawable.ic_favorite_red_a700_36dp);
                 }
             }
@@ -167,8 +154,8 @@ public class VHHeader extends BaseViewHolder {
                         .setPositiveButton(R.string.retweet, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                new RetweetTweet(context, twitter).execute(currentStatus.getId());
-                                retweets.add(currentStatus.getId());
+                                new RetweetTweet(context, twitter).execute(status.getId());
+                                retweets.add(status.getId());
                                 retweetImageButton.setImageResource(R.drawable.ic_repeat_green_a700_36dp);
                             }
                         })
@@ -182,7 +169,7 @@ public class VHHeader extends BaseViewHolder {
                 Intent i = new Intent(context, NewTweetQuoteActivity.class);
 
                 Bundle b = new Bundle();
-                b.putSerializable(NewTweetQuoteActivity.PAR_CURRENT_STATUS, currentStatus);
+                b.putSerializable(NewTweetQuoteActivity.PAR_CURRENT_STATUS, status);
                 i.putExtra(NewTweetQuoteActivity.PAR_BUNDLE, b);
 
                 context.startActivity(i);
@@ -194,7 +181,7 @@ public class VHHeader extends BaseViewHolder {
             public void onClick(View v) {
                 Intent i = new Intent(context, NewTweetActivity.class);
                 i.putExtra(NewTweetActivity.TAG_USER_PREFIX, "@" + currentUser.getScreenName())
-                        .putExtra(NewTweetActivity.TAG_REPLY_ID, currentStatus.getId());
+                        .putExtra(NewTweetActivity.TAG_REPLY_ID, status.getId());
                 context.startActivity(i);
             }
         });
@@ -205,14 +192,14 @@ public class VHHeader extends BaseViewHolder {
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND)
                         .putExtra(Intent.EXTRA_TEXT, "https://twitter.com/" +
-                                currentUser.getScreenName() + "/status/" + currentStatus.getId())
+                                currentUser.getScreenName() + "/status/" + status.getId())
                         .setType("text/plain");
                 context.startActivity(Intent.createChooser(sendIntent, context.getString(R.string.share_tweet)));
             }
         });
 
-        String text = currentStatus.getText();
-        ExtendedMediaEntity mediaEntityArray[] = currentStatus.getExtendedMediaEntities();
+        String text = status.getText();
+        ExtendedMediaEntity mediaEntityArray[] = status.getExtendedMediaEntities();
         for (int i = 0; i < mediaEntityArray.length; i++)
             text = text.replace(mediaEntityArray[i].getURL(), "");
 
@@ -274,14 +261,14 @@ public class VHHeader extends BaseViewHolder {
 
         screenNameTextView.setText("@" + currentUser.getScreenName());
 
-        String amount = currentStatus.getFavoriteCount() + "";
+        String amount = status.getFavoriteCount() + "";
         StyleSpan b = new StyleSpan(android.graphics.Typeface.BOLD);
 
         SpannableStringBuilder sb = new SpannableStringBuilder(context.getString(R.string.likes, amount));
         sb.setSpan(b, 0, amount.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         favouritesStatsTextView.setText(sb);
 
-        amount = currentStatus.getRetweetCount() + "";
+        amount = status.getRetweetCount() + "";
         b = new StyleSpan(android.graphics.Typeface.BOLD);
 
         sb = new SpannableStringBuilder(context.getString(R.string.retweets, amount));
@@ -336,15 +323,15 @@ public class VHHeader extends BaseViewHolder {
         } else if (mediaEntityArray.length > 1) {
             tweetPhotosRecyclerView.setVisibility(View.VISIBLE);
             tweetPhotosRecyclerView.addItemDecoration(new SpaceLeftItemDecoration(5));
-            tweetPhotosRecyclerView.setAdapter(new ImagesAdapter(currentStatus.getExtendedMediaEntities(), context));
+            tweetPhotosRecyclerView.setAdapter(new ImagesAdapter(status.getExtendedMediaEntities(), context));
             tweetPhotosRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         }
 
-        if (currentStatus.getQuotedStatusId() > 0) {
+        if (status.getQuotedStatusId() > 0) {
             if (tweetView == null)
                 tweetView = quotedTweetViewStub.inflate();
 
-            final Status quotedStatus = currentStatus.getQuotedStatus();
+            final Status quotedStatus = status.getQuotedStatus();
 
             ImageView photoImageView = (ImageView) tweetView.findViewById(R.id.photoImageView);
             ((TextView) tweetView.findViewById(R.id.quotedUserNameTextView)).setText(quotedStatus.getUser().getName());

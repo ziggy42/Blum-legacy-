@@ -7,145 +7,112 @@
     card_view:cardBackgroundColor="?appCardViewBackgroundColor"
     card_view:cardCornerRadius="3dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="3dp">
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/userProfilePicImageView"
-            android:layout_width="68dp"
-            android:layout_height="68dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_margin="5dp"
-            android:contentDescription="@string/profile_pic_contentDescriptor"
-            android:scaleType="centerCrop"
-            android:src="@drawable/placeholder" />
-
-        <TextView
-            android:id="@+id/userNameTextView"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/userProfilePicImageView"
-            android:layout_toEndOf="@+id/userProfilePicImageView"
-            android:layout_toRightOf="@+id/userProfilePicImageView"
-            android:fontFamily="bold"
-            android:includeFontPadding="false"
-            android:textSize="25sp" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/screenNameTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/userNameTextView"
-            android:layout_toEndOf="@+id/userProfilePicImageView"
-            android:layout_toRightOf="@+id/userProfilePicImageView"
-            android:fontFamily="sans-serif-light"
-            android:includeFontPadding="false"
-            android:textSize="18sp" />
+            <ImageView
+                android:id="@+id/userProfilePicImageView"
+                android:layout_width="68dp"
+                android:layout_height="68dp"
+                android:layout_margin="10dp"
+                android:contentDescription="@string/profile_pic_contentDescriptor"
+                android:scaleType="centerCrop"
+                android:src="@drawable/placeholder" />
 
-        <TextView
-            android:id="@+id/timeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/screenNameTextView"
-            android:layout_toEndOf="@+id/userProfilePicImageView"
-            android:layout_toRightOf="@+id/userProfilePicImageView"
-            android:fontFamily="sans-serif-thin" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="68dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/userNameTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="bold"
+                    android:includeFontPadding="false"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/screenNameTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:includeFontPadding="false"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/timeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-thin" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/statusTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/interactionLinearLayout"
-            android:layout_alignStart="@+id/interactionLinearLayout"
-            android:layout_below="@+id/userProfilePicImageView"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:gravity="center"
             android:textSize="19sp" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
+        <ImageView
+            android:id="@+id/tweetPhotoImageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/statusTextView"
-            android:layout_marginTop="2dp"
-            android:orientation="vertical">
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/tweet_photo_contentDescriptor"
+            android:scaleType="fitCenter"
+            android:transitionName="@string/image_transition"
+            android:visibility="gone" />
 
-            <ImageView
-                android:id="@+id/tweetPhotoImageView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="5dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginStart="10dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/tweet_photo_contentDescriptor"
-                android:scaleType="fitCenter"
-                android:transitionName="@string/image_transition"
-                android:visibility="gone" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/tweetPhotosRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/picHeight"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:visibility="gone" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/tweetPhotosRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/picHeight"
-                android:layout_marginBottom="5dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginStart="10dp"
-                android:visibility="gone" />
+        <include
+            android:id="@+id/videoCover"
+            layout="@layout/video_cover"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/picHeight"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:visibility="gone" />
 
-            <include
-                android:id="@+id/videoCover"
-                layout="@layout/video_cover"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/picHeight"
-                android:layout_marginBottom="5dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginStart="10dp"
-                android:visibility="gone" />
-
-            <ViewStub
-                android:id="@+id/quotedViewStub"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="5dp"
-                android:inflatedId="@+id/quotedStatusLinearLayout"
-                android:layout="@layout/quoted_tweet"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/retweetTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:fontFamily="sans-serif-thin"
-                android:textSize="18sp"
-                android:visibility="gone" />
-
-        </LinearLayout>
+        <ViewStub
+            android:id="@+id/quotedViewStub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:inflatedId="@+id/quotedStatusLinearLayout"
+            android:layout="@layout/quoted_tweet"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/statsLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/linearLayout"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="2dp"
+            android:layout_margin="5dp"
             android:orientation="horizontal">
 
             <TextView
@@ -168,11 +135,9 @@
             android:id="@+id/interactionLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/statsLinearLayout"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="2dp"
             android:orientation="horizontal">
 
             <ImageButton
@@ -232,6 +197,6 @@
 
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>
