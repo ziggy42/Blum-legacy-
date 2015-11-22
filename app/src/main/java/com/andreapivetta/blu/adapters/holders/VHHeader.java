@@ -211,9 +211,14 @@ public class VHHeader extends BaseViewHolder {
             }
         });
 
+        String text = currentStatus.getText();
+        ExtendedMediaEntity mediaEntityArray[] = currentStatus.getExtendedMediaEntities();
+        for (int i = 0; i < mediaEntityArray.length; i++)
+            text = text.replace(mediaEntityArray[i].getURL(), "");
+
         StringBuilder iHateHtml = new StringBuilder();
         String endString = "";
-        for (String line : currentStatus.getText().split("\\r?\\n")) {
+        for (String line : text.split("\\r?\\n")) {
             if (iHateHtml.length() > 0) iHateHtml.append("<br/>");
             for (String word : line.split(" ")) {
                 if (Patterns.WEB_URL.matcher(word).matches()) {
@@ -283,7 +288,6 @@ public class VHHeader extends BaseViewHolder {
         sb.setSpan(b, 0, amount.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         retweetsStatsTextView.setText(sb);
 
-        ExtendedMediaEntity mediaEntityArray[] = currentStatus.getExtendedMediaEntities();
         if (mediaEntityArray.length == 1) {
             final ExtendedMediaEntity mediaEntity = mediaEntityArray[0];
             if (mediaEntity.getType().equals("photo")) {
@@ -344,7 +348,6 @@ public class VHHeader extends BaseViewHolder {
 
             ImageView photoImageView = (ImageView) tweetView.findViewById(R.id.photoImageView);
             ((TextView) tweetView.findViewById(R.id.quotedUserNameTextView)).setText(quotedStatus.getUser().getName());
-            ((TextView) tweetView.findViewById(R.id.quotedStatusTextView)).setText(quotedStatus.getText());
 
             if (quotedStatus.getMediaEntities().length > 0) {
                 photoImageView.setVisibility(View.VISIBLE);
@@ -352,8 +355,13 @@ public class VHHeader extends BaseViewHolder {
                         .load(quotedStatus.getMediaEntities()[0].getMediaURL())
                         .placeholder(R.drawable.placeholder)
                         .into(photoImageView);
-            } else
+
+                ((TextView) tweetView.findViewById(R.id.quotedStatusTextView)).setText(
+                        quotedStatus.getText().replace(quotedStatus.getMediaEntities()[0].getURL(), ""));
+            } else {
                 photoImageView.setVisibility(View.GONE);
+                ((TextView) tweetView.findViewById(R.id.quotedStatusTextView)).setText(quotedStatus.getText());
+            }
 
             tweetView.setOnClickListener(new View.OnClickListener() {
                 @Override

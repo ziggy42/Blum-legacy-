@@ -2,6 +2,7 @@ package com.andreapivetta.blu.adapters.holders;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.util.Linkify;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -48,5 +49,8 @@ public class VHItemPhoto extends VHItem {
                 }
             });
         }
+
+        statusTextView.setText(status.getText().replace(mediaEntity.getURL(), ""));
+        Linkify.addLinks(statusTextView, Linkify.ALL);
     }
 }

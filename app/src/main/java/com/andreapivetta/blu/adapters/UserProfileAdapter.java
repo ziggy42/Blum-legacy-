@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import com.andreapivetta.blu.R;
 import com.andreapivetta.blu.adapters.holders.BaseViewHolder;
 import com.andreapivetta.blu.adapters.holders.UserHeaderViewHolder;
-import com.andreapivetta.blu.adapters.holders.VHItem;
 import com.andreapivetta.blu.adapters.holders.VHItemMultiplePhotos;
 import com.andreapivetta.blu.adapters.holders.VHItemPhoto;
 import com.andreapivetta.blu.adapters.holders.VHItemQuote;
+import com.andreapivetta.blu.adapters.holders.VHItemSimple;
 import com.andreapivetta.blu.adapters.holders.VHItemVideo;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class UserProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case TYPE_ITEM:
-                return new VHItem(
+                return new VHItemSimple(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_basic, parent, false));
             case TYPE_ITEM_PHOTO:
                 return new VHItemPhoto(
@@ -66,7 +66,7 @@ public class UserProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 return new UserHeaderViewHolder(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.user_header, parent, false));
             default:
-                return new VHItem(
+                return new VHItemSimple(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.tweet_basic, parent, false));
         }
     }

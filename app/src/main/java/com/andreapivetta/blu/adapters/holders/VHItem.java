@@ -30,7 +30,7 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.User;
 
-public class VHItem extends BaseViewHolder {
+public abstract class VHItem extends BaseViewHolder {
 
     protected FrameLayout cardView;
     protected ImageButton openTweetImageButton;
@@ -173,9 +173,7 @@ public class VHItem extends BaseViewHolder {
             }
         });
 
-        statusTextView.setText(currentStatus.getText());
         interactionLinearLayout.setVisibility(View.GONE);
-        Linkify.addLinks(statusTextView, Linkify.ALL);
 
         statusTextView.setOnClickListener(new View.OnClickListener() {
             @Override
