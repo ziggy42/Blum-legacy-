@@ -26,11 +26,12 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import twitter4j.MediaEntity;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.User;
 
-public abstract class VHItem extends BaseViewHolder {
+public class VHItem extends BaseViewHolder {
 
     protected FrameLayout cardView;
     protected ImageButton openTweetImageButton;
@@ -59,7 +60,6 @@ public abstract class VHItem extends BaseViewHolder {
         }
 
         final User currentUser = currentStatus.getUser();
-
         userNameTextView.setText(currentUser.getName());
 
         Calendar c = Calendar.getInstance(), c2 = Calendar.getInstance();
@@ -96,6 +96,14 @@ public abstract class VHItem extends BaseViewHolder {
             retweetImageButton.setImageResource(R.drawable.ic_repeat_green_a700_36dp);
         else
             retweetImageButton.setImageResource(R.drawable.ic_repeat_grey600_36dp);
+
+        MediaEntity[] entities = status.getExtendedMediaEntities();
+        String text = currentStatus.getText();
+        //noinspection ForLoopReplaceableByForEach
+        for (int i = 0; i < entities.length; i++)
+            text = text.replace(entities[i].getURL(), "");
+        statusTextView.setText(text);
+        Linkify.addLinks(statusTextView, Linkify.ALL);
 
         userProfilePicImageView.setOnClickListener(new View.OnClickListener() {
             @Override

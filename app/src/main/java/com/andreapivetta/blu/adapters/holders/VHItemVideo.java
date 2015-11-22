@@ -51,9 +51,6 @@ public class VHItemVideo extends VHItem {
                 context.startActivity(i);
             }
         });
-
-        statusTextView.setText(status.getText().replace(mediaEntity.getURL(), ""));
-        Linkify.addLinks(statusTextView, Linkify.ALL);
     }
 
 

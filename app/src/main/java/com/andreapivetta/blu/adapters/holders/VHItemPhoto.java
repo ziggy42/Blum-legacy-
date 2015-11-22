@@ -49,8 +49,5 @@ public class VHItemPhoto extends VHItem {
                 }
             });
         }
-
-        statusTextView.setText(status.getText().replace(mediaEntity.getURL(), ""));
-        Linkify.addLinks(statusTextView, Linkify.ALL);
     }
 }
