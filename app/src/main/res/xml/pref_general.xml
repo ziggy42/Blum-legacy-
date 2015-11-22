@@ -83,11 +83,6 @@
     <PreferenceCategory android:title="@string/prefcat_others_title">
 
         <Preference
-            android:key="pref_key_iap"
-            android:summary="@string/iap_pref_summary"
-            android:title="@string/iap_pref_title" />
-
-        <Preference
             android:key="pref_key_edit"
             android:summary="@string/edit_pref_summary"
             android:title="@string/edit_pref_title" />

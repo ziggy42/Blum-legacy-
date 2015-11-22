@@ -121,6 +121,8 @@
     <string name="pay_with_tweet_status" translatable="false">Try Blum, a clean, fast and simple Twitter client for Android https://play.google.com/store/apps/details?id=com.andreapivetta.blu via \@Pivix00</string>
     <string name="tweet" translatable="false">Tweet</string>
     <string name="keep_ads">Keep the Ads</string>
+    <string name="failed_purchase">Item not purchased :/</string>
+    <string name="completed_purchase">Thanks, enjoy Blum without ads :)</string>
 
     <plurals name="new_tweets">
         <item quantity="one">%1$d new Tweet</item>
@@ -213,7 +215,6 @@
     <string name="prefcat_appearance_title">Appearance</string>
     <string name="hide_fab_notifications_pref_title">Hide FAB</string>
     <string name="hide_fab_notifications_pref_summary">Hide new tweet button while scrolling down</string>
-    <string name="iap_pref_summary">We all hate ads.</string>
     <string name="iap_pref_title">Remove ads</string>
 
     <!-- Content Descriptors -->
@@ -250,7 +251,5 @@
     <string name="pref_key_mute_notifications" translatable="false">muteNot</string>
     <string name="pref_key_hide_fab" translatable="false">hideFab</string>
     <string name="pref_ads_removed" translatable="false">ads_removed</string>
-    <string name="failed_purchase">Item not purchased :/</string>
-    <string name="completed_purchase">Thanks, enjoy Blum without ads :)</string>
 
 </resources>
