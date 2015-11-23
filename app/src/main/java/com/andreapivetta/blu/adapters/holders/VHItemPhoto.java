@@ -2,7 +2,6 @@ package com.andreapivetta.blu.adapters.holders;
 
 import android.content.Context;
 import android.content.Intent;
-import android.text.util.Linkify;
 import android.view.View;
 import android.widget.ImageView;
 
