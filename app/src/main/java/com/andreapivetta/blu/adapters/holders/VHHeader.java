@@ -107,7 +107,7 @@ public class VHHeader extends BaseViewHolder {
 
         Glide.with(context)
                 .load(currentUser.getBiggerProfileImageURL())
-                .placeholder(R.drawable.placeholder_circular)
+                .placeholder(R.drawable.placeholder)
                 .into(userProfilePicImageView);
 
         if (status.isFavorited() || favorites.contains(status.getId()))
