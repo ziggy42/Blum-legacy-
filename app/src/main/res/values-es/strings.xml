@@ -169,4 +169,6 @@
     <string name="pay_with_tweet_title">Enviar esto y olvidar todos los anuncios!</string>
     <string name="completed_purchase">Gracias, disfrutar Blum sin anuncios :)</string>
     <string name="failed_purchase">El artículo no compró: /</string>
+    <string name="cancellation">Cancelación</string>
+    <string name="error">Error</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.andreapivetta.blu.twitter;
+package com.andreapivetta.twitterloginview;
 
 
 import android.annotation.SuppressLint;
@@ -21,23 +21,29 @@ import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
-public class TwitterOAuthView extends WebView {
+public class TwitterLoginView extends WebView {
+
+    public final static int SUCCESS = 0;
+    public final static int CANCELLATION = 1;
+    public final static int REQUEST_TOKEN_ERROR = 2;
+    public final static int AUTHORIZATION_ERROR = 3;
+    public final static int ACCESS_TOKEN_ERROR = 4;
 
     private TwitterOAuthTask twitterOAuthTask;
 
-    public TwitterOAuthView(Context context, AttributeSet attrs, int defStyle) {
+    public TwitterLoginView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
         init();
     }
 
-    public TwitterOAuthView(Context context, AttributeSet attrs) {
+    public TwitterLoginView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         init();
     }
 
-    public TwitterOAuthView(Context context) {
+    public TwitterLoginView(Context context) {
         super(context);
 
         init();
@@ -54,8 +60,8 @@ public class TwitterOAuthView extends WebView {
         setScrollBarStyle(WebView.SCROLLBARS_INSIDE_OVERLAY);
     }
 
-    public void start(String consumerKey, String consumerSecret, String callbackUrl, boolean dummyCallbackUrl,
-                      Listener listener) {
+    public void start(@NonNull String consumerKey, @NonNull String consumerSecret, @NonNull String callbackUrl,
+                      @NonNull TwitterLoginListener listener) {
 
         TwitterOAuthTask oldTask;
         TwitterOAuthTask newTask;
@@ -68,7 +74,7 @@ public class TwitterOAuthView extends WebView {
 
         cancelTask(oldTask);
 
-        newTask.execute(consumerKey, consumerSecret, callbackUrl, dummyCallbackUrl, listener);
+        newTask.execute(consumerKey, consumerSecret, callbackUrl, listener);
     }
 
     public void cancel() {
@@ -82,6 +88,7 @@ public class TwitterOAuthView extends WebView {
         cancelTask(task);
     }
 
+    @SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
     private void cancelTask(TwitterOAuthTask task) {
         if (task == null)
             return;
@@ -100,77 +107,58 @@ public class TwitterOAuthView extends WebView {
         cancel();
     }
 
-    public enum Result {
-        SUCCESS,
-        CANCELLATION,
-        REQUEST_TOKEN_ERROR,
-        AUTHORIZATION_ERROR,
-        ACCESS_TOKEN_ERROR
-    }
+    private class TwitterOAuthTask extends AsyncTask<Object, Void, Integer> {
 
-    public interface Listener {
-
-        void onSuccess(TwitterOAuthView view, AccessToken accessToken);
-
-        void onFailure(TwitterOAuthView view, Result result);
-    }
-
-    private class TwitterOAuthTask extends AsyncTask<Object, Void, Result> {
         private String callbackUrl;
-        private boolean dummyCallbackUrl;
-        private Listener listener;
+        private TwitterLoginListener listener;
         private Twitter twitter;
         private RequestToken requestToken;
+        private AccessToken accessToken;
         private volatile boolean authorizationDone;
         private volatile String verifier;
-        private AccessToken accessToken;
 
         @Override
         protected void onPreExecute() {
-            TwitterOAuthView.this.setWebViewClient(new LocalWebViewClient());
+            TwitterLoginView.this.setWebViewClient(new LocalWebViewClient());
         }
 
         @Override
-        protected Result doInBackground(Object... args) {
-            if (isCancelled()) {
-                return Result.CANCELLATION;
-            }
+        protected Integer doInBackground(Object... args) {
+            if (isCancelled())
+                return CANCELLATION;
 
             String consumerKey = (String) args[0];
             String consumerSecret = (String) args[1];
             callbackUrl = (String) args[2];
-            dummyCallbackUrl = (Boolean) args[3];
-            listener = (Listener) args[4];
+            listener = (TwitterLoginListener) args[3];
 
             twitter = new TwitterFactory().getInstance();
             twitter.setOAuthConsumer(consumerKey, consumerSecret);
 
-            requestToken = getRequestToken();
-            if (requestToken == null) {
-                return Result.REQUEST_TOKEN_ERROR;
+            try {
+                requestToken = twitter.getOAuthRequestToken();
+            } catch (TwitterException e) {
+                e.printStackTrace();
+                return REQUEST_TOKEN_ERROR;
             }
 
-            authorize();
+            publishProgress();
 
             boolean cancelled = waitForAuthorization();
-            if (cancelled) {
-                return Result.CANCELLATION;
+            if (cancelled || isCancelled())
+                return CANCELLATION;
+
+            if (verifier == null)
+                return AUTHORIZATION_ERROR;
+
+            try {
+                accessToken = twitter.getOAuthAccessToken(requestToken, verifier);
+            } catch (TwitterException e) {
+                e.printStackTrace();
+                return ACCESS_TOKEN_ERROR;
             }
 
-            if (verifier == null) {
-                return Result.AUTHORIZATION_ERROR;
-            }
-
-            if (isCancelled()) {
-                return Result.CANCELLATION;
-            }
-
-            accessToken = getAccessToken();
-            if (accessToken == null) {
-                return Result.ACCESS_TOKEN_ERROR;
-            }
-
-            return Result.SUCCESS;
+            return SUCCESS;
         }
 
         @Override
@@ -178,20 +166,18 @@ public class TwitterOAuthView extends WebView {
             if (isCancelled())
                 return;
 
-            TwitterOAuthView.this.loadUrl(requestToken.getAuthorizationURL());
+            TwitterLoginView.this.loadUrl(requestToken.getAuthorizationURL());
         }
 
         @Override
-        protected void onPostExecute(Result result) {
+        protected void onPostExecute(Integer result) {
+            if (result == null)
+                result = CANCELLATION;
 
-            if (result == null) {
-                result = Result.CANCELLATION;
-            }
-
-            if (result == Result.SUCCESS) {
-                fireOnSuccess();
+            if (result == SUCCESS) {
+                onAuthSuccess();
             } else {
-                fireOnFailure(result);
+                onAuthFailure(result);
             }
 
             clearTaskReference();
@@ -201,38 +187,25 @@ public class TwitterOAuthView extends WebView {
         protected void onCancelled() {
             super.onCancelled();
 
-            fireOnFailure(Result.CANCELLATION);
+            onAuthFailure(CANCELLATION);
 
             clearTaskReference();
         }
 
-        private void fireOnSuccess() {
-            listener.onSuccess(TwitterOAuthView.this, accessToken);
+        private void onAuthSuccess() {
+            listener.onSuccess(accessToken);
         }
 
-        private void fireOnFailure(Result result) {
-            listener.onFailure(TwitterOAuthView.this, result);
+        private void onAuthFailure(Integer result) {
+            listener.onFailure(result);
         }
 
         private void clearTaskReference() {
-            synchronized (TwitterOAuthView.this) {
-                if (TwitterOAuthView.this.twitterOAuthTask == this) {
-                    TwitterOAuthView.this.twitterOAuthTask = null;
+            synchronized (TwitterLoginView.this) {
+                if (TwitterLoginView.this.twitterOAuthTask == this) {
+                    TwitterLoginView.this.twitterOAuthTask = null;
                 }
             }
-        }
-
-        private RequestToken getRequestToken() {
-            try {
-                return twitter.getOAuthRequestToken();
-            } catch (TwitterException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        private void authorize() {
-            publishProgress();
         }
 
         private boolean waitForAuthorization() {
@@ -260,15 +233,6 @@ public class TwitterOAuthView extends WebView {
             }
         }
 
-        private AccessToken getAccessToken() {
-            try {
-                return twitter.getOAuthAccessToken(requestToken, verifier);
-            } catch (TwitterException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
         private class LocalWebViewClient extends WebViewClient {
 
             @Override
@@ -290,7 +254,7 @@ public class TwitterOAuthView extends WebView {
 
                 notifyAuthorization();
 
-                return dummyCallbackUrl;
+                return true;
             }
         }
     }

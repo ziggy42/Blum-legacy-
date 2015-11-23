@@ -14,7 +14,6 @@ import twitter4j.conf.ConfigurationBuilder;
 
 public final class TwitterUtils {
     public static final String CALLBACK_URL = "http://andreapivetta.altervista.org/";
-    public static final boolean DUMMY_CALLBACK_URL = true;
     public static final String PREF_KEY_OAUTH_TOKEN = "oauth_token";
     public static final String PREF_KEY_OAUTH_SECRET = "oauth_token_secret";
     public static final String TWITTER_CONSUMER_KEY = "bqC07DsGd4GxN7a5SzPYvAkOm";

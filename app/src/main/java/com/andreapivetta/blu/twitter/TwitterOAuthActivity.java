@@ -7,19 +7,21 @@ import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.andreapivetta.blu.R;
+import com.andreapivetta.twitterloginview.TwitterLoginListener;
+import com.andreapivetta.twitterloginview.TwitterLoginView;
 
 import twitter4j.auth.AccessToken;
 
-public class TwitterOAuthActivity extends Activity implements TwitterOAuthView.Listener {
+public class TwitterOAuthActivity extends Activity implements TwitterLoginListener {
 
-    private TwitterOAuthView view;
+    private TwitterLoginView view;
     private boolean oauthStarted;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        view = new TwitterOAuthView(this);
+        view = new TwitterLoginView(this);
 
         setContentView(view);
 
@@ -36,10 +38,10 @@ public class TwitterOAuthActivity extends Activity implements TwitterOAuthView.L
         oauthStarted = true;
 
         view.start(TwitterUtils.TWITTER_CONSUMER_KEY, TwitterUtils.TWITTER_CONSUMER_SECRET,
-                TwitterUtils.CALLBACK_URL, TwitterUtils.DUMMY_CALLBACK_URL, this);
+                TwitterUtils.CALLBACK_URL, this);
     }
 
-    public void onSuccess(TwitterOAuthView view, AccessToken accessToken) {
+    public void onSuccess(AccessToken accessToken) {
         PreferenceManager.getDefaultSharedPreferences(TwitterOAuthActivity.this).edit().
                 putString(TwitterUtils.PREF_KEY_OAUTH_TOKEN, accessToken.getToken()).
                 putString(TwitterUtils.PREF_KEY_OAUTH_SECRET, accessToken.getTokenSecret()).
@@ -53,8 +55,11 @@ public class TwitterOAuthActivity extends Activity implements TwitterOAuthView.L
         finish();
     }
 
-    public void onFailure(TwitterOAuthView view, TwitterOAuthView.Result result) {
-        showMessage((getString(R.string.failed_due, result)));
+    public void onFailure(int resultCode) {
+        if (resultCode == TwitterLoginView.CANCELLATION)
+            showMessage(getString(R.string.failed_due, getString(R.string.cancellation)));
+        else
+            showMessage(getString(R.string.failed_due, getString(R.string.error)));
     }
 
     private void showMessage(String message) {

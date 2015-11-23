@@ -251,5 +251,7 @@
     <string name="pref_key_mute_notifications" translatable="false">muteNot</string>
     <string name="pref_key_hide_fab" translatable="false">hideFab</string>
     <string name="pref_ads_removed" translatable="false">ads_removed</string>
+    <string name="cancellation">Cancellation</string>
+    <string name="error">Error</string>
 
 </resources>

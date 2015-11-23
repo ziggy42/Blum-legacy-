@@ -164,5 +164,7 @@
     <string name="pay_with_tweet_title">Manda questo tweet e dimentica le pubblicità!</string>
     <string name="completed_purchase">Grazie, goditi Blum senza pubblicità :)</string>
     <string name="failed_purchase">Elemento non acquistato :/</string>
+    <string name="cancellation">Cancellazione</string>
+    <string name="error">Errore</string>
 
 </resources>
