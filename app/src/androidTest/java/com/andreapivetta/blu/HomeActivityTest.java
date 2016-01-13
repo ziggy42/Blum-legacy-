@@ -1,16 +1,13 @@
 package com.andreapivetta.blu;
 
-import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v7.widget.Toolbar;
-import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.widget.TextView;
 
 import com.andreapivetta.blu.activities.HomeActivity;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,7 +31,7 @@ public class HomeActivityTest {
             HomeActivity.class);
 
     @Test
-    public void launchNewActivityTest() {
+    public void launchNewTweetActivityTest() {
         onView(withId(R.id.newTweetFAB)).perform(click());
 
         onView(allOf(isAssignableFrom(TextView.class), withParent(isAssignableFrom(Toolbar.class)))).
