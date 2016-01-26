@@ -164,11 +164,6 @@
     <string name="insert_user_screenname">Introduzca User</string>
     <string name="hide_fab_notifications_pref_title">Esconder FAB</string>
     <string name="hide_fab_notifications_pref_summary">Esconder nuevo tweet botón mientras se desplaza hacia abajo</string>
-    <string name="iap_pref_title">Quitar anuncios</string>
-    <string name="keep_ads">Mantenga los Anuncios</string>
-    <string name="pay_with_tweet_title">Enviar esto y olvidar todos los anuncios!</string>
-    <string name="completed_purchase">Gracias, disfrutar Blum sin anuncios :)</string>
-    <string name="failed_purchase">El artículo no compró: /</string>
     <string name="cancellation">Cancelación</string>
     <string name="error">Error</string>
 </resources>

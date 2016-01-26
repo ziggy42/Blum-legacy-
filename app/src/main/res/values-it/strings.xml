@@ -159,11 +159,6 @@
     <string name="insert_user_screenname">Inserisci Utente</string>
     <string name="hide_fab_notifications_pref_title">Nascondi FAB</string>
     <string name="hide_fab_notifications_pref_summary">Nascondi il tasto nuovo tweet quando scrolli giù</string>
-    <string name="iap_pref_title">Rimuovi pubblicità</string>
-    <string name="keep_ads">Mantieni le pubblicità</string>
-    <string name="pay_with_tweet_title">Manda questo tweet e dimentica le pubblicità!</string>
-    <string name="completed_purchase">Grazie, goditi Blum senza pubblicità :)</string>
-    <string name="failed_purchase">Elemento non acquistato :/</string>
     <string name="cancellation">Cancellazione</string>
     <string name="error">Errore</string>
 

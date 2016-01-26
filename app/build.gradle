@@ -36,7 +36,6 @@ android {
 
 dependencies {
     compile project(':loginView')
-    compile 'com.google.android.gms:play-services-ads:8.4.0'
     compile 'com.android.support:appcompat-v7:+'
     compile 'com.android.support:palette-v7:+'
     compile 'com.android.support:recyclerview-v7:+'
@@ -49,7 +48,6 @@ dependencies {
     compile 'jp.wasabeef:recyclerview-animators:2.1.0'
     compile 'org.jsoup:jsoup:1.8.3'
     compile 'org.solovyev.android.views:linear-layout-manager:0.5@aar'
-    compile 'com.anjlab.android.iab.v3:library:1.0.+'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.robolectric:robolectric:3.0'
