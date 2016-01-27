@@ -26,3 +26,6 @@ build
 *~
 *.swp
 app/manifest-merger-release-report.txt
+
+# K
+app/src/main/java/com/andreapivetta/blu/twitter/TwitterK.java

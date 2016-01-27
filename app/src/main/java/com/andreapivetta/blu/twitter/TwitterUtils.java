@@ -13,11 +13,9 @@ import twitter4j.auth.AccessToken;
 import twitter4j.conf.ConfigurationBuilder;
 
 public final class TwitterUtils {
-    public static final String CALLBACK_URL = "http://andreapivetta.altervista.org/";
+
     public static final String PREF_KEY_OAUTH_TOKEN = "oauth_token";
     public static final String PREF_KEY_OAUTH_SECRET = "oauth_token_secret";
-    public static final String TWITTER_CONSUMER_KEY = "bqC07DsGd4GxN7a5SzPYvAkOm";
-    public static final String TWITTER_CONSUMER_SECRET = "qJeeNMIuranov0m7hkGI6QvtcMx2BQYWqaYxwUegNf30bs1INO";
 
     private static AccessToken accessToken;
     private static TwitterFactory factory;
@@ -35,8 +33,8 @@ public final class TwitterUtils {
     private static TwitterFactory getFactory() {
         if (factory == null) {
             ConfigurationBuilder builder = new ConfigurationBuilder();
-            builder.setOAuthConsumerKey(TwitterUtils.TWITTER_CONSUMER_KEY)
-                    .setOAuthConsumerSecret(TwitterUtils.TWITTER_CONSUMER_SECRET);
+            builder.setOAuthConsumerKey(TwitterK.TWITTER_CONSUMER_KEY)
+                    .setOAuthConsumerSecret(TwitterK.TWITTER_CONSUMER_SECRET);
             factory = new TwitterFactory(builder.build());
         }
 
@@ -54,8 +52,8 @@ public final class TwitterUtils {
 
     public static TwitterStream getTwitterStream(Context context) {
         ConfigurationBuilder builder = new ConfigurationBuilder();
-        builder.setOAuthConsumerKey(TwitterUtils.TWITTER_CONSUMER_KEY)
-                .setOAuthConsumerSecret(TwitterUtils.TWITTER_CONSUMER_SECRET);
+        builder.setOAuthConsumerKey(TwitterK.TWITTER_CONSUMER_KEY)
+                .setOAuthConsumerSecret(TwitterK.TWITTER_CONSUMER_SECRET);
 
         return new TwitterStreamFactory(builder.build()).getInstance(getAccessToken(context));
     }

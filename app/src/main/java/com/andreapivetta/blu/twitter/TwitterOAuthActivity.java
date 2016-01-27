@@ -37,8 +37,8 @@ public class TwitterOAuthActivity extends Activity implements TwitterLoginListen
 
         oauthStarted = true;
 
-        view.start(TwitterUtils.TWITTER_CONSUMER_KEY, TwitterUtils.TWITTER_CONSUMER_SECRET,
-                TwitterUtils.CALLBACK_URL, this);
+        view.start(TwitterK.TWITTER_CONSUMER_KEY, TwitterK.TWITTER_CONSUMER_SECRET,
+                TwitterK.CALLBACK_URL, this);
     }
 
     public void onSuccess(AccessToken accessToken) {
