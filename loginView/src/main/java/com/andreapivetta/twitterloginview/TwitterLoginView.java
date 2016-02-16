@@ -241,11 +241,6 @@ public class TwitterLoginView extends WebView {
             }
 
             @Override
-            public void onReceivedSslError(WebView view, @NonNull SslErrorHandler handler, SslError error) {
-                handler.proceed();
-            }
-
-            @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (!url.startsWith(callbackUrl))
                     return false;
