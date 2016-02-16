@@ -8,8 +8,8 @@ android {
         applicationId "com.andreapivetta.blu"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 43
-        versionName "4.5.2"
+        versionCode 44
+        versionName "4.6"
 
         resConfigs "en", "it", "es"
 
