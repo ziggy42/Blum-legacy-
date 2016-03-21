@@ -32,6 +32,12 @@ android {
                     'proguard-rules.pro'
         }
     }
+
+    buildTypes.each {
+        it.buildConfigField 'String', 'TWITTER_CALLBACK', CallBackUrl
+        it.buildConfigField 'String', 'TWITTER_CONSUMER_KEY', ConsumerKey
+        it.buildConfigField 'String', 'TWITTER_CONSUMER_SECRET', ConsumerSecret
+    }
 }
 
 dependencies {

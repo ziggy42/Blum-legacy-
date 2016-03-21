@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
+import com.andreapivetta.blu.BuildConfig;
 import com.andreapivetta.blu.R;
 import com.andreapivetta.twitterloginview.TwitterLoginListener;
 import com.andreapivetta.twitterloginview.TwitterLoginView;
@@ -37,8 +38,8 @@ public class TwitterOAuthActivity extends Activity implements TwitterLoginListen
 
         oauthStarted = true;
 
-        view.start(TwitterK.TWITTER_CONSUMER_KEY, TwitterK.TWITTER_CONSUMER_SECRET,
-                TwitterK.CALLBACK_URL, this);
+        view.start(BuildConfig.TWITTER_CONSUMER_KEY, BuildConfig.TWITTER_CONSUMER_SECRET,
+                BuildConfig.TWITTER_CALLBACK, this);
     }
 
     public void onSuccess(AccessToken accessToken) {

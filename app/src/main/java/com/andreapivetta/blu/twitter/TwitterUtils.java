@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.andreapivetta.blu.BuildConfig;
+
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.TwitterStream;
@@ -33,8 +35,8 @@ public final class TwitterUtils {
     private static TwitterFactory getFactory() {
         if (factory == null) {
             ConfigurationBuilder builder = new ConfigurationBuilder();
-            builder.setOAuthConsumerKey(TwitterK.TWITTER_CONSUMER_KEY)
-                    .setOAuthConsumerSecret(TwitterK.TWITTER_CONSUMER_SECRET);
+            builder.setOAuthConsumerKey(BuildConfig.TWITTER_CONSUMER_KEY)
+                    .setOAuthConsumerSecret(BuildConfig.TWITTER_CONSUMER_SECRET);
             factory = new TwitterFactory(builder.build());
         }
 
@@ -52,8 +54,8 @@ public final class TwitterUtils {
 
     public static TwitterStream getTwitterStream(Context context) {
         ConfigurationBuilder builder = new ConfigurationBuilder();
-        builder.setOAuthConsumerKey(TwitterK.TWITTER_CONSUMER_KEY)
-                .setOAuthConsumerSecret(TwitterK.TWITTER_CONSUMER_SECRET);
+        builder.setOAuthConsumerKey(BuildConfig.TWITTER_CONSUMER_KEY)
+                .setOAuthConsumerSecret(BuildConfig.TWITTER_CONSUMER_SECRET);
 
         return new TwitterStreamFactory(builder.build()).getInstance(getAccessToken(context));
     }
